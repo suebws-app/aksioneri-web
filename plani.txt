@@ -1,0 +1,273 @@
+Here is Claude's plan:
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+ Aksioneri — Project Setup, Architecture & Skills
+  
+ Context
+  
+ Aksioneri/ today holds two bare scaffolds and nothing else:
+
+ - aksioneri-web — Next.js 16.3.2, React 19.2.8, Tailwind v4, pnpm. Only src/app/{layout,page,globals.css}. CLAUDE.md is a one-liner (@AGENTS.md), and
+ AGENTS.md is only the auto-generated Next.js block.
+ - aksioneri-api — NestJS 11 default scaffold on npm, class-validator/class-transformer, no ORM, no modules. docker-compose.yml already runs Postgres 17
+ on port 5433.
+
+ Separate git repos, no shared conventions, no skills, no SEO surface, no DB layer, no auth.
+
+ The domain design lands after setup, so this plan deliberately builds only the foundation: directory architecture, layering rules, quality gates, SEO
+ surface, and a discoverable skills library. When the design arrives, feature work slots into an already-enforced structure instead of retrofitting one.
+
+ Ovation/ is the proven reference in this workspace — its .claude/skills/<category>/<skill>.md + INDEX.md convention, its layered NestJS module shape, and
+ its web feature/API/query split are ported here rather than reinvented.
+
+ Decisions locked with the user: two separate repos (no monorepo), next-intl with sq + en, Drizzle ORM, better-auth.
+
+ ---
+ Architecture
+
+ Auth topology (from Ovation/ovation-web/src/lib/auth/better-auth.ts + ovation-api/src/common/guards/auth.guard.ts)
+
+ better-auth runs inside Next.js with its own pg.Pool against the same Postgres database the API uses. It owns the users / session / account /
+ verification tables. The API does not run better-auth — its AuthGuard reads the signed session cookie, extracts the token, and joins session → users via
+ Drizzle. One database, one session store, two consumers.
+
+ Consequence: better-auth's tables must exist in the API's Drizzle schema (src/database/schema/auth.ts) so migrations stay authoritative, and
+ AUTH_COOKIE_NAME / AUTH_COOKIE_SECRET must match on both sides.
+
+ Web layering (mirrors ovation-web)
+
+ src/
+   app/[locale]/
+     (public)/(auth)/      sign-in, sign-up, reset-password, verify-email
+     (public)/(marketing)/ landing, pricing, about, legal
+     (private)/            authenticated app
+   app/{sitemap.ts,robots.ts,opengraph-image.tsx,icon.svg,llms.txt,global-error.tsx,not-found.tsx}
+   app/api/auth/[...all]/  better-auth handler
+   components/<Component>/ shared UI — Component.tsx, index.ts, types.ts, utils.ts
+   features/<feature>/     <Feature>Page.tsx, components/, steps/, use<Feature>Store.ts, <feature>Schema.ts
+   i18n/                   config, routing, request, navigation, loadMessages
+   lib/api/                client.ts + <resource>.ts        ← the only place fetch() is called
+   lib/query/              <resource>Queries.ts             ← query-key factories
+   lib/auth/               better-auth.ts, client.ts, server-session.ts, email-sender.ts
+   lib/seo/                urls.ts, metadata.ts, schemas.ts, ogImageTemplate.tsx
+   lib/utils/              env.server.ts, env.client.ts, cn.ts, csp.ts
+   proxy.ts                next-intl middleware + session guard + CSP  (NOT middleware.ts)
+   styles/
+
+ API layering (mirrors ovation-api)
+
+ src/
+   common/{decorators,errors,filters,guards,interceptors,pipes,types,utils,i18n,swagger}/
+   config/env.ts                    zod-validated, getEnv()
+   database/{database.module.ts,database.decorator.ts,database.types.ts}
+   database/schema/                 auth.ts + index.ts barrel
+   database/migrations/             drizzle-kit output
+   database/seed/
+   modules/health/
+   modules/<feature>/               module | controller | service | repository | schemas | responses
+   main.ts
+
+ Hard rules, enforced by lint (below) not just prose:
+ - Controllers parse → call service → return. Zero business logic.
+ - Services own all business logic, orchestrate repositories.
+ - Repositories contain Drizzle queries only. No HTTP types, no business rules.
+ - Controllers never import a repository. Repositories never import a service.
+
+ ---
+ Phase 1 — aksioneri-api foundation
+
+ Files: package.json, src/**, drizzle.config.ts, docker-compose.yml, eslint.config.mjs, tsconfig.json
+
+ 1. Migrate npm → pnpm (rm package-lock.json, pnpm import then pnpm install, add "preinstall": "only-allow pnpm"). Web is already pnpm-only; matching
+ removes a whole class of "which lockfile" mistakes.
+ 2. Remove class-validator + class-transformer. Add: drizzle-orm, drizzle-kit, pg, nestjs-zod, zod, @nestjs/swagger, @nestjs/throttler, nestjs-pino, pino,
+ pino-http, helmet, cookie-parser, tsx, @sentry/nestjs. Dev: @types/pg, @types/cookie-parser, husky, lint-staged.
+ 3. src/config/env.ts — zod schema over process.env, fail-fast at boot, exported getEnv(). Keys: NODE_ENV, PORT, WEB_ORIGIN, DATABASE_URL,
+ AUTH_COOKIE_NAME, AUTH_COOKIE_SECRET, SENTRY_DSN?. Mirror every key into .env.example.
+ 4. src/database/ — global DatabaseModule providing a Drizzle instance over a pg.Pool, @InjectDrizzle() decorator, DrizzleDB type. schema/auth.ts declares
+ better-auth's users, session, account, verification tables (column names must match better-auth's expectations exactly — verify against better-auth docs
+ at implementation time, not from memory).
+ 5. src/common/errors/ — AppError base + UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, ValidationError. GlobalExceptionFilter
+ serializes them; raw errors never reach the client.
+ 6. src/common/guards/auth.guard.ts — port the shape from Ovation/ovation-api/src/common/guards/auth.guard.ts: read __Secure-<cookie> then <cookie>,
+ HMAC-verify with timingSafeEqual, join session→users where expiresAt > now. Plus @Public() and @CurrentUser() decorators, registered globally via
+ APP_GUARD.
+ 7. main.ts — helmet, cookie-parser, CORS pinned to WEB_ORIGIN with credentials, global ZodValidationPipe, global exception filter, /api prefix, Swagger
+ at /api/docs (non-prod only), pino request logging.
+ 8. modules/health/ — GET /api/health returning app + DB status. First real module; doubles as the reference implementation every skill points at.
+ 9. Scripts: db:generate, db:migrate, db:studio, seed-data, ts-check, lint:check, test, test:e2e.
+ 10. Add redis service to docker-compose.yml only if the incoming design needs queues — otherwise skip; do not add unused infra.
+
+ Phase 2 — aksioneri-web foundation
+
+ Files: package.json, src/**, proxy.ts, next.config.ts, eslint.config.mjs
+
+ 1. Deps: next-intl, @tanstack/react-query, zustand, react-hook-form, @hookform/resolvers, zod, better-auth, pg, radix-ui, server-only, @sentry/nextjs.
+ Dev: shadcn, prettier, prettier-plugin-tailwindcss, husky, lint-staged, @types/pg.
+ 2. src/lib/utils/env.server.ts (zod, import 'server-only') and env.client.ts (NEXT_PUBLIC_* only). Direct process.env reads are banned outside these two
+ files.
+ 3. i18n: src/i18n/{config,routing,request,navigation,loadMessages}.ts, messages/{sq,en}.json. sq default locale. All navigation goes through
+ src/i18n/navigation.ts wrappers — never bare next/link or next/navigation.
+ 4. src/proxy.ts — createMiddleware(routing) composed with getSessionCookie from better-auth/cookies; PROTECTED_PREFIXES array redirects unauthenticated
+ users to sign-in preserving locale. Add CSP header builder in lib/utils/csp.ts.
+ 5. Route groups + layout.tsx per group. Root layout: fonts, <html lang={locale}>, providers (React Query + next-intl + theme) in a client Providers.tsx,
+ keeping the layout itself a server component.
+ 6. better-auth: lib/auth/better-auth.ts (server, pg.Pool on DATABASE_URL, nextCookies() plugin, email verify + reset hooks), lib/auth/client.ts
+ (createAuthClient), lib/auth/server-session.ts (cached server-side session read), app/api/auth/[...all]/route.ts.
+ 7. Data layer: lib/api/client.ts exporting clientFetch, clientFetchPaginated, ApiError (forwards cookies, throws typed errors). lib/query/ holds key
+ factories shaped { all, list, detail }. Components never call fetch directly.
+ 8. Tailwind v4: design tokens via @theme inline in globals.css (no tailwind.config.ts in v4), cn() helper, cva for component variants.
+
+ Phase 3 — SEO surface
+
+ Files: src/lib/seo/**, src/app/{sitemap.ts,robots.ts,opengraph-image.tsx,llms.txt}, scripts/audit-seo-*.mjs
+
+ 1. lib/seo/urls.ts — single SITE_URL source, absoluteUrl(), localizedUrl(locale, path). Every canonical/OG/sitemap URL derives from here; no hardcoded
+ domains anywhere else.
+ 2. lib/seo/metadata.ts — buildMetadata({ title, description, path, locale, image, noIndex }) returning a Metadata with title template, canonical,
+ alternates.languages (hreflang for sq/en + x-default), OG, and Twitter card. Every page's generateMetadata calls this — one place to fix sitewide SEO.
+ 3. lib/seo/schemas.ts — JSON-LD builders (Organization, WebSite + SearchAction, BreadcrumbList), injected via <script type="application/ld+json">.
+ 4. lib/seo/ogImageTemplate.tsx + app/opengraph-image.tsx — dynamic OG images via next/og, branded, locale-aware.
+ 5. app/sitemap.ts — static routes now, extended to pull dynamic entities from the API once the design lands. app/robots.ts — allow all, point at sitemap,
+ block /api and private prefixes.
+ 6. app/llms.txt + not-found.tsx + global-error.tsx.
+ 7. scripts/audit-seo-meta.mjs (flags missing/over-length titles & descriptions) and scripts/check-translations.mjs (flags keys present in sq but missing
+ in en and vice versa). Both wired as pnpm scripts and run in CI.
+
+ Phase 4 — Quality gates (both repos)
+
+ 1. tsconfig.json: strict, noUncheckedIndexedAccess, noImplicitOverride, exactOptionalPropertyTypes. API stays nodenext.
+ 2. ESLint flat config + eslint-plugin-boundaries — this is what turns the layering rules above from documentation into build failures:
+   - API: controller may import service+schemas+responses; service may import repository; repository imports database only.
+   - Web: components cannot import features; features cannot import another feature's internals; only lib/api/* may import the fetch client.
+ 3. Prettier (+ prettier-plugin-tailwindcss on web), shared config committed.
+ 4. husky pre-commit → lint-staged (eslint --fix + prettier). husky commit-msg → commitlint with Conventional Commits.
+ 5. Tests: API keeps Jest — *.spec.ts colocated for services/repositories, test/*.e2e-spec.ts with supertest against a test DB. Web adds Vitest + Testing
+ Library for units and Playwright for the auth + landing smoke path.
+ 6. GitHub Actions per repo: install → ts-check → lint:check → test → build; web additionally runs i18n:check and seo:audit-meta.
+
+ Phase 5 — Skills library + discoverability
+
+ Convention copied from Ovation/ovation-web/.claude/skills/: one markdown file per skill under .claude/skills/<category>/<name>.md, YAML frontmatter
+ (name, description starting with "Use this skill when…", type: skill), then ## When to Use, ## Core Principles, ## Code Templates (real snippets from
+ this repo, not generic examples), ## Anti-Patterns.
+
+ aksioneri-web/.claude/skills/
+
+ ┌───────────────────┬──────────────────────────┬─────────────────────────────────────────────────────────────────┐
+ │     Category      │          Skill           │                             Covers                              │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ project-bootstrap │ project-setup            │ Directory map, path alias @/*, where each kind of file goes     │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ project-bootstrap │ env-management           │ env.server.ts / env.client.ts, zod validation, server-only      │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ ui                │ tailwind-design-system   │ @theme inline tokens, cn(), cva variants                        │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ ui                │ component-conventions    │ Folder shape, server/client split, prop typing                  │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ i18n              │ next-intl-setup          │ routing, navigation wrappers, message loading                   │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ i18n              │ no-hardcoded-text        │ Every user-facing string must be a translation key              │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ app-router        │ route-structure          │ Route groups, params is a Promise, async cookies()/headers()    │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ app-router        │ layouts-and-providers    │ Server layout + client Providers, auth guards                   │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ seo               │ metadata                 │ buildMetadata, canonical, hreflang, title templates             │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ seo               │ structured-data          │ JSON-LD builders, sitemap, robots, OG images, llms.txt          │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ auth              │ better-auth-setup        │ Server config, client hooks, proxy.ts protection, session reads │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ data-layer        │ data-layer               │ clientFetch, query-key factories, mutations + invalidation      │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ state             │ zustand-patterns         │ When a store is justified vs React Query                        │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ forms             │ react-hook-form-patterns │ RHF + Zod + i18n error messages                                 │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ typescript        │ typescript-patterns      │ Naming, schema inference, generics, utility types               │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ observability     │ sentry-setup             │ Init, source maps, error boundaries                             │
+ ├───────────────────┼──────────────────────────┼─────────────────────────────────────────────────────────────────┤
+ │ testing           │ testing-patterns         │ Vitest + Testing Library + Playwright conventions               │
+ └───────────────────┴──────────────────────────┴─────────────────────────────────────────────────────────────────┘
+
+ aksioneri-api/.claude/skills/
+
+ ┌───────────────────┬──────────────────────┬────────────────────────────────────────────────────────────────┐
+ │     Category      │        Skill         │                             Covers                             │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ project-bootstrap │ module-structure     │ The six-file module shape, generating a new module             │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ project-bootstrap │ env-config           │ config/env.ts, getEnv(), .env.example parity                   │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ architecture      │ layered-architecture │ Controller/service/repository boundaries + why                 │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ database          │ drizzle-schema       │ Table definitions, relations, naming, barrel exports           │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ database          │ migrations           │ db:generate → review → db:migrate, never edit applied SQL      │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ database          │ repository-pattern   │ Drizzle-only repositories, pagination helpers                  │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ validation        │ zod-dto              │ createZodDto, global ZodValidationPipe, no class-validator     │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ errors            │ error-handling       │ AppError hierarchy, GlobalExceptionFilter, status mapping      │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ auth              │ session-guard        │ Cookie verification, session→user join, @Public/@CurrentUser   │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ api-design        │ rest-conventions     │ Resource naming, pagination/filter/sort, status codes, Swagger │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ observability     │ logging-sentry       │ pino structured logs, redaction, Sentry                        │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ testing           │ testing-patterns     │ Service unit tests, supertest e2e, DB fixtures                 │
+ ├───────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────┤
+ │ typescript        │ typescript-patterns  │ Strict-mode idioms shared with web                             │
+ └───────────────────┴──────────────────────┴────────────────────────────────────────────────────────────────┘
+
+ Discovery wiring — the part that makes skills actually get used:
+
+ 1. .claude/skills/INDEX.md per repo: a | Skill | When to Use | quick-reference table (exact Ovation format), a "Framework gotchas / breaking changes"
+ section, and a dependency map showing which skills compose.
+ 2. CLAUDE.md per repo, structured as: @AGENTS.md import → senior-engineer role framing → explicit tech-stack list → condensed architecture rules → a
+ "Skills" section with the trigger table and a hard instruction: read .claude/skills/INDEX.md and load the matching skill before writing code in that
+ area. A skill nobody loads is a skill that does not exist — the trigger table in CLAUDE.md is the entry point.
+ 3. Aksioneri/CLAUDE.md at the parent directory: cross-repo context (which repo owns what, the shared-DB auth topology, port map 3000/4000/5433, how to
+ run both) and pointers into each repo's INDEX.md.
+ 4. Aksioneri/docs/{specs,plans}/ — mirrors Ovation/docs/superpowers/; the incoming design lands in docs/specs/, its implementation plan in docs/plans/.
+
+ ---
+ Recommendations to consider (not in scope unless you say so)
+
+ - packages/contracts — you chose two repos, so API response types will be hand-mirrored on the web side. Cheapest mitigation: have the API publish its
+ Swagger JSON and generate web types from it in CI (openapi-typescript). Restores most of the type safety a monorepo would have given.
+ - IndexNow submission — Ovation has indexnow:submit; worth porting once there's real content, for near-instant Bing/Yandex indexing.
+ - @vercel/analytics + Speed Insights or PostHog — decide before launch; retrofitting consent + region logic later is painful (Ovation carries a whole
+ lib/analytics/region.ts for this).
+ - Rate limiting — @nestjs/throttler is in the dep list above; set a sane global default now rather than after the first abuse.
+ - Redis/BullMQ — deliberately omitted. Add only when the design shows async work (emails, exports, image processing).
+
+ ---
+ Verification
+
+ # API
+ cd aksioneri-api
+ docker compose up -d db
+ pnpm db:generate && pnpm db:migrate
+ pnpm ts-check && pnpm lint:check && pnpm test
+ pnpm start:dev
+ curl -s localhost:4000/api/health          # expect { status: "ok", db: "up" }
+ open http://localhost:4000/api/docs        # Swagger renders
+
+ # Web
+ cd ../aksioneri-web
+ pnpm ts-check && pnpm lint:check && pnpm i18n:check && pnpm seo:audit-meta
+ pnpm dev
+ curl -s localhost:3000/robots.txt          # sitemap URL present, /api disallowed
+ curl -s localhost:3000/sitemap.xml         # sq + en entries
+ curl -s localhost:3000/sq | grep -o 'hreflang="[^"]*"'   # sq, en, x-default
+ pnpm build                                 # must pass with zero type errors
+
+ Manual checks: visiting a (private) route while signed out redirects to the localized sign-in; sign-up writes a row to users in Postgres and the API's
+ GET /api/health sees the same database; an authenticated web request reaches an AuthGuard-protected API route with the session cookie forwarded.
+
+ Skills check: open .claude/skills/INDEX.md in each repo — every listed file exists, every frontmatter description starts with "Use this skill when", and
+ each CLAUDE.md trigger table links resolve.
