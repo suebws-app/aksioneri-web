@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "defaultTitle": "Aksioneri — platforma shqiptare e ankandeve online",
+    "defaultDescription": "Zbuloni, ofertoni dhe shitni në ankande online. Aksioneri e bën ankandin të thjeshtë, të sigurt dhe transparent."
+  },
+  "home": {
+    "metaTitle": "Ankande online në Shqipëri",
+    "metaDescription": "Zbuloni ankande të drejtpërdrejta, ofertoni në kohë reale dhe shisni artikujt tuaj me siguri të plotë.",
+    "heading": "Ankande online, të thjeshta dhe të sigurta",
+    "subheading": "Zbuloni artikuj unikë, ofertoni në kohë reale dhe shisni me besim.",
+    "cta": "Fillo tani"
+  },
+  "dashboard": {
+    "metaTitle": "Paneli",
+    "metaDescription": "Menaxhoni ankandet, ofertat dhe shitjet tuaja në një vend të vetëm, me përditësime në kohë reale.",
+    "heading": "Paneli",
+    "signedInAs": "I kyçur si {email}"
+  },
+  "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Fjalëkalimi",
+      "fullName": "Emri i plotë"
+    },
+    "errors": {
+      "email": "Shkruani një adresë email të vlefshme.",
+      "passwordRequired": "Fjalëkalimi është i detyrueshëm.",
+      "passwordLength": "Fjalëkalimi duhet të ketë të paktën {min} karaktere.",
+      "fullName": "Shkruani emrin tuaj të plotë.",
+      "invalidCredentials": "Email ose fjalëkalim i pasaktë.",
+      "emailTaken": "Ky email është i regjistruar tashmë.",
+      "signUpFailed": "Regjistrimi dështoi. Provoni përsëri."
+    },
+    "signIn": {
+      "metaTitle": "Kyçu",
+      "metaDescription": "Kyçuni në llogarinë tuaj Aksioneri për të ndjekur ankandet dhe ofertat tuaja.",
+      "heading": "Kyçu në llogarinë tënde",
+      "submit": "Kyçu",
+      "submitting": "Duke u kyçur…",
+      "noAccount": "Nuk keni llogari?",
+      "createAccount": "Krijo llogari"
+    },
+    "signUp": {
+      "metaTitle": "Krijo llogari",
+      "metaDescription": "Krijoni një llogari falas në Aksioneri dhe filloni të ofertoni ose të shisni në ankande.",
+      "heading": "Krijo një llogari",
+      "submit": "Krijo llogari",
+      "submitting": "Duke krijuar…",
+      "haveAccount": "Keni tashmë llogari?",
+      "signIn": "Kyçu"
+    }
+  }
+}

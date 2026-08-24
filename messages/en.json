@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "defaultTitle": "Aksioneri — online auctions made simple",
+    "defaultDescription": "Discover, bid and sell in online auctions. Aksioneri makes auctions simple, safe and transparent."
+  },
+  "home": {
+    "metaTitle": "Online auctions in Albania",
+    "metaDescription": "Discover live auctions, bid in real time and sell your items with full confidence.",
+    "heading": "Online auctions, simple and secure",
+    "subheading": "Find unique items, bid in real time, and sell with confidence.",
+    "cta": "Get started"
+  },
+  "dashboard": {
+    "metaTitle": "Dashboard",
+    "metaDescription": "Manage your auctions, bids and sales in one place, with real-time updates on everything you follow.",
+    "heading": "Dashboard",
+    "signedInAs": "Signed in as {email}"
+  },
+  "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "fullName": "Full name"
+    },
+    "errors": {
+      "email": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordLength": "Password must be at least {min} characters.",
+      "fullName": "Enter your full name.",
+      "invalidCredentials": "Incorrect email or password.",
+      "emailTaken": "That email is already registered.",
+      "signUpFailed": "Sign-up failed. Please try again."
+    },
+    "signIn": {
+      "metaTitle": "Sign in",
+      "metaDescription": "Sign in to your Aksioneri account to follow auctions and manage your bids.",
+      "heading": "Sign in to your account",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "No account yet?",
+      "createAccount": "Create one"
+    },
+    "signUp": {
+      "metaTitle": "Create account",
+      "metaDescription": "Create a free Aksioneri account and start bidding or selling in online auctions.",
+      "heading": "Create an account",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  }
+}
