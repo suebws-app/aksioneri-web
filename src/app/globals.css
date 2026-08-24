@@ -1,26 +1,93 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
+/**
+ * Design tokens for the Aksioneri editorial system.
+ *
+ * The palette is warm-paper rather than pure white: #FBFAF7 ground, #15181C
+ * ink, and a single navy accent (#14385E) that carries every interactive and
+ * emphasis state. Market direction has its own pair — green for a reading that
+ * came in below expectation, red for above — kept distinct from the accent so
+ * "this is a link" never reads as "this number went up".
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --paper: #fbfaf7; /* page ground */
+  --surface: #ffffff; /* rows, cards */
+  --surface-tint: #f2f5f9; /* highlighted row, "why it matters" panel */
+  --surface-muted: #f4f1ea; /* primer block */
+  --surface-inverse: #15181c; /* footer */
+
+  /* Text */
+  --ink: #15181c;
+  --ink-secondary: #2e343c;
+  --ink-body: #4a5058;
+  --ink-muted: #5a6068;
+  --ink-subtle: #6e7683;
+  --ink-faint: #8a8f98;
+  --ink-ghost: #a8a49b; /* table labels, empty values */
+  --ink-inverse: #fbfaf7;
+  --ink-inverse-muted: #a7adb6;
+  --ink-inverse-faint: #767d87;
+
+  /* Lines */
+  --line: #e7e3da;
+  --line-strong: #e0dcd2;
+  --line-soft: #efebe2;
+  --line-inverse: #2c3138;
+
+  /* Accent and market direction */
+  --accent: #14385e;
+  --positive: #157f4a; /* actual came in below expectation */
+  --negative: #b3372c; /* actual came in above expectation */
+
+  /* Impact bars */
+  --impact-on: #14385e;
+  --impact-off: #dfdcd3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-tint: var(--surface-tint);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-inverse: var(--surface-inverse);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-body: var(--ink-body);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-ghost: var(--ink-ghost);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-ink-inverse-muted: var(--ink-inverse-muted);
+  --color-ink-inverse-faint: var(--ink-inverse-faint);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-soft: var(--line-soft);
+  --color-line-inverse: var(--line-inverse);
+
+  --color-accent: var(--accent);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+
+  --color-impact-on: var(--impact-on);
+  --color-impact-off: var(--impact-off);
+
+  /* Newsreader carries headlines, Plex Sans the interface, Plex Mono every
+     figure — aligned columns of numbers depend on tabular glyph widths. */
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
 }
+
+/* The design is a light editorial surface throughout. It is not a
+   theme-switching system, so no dark-mode override is declared: inheriting the
+   browser default would invert the paper ground and break the palette. */

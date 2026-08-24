@@ -1,53 +1,255 @@
 {
   "meta": {
-    "defaultTitle": "Aksioneri — platforma shqiptare e ankandeve online",
-    "defaultDescription": "Zbuloni, ofertoni dhe shitni në ankande online. Aksioneri e bën ankandin të thjeshtë, të sigurt dhe transparent."
+    "defaultTitle": "Aksioneri — tregjet, lajmet dhe kalendari ekonomik",
+    "defaultDescription": "Ndiqni tregjet financiare, lexoni lajmet që kanë rëndësi dhe kuptoni shifrat që lëvizin çmimet — të shpjeguara thjesht."
   },
-  "home": {
-    "metaTitle": "Ankande online në Shqipëri",
-    "metaDescription": "Zbuloni ankande të drejtpërdrejta, ofertoni në kohë reale dhe shisni artikujt tuaj me siguri të plotë.",
-    "heading": "Ankande online, të thjeshta dhe të sigurta",
-    "subheading": "Zbuloni artikuj unikë, ofertoni në kohë reale dhe shisni me besim.",
-    "cta": "Fillo tani"
+  "nav": {
+    "brand": "Aksioneri",
+    "primaryLabel": "Navigimi kryesor",
+    "markets": "Tregjet",
+    "news": "Lajme",
+    "learn": "Mëso",
+    "calendar": "Kalendari",
+    "search": "Kërko"
   },
-  "dashboard": {
-    "metaTitle": "Paneli",
-    "metaDescription": "Menaxhoni ankandet, ofertat dhe shitjet tuaja në një vend të vetëm, me përditësime në kohë reale.",
-    "heading": "Paneli",
-    "signedInAs": "I kyçur si {email}"
+  "footer": {
+    "label": "Navigimi i fundfaqes",
+    "about": "Rreth nesh",
+    "contact": "Kontakt",
+    "privacy": "Privatësia",
+    "terms": "Kushtet",
+    "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen."
   },
-  "auth": {
-    "fields": {
-      "email": "Email",
-      "password": "Fjalëkalimi",
-      "fullName": "Emri i plotë"
+  "calendar": {
+    "metaTitle": "Kalendari ekonomik",
+    "metaDescription": "Shifrat që lëvizin tregjet, me kohën e publikimit, pritshmëritë dhe shpjegimin se çfarë tregon secila prej tyre.",
+    "heading": "Kalendari ekonomik",
+    "subheading": "Shifrat që lëvizin tregjet — dhe çfarë tregon secila prej tyre në të vërtetë.",
+    "daysLabel": "Zgjidh ditën",
+    "todayTab": "{day} · Sot",
+    "tableCaption": "Ngjarjet ekonomike për {date}",
+    "eventCount": "{count, plural, =0 {Asnjë ngjarje} one {# ngjarje} other {# ngjarje}}",
+    "empty": "Asnjë ngjarje për këtë ditë dhe rajon.",
+    "notReleased": "Ende e papublikuar",
+    "columns": {
+      "time": "Ora",
+      "region": "Rajoni",
+      "event": "Ngjarja",
+      "impact": "Ndikimi",
+      "actual": "Aktuale",
+      "expected": "Pritur",
+      "previous": "E mëparshme"
     },
-    "errors": {
-      "email": "Shkruani një adresë email të vlefshme.",
-      "passwordRequired": "Fjalëkalimi është i detyrueshëm.",
-      "passwordLength": "Fjalëkalimi duhet të ketë të paktën {min} karaktere.",
-      "fullName": "Shkruani emrin tuaj të plotë.",
-      "invalidCredentials": "Email ose fjalëkalim i pasaktë.",
-      "emailTaken": "Ky email është i regjistruar tashmë.",
-      "signUpFailed": "Regjistrimi dështoi. Provoni përsëri."
+    "impact": {
+      "high": "Ndikim i lartë",
+      "medium": "Ndikim mesatar",
+      "low": "Ndikim i ulët",
+      "highLegend": "Ndikim i lartë",
+      "mediumLegend": "Mesatar",
+      "lowLegend": "I ulët"
     },
-    "signIn": {
-      "metaTitle": "Kyçu",
-      "metaDescription": "Kyçuni në llogarinë tuaj Aksioneri për të ndjekur ankandet dhe ofertat tuaja.",
-      "heading": "Kyçu në llogarinë tënde",
-      "submit": "Kyçu",
-      "submitting": "Duke u kyçur…",
-      "noAccount": "Nuk keni llogari?",
-      "createAccount": "Krijo llogari"
+    "regions": {
+      "ALL": "Të gjitha rajonet",
+      "US": "SHBA",
+      "EU": "Eurozona",
+      "UK": "Britania",
+      "ASIA": "Azia"
     },
-    "signUp": {
-      "metaTitle": "Krijo llogari",
-      "metaDescription": "Krijoni një llogari falas në Aksioneri dhe filloni të ofertoni ose të shisni në ankande.",
-      "heading": "Krijo një llogari",
-      "submit": "Krijo llogari",
-      "submitting": "Duke krijuar…",
-      "haveAccount": "Keni tashmë llogari?",
-      "signIn": "Kyçu"
+    "nextUp": {
+      "label": "Në vijim",
+      "countdown": "për {hours} h e {minutes} min",
+      "time": "Ora",
+      "expected": "Pritur",
+      "previous": "E mëparshme",
+      "impact": "Ndikimi",
+      "whyItMatters": "Pse ka rëndësi",
+      "openExplainer": "Hap shpjegimin e plotë →"
+    },
+    "primer": {
+      "heading": "Si të lexohet kjo faqe",
+      "subheading": "Tri ide dhe kalendari nuk duket më si tabelë numrash.",
+      "learnMore": "Hap Qendrën e Mësimit →",
+      "surprise": {
+        "title": "Rëndësi ka surpriza, jo shifra",
+        "body": "Tregjet e kanë çmuar tashmë shifrën e pritur. Çmimet i lëviz hendeku mes asaj që pritej dhe asaj që doli."
+      },
+      "impact": {
+        "title": "Shiritat e ndikimit janë filtër",
+        "body": "Nëse keni vetëm pesë minuta në ditë, lexoni ngjarjet me tre shirita dhe lini mënjanë të tjerat."
+      },
+      "rates": {
+        "title": "Pas gjithçkaje qëndrojnë normat",
+        "body": "Të dhënat e inflacionit dhe të punësimit kanë rëndësi kryesisht sepse ndryshojnë atë që bankat qendrore ka gjasa të bëjnë më pas."
+      }
+    },
+    "regionNames": {
+      "unitedStates": "Shtetet e Bashkuara",
+      "euroArea": "Eurozona",
+      "germany": "Gjermania",
+      "unitedKingdom": "Britania e Madhe",
+      "japan": "Japonia"
+    },
+    "event": {
+      "releasesAt": "Publikohet në",
+      "nextAfter": "Pas kësaj",
+      "goodOrBad": "A është një shifër e lartë e mirë apo e keqe?",
+      "goodOrBadNote": "Nuk ka një nivel universalisht të mirë — ajo që ka rëndësi është shifra kundrejt pritshmërive dhe kundrejt objektivit 2%. Ja si shkon zakonisht secili drejtim.",
+      "release": "Publikimi",
+      "surprise": "Surpriza",
+      "inLine": "në linjë",
+      "atAGlance": "Me një shikim",
+      "reactingAssets": "Aktivet që reagojnë",
+      "alsoThisWeek": "Gjithashtu këtë javë",
+      "learnBackground": "Mëso sfondin",
+      "relatedNews": "Lajme të lidhura",
+      "notFoundTitle": "Ngjarja nuk u gjet",
+      "fallbackDescription": "Ora e publikimit, pritshmëritë dhe leximi i mëparshëm për {title}."
+    }
+  },
+  "markets": {
+    "metaTitle": "Tregjet dhe lajmet financiare",
+    "metaDescription": "Çmimet e drejtpërdrejta, lajmet që lëvizin tregjet dhe kalendari ekonomik — të gjitha të shpjeguara në gjuhë të thjeshtë.",
+    "todayHeading": "Çfarë ka rëndësi sot",
+    "quotesHeading": "Tregjet sot",
+    "quotesCaption": "Çmimet e sotme të tregut",
+    "viewAllMarkets": "Shiko të gjitha tregjet →",
+    "latestNewsHeading": "Lajmet e fundit",
+    "viewAllNews": "Shiko të gjitha lajmet →",
+    "learnHeading": "Mëso të investosh",
+    "learnSubheading": "Kupto investimin pa zhargon.",
+    "exploreLearn": "Eksploro Qendrën e Mësimit →",
+    "indexToday": "{name} · sot",
+    "columns": {
+      "asset": "Aktivi",
+      "price": "Çmimi",
+      "change": "Ndryshimi"
+    },
+    "movers": {
+      "heading": "Lëvizësit e tregut",
+      "session": "Sesioni amerikan",
+      "gainers": "Rritjet më të mëdha",
+      "losers": "Rëniet më të mëdha",
+      "mostWatched": "Më të ndjekurat"
+    },
+    "comingUp": {
+      "heading": "Në vijim",
+      "window": "24 orët e ardhshme",
+      "expected": "Pritur",
+      "previous": "E mëparshme",
+      "note": "Shifrat e inflacionit përcaktojnë hapin e ardhshëm të Fed-it, dhe kjo lëviz pothuajse çdo treg në këtë faqe.",
+      "viewCalendar": "Shiko kalendarin e plotë →"
+    },
+    "breadcrumbRoot": "Tregjet",
+    "statistics": "Statistikat",
+    "biggestHoldings": "Zotërimet më të mëdha",
+    "shareOfIndex": "Pjesa e indeksit",
+    "newsAbout": "Lajme për këtë indeks",
+    "allNews": "Të gjitha lajmet →",
+    "otherMarkets": "Tregje të tjera",
+    "sectorsToday": "Sektorët sot",
+    "whatCouldMoveIt": "Çfarë mund ta lëvizë",
+    "beforeYouInvest": "Para se të investoni",
+    "assetNotFoundTitle": "Aktivi nuk u gjet",
+    "assetDescription": "Çmimi i drejtpërdrejtë, lëvizja e ditës dhe lajmet për {name}, të shpjeguara në gjuhë të thjeshtë.",
+    "quoteStatusFallback": "Çmimet janë tregues dhe mund të jenë me vonesë."
+  },
+  "news": {
+    "metaTitle": "Lajme financiare",
+    "metaDescription": "Lajmet që lëvizin tregjet, të shkruara për t’u kuptuar pa përvojë paraprake në financë.",
+    "heading": "Lajme",
+    "subheading": "Tregjet, ekonomia dhe kompanitë — të shpjeguara thjesht.",
+    "whyItMatters": "Pse ka rëndësi",
+    "readingTime": "{minutes} min lexim",
+    "minutesAgo": "{minutes} min më parë",
+    "hoursAgo": "{hours} orë më parë",
+    "relatedHeading": "Lexo më tej",
+    "backToNews": "← Kthehu te lajmet",
+    "categories": {
+      "macro": "Makro",
+      "stocks": "Aksione",
+      "europe": "Evropë",
+      "crypto": "Kripto",
+      "commodities": "Mallra",
+      "economy": "Ekonomi"
+    },
+    "filterAll": "Të gjitha",
+    "filterLabel": "Filtro sipas kategorisë",
+    "loadMore": "Ngarko më shumë artikuj",
+    "emptyCategory": "Asnjë artikull në këtë kategori për momentin.",
+    "mostRead": "Më të lexuarat sot",
+    "newToThis": "I ri në këtë?",
+    "glossaryHeading": "Termat e artikujve të sotëm, të shpjeguar",
+    "glossaryBody": "Udhëzim, inflacion, fluks në ETF — përkufizime të shkurtra, pa zhargon.",
+    "openLearn": "Hap Qendrën e Mësimit →",
+    "breadcrumbLabel": "Shtegu i navigimit",
+    "notFoundTitle": "Artikulli nuk u gjet",
+    "photoCredit": "Kredite fotografie",
+    "inNumbers": "Në shifra",
+    "termsHeading": "Termat në këtë artikull",
+    "jargonBuster": "Shkatërruesi i zhargonit →",
+    "moreOnThis": "Më shumë për këtë temë",
+    "mentioned": "Përmendur në këtë artikull",
+    "nextRelease": "Publikimi i radhës",
+    "nextReleaseNote": "Shifra nga e cila varet ky artikull",
+    "expectedShort": "Prit.",
+    "previousShort": "Mëpar.",
+    "whatThisMeans": "Çfarë do të thotë kjo shifër →",
+    "readLesson": "Lexo mësimin →",
+    "actions": {
+      "save": "Ruaj",
+      "share": "Ndaj",
+      "listen": "Dëgjo"
+    }
+  },
+  "learn": {
+    "metaTitle": "Qendra e Mësimit",
+    "metaDescription": "Mësime të shkurtra që shpjegojnë investimin, tregjet dhe shifrat ekonomike pa zhargon dhe pa supozime.",
+    "heading": "Qendra e Mësimit",
+    "subheading": "Investimi, i shpjeguar nga fillimi — pa supozuar asgjë.",
+    "meta": "{minutes} min · {level}",
+    "backToLearn": "← Kthehu te Qendra e Mësimit",
+    "levels": {
+      "beginner": "Fillestar",
+      "intermediate": "I mesëm",
+      "advanced": "I avancuar"
+    },
+    "allLessons": "Të gjitha mësimet",
+    "heroHeading": "Mëso të investosh",
+    "heroBody": "Kupto investimin pa zhargon. Mësime të shkurtra në gjuhë të thjeshtë, të shkruara për njerëz që nisin nga zeroja.",
+    "stats": {
+      "lessons": "mësime",
+      "averageRead": "lexim mesatar",
+      "jargon": "zhargon i lejuar",
+      "minutesValue": "{minutes} min"
+    },
+    "startHere": "Nis këtu",
+    "startHereMeta": "{count} mësime · rreth {minutes} minuta",
+    "lessonCount": "{count} mësime",
+    "lessonNumber": "Mësimi {number}",
+    "notFoundTitle": "Mësimi nuk u gjet",
+    "onThisPage": "Në këtë faqe",
+    "trackPosition": "Mësimi {position} nga {total} · {topic}",
+    "noMaths": "Pa matematikë",
+    "inOneSentence": "Në një fjali",
+    "workedExample": "Një shembull i punuar",
+    "keyTerms": "Termat kyçe të këtij mësimi",
+    "quickCheck": "Kontroll i shpejtë",
+    "backTo": "← Kthehu te",
+    "nextLesson": "Mësimi i radhës →",
+    "seeInMarkets": "Shihe në tregje",
+    "upNext": "Në vijim në këtë rrugëtim",
+    "inTodaysNews": "Në lajmet e sotme",
+    "vocabularyNote": "Një artikull ku fjalori i këtij mësimi shfaqet që në paragrafin e parë.",
+    "jargon": {
+      "heading": "Shkatërruesi i zhargonit",
+      "subheading": "Fjalë që do t’i takoni në lajmet e sotme, nga një rresht secila.",
+      "seeAll": "{count} terma gjithsej"
+    },
+    "newsletter": {
+      "heading": "Një mësim në javë, në email-in tuaj",
+      "body": "Një shpjegim i shkurtër i lidhur me atë që ndodhi vërtet në tregje atë javë. Pa këshilla, pa bujë.",
+      "placeholder": "ti@email.com",
+      "subscribe": "Abonohu"
     }
   }
 }

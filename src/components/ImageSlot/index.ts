@@ -1,0 +1,1 @@
+export { ImageSlot } from './ImageSlot';
