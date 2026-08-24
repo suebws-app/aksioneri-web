@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: aksioneri
+          POSTGRES_PASSWORD: aksioneri
+          POSTGRES_DB: aksioneri
+        ports: ['5433:5432']
+        options: >-
+          --health-cmd "pg_isready -U aksioneri -d aksioneri"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+
+    env:
+      APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+      DATABASE_URL: postgres://aksioneri:aksioneri@localhost:5433/aksioneri
+      AUTH_COOKIE_SECRET: ci-secret-value-at-least-32-characters-long
+      REQUIRE_EMAIL_VERIFICATION: 'false'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm ts-check
+
+      - run: pnpm lint:check
+
+      # Catalogue drift and over-length metadata are invisible in the browser,
+      # so they are gated here.
+      - run: pnpm i18n:check
+
+      - run: pnpm seo:audit-meta
+
+      - run: pnpm test
+
+      - run: pnpm build
