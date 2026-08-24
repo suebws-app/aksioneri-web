@@ -12,6 +12,29 @@ const nextConfig: NextConfig = {
   // Trailing-slash and non-slash URLs would otherwise both resolve, splitting
   // link equity between two URLs for the same page.
   trailingSlash: false,
+  /**
+   * The site shipped with an English locale at `/en/*` and those URLs are in
+   * Google's index and in every sitemap we have submitted. Removing the locale
+   * without this would turn all of them into 404s; a permanent redirect passes
+   * the accumulated ranking to the Albanian page instead.
+   */
+  async redirects() {
+    return [
+      { source: '/en', destination: '/', permanent: true },
+      { source: '/en/:path*', destination: '/:path*', permanent: true },
+    ];
+  },
+  images: {
+    // Wire art is served from the publisher's CDN. Narrow to the exact host —
+    // a permissive pattern would turn the optimiser into an open image proxy.
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'content-media.investing.com',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default withNextIntl(nextConfig);

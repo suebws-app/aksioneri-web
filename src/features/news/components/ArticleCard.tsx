@@ -1,6 +1,9 @@
+import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { ImageSlot } from '@/components/ImageSlot';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils/cn';
 import type { NewsArticle } from '../newsTypes';
 import { ArticleMeta } from './ArticleMeta';
 
@@ -17,23 +20,96 @@ interface ArticleCardProps {
   variant: 'lead' | 'sidebar' | 'row' | 'list';
 }
 
+/**
+ * Links to our own page when we hold the article text, and straight to the
+ * publisher when we do not.
+ *
+ * Not every story on the wire can have a page here: some publishers serve
+ * their RSS feed to anyone but refuse the article page to robots. Rather than
+ * drop those stories or give them an empty page of their own, the card sends
+ * the reader to the original — which is also what the credit requires.
+ */
+function ArticleLink({
+  article,
+  className,
+  children,
+}: {
+  article: NewsArticle;
+  className?: string;
+  children: ReactNode;
+}) {
+  if (article.hasPage === false && article.sourceUrl) {
+    return (
+      <a
+        href={article.sourceUrl}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={`/news/${article.slug}`} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+/** The publisher's art when the wire supplied it, the placeholder when not. */
+function ArticleImage({
+  article,
+  className,
+  sizes,
+}: {
+  article: NewsArticle;
+  className: string;
+  sizes: string;
+}) {
+  if (!article.imageUrl) return <ImageSlot className={className} />;
+
+  return (
+    <div
+      className={cn(
+        'border-line relative overflow-hidden rounded-sm border',
+        className,
+      )}
+    >
+      <Image
+        src={article.imageUrl}
+        alt=""
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
 export function ArticleCard({ article, variant }: ArticleCardProps) {
   const t = useTranslations('news');
-  const href = `/news/${article.slug}`;
 
   if (variant === 'lead') {
     return (
       <article>
-        <ImageSlot className="mb-5.5 h-[300px] w-full" />
+        <ArticleImage
+          article={article}
+          className="mb-5.5 h-[300px] w-full"
+          sizes="(max-width: 1024px) 100vw, 760px"
+        />
         <ArticleMeta article={article} variant="full" className="mb-3.5" />
         <h2 className="text-ink mb-4 font-serif text-[41px] leading-[1.12] font-medium tracking-[-0.02em] text-balance">
-          <Link href={href} className="hover:text-accent">
+          <ArticleLink article={article} className="hover:text-accent">
             {article.title}
-          </Link>
+          </ArticleLink>
         </h2>
-        <p className="text-ink-body max-w-[62ch] text-[17px] leading-[1.62] text-pretty">
-          {article.summary}
-        </p>
+        {article.summary ? (
+          <p className="text-ink-body max-w-[62ch] text-[17px] leading-[1.62] text-pretty">
+            {article.summary}
+          </p>
+        ) : null}
       </article>
     );
   }
@@ -46,13 +122,17 @@ export function ArticleCard({ article, variant }: ArticleCardProps) {
             {t(`categories.${article.category}`)}
           </div>
           <h3 className="text-ink mb-2.5 font-serif text-xl leading-[1.25] font-medium text-pretty">
-            <Link href={href} className="hover:text-accent">
+            <ArticleLink article={article} className="hover:text-accent">
               {article.title}
-            </Link>
+            </ArticleLink>
           </h3>
           <ArticleMeta article={article} className="text-xs" />
         </div>
-        <ImageSlot className="size-22 shrink-0" />
+        <ArticleImage
+          article={article}
+          className="size-22 shrink-0"
+          sizes="88px"
+        />
       </article>
     );
   }
@@ -60,19 +140,25 @@ export function ArticleCard({ article, variant }: ArticleCardProps) {
   if (variant === 'list') {
     return (
       <article className="flex flex-col gap-5 sm:flex-row sm:gap-6">
-        <ImageSlot className="h-[130px] w-full shrink-0 sm:w-[196px]" />
+        <ArticleImage
+          article={article}
+          className="h-[130px] w-full shrink-0 sm:w-[196px]"
+          sizes="(max-width: 640px) 100vw, 196px"
+        />
         <div className="flex-1">
           <div className="text-accent mb-2 text-[11px] font-semibold tracking-[0.12em] uppercase">
             {t(`categories.${article.category}`)}
           </div>
           <h3 className="text-ink mb-2.5 font-serif text-[25px] leading-[1.2] font-medium text-pretty">
-            <Link href={href} className="hover:text-accent">
+            <ArticleLink article={article} className="hover:text-accent">
               {article.title}
-            </Link>
+            </ArticleLink>
           </h3>
-          <p className="text-ink-muted mb-3 max-w-[72ch] text-[15.5px] leading-relaxed">
-            {article.summary}
-          </p>
+          {article.summary ? (
+            <p className="text-ink-muted mb-3 max-w-[72ch] text-[15.5px] leading-relaxed">
+              {article.summary}
+            </p>
+          ) : null}
           <ArticleMeta article={article} className="text-[12.5px]" />
         </div>
       </article>
@@ -81,16 +167,22 @@ export function ArticleCard({ article, variant }: ArticleCardProps) {
 
   return (
     <article className="flex flex-col gap-4 sm:flex-row sm:gap-5">
-      <ImageSlot className="h-22 w-full shrink-0 sm:w-33" />
+      <ArticleImage
+        article={article}
+        className="h-22 w-full shrink-0 sm:w-33"
+        sizes="(max-width: 640px) 100vw, 132px"
+      />
       <div className="flex-1">
         <h3 className="text-ink mb-2 font-serif text-[21px] leading-[1.24] font-medium">
-          <Link href={href} className="hover:text-accent">
+          <ArticleLink article={article} className="hover:text-accent">
             {article.title}
-          </Link>
+          </ArticleLink>
         </h3>
-        <p className="text-ink-muted mb-2.5 max-w-[68ch] text-[15px] leading-relaxed">
-          {article.summary}
-        </p>
+        {article.summary ? (
+          <p className="text-ink-muted mb-2.5 max-w-[68ch] text-[15px] leading-relaxed">
+            {article.summary}
+          </p>
+        ) : null}
         <ArticleMeta article={article} variant="full" className="text-xs" />
       </div>
     </article>

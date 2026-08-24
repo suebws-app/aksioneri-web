@@ -28,10 +28,16 @@ export interface PaginatedResponse<T> {
   nextCursor: string | null;
 }
 
-interface RequestOptions extends Omit<RequestInit, 'body'> {
+export interface RequestOptions extends Omit<RequestInit, 'body'> {
   body?: unknown;
   /** Query parameters; `undefined` values are dropped. */
   searchParams?: Record<string, string | number | boolean | undefined>;
+  /**
+   * Next.js caching directives for server-side calls. `RequestInit` has no
+   * `next` key, so it has to be declared here — it already reaches `fetch`
+   * through the spread below, it just would not type-check without this.
+   */
+  next?: { revalidate?: number | false; tags?: string[] };
 }
 
 const CSRF_HEADER = 'X-CSRF-Token';

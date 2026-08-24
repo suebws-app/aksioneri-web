@@ -9,8 +9,9 @@ import {
 } from '@/features/calendar';
 import { getLessonBySlug, getTopics } from '@/features/learn';
 import { getQuote } from '@/features/markets';
-import { getArticleBySlug } from '@/features/news';
-import { locales, type Locale } from '@/i18n/config';
+import { findArticlesMentioning } from '@/features/learn/matchNews';
+import { getArticles } from '@/features/news';
+import { locales, type Locale, defaultLocale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 interface PageProps {
@@ -27,7 +28,7 @@ const REGION_KEY = {
 } as const;
 
 export function generateStaticParams() {
-  const slugs = getCalendarWeek('en')
+  const slugs = getCalendarWeek(defaultLocale)
     .days.flatMap((day) => day.events)
     .map((event) => event.slug);
 
@@ -91,6 +92,13 @@ export default async function Page({ params }: PageProps) {
 
   const everyLesson = getTopics(locale).flatMap((topic) => topic.lessons);
 
+  // Matched on what the release is called rather than the stored
+  // `articleSlugs`, which never resolved against the live wire.
+  const relatedArticles = findArticlesMentioning(
+    [detail.shortName, detail.title],
+    await getArticles(locale),
+  );
+
   return (
     <EventPage
       event={detail}
@@ -107,9 +115,7 @@ export default async function Page({ params }: PageProps) {
             everyLesson.find((lesson) => lesson.slug === lessonSlug),
         )
         .filter((lesson) => lesson !== undefined)}
-      articles={(detail.articleSlugs ?? [])
-        .map((articleSlug) => getArticleBySlug(locale, articleSlug))
-        .filter((article) => article !== null)}
+      articles={relatedArticles}
     />
   );
 }

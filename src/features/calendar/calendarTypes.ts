@@ -171,7 +171,6 @@ export interface EventDetail {
   /** Lessons that give the background. */
   lessonSlugs?: string[];
   /** Stories where the indicator features. */
-  articleSlugs?: string[];
 }
 
 export interface DirectionOutcome {

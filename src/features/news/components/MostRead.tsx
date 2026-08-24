@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import type { MostReadEntry } from '../newsData';
+import type { MostReadEntry } from '../newsTypes';
 
 /** The numbered popularity rail in the news sidebar. */
 export function MostRead({ entries }: { entries: MostReadEntry[] }) {

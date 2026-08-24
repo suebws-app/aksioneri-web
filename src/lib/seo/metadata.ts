@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import { openGraphLocales, type Locale } from '@/i18n/config';
-import {
-  absoluteUrl,
-  buildLanguageAlternates,
-  localizedAbsoluteUrl,
-} from './urls';
+import { absoluteUrl, localizedAbsoluteUrl } from './urls';
 
 export const SITE_NAME = 'Aksioneri';
 
@@ -25,8 +21,12 @@ interface BuildMetadataInput {
 
 /**
  * Every page's `generateMetadata` goes through this function. Canonicals,
- * hreflang alternates, Open Graph and Twitter cards are then defined in exactly
- * one place, so a sitewide fix is a one-file change.
+ * Open Graph and Twitter cards are then defined in exactly one place, so a
+ * sitewide fix is a one-file change.
+ *
+ * There are no `alternates.languages`: hreflang describes a choice between
+ * language versions of a page, and after the English locale was removed there
+ * is only one.
  */
 export function buildMetadata({
   title,
@@ -42,10 +42,7 @@ export function buildMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical,
-      languages: buildLanguageAlternates(path),
-    },
+    alternates: { canonical },
     openGraph: {
       type: 'website',
       siteName: SITE_NAME,

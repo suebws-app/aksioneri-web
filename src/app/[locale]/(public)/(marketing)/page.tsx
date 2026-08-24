@@ -3,16 +3,17 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getFeaturedLessons } from '@/features/learn/learnData';
 import {
-  getLeadIndex,
   getMovers,
   getQuotes,
-  getTickerQuotes,
   MARKET_TIMESTAMP,
   MarketsPage,
 } from '@/features/markets';
-import { getArticles, getFeaturedArticle } from '@/features/news/newsData';
+import { getArticles, getFeaturedArticle } from '@/features/news';
 import type { Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
+
+/** Matches the API's poll interval — see `lib/api/news.ts`. */
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -38,19 +39,19 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const articles = getArticles(locale);
-  const featured = getFeaturedArticle(locale);
+  const [articles, featured] = await Promise.all([
+    getArticles(locale),
+    getFeaturedArticle(locale),
+  ]);
   const week = getCalendarWeek(locale);
 
   // The lead story appears once, at the top; the sidebar and the news list take
   // the rest so no headline is printed twice on the page.
-  const rest = articles.filter((article) => article.id !== featured.id);
+  const rest = articles.filter((article) => article.id !== featured?.id);
 
   return (
     <MarketsPage
-      tickerQuotes={getTickerQuotes(locale)}
       quotes={getQuotes(locale)}
-      leadIndex={getLeadIndex(locale)}
       movers={getMovers()}
       featured={featured}
       sidebarStories={rest.slice(0, 3)}

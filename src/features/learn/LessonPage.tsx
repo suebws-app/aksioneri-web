@@ -5,6 +5,8 @@ import { SiteHeader } from '@/components/SiteHeader';
 import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import { Link } from '@/i18n/navigation';
+import { LessonQuiz } from './components/LessonQuiz';
+import { MarkAsRead } from './components/MarkAsRead';
 import { cn } from '@/lib/utils/cn';
 import type { Lesson } from './learnTypes';
 
@@ -14,10 +16,19 @@ export interface LessonPageProps {
   upNext: Lesson[];
   relatedQuotes: Quote[];
   relatedArticle: NewsArticle | null;
-  /** Mirrors the design's sc-if props. */
-  showKeyTerms?: boolean;
-  showQuiz?: boolean;
 }
+
+/**
+ * A heading turned into an anchor. Strips diacritics so Albanian headings
+ * produce a usable fragment rather than a string of percent-escapes.
+ */
+const sectionId = (heading: string): string =>
+  heading
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 const COST_TONE = {
   positive: 'text-positive',
@@ -30,18 +41,30 @@ export function LessonPage({
   upNext,
   relatedQuotes,
   relatedArticle,
-  showKeyTerms = true,
-  showQuiz = true,
 }: LessonPageProps) {
   const t = useTranslations('learn');
   const tNews = useTranslations('news');
 
-  // Section headings drive the "on this page" rail, so the two can never drift.
-  const outline = [
-    ...(lesson.inOneSentence ? [t('inOneSentence')] : []),
-    ...(lesson.body?.map((section) => section.heading) ?? []),
-    ...(lesson.comparison ? [lesson.comparison.heading] : []),
-    ...(showKeyTerms && lesson.keyTerms ? [t('keyTerms')] : []),
+  // Section headings drive the "on this page" rail, so the two can never
+  // drift. Each carries the id its section renders with, so the rail links
+  // somewhere — it used to be a list of plain <li> over headings with no ids.
+  const outline: { id: string; label: string }[] = [
+    ...(lesson.inOneSentence
+      ? [{ id: 'in-one-sentence', label: t('inOneSentence') }]
+      : []),
+    ...(lesson.body?.map((section) => ({
+      id: sectionId(section.heading),
+      label: section.heading,
+    })) ?? []),
+    ...(lesson.comparison
+      ? [
+          {
+            id: sectionId(lesson.comparison.heading),
+            label: lesson.comparison.heading,
+          },
+        ]
+      : []),
+    ...(lesson.keyTerms ? [{ id: 'key-terms', label: t('keyTerms') }] : []),
   ];
 
   const nextLesson = upNext[0] ?? null;
@@ -83,21 +106,22 @@ export function LessonPage({
               <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
                 {t('onThisPage')}
               </h2>
-              {/* Static markers rather than scroll-spy links: the anchors are
-                  not wired yet, and a link that jumps nowhere is worse than a
-                  plain list. */}
+              {/* Plain anchors rather than scroll-spy: the first item stays
+                  marked as current, which is honest for a jump list. */}
               <ol className="flex flex-col text-[14.5px]">
-                {outline.map((heading, index) => (
-                  <li
-                    key={heading}
-                    className={cn(
-                      'border-l-2 py-2.5 pl-3.5',
-                      index === 0
-                        ? 'border-accent text-ink font-medium'
-                        : 'border-line text-ink-subtle',
-                    )}
-                  >
-                    {heading}
+                {outline.map((entry, index) => (
+                  <li key={entry.id}>
+                    <a
+                      href={`#${entry.id}`}
+                      className={cn(
+                        'hover:text-accent block border-l-2 py-2.5 pl-3.5',
+                        index === 0
+                          ? 'border-accent text-ink font-medium'
+                          : 'border-line text-ink-subtle',
+                      )}
+                    >
+                      {entry.label}
+                    </a>
                   </li>
                 ))}
               </ol>
@@ -142,11 +166,15 @@ export function LessonPage({
               <span>
                 {tNews('readingTime', { minutes: lesson.readingMinutes })}
               </span>
-              <span
-                aria-hidden
-                className="size-[3px] rounded-full bg-[#c8c3b8]"
-              />
-              <span>{t('noMaths')}</span>
+              {lesson.noMaths ? (
+                <>
+                  <span
+                    aria-hidden
+                    className="size-[3px] rounded-full bg-[#c8c3b8]"
+                  />
+                  <span>{t('noMaths')}</span>
+                </>
+              ) : null}
             </div>
 
             <h1 className="text-ink mb-4.5 font-serif text-[44px] leading-[1.1] font-medium tracking-[-0.022em]">
@@ -157,7 +185,10 @@ export function LessonPage({
             </p>
 
             {lesson.inOneSentence ? (
-              <aside className="border-accent bg-surface-tint mb-8.5 rounded-r-sm border-l-2 py-5 pr-5.5 pl-5.5">
+              <aside
+                id="in-one-sentence"
+                className="border-accent bg-surface-tint mb-8.5 scroll-mt-6 rounded-r-sm border-l-2 py-5 pr-5.5 pl-5.5"
+              >
                 <h2 className="text-accent mb-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase">
                   {t('inOneSentence')}
                 </h2>
@@ -168,7 +199,11 @@ export function LessonPage({
             ) : null}
 
             {lesson.body?.map((section, index) => (
-              <section key={section.heading}>
+              <section
+                key={section.heading}
+                id={sectionId(section.heading)}
+                className="scroll-mt-6"
+              >
                 <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
                   {section.heading}
                 </h2>
@@ -215,7 +250,10 @@ export function LessonPage({
             ))}
 
             {lesson.comparison ? (
-              <section className="mb-8">
+              <section
+                id={sectionId(lesson.comparison.heading)}
+                className="mb-8 scroll-mt-6"
+              >
                 <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
                   {lesson.comparison.heading}
                 </h2>
@@ -260,8 +298,11 @@ export function LessonPage({
               </section>
             ) : null}
 
-            {showKeyTerms && lesson.keyTerms ? (
-              <section className="border-line bg-surface-muted mb-8.5 rounded-sm border p-7 sm:px-7.5">
+            {lesson.keyTerms ? (
+              <section
+                id="key-terms"
+                className="border-line bg-surface-muted mb-8.5 scroll-mt-6 rounded-sm border p-7 sm:px-7.5"
+              >
                 <h2 className="text-ink mb-5 font-serif text-[21px]">
                   {t('keyTerms')}
                 </h2>
@@ -280,30 +321,11 @@ export function LessonPage({
               </section>
             ) : null}
 
-            {showQuiz && lesson.quiz ? (
-              <section className="border-line bg-surface mb-8.5 rounded-sm border p-7 sm:px-7.5">
-                <h2 className="text-ink-faint mb-3.5 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                  {t('quickCheck')}
-                </h2>
-                <p className="text-ink mb-5 font-serif text-[22px] leading-[1.35]">
-                  {lesson.quiz.question}
-                </p>
-                {/* Not interactive yet: there is no grading, and a button that
-                    does nothing on click is worse than a plain list. */}
-                <ul className="flex flex-col gap-2.5">
-                  {lesson.quiz.options.map((option) => (
-                    <li
-                      key={option}
-                      className="border-line-strong text-ink rounded-[3px] border px-4.5 py-3.5 text-[15.5px]"
-                    >
-                      {option}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
+            {lesson.quiz ? <LessonQuiz quiz={lesson.quiz} /> : null}
 
-            <nav className="border-ink flex flex-col gap-5 border-t-2 pt-7.5 sm:flex-row">
+            <MarkAsRead slug={lesson.slug} />
+
+            <nav className="border-ink mt-8.5 flex flex-col gap-5 border-t-2 pt-7.5 sm:flex-row">
               <Link
                 href="/learn"
                 className="border-line bg-surface hover:border-ink-faint flex-1 rounded-sm border p-5.5 sm:px-6"

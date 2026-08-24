@@ -2,19 +2,32 @@ import type { MetadataRoute } from 'next';
 import { getCalendarWeek } from '@/features/calendar';
 import { getLessonSlugs, getTopics } from '@/features/learn';
 import { getQuotes } from '@/features/markets';
-import { getArticleSlugs } from '@/features/news';
-import { locales } from '@/i18n/config';
-import { buildLanguageAlternates, localizedAbsoluteUrl } from '@/lib/seo/urls';
+import { getArticleIndex } from '@/features/news';
+import { defaultLocale } from '@/i18n/config';
+import { localizedAbsoluteUrl } from '@/lib/seo/urls';
+
+interface SitemapPath {
+  path: string;
+  priority: number;
+  /**
+   * When the content itself last changed. Stories carry a real publication
+   * date; the seeded sections have no per-entity timestamp, so they fall back
+   * to request time.
+   */
+  lastModified?: Date;
+}
 
 /**
  * Public routes only. Anything listed in `robots.ts` under PRIVATE_PATHS must
  * never appear here — a sitemap entry for a disallowed URL is a crawl error.
  */
-const SECTIONS: { path: string; priority: number }[] = [
+const SECTIONS: SitemapPath[] = [
   { path: '/', priority: 1 },
   { path: '/news', priority: 0.9 },
   { path: '/calendar', priority: 0.9 },
+  { path: '/markets', priority: 0.8 },
   { path: '/learn', priority: 0.8 },
+  { path: '/learn/glossary', priority: 0.7 },
 ];
 
 /**
@@ -24,45 +37,46 @@ const SECTIONS: { path: string; priority: number }[] = [
  * Lesson slugs come from both the top-level list and the topic lists, since
  * `/learn/[slug]` resolves against both.
  */
-function detailPaths(): { path: string; priority: number }[] {
+async function detailPaths(): Promise<SitemapPath[]> {
   const lessonSlugs = new Set([
     ...getLessonSlugs(),
-    ...getTopics('en').flatMap((topic) =>
+    ...getTopics(defaultLocale).flatMap((topic) =>
       topic.lessons.map((lesson) => lesson.slug),
     ),
   ]);
 
+  const articles = await getArticleIndex();
+
   return [
-    ...getArticleSlugs().map((slug) => ({
-      path: `/news/${slug}`,
+    ...articles.map((entry) => ({
+      path: `/news/${entry.slug}`,
       priority: 0.7,
+      lastModified: new Date(entry.publishedAt),
     })),
     ...[...lessonSlugs].map((slug) => ({
       path: `/learn/${slug}`,
       priority: 0.6,
     })),
-    ...getCalendarWeek('en')
+    ...getCalendarWeek(defaultLocale)
       .days.flatMap((day) => day.events)
       .map((event) => ({ path: `/calendar/${event.slug}`, priority: 0.6 })),
-    ...getQuotes('en').map((quote) => ({
+    ...getQuotes(defaultLocale).map((quote) => ({
       path: `/markets/${quote.symbol}`,
       priority: 0.6,
     })),
   ];
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
+  const details = await detailPaths();
 
-  return [...SECTIONS, ...detailPaths()].flatMap(({ path, priority }) =>
-    locales.map((locale) => ({
-      url: localizedAbsoluteUrl(locale, path),
-      lastModified,
-      changeFrequency: 'weekly' as const,
-      priority,
-      // Every locale variant of a page points at all the others, which is what
-      // stops them competing as duplicates.
-      alternates: { languages: buildLanguageAlternates(path) },
-    })),
-  );
+  // One entry per page. There used to be one per locale, cross-referenced with
+  // hreflang; with a single language there is nothing to alternate between.
+  return [...SECTIONS, ...details].map(({ path, priority, lastModified }) => ({
+    url: localizedAbsoluteUrl(defaultLocale, path),
+    lastModified: lastModified ?? now,
+    changeFrequency: 'weekly' as const,
+    priority,
+  }));
 }

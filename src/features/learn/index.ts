@@ -1,3 +1,4 @@
+export { GlossaryPage, type GlossaryPageProps } from './GlossaryPage';
 export { LearnPage, type LearnPageProps } from './LearnPage';
 export { LessonPage, type LessonPageProps } from './LessonPage';
 export {

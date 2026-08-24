@@ -21,17 +21,6 @@ export interface MarketMovers {
   mostWatched: string[];
 }
 
-export interface IndexSnapshot {
-  symbol: string;
-  name: string;
-  price: string;
-  changePercent: number;
-  /** Intraday series for the sparkline. */
-  series: number[];
-  /** Axis labels beneath the chart. */
-  sessionTimes: string[];
-}
-
 export type Localized<T> = Record<Locale, T>;
 
 /** A constituent of an index, with its weight and day move. */
@@ -91,6 +80,4 @@ export interface AssetDetail {
   eventSlugs?: string[];
   /** Lessons to read first. */
   lessonSlugs?: string[];
-  /** Stories about this instrument. */
-  articleSlugs?: string[];
 }

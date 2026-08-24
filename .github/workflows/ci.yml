@@ -54,3 +54,12 @@ jobs:
       - run: pnpm test
 
       - run: pnpm build
+
+      # Chromium cannot be installed on macOS 13, so the browser suite only
+      # ever runs here. Playwright starts the built app itself.
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # aksioneri-api is not started in this job, so the wire is empty and the
+      # news specs skip themselves by design. Everything rendering from seed
+      # data — the markets index, the sitemap, the SEO surface — still runs.
+      - run: pnpm test:e2e

@@ -56,7 +56,6 @@ const WEEK: SeedDay[] = [
         region: 'DE',
         title: {
           sq: 'Indeksi i çmimeve të prodhimit (PPI), korrik',
-          en: 'Producer price index (PPI), July',
         },
         impact: 'low',
         actual: '1.4%',
@@ -71,7 +70,6 @@ const WEEK: SeedDay[] = [
         region: 'EU',
         title: {
           sq: 'Besimi i konsumatorit në eurozonë, paraprak',
-          en: 'Euro-area consumer confidence, flash',
         },
         impact: 'medium',
         actual: '−14.2',
@@ -86,7 +84,6 @@ const WEEK: SeedDay[] = [
         region: 'EU',
         title: {
           sq: 'Vendimi i BQE-së për normën e interesit',
-          en: 'ECB interest-rate decision',
         },
         impact: 'high',
         expected: '3.25%',
@@ -99,7 +96,6 @@ const WEEK: SeedDay[] = [
         region: 'US',
         title: {
           sq: 'Të dhënat e inflacionit (CPI), korrik',
-          en: 'Inflation data (CPI), July',
         },
         impact: 'high',
         expected: '3.1%',
@@ -113,7 +109,6 @@ const WEEK: SeedDay[] = [
         region: 'US',
         title: {
           sq: 'Kërkesat fillestare për papunësi, javore',
-          en: 'Initial jobless claims, weekly',
         },
         impact: 'medium',
         expected: '221k',
@@ -126,7 +121,6 @@ const WEEK: SeedDay[] = [
         region: 'US',
         title: {
           sq: 'Shitjet e banesave ekzistuese, korrik',
-          en: 'Existing home sales, July',
         },
         impact: 'low',
         expected: '4.02m',
@@ -139,7 +133,6 @@ const WEEK: SeedDay[] = [
         region: 'US',
         title: {
           sq: 'Fjalim i Fed-it · Guvernatori Waller',
-          en: 'Fed speech · Governor Waller',
         },
         impact: 'medium',
       },
@@ -155,7 +148,6 @@ const WEEK: SeedDay[] = [
         region: 'DE',
         title: {
           sq: 'Indeksi Ifo i klimës së biznesit, gusht',
-          en: 'Ifo business climate index, August',
         },
         impact: 'medium',
         expected: '88.4',
@@ -168,7 +160,6 @@ const WEEK: SeedDay[] = [
         region: 'US',
         title: {
           sq: 'Porositë për mallra të qëndrueshme, korrik',
-          en: 'Durable goods orders, July',
         },
         impact: 'low',
         expected: '0.4%',
@@ -181,7 +172,6 @@ const WEEK: SeedDay[] = [
         region: 'JP',
         title: {
           sq: 'Procesverbali i mbledhjes së Bankës së Japonisë',
-          en: 'Bank of Japan meeting minutes',
         },
         impact: 'low',
       },
@@ -209,20 +199,14 @@ const NEXT_UP: {
   minutesAway: 132,
   title: {
     sq: 'Të dhënat e inflacionit në SHBA (CPI), korrik',
-    en: 'US inflation data (CPI), July',
   },
   summary: {
     sq: 'Kjo është matja kryesore e shpejtësisë me të cilën po rriten çmimet në Shtetet e Bashkuara. Një shifër më e butë e bën uljen e normave më të mundshme.',
-    en: 'This is the headline measure of how fast prices are rising in the United States. A softer number makes a rate cut more likely.',
   },
   whyItMatters: {
     sq: [
       'Inflacioni përcakton se çfarë bën Fed-i me normat e interesit. Normat më pas prekin gati gjithçka tjetër: çmimet e aksioneve, kredinë e banesës, yield-et e obligacioneve, madje edhe dollarin.',
       'Një shifër nën 3.1% do të sugjeronte se çmimet po ftohen më shpejt se pritej — zakonisht mirë për aksionet.',
-    ],
-    en: [
-      'Inflation decides what the Fed does with interest rates. Rates then affect almost everything else: share prices, mortgages, bond yields, even the dollar.',
-      'A number below 3.1% would suggest prices are cooling faster than expected — usually good for shares.',
     ],
   },
 };

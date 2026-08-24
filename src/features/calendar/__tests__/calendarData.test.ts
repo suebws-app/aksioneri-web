@@ -2,28 +2,26 @@ import { describe, expect, it } from 'vitest';
 import { getCalendarWeek, TODAY } from '../calendarData';
 
 describe('getCalendarWeek', () => {
-  it('resolves content into the requested locale', () => {
+  it('resolves content into Albanian', () => {
     const sq = getCalendarWeek('sq');
-    const en = getCalendarWeek('en');
 
-    expect(en.nextUp?.title).toBe('US inflation data (CPI), July');
     expect(sq.nextUp?.title).toBe(
       'Të dhënat e inflacionit në SHBA (CPI), korrik',
     );
-    // Every event title must be translated, not silently falling back.
+    // The English locale was removed; no event may still carry English copy.
     expect(sq.days.flatMap((d) => d.events).map((e) => e.title)).not.toContain(
       'Producer price index (PPI), July',
     );
   });
 
   it('starts with today selected', () => {
-    const week = getCalendarWeek('en');
+    const week = getCalendarWeek('sq');
     expect(week.selectedDate).toBe(TODAY);
     expect(week.todayDate).toBe(TODAY);
   });
 
   it('marks exactly one event as next up', () => {
-    const week = getCalendarWeek('en');
+    const week = getCalendarWeek('sq');
     const nextUp = week.days
       .flatMap((day) => day.events)
       .filter((event) => event.isNextUp);
@@ -34,7 +32,7 @@ describe('getCalendarWeek', () => {
   });
 
   it('leaves unreleased figures null rather than empty strings', () => {
-    const week = getCalendarWeek('en');
+    const week = getCalendarWeek('sq');
     const ecb = week.days
       .flatMap((day) => day.events)
       .find((event) => event.slug === 'ecb-interest-rate-decision');

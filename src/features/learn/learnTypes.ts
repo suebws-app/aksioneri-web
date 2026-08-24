@@ -29,31 +29,57 @@ export interface Lesson {
     }[];
   };
   keyTerms?: GlossaryTerm[];
-  /** Self-check. Answers are not revealed — no grading exists yet. */
-  quiz?: { question: string; options: string[] };
+  quiz?: LessonQuiz;
+  /**
+   * Shows the "no maths required" badge. Authored per lesson rather than
+   * assumed: it used to render on every lesson, including the P/E ratio and
+   * fees lessons, which are entirely arithmetic.
+   */
+  noMaths?: boolean;
   /** Position within its topic, for the breadcrumb and progress bar. */
   track?: { topicTitle: string; position: number; total: number };
   /** Instruments that illustrate the lesson. */
   relatedSymbols?: string[];
   /** Lessons suggested next. */
   upNextSlugs?: string[];
-  /** A current story where the lesson's vocabulary appears. */
-  relatedArticleSlug?: string;
 }
 
 /** A named group of lessons, e.g. "The basics". */
 export interface LessonTopic {
   id: string;
   title: string;
-  /** Total lessons in the topic, which may exceed the ones listed. */
+  /** Derived from the lessons listed — never authored separately. */
   lessonCount: number;
   lessons: Lesson[];
 }
 
-/** One-line definition in the jargon buster. */
+/** A self-check with one right answer. */
+export interface LessonQuiz {
+  question: string;
+  options: string[];
+  /** Index into `options`. */
+  answer: number;
+  /** Shown once answered — why that option is the right one, in one line. */
+  explanation: string;
+}
+
+/**
+ * One-line definition in the jargon buster and the glossary.
+ *
+ * `slug` is both the URL fragment on the glossary page and the key the
+ * article auto-linker matches on, so it has to be stable once published.
+ */
 export interface GlossaryTerm {
+  slug: string;
   term: string;
   definition: string;
+  /**
+   * Other spellings and inflections to match in article text — plurals,
+   * abbreviations, the Albanian and English forms of the same idea.
+   */
+  aliases?: string[];
+  /** The lesson that explains it properly, when one does. */
+  lessonSlug?: string;
 }
 
 export interface LearnStats {

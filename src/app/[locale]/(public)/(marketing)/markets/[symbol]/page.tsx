@@ -4,7 +4,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getLessonBySlug, getTopics } from '@/features/learn';
 import { AssetPage, getAssetDetail, getQuotes } from '@/features/markets';
-import { getArticleBySlug } from '@/features/news';
+import { findArticlesMentioning } from '@/features/learn/matchNews';
+import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
 
@@ -65,6 +66,14 @@ export default async function Page({ params }: PageProps) {
   const everyEvent = getCalendarWeek(locale).days.flatMap((day) => day.events);
   const everyLesson = getTopics(locale).flatMap((topic) => topic.lessons);
 
+  // Matched on the instrument's own names rather than the stored
+  // `articleSlugs`, which were design-mock headline slugs and never resolved
+  // against the live wire.
+  const relatedArticles = findArticlesMentioning(
+    [asset.name, asset.ticker],
+    await getArticles(locale),
+  );
+
   return (
     <AssetPage
       asset={asset}
@@ -81,9 +90,7 @@ export default async function Page({ params }: PageProps) {
             everyLesson.find((lesson) => lesson.slug === slug),
         )
         .filter((lesson) => lesson !== undefined)}
-      articles={(asset.articleSlugs ?? [])
-        .map((slug) => getArticleBySlug(locale, slug))
-        .filter((article) => article !== null)}
+      articles={relatedArticles}
     />
   );
 }

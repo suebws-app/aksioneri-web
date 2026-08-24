@@ -11,7 +11,7 @@ import { getQuote } from './marketsData';
  * Instrument pages.
  *
  * Each instrument is declared once with locale-keyed strings, the same shape
- * `newsData` and `learnData` use. Anything not written yet falls back to a page
+ * `learnData` uses. Anything not written yet falls back to a page
  * built from the quote, so every link from the ticker strip resolves.
  */
 
@@ -44,7 +44,6 @@ interface SeedAsset {
   sectors?: Localized<SectorMove[]>;
   eventSlugs?: string[];
   lessonSlugs?: string[];
-  articleSlugs?: string[];
 }
 
 /** Intraday shapes. Each rises or falls to match its quoted day move. */
@@ -91,12 +90,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_US,
     descriptor: {
       sq: 'SHBA · indeks · 500 kompani',
-      en: 'US · index · 500 companies',
     },
-    category: { sq: 'Indekset', en: 'Indices' },
+    category: { sq: 'Indekset' },
     statusLine: {
       sq: 'Mbyllur · 21 gusht 2026, 16:00 ET · me vonesë 15 min',
-      en: 'Closed · 21 Aug 2026, 16:00 ET · delayed 15 min',
     },
     statistics: {
       sq: [
@@ -106,14 +103,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '5,104 – 6,428' },
         { label: 'Nga fillimi i vitit', value: '+11.4%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+82.6%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open', value: '6,372.40' },
-        { label: 'Day range', value: '6,361 – 6,428' },
-        { label: 'Previous close', value: '6,369.10' },
-        { label: '52-week range', value: '5,104 – 6,428' },
-        { label: 'Year to date', value: '+11.4%', tone: 'positive' },
-        { label: '5-year return', value: '+82.6%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -128,19 +117,6 @@ const ASSETS: SeedAsset[] = [
           body: 'Një indeks është matje, jo produkt. Për ta zotëruar, blini një fond që e ndjek atë — dhe pikërisht këtë bën një ETF.',
           lessonSlug: 'what-is-an-etf',
           linkLabel: 'Lexo mësimin 5-minutësh →',
-        },
-      },
-      en: {
-        heading: 'What the S&P 500 actually is',
-        paragraphs: [
-          'It is a list of roughly 500 of the largest companies listed in the United States, combined into a single number. When people say “the US market was up today”, this is usually the number they mean.',
-          'Bigger companies count for more. Apple and NVIDIA each carry more weight than a mid-sized firm, so their moves matter more to the index than their headcount would suggest.',
-        ],
-        callout: {
-          heading: 'You cannot buy an index',
-          body: 'An index is a measurement, not a product. To own it you buy a fund that tracks it — which is what an ETF does.',
-          lessonSlug: 'what-is-an-etf',
-          linkLabel: 'Read the 5-minute lesson →',
         },
       },
     },
@@ -159,24 +135,12 @@ const ASSETS: SeedAsset[] = [
         { name: 'Mallrat bazë', changePercent: -0.3 },
         { name: 'Shërbimet publike', changePercent: -0.6 },
       ],
-      en: [
-        { name: 'Technology', changePercent: 1.9 },
-        { name: 'Financials', changePercent: 0.7 },
-        { name: 'Health care', changePercent: 0.2 },
-        { name: 'Consumer staples', changePercent: -0.3 },
-        { name: 'Utilities', changePercent: -0.6 },
-      ],
     },
     eventSlugs: ['us-inflation-cpi-july', 'ecb-interest-rate-decision'],
     lessonSlugs: [
       'index-funds-vs-stock-picking',
       'risk-and-return',
       'fees-that-change-everything',
-    ],
-    articleSlugs: [
-      'markets-rally-as-investors-read-new-fed-signals',
-      'nvidia-shares-rise-after-earnings',
-      'us-retail-sales-beat-forecasts',
     ],
   },
   {
@@ -190,12 +154,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_US,
     descriptor: {
       sq: 'SHBA · indeks · 100 kompani jofinanciare',
-      en: 'US · index · 100 non-financial companies',
     },
-    category: { sq: 'Indekset', en: 'Indices' },
+    category: { sq: 'Indekset' },
     statusLine: {
       sq: 'Mbyllur · 21 gusht 2026, 16:00 ET · me vonesë 15 min',
-      en: 'Closed · 21 Aug 2026, 16:00 ET · delayed 15 min',
     },
     statistics: {
       sq: [
@@ -205,14 +167,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '16,240 – 21,502' },
         { label: 'Nga fillimi i vitit', value: '+18.2%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+141.3%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open', value: '21,150.20' },
-        { label: 'Day range', value: '21,118 – 21,502' },
-        { label: 'Previous close', value: '21,143.20' },
-        { label: '52-week range', value: '16,240 – 21,502' },
-        { label: 'Year to date', value: '+18.2%', tone: 'positive' },
-        { label: '5-year return', value: '+141.3%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -227,19 +181,6 @@ const ASSETS: SeedAsset[] = [
           body: 'Zotërimi i Nasdaq-ut dhe i disa aksioneve teknologjike shpesh do të thotë ta zotëroni të njëjtën gjë dy herë.',
           lessonSlug: 'why-diversification-works',
           linkLabel: 'Lexo mësimin për diversifikimin →',
-        },
-      },
-      en: {
-        heading: 'Why the Nasdaq moves more than the S&P',
-        paragraphs: [
-          'The Nasdaq 100 excludes financial companies and is packed with technology. That makes it far more concentrated: the top ten names make up nearly half the index.',
-          'That concentration explains why it rises faster than the S&P 500 in good years and falls harder in bad ones. It is not a riskier market — it is the same market, taken more concentrated.',
-        ],
-        callout: {
-          heading: 'Concentration is the risk',
-          body: 'Owning the Nasdaq and a few technology shares often means owning the same thing twice.',
-          lessonSlug: 'why-diversification-works',
-          linkLabel: 'Read the diversification lesson →',
         },
       },
     },
@@ -258,24 +199,12 @@ const ASSETS: SeedAsset[] = [
         { name: 'Bioteknologjia', changePercent: -0.5 },
         { name: 'Konsumi diskrecional', changePercent: -0.8 },
       ],
-      en: [
-        { name: 'Semiconductors', changePercent: 3.4 },
-        { name: 'Software', changePercent: 1.2 },
-        { name: 'Internet', changePercent: 0.9 },
-        { name: 'Biotechnology', changePercent: -0.5 },
-        { name: 'Consumer discretionary', changePercent: -0.8 },
-      ],
     },
     eventSlugs: ['us-inflation-cpi-july', 'fed-speech-governor-waller'],
     lessonSlugs: [
       'why-diversification-works',
       'what-moves-interest-rates',
       'index-funds-vs-stock-picking',
-    ],
-    articleSlugs: [
-      'nvidia-shares-rise-after-earnings',
-      'why-chip-stocks-move-together',
-      'markets-rally-as-investors-read-new-fed-signals',
     ],
   },
   {
@@ -289,12 +218,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_US,
     descriptor: {
       sq: 'SHBA · indeks · 30 kompani të mëdha',
-      en: 'US · index · 30 large companies',
     },
-    category: { sq: 'Indekset', en: 'Indices' },
+    category: { sq: 'Indekset' },
     statusLine: {
       sq: 'Mbyllur · 21 gusht 2026, 16:00 ET · me vonesë 15 min',
-      en: 'Closed · 21 Aug 2026, 16:00 ET · delayed 15 min',
     },
     statistics: {
       sq: [
@@ -304,14 +231,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '38,910 – 45,074' },
         { label: 'Nga fillimi i vitit', value: '+7.8%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+54.1%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open', value: '44,780.30' },
-        { label: 'Day range', value: '44,780 – 45,074' },
-        { label: 'Previous close', value: '44,773.50' },
-        { label: '52-week range', value: '38,910 – 45,074' },
-        { label: 'Year to date', value: '+7.8%', tone: 'positive' },
-        { label: '5-year return', value: '+54.1%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -326,19 +245,6 @@ const ASSETS: SeedAsset[] = [
           body: 'Kur doni të dini si shkoi tregu amerikan, S&P 500 është shifra më përfaqësuese.',
           lessonSlug: 'index-funds-vs-stock-picking',
           linkLabel: 'Lexo për fondet indeksore →',
-        },
-      },
-      en: {
-        heading: 'The most famous index, and the strangest',
-        paragraphs: [
-          'The Dow holds only 30 companies and weights them by share price, not by size. A company with a $500 share moves it ten times as much as one with a $50 share, even if the second is twice as large.',
-          'That is a legacy of 1896, when the calculation was done by pencil. It stays widely quoted because it is old and familiar, not because it is the better measure.',
-        ],
-        callout: {
-          heading: 'Use the S&P for the market',
-          body: 'When you want to know how the US market did, the S&P 500 is the more representative number.',
-          lessonSlug: 'index-funds-vs-stock-picking',
-          linkLabel: 'Read about index funds →',
         },
       },
     },
@@ -357,17 +263,9 @@ const ASSETS: SeedAsset[] = [
         { name: 'Energjia', changePercent: -0.2 },
         { name: 'Mallrat bazë', changePercent: -0.4 },
       ],
-      en: [
-        { name: 'Financials', changePercent: 0.9 },
-        { name: 'Industrials', changePercent: 0.6 },
-        { name: 'Health care', changePercent: 0.3 },
-        { name: 'Energy', changePercent: -0.2 },
-        { name: 'Consumer staples', changePercent: -0.4 },
-      ],
     },
     eventSlugs: ['us-durable-goods-orders-july', 'us-inflation-cpi-july'],
     lessonSlugs: ['index-funds-vs-stock-picking', 'what-moves-a-share-price'],
-    articleSlugs: ['us-retail-sales-beat-forecasts'],
   },
   {
     symbol: 'stoxx-600',
@@ -384,12 +282,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_EU,
     descriptor: {
       sq: 'Evropë · indeks · 600 kompani, 17 vende',
-      en: 'Europe · index · 600 companies, 17 countries',
     },
-    category: { sq: 'Indekset', en: 'Indices' },
+    category: { sq: 'Indekset' },
     statusLine: {
       sq: 'Mbyllur · 21 gusht 2026, 17:30 CET · me vonesë 15 min',
-      en: 'Closed · 21 Aug 2026, 17:30 CET · delayed 15 min',
     },
     statistics: {
       sq: [
@@ -399,14 +295,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '486 – 575' },
         { label: 'Nga fillimi i vitit', value: '+6.9%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+38.4%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open', value: '566.20' },
-        { label: 'Day range', value: '565 – 575' },
-        { label: 'Previous close', value: '568.10' },
-        { label: '52-week range', value: '486 – 575' },
-        { label: 'Year to date', value: '+6.9%', tone: 'positive' },
-        { label: '5-year return', value: '+38.4%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -421,19 +309,6 @@ const ASSETS: SeedAsset[] = [
           body: 'Nëse investoni nga jashtë eurozonës, kthimi juaj përfshin edhe lëvizjen e euros, jo vetëm të indeksit.',
           lessonSlug: 'why-diversification-works',
           linkLabel: 'Lexo për diversifikimin →',
-        },
-      },
-      en: {
-        heading: 'Europe in one number',
-        paragraphs: [
-          'The STOXX Europe 600 covers 600 companies across 17 countries, including non-euro ones such as the UK and Switzerland. It is the single broadest measure of European shares.',
-          'Its composition differs from America’s: more banks, industrials, luxury and pharmaceuticals, and far less big technology. That is why it often behaves differently from the S&P.',
-        ],
-        callout: {
-          heading: 'Currency matters here',
-          body: 'If you invest from outside the euro area, your return includes the euro’s move, not only the index’s.',
-          lessonSlug: 'why-diversification-works',
-          linkLabel: 'Read about diversification →',
         },
       },
     },
@@ -452,24 +327,12 @@ const ASSETS: SeedAsset[] = [
         { name: 'Shëndetësia', changePercent: 0.1 },
         { name: 'Shërbimet publike', changePercent: -0.5 },
       ],
-      en: [
-        { name: 'Technology', changePercent: 1.6 },
-        { name: 'Travel and leisure', changePercent: 1.8 },
-        { name: 'Banks', changePercent: 0.8 },
-        { name: 'Health care', changePercent: 0.1 },
-        { name: 'Utilities', changePercent: -0.5 },
-      ],
     },
     eventSlugs: [
       'ecb-interest-rate-decision',
       'de-ifo-business-climate-august',
     ],
     lessonSlugs: ['why-diversification-works', 'index-funds-vs-stock-picking'],
-    articleSlugs: [
-      'euro-zone-inflation-cools-to-1-9-percent',
-      'asml-lifts-guidance-on-strong-machine-orders',
-      'airlines-lead-european-gainers-as-fuel-costs-fall',
-    ],
   },
   {
     symbol: 'bitcoin',
@@ -482,12 +345,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_24H,
     descriptor: {
       sq: 'Global · kriptovalutë · tregtohet 24/7',
-      en: 'Global · cryptocurrency · trades 24/7',
     },
-    category: { sq: 'Kriptovalutat', en: 'Crypto' },
+    category: { sq: 'Kriptovalutat' },
     statusLine: {
       sq: 'Tregtim i drejtpërdrejtë · 24/7 · çmimet janë tregues',
-      en: 'Trading live · 24/7 · prices are indicative',
     },
     statistics: {
       sq: [
@@ -497,14 +358,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '61,400 – 112,800' },
         { label: 'Nga fillimi i vitit', value: '+24.6%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+318.2%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open (24h)', value: '99,655' },
-        { label: '24-hour range', value: '98,180 – 99,720' },
-        { label: 'Previous close', value: '99,655' },
-        { label: '52-week range', value: '61,400 – 112,800' },
-        { label: 'Year to date', value: '+24.6%', tone: 'positive' },
-        { label: '5-year return', value: '+318.2%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -521,19 +374,6 @@ const ASSETS: SeedAsset[] = [
           linkLabel: 'Lexo për rrezikun dhe kthimin →',
         },
       },
-      en: {
-        heading: 'What moves Bitcoin’s price',
-        paragraphs: [
-          'Bitcoin has no earnings, dividends or yield. Its price comes entirely from what people are willing to pay, which makes it more dependent on money flow than any other asset on this site.',
-          'Since spot ETFs were approved, that flow has become measurable. That is why news about fund inflows or outflows now explains most weekly moves.',
-        ],
-        callout: {
-          heading: 'Volatility is a feature, not a fault',
-          body: 'Moves of 5% within a day are normal here. Position size matters more than timing your entry.',
-          lessonSlug: 'risk-and-return',
-          linkLabel: 'Read about risk and return →',
-        },
-      },
     },
     sectors: {
       sq: [
@@ -543,24 +383,12 @@ const ASSETS: SeedAsset[] = [
         { name: 'Monedhat e qëndrueshme', changePercent: 0.01 },
         { name: 'Aksionet e minierave', changePercent: -3.4 },
       ],
-      en: [
-        { name: 'Bitcoin', changePercent: -1.42 },
-        { name: 'Ethereum', changePercent: -0.9 },
-        { name: 'Solana', changePercent: -2.1 },
-        { name: 'Stablecoins', changePercent: 0.01 },
-        { name: 'Mining shares', changePercent: -3.4 },
-      ],
     },
     eventSlugs: ['us-inflation-cpi-july', 'fed-speech-governor-waller'],
     lessonSlugs: [
       'risk-and-return',
       'what-is-an-etf',
       'why-diversification-works',
-    ],
-    articleSlugs: [
-      'bitcoin-slips-below-99000-as-etf-inflows-pause',
-      'bitcoin-etfs-where-the-money-went-this-month',
-      'ethereum-staking-rewards-fall-as-validator-queue-clears',
     ],
   },
   {
@@ -579,12 +407,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_24H,
     descriptor: {
       sq: 'Global · mall · për ons troy',
-      en: 'Global · commodity · per troy ounce',
     },
-    category: { sq: 'Mallrat', en: 'Commodities' },
+    category: { sq: 'Mallrat' },
     statusLine: {
       sq: 'Tregtim i drejtpërdrejtë · çmimi spot në dollarë amerikanë',
-      en: 'Trading live · spot price in US dollars',
     },
     statistics: {
       sq: [
@@ -594,14 +420,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '2,410 – 3,186' },
         { label: 'Nga fillimi i vitit', value: '+19.8%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '+72.4%', tone: 'positive' },
-      ],
-      en: [
-        { label: 'Open', value: '3,134.80' },
-        { label: 'Day range', value: '3,129 – 3,151' },
-        { label: 'Previous close', value: '3,134.80' },
-        { label: '52-week range', value: '2,410 – 3,186' },
-        { label: 'Year to date', value: '+19.8%', tone: 'positive' },
-        { label: '5-year return', value: '+72.4%', tone: 'positive' },
       ],
     },
     explainer: {
@@ -618,19 +436,6 @@ const ASSETS: SeedAsset[] = [
           linkLabel: 'Lexo për diversifikimin →',
         },
       },
-      en: {
-        heading: 'Why gold behaves differently',
-        paragraphs: [
-          'Gold pays no interest and produces nothing. So when rates rise, holding it becomes more costly relative to bonds, and the price usually falls.',
-          'What has broken that rule recently is central banks. They buy for political reasons rather than return, and their demand does not respond to rates.',
-        ],
-        callout: {
-          heading: 'Gold is not a hedge against everything',
-          body: 'It has protected against inflation in some decades and failed in others. Historically it hedges crises of confidence better than rising prices.',
-          lessonSlug: 'why-diversification-works',
-          linkLabel: 'Read about diversification →',
-        },
-      },
     },
     sectors: {
       sq: [
@@ -640,20 +445,9 @@ const ASSETS: SeedAsset[] = [
         { name: 'Nafta Brent', changePercent: 0.1 },
         { name: 'Bakri', changePercent: -0.7 },
       ],
-      en: [
-        { name: 'Gold', changePercent: 0.44 },
-        { name: 'Silver', changePercent: 0.9 },
-        { name: 'Platinum', changePercent: -0.3 },
-        { name: 'Brent crude', changePercent: 0.1 },
-        { name: 'Copper', changePercent: -0.7 },
-      ],
     },
     eventSlugs: ['us-inflation-cpi-july', 'ecb-interest-rate-decision'],
     lessonSlugs: ['why-diversification-works', 'what-moves-interest-rates'],
-    articleSlugs: [
-      'gold-holds-near-record-as-central-banks-keep-buying',
-      'oil-steadies-after-opec-holds-output-unchanged',
-    ],
   },
   {
     symbol: 'eur-usd',
@@ -672,12 +466,10 @@ const ASSETS: SeedAsset[] = [
     sessionTimes: SESSION_24H,
     descriptor: {
       sq: 'Global · çift valutor · euro për dollar',
-      en: 'Global · currency pair · euros per dollar',
     },
-    category: { sq: 'Valutat', en: 'Currencies' },
+    category: { sq: 'Valutat' },
     statusLine: {
       sq: 'Tregtim i drejtpërdrejtë · 24/5 · çmimet janë tregues',
-      en: 'Trading live · 24/5 · prices are indicative',
     },
     statistics: {
       sq: [
@@ -687,14 +479,6 @@ const ASSETS: SeedAsset[] = [
         { label: 'Diapazoni 52-javor', value: '1.0412 – 1.1284' },
         { label: 'Nga fillimi i vitit', value: '+1.4%', tone: 'positive' },
         { label: 'Kthimi 5-vjeçar', value: '−7.6%', tone: 'negative' },
-      ],
-      en: [
-        { label: 'Open', value: '1.0938' },
-        { label: 'Day range', value: '1.0922 – 1.0942' },
-        { label: 'Previous close', value: '1.0938' },
-        { label: '52-week range', value: '1.0412 – 1.1284' },
-        { label: 'Year to date', value: '+1.4%', tone: 'positive' },
-        { label: '5-year return', value: '−7.6%', tone: 'negative' },
       ],
     },
     explainer: {
@@ -711,19 +495,6 @@ const ASSETS: SeedAsset[] = [
           linkLabel: 'Lexo për normat e interesit →',
         },
       },
-      en: {
-        heading: 'How to read a currency pair',
-        paragraphs: [
-          '1.0925 means one euro buys 1.0925 dollars. When the figure rises, the euro is strengthening; when it falls, the dollar is. There are always two sides.',
-          'Currency pairs move mostly on interest-rate differences. If the Fed holds rates high while the ECB cuts, money flows toward the dollar and the pair falls.',
-        ],
-        callout: {
-          heading: 'This affects you without trading it',
-          body: 'If you hold US shares from the euro area, your return depends on this pair too, not only on the market.',
-          lessonSlug: 'what-moves-interest-rates',
-          linkLabel: 'Read about interest rates →',
-        },
-      },
     },
     sectors: {
       sq: [
@@ -733,20 +504,9 @@ const ASSETS: SeedAsset[] = [
         { name: 'USD / CHF', changePercent: 0.11 },
         { name: 'Indeksi i dollarit', changePercent: 0.15 },
       ],
-      en: [
-        { name: 'EUR / USD', changePercent: -0.12 },
-        { name: 'GBP / USD', changePercent: -0.08 },
-        { name: 'USD / JPY', changePercent: 0.24 },
-        { name: 'USD / CHF', changePercent: 0.11 },
-        { name: 'Dollar index', changePercent: 0.15 },
-      ],
     },
     eventSlugs: ['ecb-interest-rate-decision', 'us-inflation-cpi-july'],
     lessonSlugs: ['what-moves-interest-rates', 'what-central-banks-do'],
-    articleSlugs: [
-      'euro-zone-inflation-cools-to-1-9-percent',
-      'a-slow-inflation-europe-is-good-news-for-savers',
-    ],
   },
 ];
 
@@ -768,7 +528,6 @@ const resolve = (asset: SeedAsset, locale: Locale): AssetDetail => ({
   ...(asset.sectors ? { sectors: asset.sectors[locale] } : {}),
   ...(asset.eventSlugs ? { eventSlugs: asset.eventSlugs } : {}),
   ...(asset.lessonSlugs ? { lessonSlugs: asset.lessonSlugs } : {}),
-  ...(asset.articleSlugs ? { articleSlugs: asset.articleSlugs } : {}),
 });
 
 /**

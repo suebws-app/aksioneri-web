@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { ImageSlot } from '@/components/ImageSlot';
@@ -6,13 +7,15 @@ import { SiteHeader } from '@/components/SiteHeader';
 import type { CalendarEvent } from '@/features/calendar';
 import { formatTimestamp } from '@/features/calendar/formatDate';
 import type { Quote } from '@/features/markets/marketsTypes';
-import type { Lesson } from '@/features/learn/learnTypes';
+import { GlossaryText } from '@/features/learn/components/GlossaryText';
+import type { GlossaryTerm, Lesson } from '@/features/learn/learnTypes';
+import { GlossaryLinker } from '@/features/learn/linkGlossaryTerms';
 import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { ArticleMeta } from './components/ArticleMeta';
 import { WhyItMatters } from './components/WhyItMatters';
-import type { MostReadEntry } from './newsData';
+import type { MostReadEntry } from './newsTypes';
 import type { NewsArticle } from './newsTypes';
 
 export interface ArticlePageProps {
@@ -22,6 +25,8 @@ export interface ArticlePageProps {
   mentioned: Quote[];
   nextRelease: CalendarEvent | null;
   relatedLesson: Lesson | null;
+  /** Terms to link inside the body. Empty disables linking entirely. */
+  glossary: GlossaryTerm[];
   /** Mirrors the design's sc-if props. */
   showWhyItMatters?: boolean;
   showInNumbers?: boolean;
@@ -35,12 +40,17 @@ export function ArticlePage({
   mentioned,
   nextRelease,
   relatedLesson,
+  glossary,
   showWhyItMatters = true,
   showInNumbers = true,
   showTerms = true,
 }: ArticlePageProps) {
   const t = useTranslations('news');
   const locale = useLocale() as Locale;
+
+  // One linker for the whole article: "first occurrence" and the cap are
+  // per-story, not per-paragraph, so it must not be recreated in the loops.
+  const linker = new GlossaryLinker(glossary);
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -87,11 +97,11 @@ export function ArticlePage({
                       {article.author.name}
                     </p>
                     <p className="text-ink-faint text-[13px]">
-                      {article.author.desk}
+                      {article.author.desk ? `${article.author.desk} · ` : ''}
                       {article.publishedAt
-                        ? ` · ${formatTimestamp(locale, article.publishedAt)}`
-                        : ''}{' '}
-                      · {t('readingTime', { minutes: article.readingMinutes })}
+                        ? `${formatTimestamp(locale, article.publishedAt)} · `
+                        : ''}
+                      {t('readingTime', { minutes: article.readingMinutes })}
                     </p>
                   </div>
                 </div>
@@ -111,11 +121,31 @@ export function ArticlePage({
               </div>
             ) : null}
 
-            <ImageSlot className="mb-3 h-[400px] w-full" />
-            {article.heroCaption ? (
+            {article.imageUrl ? (
+              <div className="border-line relative mb-3 h-[400px] w-full overflow-hidden rounded-sm border">
+                <Image
+                  src={article.imageUrl}
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 760px"
+                  className="object-cover"
+                  // Wire art is decorative here: the headline above already
+                  // carries the meaning, and the feed supplies no caption to
+                  // build honest alt text from.
+                  priority
+                />
+              </div>
+            ) : (
+              <ImageSlot className="mb-3 h-[400px] w-full" />
+            )}
+            {(article.heroCaption ?? article.sourceName) ? (
               <p className="text-ink-faint mb-8.5 text-[12.5px]">
-                {article.heroCaption}{' '}
-                <span className="text-ink-ghost">{t('photoCredit')}</span>
+                {article.heroCaption ?? ''}{' '}
+                <span className="text-ink-ghost">
+                  {article.sourceName
+                    ? t('photoVia', { source: article.sourceName })
+                    : t('photoCredit')}
+                </span>
               </p>
             ) : null}
 
@@ -130,7 +160,7 @@ export function ArticlePage({
                 key={paragraph.slice(0, 40)}
                 className="mb-5 text-lg leading-[1.72] text-[color:var(--ink-secondary)]"
               >
-                {paragraph}
+                <GlossaryText text={paragraph} linker={linker} />
               </p>
             ))}
 
@@ -144,7 +174,7 @@ export function ArticlePage({
                     key={paragraph.slice(0, 40)}
                     className="mb-5 text-lg leading-[1.72] text-[color:var(--ink-secondary)]"
                   >
-                    {paragraph}
+                    <GlossaryText text={paragraph} linker={linker} />
                   </p>
                 ))}
 
@@ -253,6 +283,33 @@ export function ArticlePage({
                         </Link>
                       </h3>
                       <ArticleMeta article={entry} className="text-[12.5px]" />
+
+                      {/* Required attribution. The wire supplies the text; the story is
+                the publisher's, and every page has to say so and point back
+                at the original. */}
+                      {article.sourceUrl ? (
+                        <aside className="border-line bg-surface-muted mt-9 rounded-sm border p-5.5">
+                          <p className="text-ink-subtle mb-2 text-[13.5px]">
+                            {t('source.credit', {
+                              source:
+                                article.sourceName ?? t('source.fallbackName'),
+                            })}
+                          </p>
+                          <a
+                            href={article.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            className="text-accent text-[14.5px] font-medium hover:underline"
+                          >
+                            {t('source.readOriginal')}
+                          </a>
+                          {article.translated ? (
+                            <p className="text-ink-faint mt-2.5 text-[12.5px]">
+                              {t('source.machineTranslated')}
+                            </p>
+                          ) : null}
+                        </aside>
+                      ) : null}
                     </article>
                   ))}
                 </div>

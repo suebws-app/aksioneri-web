@@ -9,9 +9,12 @@ import {
   LessonPage,
 } from '@/features/learn';
 import { getQuote } from '@/features/markets';
-import { getArticleBySlug } from '@/features/news';
+import { getGlossary } from '@/features/learn/learnData';
+import { findArticleForLesson } from '@/features/learn/matchNews';
+import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
+import { learningResourceSchema } from '@/lib/seo/schemas';
 
 interface PageProps {
   params: Promise<{ locale: Locale; slug: string }>;
@@ -66,18 +69,39 @@ export default async function Page({ params }: PageProps) {
     .map((next) => everyLesson.find((entry) => entry.slug === next))
     .filter((entry) => entry !== undefined);
 
+  // Matched against the live wire rather than looked up by a stored slug.
+  // Article slugs are generated per feed item and rotate hourly, so the nine
+  // slugs the lessons used to carry never resolved even once.
+  const relatedArticle = findArticleForLesson(
+    lesson,
+    await getArticles(locale),
+    getGlossary(locale),
+  );
+
+  const schema = learningResourceSchema(locale, {
+    title: lesson.title,
+    description: lesson.summary,
+    slug: lesson.slug,
+    readingMinutes: lesson.readingMinutes,
+    level: lesson.level,
+    ...(lesson.track ? { topic: lesson.track.topicTitle } : {}),
+  });
+
   return (
-    <LessonPage
-      lesson={lesson}
-      upNext={upNext}
-      relatedQuotes={(lesson.relatedSymbols ?? [])
-        .map((symbol) => getQuote(locale, symbol))
-        .filter((quote) => quote !== null)}
-      relatedArticle={
-        lesson.relatedArticleSlug
-          ? getArticleBySlug(locale, lesson.relatedArticleSlug)
-          : null
-      }
-    />
+    <>
+      <script
+        type="application/ld+json"
+        // Built from constants and our own content, never user input.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <LessonPage
+        lesson={lesson}
+        upNext={upNext}
+        relatedQuotes={(lesson.relatedSymbols ?? [])
+          .map((symbol) => getQuote(locale, symbol))
+          .filter((quote) => quote !== null)}
+        relatedArticle={relatedArticle}
+      />
+    </>
   );
 }

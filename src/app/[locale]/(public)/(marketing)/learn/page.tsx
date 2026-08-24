@@ -4,6 +4,7 @@ import {
   getFeaturedLessons,
   getGlossary,
   getLearnStats,
+  getLessons,
   getTopics,
   LearnPage,
 } from '@/features/learn';
@@ -34,11 +35,27 @@ export default async function Page({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const topics = getTopics(locale);
+
+  // Built here rather than in the component: this is the only place that can
+  // see the lesson bodies, and the whole point is not to ship them.
+  const searchIndex = topics.flatMap((topic) =>
+    topic.lessons.map((lesson) => ({
+      slug: lesson.slug,
+      title: lesson.title,
+      summary: lesson.summary,
+      topic: topic.title,
+      terms: (lesson.keyTerms ?? []).map((term) => term.term),
+    })),
+  );
+
   return (
     <LearnPage
       stats={getLearnStats()}
       startHere={getFeaturedLessons(locale)}
-      topics={getTopics(locale)}
+      allLessons={getLessons(locale)}
+      topics={topics}
+      searchIndex={searchIndex}
       glossary={getGlossary(locale)}
     />
   );

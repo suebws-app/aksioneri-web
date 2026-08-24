@@ -3,7 +3,13 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { Link } from '@/i18n/navigation';
+import { ContinueReading } from './components/ContinueReading';
 import { LessonCard } from './components/LessonCard';
+import {
+  LessonSearch,
+  type LessonSearchEntry,
+} from './components/LessonSearch';
+import { TopicProgress } from './components/TopicProgress';
 import type {
   GlossaryTerm,
   LearnStats,
@@ -14,21 +20,22 @@ import type {
 export interface LearnPageProps {
   stats: LearnStats;
   startHere: Lesson[];
+  /** Every lesson, so "continue where you left off" can resolve a title. */
+  allLessons: Lesson[];
+  /** Trimmed index for the search box — titles and terms, never bodies. */
+  searchIndex: LessonSearchEntry[];
   /** First topic renders as a detailed list; the rest as compact columns. */
   topics: LessonTopic[];
   glossary: GlossaryTerm[];
-  /** Mirrors the design's sc-if props. */
-  showJargonBuster?: boolean;
-  showNewsletter?: boolean;
 }
 
 export function LearnPage({
   stats,
   startHere,
+  allLessons,
+  searchIndex,
   topics,
   glossary,
-  showJargonBuster = true,
-  showNewsletter = true,
 }: LearnPageProps) {
   const t = useTranslations('learn');
 
@@ -85,6 +92,10 @@ export function LearnPage({
         </section>
 
         <div className="mx-auto max-w-[1280px] px-6 pt-11 sm:px-11">
+          <LessonSearch entries={searchIndex} />
+
+          <ContinueReading lessons={allLessons} />
+
           <SectionHeading
             title={t('startHere')}
             size="lg"
@@ -110,6 +121,10 @@ export function LearnPage({
               action={{
                 label: t('lessonCount', { count: primaryTopic.lessonCount }),
               }}
+            />
+            <TopicProgress
+              slugs={primaryTopic.lessons.map((lesson) => lesson.slug)}
+              title={primaryTopic.title}
             />
             <ul>
               {primaryTopic.lessons.map((lesson) => (
@@ -151,6 +166,10 @@ export function LearnPage({
                   label: t('lessonCount', { count: topic.lessonCount }),
                 }}
               />
+              <TopicProgress
+                slugs={topic.lessons.map((lesson) => lesson.slug)}
+                title={topic.title}
+              />
               <ul>
                 {topic.lessons.map((lesson) => (
                   <li
@@ -175,73 +194,46 @@ export function LearnPage({
           ))}
         </div>
 
-        {showJargonBuster ? (
-          <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
-            <section className="border-line bg-surface rounded-sm border p-8 sm:p-9">
-              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <h2 className="text-ink mb-1.5 font-serif text-[25px] font-medium">
-                    {t('jargon.heading')}
-                  </h2>
-                  <p className="text-ink-muted text-[15px]">
-                    {t('jargon.subheading')}
-                  </p>
-                </div>
-                {/* A full glossary page does not exist yet, so the count is
-                    stated rather than linked. */}
-                <span className="text-ink-faint text-[13px]">
-                  {t('jargon.seeAll', { count: 120 })}
-                </span>
-              </div>
-
-              <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-                {glossary.map((entry, index) => (
-                  <div
-                    key={entry.term}
-                    className={
-                      index === 0
-                        ? 'lg:pr-6.5'
-                        : 'lg:border-line-soft lg:border-l lg:px-6.5 lg:last:pr-0'
-                    }
-                  >
-                    <dt className="text-ink mb-1.5 text-base font-medium">
-                      {entry.term}
-                    </dt>
-                    <dd className="text-ink-muted text-[14.5px] leading-relaxed">
-                      {entry.definition}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          </div>
-        ) : null}
-
-        {showNewsletter ? (
-          <section className="border-line bg-surface-muted border-t">
-            <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-6 py-11 sm:px-11 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-[560px]">
-                <h2 className="text-ink mb-2 font-serif text-[25px] font-medium">
-                  {t('newsletter.heading')}
+        <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
+          <section className="border-line bg-surface rounded-sm border p-8 sm:p-9">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="text-ink mb-1.5 font-serif text-[25px] font-medium">
+                  {t('jargon.heading')}
                 </h2>
-                <p className="text-ink-muted text-[15.5px] leading-relaxed">
-                  {t('newsletter.body')}
+                <p className="text-ink-muted text-[15px]">
+                  {t('jargon.subheading')}
                 </p>
               </div>
-
-              {/* Signup has no backend yet. Rendered as the design has it —
-                  inert — rather than as a form that silently drops addresses. */}
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="bg-surface text-ink-ghost inline-flex min-w-70 items-center rounded-sm border border-[#d9d4c8] px-4 py-3 text-[15px]">
-                  {t('newsletter.placeholder')}
-                </span>
-                <span className="bg-accent text-ink-inverse rounded-sm px-5.5 py-3.5 text-sm font-medium">
-                  {t('newsletter.subscribe')}
-                </span>
-              </div>
+              <Link
+                href="/learn/glossary"
+                className="text-accent text-[13px] hover:underline"
+              >
+                {t('jargon.seeAll', { count: stats.glossarySize })}
+              </Link>
             </div>
+
+            <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+              {glossary.map((entry, index) => (
+                <div
+                  key={entry.term}
+                  className={
+                    index === 0
+                      ? 'lg:pr-6.5'
+                      : 'lg:border-line-soft lg:border-l lg:px-6.5 lg:last:pr-0'
+                  }
+                >
+                  <dt className="text-ink mb-1.5 text-base font-medium">
+                    {entry.term}
+                  </dt>
+                  <dd className="text-ink-muted text-[14.5px] leading-relaxed">
+                    {entry.definition}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </section>
-        ) : null}
+        </div>
       </main>
 
       <SiteFooter />

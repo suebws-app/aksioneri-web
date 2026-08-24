@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { LessonTick } from './LessonTick';
 import type { Lesson } from '../learnTypes';
 
 /**
@@ -23,6 +24,7 @@ export function LessonCard({ lesson, index }: LessonCardProps) {
       <div className="text-ink-ghost mb-8 font-mono text-xs">
         {String(index + 1).padStart(2, '0')}
       </div>
+      <LessonTick slug={lesson.slug} />
       <h3 className="text-ink mb-2.5 font-serif text-[22px] font-medium">
         {lesson.title}
       </h3>

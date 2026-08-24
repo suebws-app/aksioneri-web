@@ -4,21 +4,25 @@ import { SiteHeader } from '@/components/SiteHeader';
 import type { CalendarEvent } from '@/features/calendar';
 import { formatTimestamp } from '@/features/calendar/formatDate';
 import { ComingUp } from '@/features/markets/components/ComingUp';
-import { TickerStrip } from '@/features/markets/components/TickerStrip';
-import type { Quote } from '@/features/markets/marketsTypes';
+import { MarketTicker } from '@/features/markets/components/MarketTicker';
 import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
 import { ArticleCard } from './components/ArticleCard';
+import { ArticleFeed } from './components/ArticleFeed';
 import { CategoryTabs, type CategoryFilter } from './components/CategoryTabs';
 import { MostRead } from './components/MostRead';
 import { WhyItMatters } from './components/WhyItMatters';
-import type { MostReadEntry } from './newsData';
-import type { NewsArticle } from './newsTypes';
+import type {
+  ArticleFeed as ArticleFeedPage,
+  MostReadEntry,
+  NewsArticle,
+} from './newsTypes';
 
 export interface NewsPageProps {
-  tickerQuotes: Quote[];
-  lead: NewsArticle;
-  articles: NewsArticle[];
+  /** Null while the wire is empty — a cold API, or a first ingest still running. */
+  lead: NewsArticle | null;
+  /** Page one of the wire; the feed appends the rest in place. */
+  feed: ArticleFeedPage;
   mostRead: MostReadEntry[];
   upcomingEvents: CalendarEvent[];
   category: CategoryFilter;
@@ -29,9 +33,8 @@ export interface NewsPageProps {
 }
 
 export function NewsPage({
-  tickerQuotes,
   lead,
-  articles,
+  feed,
   mostRead,
   upcomingEvents,
   category,
@@ -45,7 +48,7 @@ export function NewsPage({
   return (
     <div className="bg-paper flex min-h-screen flex-col">
       <SiteHeader active="news" />
-      <TickerStrip quotes={tickerQuotes} />
+      <MarketTicker />
 
       <main className="flex-1">
         <div className="mx-auto max-w-[1280px] px-6 pt-10 sm:px-11">
@@ -66,39 +69,22 @@ export function NewsPage({
 
         <div className="mx-auto flex max-w-[1280px] flex-col gap-11 px-6 pt-8.5 pb-11 sm:px-11 lg:flex-row">
           <div className="min-w-0 flex-1">
-            <div className="border-ink border-b-2 pb-8">
-              <ArticleCard article={lead} variant="lead" />
-              {showWhyItMatters && lead.whyItMatters ? (
-                <div className="mt-5.5">
-                  <WhyItMatters>{lead.whyItMatters}</WhyItMatters>
-                </div>
-              ) : null}
-            </div>
-
-            {articles.length > 0 ? (
-              <>
-                {articles.map((article) => (
-                  <div
-                    key={article.id}
-                    className="border-line-soft border-b py-6.5 last:border-b-0"
-                  >
-                    <ArticleCard article={article} variant="list" />
+            {lead ? (
+              <div className="border-ink border-b-2 pb-8">
+                <ArticleCard article={lead} variant="lead" />
+                {showWhyItMatters && lead.whyItMatters ? (
+                  <div className="mt-5.5">
+                    <WhyItMatters>{lead.whyItMatters}</WhyItMatters>
                   </div>
-                ))}
+                ) : null}
+              </div>
+            ) : null}
 
-                {/* Pagination is not wired yet — the control is shown as the
-                    design has it, inactive, rather than linking nowhere. */}
-                <div className="flex justify-center pt-3">
-                  <span className="text-ink rounded-sm border border-[#d9d4c8] px-6.5 py-3 text-sm font-medium">
-                    {t('loadMore')}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <p className="text-ink-faint py-10 text-center text-[15px]">
-                {t('emptyCategory')}
-              </p>
-            )}
+            <ArticleFeed
+              initialPage={feed}
+              {...(category === 'all' ? {} : { category })}
+              {...(lead ? { excludeId: lead.id } : {})}
+            />
           </div>
 
           <div className="flex flex-col gap-6 lg:w-84 lg:shrink-0">

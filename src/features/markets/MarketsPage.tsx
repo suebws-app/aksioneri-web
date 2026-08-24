@@ -12,22 +12,17 @@ import { ArticleCard } from '@/features/news/components/ArticleCard';
 import { WhyItMatters } from '@/features/news/components/WhyItMatters';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import { ComingUp } from './components/ComingUp';
-import { IndexChart } from './components/IndexChart';
+import { MarketMiniChart } from './components/MarketMiniChart';
 import { MarketMovers } from './components/MarketMovers';
 import { QuoteTable } from './components/QuoteTable';
-import { TickerStrip } from './components/TickerStrip';
-import type {
-  IndexSnapshot,
-  MarketMovers as Movers,
-  Quote,
-} from './marketsTypes';
+import { MarketTicker } from './components/MarketTicker';
+import type { MarketMovers as Movers, Quote } from './marketsTypes';
 
 export interface MarketsPageProps {
-  tickerQuotes: Quote[];
   quotes: Quote[];
-  leadIndex: IndexSnapshot;
   movers: Movers;
-  featured: NewsArticle;
+  /** Null while the wire is empty — a cold API, or a first ingest still running. */
+  featured: NewsArticle | null;
   sidebarStories: NewsArticle[];
   latestNews: NewsArticle[];
   upcomingEvents: CalendarEvent[];
@@ -41,9 +36,7 @@ export interface MarketsPageProps {
 }
 
 export function MarketsPage({
-  tickerQuotes,
   quotes,
-  leadIndex,
   movers,
   featured,
   sidebarStories,
@@ -61,7 +54,7 @@ export function MarketsPage({
   return (
     <div className="bg-paper flex min-h-screen flex-col">
       <SiteHeader active="markets" />
-      <TickerStrip quotes={tickerQuotes} />
+      <MarketTicker />
 
       <main className="flex-1">
         <div className="mx-auto max-w-[1280px] px-6 pt-11 pb-10 sm:px-11">
@@ -73,11 +66,15 @@ export function MarketsPage({
 
           <div className="mt-7.5 flex flex-col gap-11 lg:flex-row">
             <div className="min-w-0 flex-1">
-              <ArticleCard article={featured} variant="lead" />
-              {showWhyItMatters && featured.whyItMatters ? (
-                <div className="mt-6">
-                  <WhyItMatters>{featured.whyItMatters}</WhyItMatters>
-                </div>
+              {featured ? (
+                <>
+                  <ArticleCard article={featured} variant="lead" />
+                  {showWhyItMatters && featured.whyItMatters ? (
+                    <div className="mt-6">
+                      <WhyItMatters>{featured.whyItMatters}</WhyItMatters>
+                    </div>
+                  ) : null}
+                </>
               ) : null}
             </div>
 
@@ -90,7 +87,7 @@ export function MarketsPage({
                   <ArticleCard article={story} variant="sidebar" />
                 </div>
               ))}
-              <IndexChart snapshot={leadIndex} />
+              <MarketMiniChart symbol="sp-500" className="pt-6" />
             </div>
           </div>
         </div>

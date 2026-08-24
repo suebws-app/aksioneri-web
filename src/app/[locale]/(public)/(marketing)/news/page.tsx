@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
-import { getTickerQuotes, MARKET_TIMESTAMP } from '@/features/markets';
+import { MARKET_TIMESTAMP } from '@/features/markets';
 import {
-  getArticles,
+  getArticlePage,
   getFeaturedArticle,
   getMostRead,
   NewsPage,
@@ -24,6 +24,13 @@ const CATEGORIES: NewsCategory[] = [
 
 const isCategory = (value: string): value is NewsCategory =>
   (CATEGORIES as string[]).includes(value);
+
+/** A repeated query parameter arrives as an array; take the first value. */
+const first = (value: string | string[] | undefined): string | undefined =>
+  Array.isArray(value) ? value[0] : value;
+
+/** Matches the API's poll interval — see `lib/api/news.ts`. */
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -52,29 +59,23 @@ export default async function Page({
   setRequestLocale(locale);
 
   const query = await searchParams;
-  const raw = Array.isArray(query.category)
-    ? query.category[0]
-    : query.category;
+  const raw = first(query.category);
   const category: CategoryFilter = raw && isCategory(raw) ? raw : 'all';
-
-  const all = getArticles(locale);
-  const lead = getFeaturedArticle(locale);
+  // Filtering happens in the API. Filtering a page that has already been
+  // truncated to twenty would leave a thin desk showing two stories when it
+  // has fifty. Paging is client-side from here — see `ArticleFeed`.
+  const [feed, lead, mostRead] = await Promise.all([
+    getArticlePage(locale, category === 'all' ? {} : { category }),
+    getFeaturedArticle(locale),
+    getMostRead(locale),
+  ]);
   const week = getCalendarWeek(locale);
-
-  // The lead is printed in full at the top, so it is excluded from the list
-  // below to avoid running the same headline twice on one page.
-  const rest = all.filter(
-    (article) =>
-      article.id !== lead.id &&
-      (category === 'all' || article.category === category),
-  );
 
   return (
     <NewsPage
-      tickerQuotes={getTickerQuotes(locale)}
       lead={lead}
-      articles={rest}
-      mostRead={getMostRead(locale)}
+      feed={feed}
+      mostRead={mostRead}
       upcomingEvents={
         week.days
           .find((day) => day.date === week.selectedDate)
