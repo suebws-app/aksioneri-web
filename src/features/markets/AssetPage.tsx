@@ -3,6 +3,7 @@ import { ChangeValue } from '@/components/ChangeValue';
 import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import { Sparkline } from '@/components/Sparkline';
 import type { CalendarEvent } from '@/features/calendar';
 import type { Lesson } from '@/features/learn/learnTypes';
@@ -44,7 +45,7 @@ export function AssetPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="markets" />
+      <SiteHeader active="markets" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <nav

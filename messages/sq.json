@@ -116,7 +116,7 @@
     "latestNewsHeading": "Lajmet e fundit",
     "viewAllNews": "Shiko të gjitha lajmet →",
     "learnHeading": "Mëso të investosh",
-    "learnSubheading": "Kupto investimin pa zhargon.",
+    "learnSubheading": "Kupto investimin, thjesht.",
     "exploreLearn": "Eksploro Qendrën e Mësimit →",
     "columns": {
       "asset": "Aktivi",
@@ -189,14 +189,14 @@
     "mostRead": "Më të lexuarat sot",
     "newToThis": "I ri në këtë?",
     "glossaryHeading": "Termat e artikujve të sotëm, të shpjeguar",
-    "glossaryBody": "Udhëzim, inflacion, fluks në ETF — përkufizime të shkurtra, pa zhargon.",
+    "glossaryBody": "Udhëzim, inflacion, fluks në ETF — përkufizime të shkurtra, me fjalë të thjeshta.",
     "openLearn": "Hap Qendrën e Mësimit →",
     "breadcrumbLabel": "Shtegu i navigimit",
     "notFoundTitle": "Artikulli nuk u gjet",
     "photoCredit": "Kredite fotografie",
     "inNumbers": "Në shifra",
     "termsHeading": "Termat në këtë artikull",
-    "jargonBuster": "Shkatërruesi i zhargonit →",
+    "jargonBuster": "Sqarues i termave →",
     "moreOnThis": "Më shumë për këtë temë",
     "mentioned": "Përmendur në këtë artikull",
     "nextRelease": "Publikimi i radhës",
@@ -221,7 +221,7 @@
   },
   "learn": {
     "metaTitle": "Qendra e Mësimit",
-    "metaDescription": "Mësime të shkurtra që shpjegojnë investimin, tregjet dhe shifrat ekonomike pa zhargon dhe pa supozime.",
+    "metaDescription": "Mësime të shkurtra që shpjegojnë investimin, tregjet dhe shifrat ekonomike thjesht, pa supozime.",
     "heading": "Qendra e Mësimit",
     "meta": "{minutes} min · {level}",
     "levels": {
@@ -230,11 +230,11 @@
       "advanced": "I avancuar"
     },
     "heroHeading": "Mëso të investosh",
-    "heroBody": "Kupto investimin pa zhargon. Mësime të shkurtra në gjuhë të thjeshtë, të shkruara për njerëz që nisin nga zeroja.",
+    "heroBody": "Kupto investimin, thjesht. Mësime të shkurtra, të shkruara për njerëz që nisin nga zeroja.",
     "stats": {
       "lessons": "mësime",
       "averageRead": "lexim mesatar",
-      "jargon": "zhargon i lejuar",
+      "jargon": "fjalë të vështira",
       "minutesValue": "{minutes} min"
     },
     "startHere": "Nis këtu",
@@ -256,7 +256,7 @@
     "inTodaysNews": "Në lajmet e sotme",
     "vocabularyNote": "Një artikull ku fjalori i këtij mësimi shfaqet që në paragrafin e parë.",
     "jargon": {
-      "heading": "Shkatërruesi i zhargonit",
+      "heading": "Sqarues i termave",
       "subheading": "Fjalë që do t’i takoni në lajmet e sotme, nga një rresht secila.",
       "seeAll": "{count} terma gjithsej"
     },
@@ -266,6 +266,7 @@
     "markedAsRead": "E lexuar",
     "progressStoredLocally": "Përparimi ruhet vetëm në këtë pajisje.",
     "continueReading": "Vazhdo aty ku e late",
+    "lastRead": "Lexuar së fundi",
     "topicProgress": "{done} nga {total} të përfunduara",
     "clearProgress": "Fshi përparimin",
     "clearProgressConfirm": "Përparimi u fshi.",
@@ -285,6 +286,29 @@
       "label": "Kërko mësime",
       "placeholder": "Kërko një mësim ose term…",
       "noResults": "Asnjë mësim nuk përputhet."
+    }
+  },
+  "search": {
+    "metaTitle": "Kërko",
+    "metaDescription": "Kërko nëpër mësimet, fjalorin, lajmet, tregjet dhe kalendarin ekonomik të Aksioneri — gjithçka në një vend.",
+    "heading": "Kërko",
+    "intro": "Shkruaj një fjalë dhe kërko njëherësh nëpër mësime, fjalor, lajme, tregje dhe kalendar.",
+    "label": "Kërko në faqe",
+    "placeholder": "p.sh. inflacioni, ETF, obligacione",
+    "submit": "Kërko",
+    "prompt": "Shkruaj diçka më lart për të filluar kërkimin.",
+    "loading": "Po ngarkohet…",
+    "failed": "Kërkimi nuk u ngarkua. Provo prapë.",
+    "count": "{count, plural, one {# rezultat} other {# rezultate}} për “{query}”",
+    "empty": "Asnjë rezultat për “{query}”.",
+    "emptyHint": "Provo një fjalë më të shkurtër ose një term tjetër — p.sh. “dividend” në vend të “dividendët e mia”.",
+    "kinds": {
+      "page": "Faqe",
+      "lesson": "Mësime",
+      "term": "Fjalori",
+      "market": "Tregjet",
+      "article": "Lajme",
+      "event": "Kalendari"
     }
   }
 }

@@ -7,9 +7,11 @@ import { appUrl } from '@/lib/seo/urls';
  * (`/en/foo`), so each entry is emitted in both forms — otherwise a crawler
  * reaches the path through the prefix.
  *
- * The site is entirely public right now; only the route handlers are excluded.
+ * The site is entirely public right now. Excluded are the route handlers and
+ * the search results page: `/search?q=` is one URL per query, thin, and every
+ * result duplicates a page that is already indexed on its own.
  */
-const PRIVATE_PATHS = ['/api/'];
+const PRIVATE_PATHS = ['/api/', '/search'];
 
 export default function robots(): MetadataRoute.Robots {
   return {

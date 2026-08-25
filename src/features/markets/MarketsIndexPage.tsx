@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import { formatTimestamp } from '@/features/calendar/formatDate';
 import type { Locale } from '@/i18n/config';
 import { QuoteTable } from './components/QuoteTable';
@@ -27,7 +28,7 @@ export function MarketsIndexPage({ groups, updatedAt }: MarketsIndexPageProps) {
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="markets" />
+      <SiteHeader active="markets" searchSlot={<NavSearch />} />
       <MarketTicker />
 
       <main className="flex-1">

@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import { Link } from '@/i18n/navigation';
 import type { GlossaryTerm } from './learnTypes';
 import { GlossarySearch } from './components/GlossarySearch';
@@ -22,7 +23,7 @@ export function GlossaryPage({ terms }: GlossaryPageProps) {
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="learn" />
+      <SiteHeader active="learn" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">

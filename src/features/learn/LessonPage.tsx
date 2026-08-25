@@ -2,9 +2,11 @@ import { useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import { Link } from '@/i18n/navigation';
+import { LessonOutline, type OutlineEntry } from './components/LessonOutline';
 import { LessonQuiz } from './components/LessonQuiz';
 import { MarkAsRead } from './components/MarkAsRead';
 import { cn } from '@/lib/utils/cn';
@@ -48,7 +50,7 @@ export function LessonPage({
   // Section headings drive the "on this page" rail, so the two can never
   // drift. Each carries the id its section renders with, so the rail links
   // somewhere — it used to be a list of plain <li> over headings with no ids.
-  const outline: { id: string; label: string }[] = [
+  const outline: OutlineEntry[] = [
     ...(lesson.inOneSentence
       ? [{ id: 'in-one-sentence', label: t('inOneSentence') }]
       : []),
@@ -71,7 +73,7 @@ export function LessonPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="learn" />
+      <SiteHeader active="learn" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <nav
@@ -106,25 +108,7 @@ export function LessonPage({
               <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
                 {t('onThisPage')}
               </h2>
-              {/* Plain anchors rather than scroll-spy: the first item stays
-                  marked as current, which is honest for a jump list. */}
-              <ol className="flex flex-col text-[14.5px]">
-                {outline.map((entry, index) => (
-                  <li key={entry.id}>
-                    <a
-                      href={`#${entry.id}`}
-                      className={cn(
-                        'hover:text-accent block border-l-2 py-2.5 pl-3.5',
-                        index === 0
-                          ? 'border-accent text-ink font-medium'
-                          : 'border-line text-ink-subtle',
-                      )}
-                    >
-                      {entry.label}
-                    </a>
-                  </li>
-                ))}
-              </ol>
+              <LessonOutline entries={outline} />
 
               {lesson.track ? (
                 <div className="border-line mt-6.5 border-t pt-5.5">

@@ -2,9 +2,11 @@ import { useTranslations } from 'next-intl';
 import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import { Link } from '@/i18n/navigation';
 import { ContinueReading } from './components/ContinueReading';
 import { LessonCard } from './components/LessonCard';
+import { LessonTick } from './components/LessonTick';
 import {
   LessonSearch,
   type LessonSearchEntry,
@@ -47,7 +49,7 @@ export function LearnPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="learn" />
+      <SiteHeader active="learn" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">
@@ -130,15 +132,23 @@ export function LearnPage({
               {primaryTopic.lessons.map((lesson) => (
                 <li
                   key={lesson.id}
-                  className="border-line grid grid-cols-[1fr_auto_auto] items-center gap-x-8 border-t py-4 last:border-b"
+                  // The whole row is the hit target: the title alone is a
+                  // thin thing to aim at, and the summary beside it looked
+                  // clickable without being so. `after:inset-0` on the link
+                  // stretches it over the row while the accessible name stays
+                  // the title, rather than title plus level plus minutes.
+                  className="border-line hover:bg-accent/10 group relative -mx-3 grid grid-cols-[1fr_auto_auto] items-center gap-x-8 border-t px-3 py-4 transition-colors last:border-b"
                 >
                   <div>
-                    <Link
-                      href={`/learn/${lesson.slug}`}
-                      className="text-ink hover:text-accent mb-1 block text-base"
-                    >
-                      {lesson.title}
-                    </Link>
+                    <div className="mb-1 flex flex-wrap items-center gap-x-3">
+                      <Link
+                        href={`/learn/${lesson.slug}`}
+                        className="text-ink group-hover:text-accent text-base transition-colors after:absolute after:inset-0 after:z-10"
+                      >
+                        {lesson.title}
+                      </Link>
+                      <LessonTick slug={lesson.slug} variant="inline" />
+                    </div>
                     {lesson.summary ? (
                       <p className="text-ink-faint text-sm">{lesson.summary}</p>
                     ) : null}
@@ -174,14 +184,17 @@ export function LearnPage({
                 {topic.lessons.map((lesson) => (
                   <li
                     key={lesson.id}
-                    className="border-line flex justify-between gap-5 border-t py-4 last:border-b"
+                    className="border-line hover:bg-accent/10 group relative -mx-3 flex justify-between gap-5 border-t px-3 py-4 transition-colors last:border-b"
                   >
-                    <Link
-                      href={`/learn/${lesson.slug}`}
-                      className="text-ink hover:text-accent text-base"
-                    >
-                      {lesson.title}
-                    </Link>
+                    <span className="flex flex-wrap items-center gap-x-3">
+                      <Link
+                        href={`/learn/${lesson.slug}`}
+                        className="text-ink group-hover:text-accent text-base transition-colors after:absolute after:inset-0 after:z-10"
+                      >
+                        {lesson.title}
+                      </Link>
+                      <LessonTick slug={lesson.slug} variant="inline" />
+                    </span>
                     <span className="text-ink-subtle font-mono text-[13px] whitespace-nowrap">
                       {t('stats.minutesValue', {
                         minutes: lesson.readingMinutes,

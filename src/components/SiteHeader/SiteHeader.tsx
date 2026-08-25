@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
@@ -16,9 +17,18 @@ const HREF: Record<SiteSection, string> = {
 interface SiteHeaderProps {
   /** The section to mark as current. */
   active?: SiteSection;
+  /**
+   * The search control, rendered at the end of the nav.
+   *
+   * A slot rather than an import: search reads lesson, glossary, wire and
+   * calendar data, and a shared component that reached into features would
+   * invert the dependency (enforced by `boundaries/dependencies`). Pages pass
+   * `<NavSearch />` from `@/features/search`.
+   */
+  searchSlot?: ReactNode;
 }
 
-export function SiteHeader({ active }: SiteHeaderProps) {
+export function SiteHeader({ active, searchSlot }: SiteHeaderProps) {
   const t = useTranslations('nav');
 
   return (
@@ -58,24 +68,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
               );
             })}
 
-            <li>
-              {/* Search has no route yet; shown as the design does, inactive. */}
-              <span className="text-ink-subtle flex items-center gap-[7px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  aria-hidden
-                >
-                  <circle cx="7" cy="7" r="4.6" />
-                  <path d="M10.4 10.4L14 14" />
-                </svg>
-                {t('search')}
-              </span>
-            </li>
+            {searchSlot ? <li>{searchSlot}</li> : null}
           </ul>
         </nav>
       </div>

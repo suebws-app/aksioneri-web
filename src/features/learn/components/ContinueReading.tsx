@@ -2,12 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { continueTarget } from '../continueTarget';
 import { useHasHydrated, useLearnProgress } from '../useLearnProgress';
 import type { Lesson } from '../learnTypes';
 
 /**
- * "Continue where you left off", shown only once the reader has actually
- * opened something and not yet finished it.
+ * "Continue where you left off".
  *
  * Takes the whole lesson list as props rather than looking anything up: this
  * is a client component, and shipping the resolver to the browser to find one
@@ -21,26 +21,32 @@ export function ContinueReading({ lessons }: { lessons: Lesson[] }) {
   const clearAll = useLearnProgress((state) => state.clearAll);
 
   const anyProgress = hydrated && Object.keys(completed).length > 0;
-  const lesson =
-    hydrated && lastVisited && !completed[lastVisited]
-      ? lessons.find((entry) => entry.slug === lastVisited)
-      : undefined;
+  const target = hydrated
+    ? continueTarget(lessons, lastVisited, completed)
+    : null;
 
-  if (!lesson && !anyProgress) return null;
+  if (!target && !anyProgress) return null;
 
   return (
     <div className="border-line bg-surface-muted mb-8 flex flex-wrap items-center justify-between gap-4 rounded-sm border p-5.5">
-      {lesson ? (
+      {target ? (
         <div>
           <p className="text-accent mb-1 text-[11px] font-semibold tracking-[0.12em] uppercase">
-            {t('continueReading')}
+            {target.done ? t('lastRead') : t('continueReading')}
           </p>
-          <Link
-            href={`/learn/${lesson.slug}`}
-            className="text-ink hover:text-accent font-serif text-[19px]"
-          >
-            {lesson.title}
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href={`/learn/${target.lesson.slug}`}
+              className="text-ink hover:text-accent font-serif text-[19px]"
+            >
+              {target.lesson.title}
+            </Link>
+            {target.done ? (
+              <span className="text-positive border-positive rounded-full border px-2.5 py-0.5 text-[11px] font-medium">
+                ✓ {t('markedAsRead')}
+              </span>
+            ) : null}
+          </div>
         </div>
       ) : (
         <span />

@@ -4,6 +4,7 @@ import { ChangeValue } from '@/components/ChangeValue';
 import { ImageSlot } from '@/components/ImageSlot';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import type { CalendarEvent } from '@/features/calendar';
 import { formatTimestamp } from '@/features/calendar/formatDate';
 import type { Quote } from '@/features/markets/marketsTypes';
@@ -54,7 +55,7 @@ export function ArticlePage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="news" />
+      <SiteHeader active="news" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <nav

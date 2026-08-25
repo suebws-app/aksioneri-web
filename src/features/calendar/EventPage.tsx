@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import type { Lesson } from '@/features/learn/learnTypes';
 import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
@@ -109,7 +110,7 @@ export function EventPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="calendar" />
+      <SiteHeader active="calendar" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <nav

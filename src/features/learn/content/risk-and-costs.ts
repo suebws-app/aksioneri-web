@@ -34,37 +34,37 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
-    title: { sq: 'Çfarë do të thotë vërtet rrezik' },
+    title: { sq: 'Çka do të thotë vërtet rrezik' },
     summary: {
-      sq: 'Jo luhatja e çmimit, por mundësia që të mos i keni paratë kur ju duhen.',
+      sq: 'Jo luhatja e çmimit, por mundësia të mos i keni paratë kur ju duhen.',
     },
     inOneSentence: {
-      sq: 'Rreziku i vërtetë nuk është që çmimi lëviz, por që të detyroheni të shisni në momentin kur ka lëvizur poshtë.',
+      sq: 'Rreziku i vërtetë nuk është që çmimi luan, por që të detyroheni të shitni pikërisht atëherë kur ka rënë.',
     },
     body: {
       sq: [
         {
           heading: 'Dy përkufizime që ngatërrohen',
           paragraphs: [
-            'Financa akademike e mat rrezikun si luhatje: sa shumë lëviz çmimi rreth mesatares. Ky përkufizim është i matshëm dhe i dobishëm për modele.',
-            'Për një person, rreziku është diçka tjetër: mundësia që të mos arrini qëllimin tuaj. Nëse ju duhen 50.000 € pas dhjetë vjetësh, rreziku është që të keni 30.000 €.',
-            'Këto dy përkufizime shpesh bien ndesh. Paratë në një llogari kursimi kanë luhatje zero dhe rrezik shumë të lartë që të mos arrijnë qëllimin tuaj afatgjatë.',
+            'Financa akademike e mat rrezikun si luhatje: sa shumë luan çmimi rreth mesatares. Ky përkufizim matet lehtë dhe u vjen mirë modeleve.',
+            'Për një njeri, rreziku është diçka tjetër: mundësia të mos e arrini qëllimin tuaj. Nëse ju duhen 50.000 € pas dhjetë vjetësh, rreziku është të mbeteni me 30.000 €.',
+            'Këto dy përkufizime shpesh përplasen. Paratë në një llogari kursimi kanë luhatje zero dhe rrezik shumë të lartë që të mos e arrijnë qëllimin tuaj afatgjatë.',
           ],
         },
         {
           heading: 'Rreziku i sekuencës',
           paragraphs: [
-            'Rendi i kthimeve ka rëndësi, jo vetëm mesatarja e tyre. Dy portofole me të njëjtin kthim mesatar mund të japin rezultate krejt të ndryshme nëse tërhiqni para gjatë rrugës.',
-            'Një rënie e madhe në vitin e parë të pensionit, ndërsa po tërhiqni, dëmton shumë më shumë se e njëjta rënie në vitin e fundit.',
-            'Prandaj sa më afër të jeni datës kur do t’ju duhen paratë, aq më pak duhet të varet rezultati juaj nga tregu.',
+            'Rëndësi ka radha e kthimeve, jo vetëm mesatarja e tyre. Dy portofolë me të njëjtin kthim mesatar mund të japin rezultate krejt të ndryshme nëse tërhiqni para rrugës.',
+            'Një rënie e madhe në vitin e parë të pensionit, kur po tërhiqni para, dëmton shumë më shumë se e njëjta rënie në vitin e fundit.',
+            'Prandaj, sa më afër të jeni ditës kur do t’ju duhen paratë, aq më pak duhet të varet rezultati juaj nga tregu.',
           ],
         },
         {
           heading: 'Rreziqet që nuk maten',
           paragraphs: [
-            'Modelet supozojnë se e ardhmja do t’i ngjajë të kaluarës. Ngjarjet që nuk kanë ndodhur kurrë më parë nuk shfaqen në asnjë statistikë.',
-            'Rrezik është gjithashtu të mos kuptoni se çfarë keni blerë. Një produkt që nuk mund ta shpjegoni me fjalët tuaja është një rrezik pavarësisht se çfarë thonë numrat.',
-            'Testi më i dobishëm mbetet i thjeshtë: çfarë duhet të ndodhë që unë të humbas gjithçka këtu, dhe sa e pamundur është ajo vërtet?',
+            'Modelet e marrin si të mirëqenë se e ardhmja do t’i ngjajë së kaluarës. Ngjarjet që nuk kanë ndodhur kurrë më parë nuk dalin në asnjë statistikë.',
+            'Rrezik është po ashtu të mos e kuptoni çka keni blerë. Një produkt që nuk di ta shpjegosh me fjalët e tua është rrezik, çkado që thonë shifrat.',
+            'Prova më e dobishme mbetet e thjeshtë: çka duhet të ndodhë që t’i humb të gjitha këtu, dhe sa e pamundur është ajo vërtet?',
           ],
         },
       ],
@@ -75,34 +75,34 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'sequence-risk',
           term: 'Rrezik sekuence',
           definition:
-            'Rreziku që rendi i kthimeve, jo mesatarja e tyre, të prishë planin kur po tërhiqni para.',
+            'Rreziku që radha e kthimeve, e jo mesatarja e tyre, ta prishë planin kur po tërhiqni para.',
         },
         {
           slug: 'shortfall-risk',
           term: 'Rrezik mosarritjeje',
           definition:
-            'Mundësia që të mos keni shumën që ju duhet në datën kur ju duhet.',
+            'Mundësia të mos e keni shumën që ju duhet atë ditë që ju duhet.',
         },
         {
           slug: 'tail-risk',
           term: 'Rrezik ekstrem',
           definition:
-            'Ngjarje shumë të rralla dhe shumë të dëmshme, të cilat modelet i nënvlerësojnë sistematikisht.',
+            'Ngjarje shumë të rralla dhe shumë të dëmshme, që modelet i nënçmojnë rregullisht.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Paratë tuaja për pensionin pas njëzet vjetësh rrinë në një llogari kursimi. Cili rrezik është më i madh?',
+          'Paratë tuaja për pension pas njëzet vjetësh rrinë në një llogari kursimi. Cili rrezik është më i madh?',
         options: [
           'Luhatja e çmimit',
-          'Që inflacioni t’i hajë fuqinë blerëse dhe të mos arrini shumën e nevojshme',
-          'Që banka të ndryshojë tarifat',
+          'Që inflacioni t’ua hajë fuqinë blerëse dhe të mos e arrini shumën e nevojshme',
+          'Që banka t’i ndërrojë tarifat',
         ],
         answer: 1,
         explanation:
-          'Luhatja është zero, por rreziku i mosarritjes së qëllimit është i lartë. Siguria e shifrës nuk është siguri e rezultatit.',
+          'Luhatja është zero, por rreziku për të mos e arritur qëllimin është i lartë. Siguria e shifrës nuk është siguri e rezultatit.',
       },
     },
     upNextSlugs: ['inflation-as-a-risk', 'concentration-risk'],
@@ -115,35 +115,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     level: 'intermediate',
     title: { sq: 'Rreziku i monedhës' },
     summary: {
-      sq: 'Një investim i mirë në dollarë mund të jetë një investim i keq në euro.',
+      sq: 'Një investim i mirë në dollarë mund të dalë investim i keq në euro.',
     },
     inOneSentence: {
-      sq: 'Kur blini diçka të çmuar në një monedhë tjetër, merrni dy investime: aktivin dhe monedhën.',
+      sq: 'Kur blini diçka të çmuar në monedhë tjetër, i merrni dy investime: asetin dhe monedhën.',
     },
     body: {
       sq: [
         {
           heading: 'Dy lëvizje, një rezultat',
           paragraphs: [
-            'Blini një ETF amerikan që rritet 10% gjatë vitit. Në të njëjtën kohë dollari dobësohet 10% kundrejt euros. Kthimi juaj në euro është afërsisht zero.',
-            'Kjo funksionon edhe në drejtimin tjetër: një treg i sheshtë amerikan me një dollar që forcohet mund t’ju japë një fitim të mirë në euro.',
-            'Asnjëra nga këto nuk ka lidhje me cilësinë e kompanive që blini. Është thjesht një lëvizje e dytë e mbivendosur mbi të parën.',
+            'E blini një ETF amerikan që rritet për 10% gjatë vitit. Njëkohësisht dollari dobësohet për 10% kundrejt euros. Kthimi juaj në euro del rreth zeros.',
+            'Kjo vlen edhe anasjelltas: një treg amerikan që nuk luan fare, me një dollar që forcohet, mund t’ju japë fitim të mirë në euro.',
+            'Asnjëra prej tyre nuk ka lidhje me cilësinë e kompanive që i blini. Është thjesht një lëvizje e dytë e vendosur mbi të parën.',
           ],
         },
         {
           heading: 'A duhet të mbrohet?',
           paragraphs: [
-            'Mbrojtja nga monedha ka një kosto, që zakonisht reflekton diferencën e normave të interesit mes dy monedhave. Ajo nuk është falas.',
-            'Për aksione afatgjata, shumica e argumenteve shkojnë kundër mbrojtjes: luhatjet valutore priren të balancohen me kalimin e dekadave, dhe kostoja e mbrojtjes akumulohet.',
-            'Për obligacione është e kundërta. Nëse mbani obligacione të huaja për stabilitet, një luhatje valutore prej 10% e shkatërron atë stabilitet — ndaj aty mbrojtja ka kuptim.',
+            'Mbrojtja nga monedha e ka një kosto, që zakonisht pasqyron dallimin e normave të interesit mes dy monedhave. Nuk është falas.',
+            'Për aksione afatgjata, shumica e arsyeve janë kundër mbrojtjes: luhatjet e monedhave priren të barazohen brenda dekadave, kurse kostoja e mbrojtjes grumbullohet.',
+            'Për obligacione është e kundërta. Nëse mbani obligacione të huaja për qëndrueshmëri, një luhatje e monedhës prej 10% e prish atë qëndrueshmëri — prandaj aty mbrojtja ka kuptim.',
           ],
         },
         {
           heading: 'Ku fshihet kostoja',
           paragraphs: [
-            'Kostoja më e madhe valutore për një investitor të vogël nuk është luhatja, por marzhi që platforma merr në çdo konvertim.',
-            'Një marzh prej 0,5% për të blerë dhe 0,5% për të shitur është një përqind e plotë, e paguar sa herë hyni e dilni.',
-            'Kontrolloni gjithmonë kursin e ofruar kundrejt kursit të tregut. Diferenca është një tarifë që rrallë reklamohet si tarifë.',
+            'Kostoja më e madhe e monedhës për një investitor të vogël nuk është luhatja, por marzhi që e merr platforma në çdo këmbim.',
+            'Një marzh prej 0,5% për blerje dhe 0,5% për shitje është një përqind i plotë, i paguar sa herë që hyni e dilni.',
+            'Kontrollojeni gjithmonë kursin që ju ofrohet përballë kursit të tregut. Dallimi është tarifë që rrallë reklamohet si tarifë.',
           ],
         },
       ],
@@ -152,15 +152,15 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       sq: [
         {
           title: 'Investoni 1.000 € në një ETF amerikan',
-          body: 'Konvertohen në rreth 1.100 dollarë me kursin e ditës, minus marzhin e platformës.',
+          body: 'Këmbehen në rreth 1.100 dollarë me kursin e ditës, minus marzhin e platformës.',
         },
         {
-          title: 'ETF-ja rritet 10% gjatë vitit',
-          body: 'Tani keni rreth 1.210 dollarë. Në dollarë, gjithçka shkoi mirë.',
+          title: 'ETF-ja rritet për 10% gjatë vitit',
+          body: 'Tash keni rreth 1.210 dollarë. Në dollarë, gjithçka shkoi mirë.',
         },
         {
-          title: 'Dollari dobësohet 10% kundrejt euros',
-          body: 'Ata 1.210 dollarë kthehen në rreth 1.000 €. Fitimi u zhduk plotësisht në konvertim.',
+          title: 'Dollari dobësohet për 10% kundrejt euros',
+          body: 'Ata 1.210 dollarë kthehen në rreth 1.000 €. Fitimi u zhduk krejt në këmbim.',
         },
       ],
     },
@@ -170,14 +170,14 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'currency-risk',
           term: 'Rrezik monedhe',
           definition:
-            'Rreziku që lëvizja e kursit të këmbimit të ndryshojë kthimin tuaj në monedhën vendase.',
+            'Rreziku që lëvizja e kursit të këmbimit të ua ndryshojë kthimin në monedhën e vendit.',
           aliases: ['rreziku valutor'],
         },
         {
           slug: 'hedged',
           term: 'I mbrojtur',
           definition:
-            'Një fond që heq efektin e kursit të këmbimit, me një kosto vjetore.',
+            'Fond që e heq efektin e kursit të këmbimit, kundrejt një kostoje vjetore.',
           aliases: ['mbrojtje valutore', 'hedged'],
         },
       ],
@@ -185,11 +185,11 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     quiz: {
       sq: {
         question:
-          'ETF-ja juaj amerikane u rrit 8% dhe dollari u dobësua 8%. Sa fituat në euro?',
-        options: ['Rreth 16%', 'Pothuajse asgjë', 'Rreth 8%'],
+          'ETF-ja juaj amerikane u rrit për 8% dhe dollari u dobësua për 8%. Sa fituat në euro?',
+        options: ['Rreth 16%', 'Thuajse asgjë', 'Rreth 8%'],
         answer: 1,
         explanation:
-          'Të dyja lëvizjet mbivendosen. Fitimi në dollarë u fshi nga humbja në konvertim.',
+          'Të dyja lëvizjet mblidhen mbi njëra-tjetrën. Fitimin në dollarë e fshiu humbja në këmbim.',
       },
     },
     relatedSymbols: ['eur-usd'],
@@ -203,35 +203,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     level: 'beginner',
     title: { sq: 'Taksat mbi investimet' },
     summary: {
-      sq: 'Kur lind detyrimi, pse shitja e shpeshtë kushton, dhe pse ky nuk është këshillë tatimore.',
+      sq: 'Kur lind detyrimi, pse shitja e shpeshtë kushton dhe pse kjo nuk është këshillë tatimore.',
     },
     inOneSentence: {
-      sq: 'Taksa zakonisht lind kur shisni ose kur merrni një dividend, ndaj sa më rrallë të shisni, aq më gjatë punojnë paratë tuaja të plota.',
+      sq: 'Taksa zakonisht lind kur shitni ose kur merrni dividend, prandaj sa më rrallë të shitni, aq më gjatë punojnë paratë tuaja të plota.',
     },
     body: {
       sq: [
         {
           heading: 'Dy momente taksimi',
           paragraphs: [
-            'I pari është fitimi kapital: diferenca mes çmimit të shitjes dhe atij të blerjes. Ai zakonisht nuk taksohet derisa të shisni.',
-            'I dyti janë të ardhurat: dividendët dhe kuponët e obligacioneve, të cilat zakonisht taksohen në vitin që i merrni, pavarësisht nëse i shpenzoni.',
-            'Rregullat, normat dhe përjashtimet ndryshojnë nga vendi në vend dhe ndryshojnë me kohën. Kjo faqe shpjegon mekanizmin, jo detyrimin tuaj konkret.',
+            'I pari është fitimi kapital: dallimi mes çmimit të shitjes dhe atij të blerjes. Zakonisht nuk taksohet derisa të shitni.',
+            'I dyti janë të ardhurat: dividendët dhe kuponët e obligacioneve, që zakonisht taksohen atë vit që i merrni, pa marrë parasysh a i shpenzoni.',
+            'Rregullat, normat dhe përjashtimet ndryshojnë nga vendi në vend dhe ndërrohen me kohë. Kjo faqe e shpjegon mekanizmin, jo detyrimin tuaj konkret.',
           ],
         },
         {
           heading: 'Pse shitja e shpeshtë kushton dyfish',
           paragraphs: [
-            'Sa herë shisni me fitim, një pjesë e atij fitimi largohet si taksë dhe nuk kompozohet më kurrë.',
-            'Dy investitorë me të njëjtin kthim bruto mbi njëzet vjet mund të përfundojnë me shuma dukshëm të ndryshme nëse njëri tregtoi rregullisht dhe tjetri mbajti.',
-            'Ky është një argument i fuqishëm dhe i nënvlerësuar për mbajtjen afatgjatë: shtyrja e taksës është vetë një formë kthimi.',
+            'Sa herë që shitni me fitim, një pjesë e atij fitimi ikën si taksë dhe nuk kompozohet më kurrë.',
+            'Dy investitorë me të njëjtin kthim bruto për njëzet vjet mund të përfundojnë me shuma dukshëm të ndryshme nëse njëri bleu e shiti vazhdimisht, kurse tjetri vetëm mbajti.',
+            'Ky është argument i fuqishëm dhe i nënçmuar për mbajtjen afatgjatë: shtyrja e taksës është vetvetiu një lloj kthimi.',
           ],
         },
         {
           heading: 'Struktura ka rëndësi',
           paragraphs: [
-            'Fondet akumuluese riinvestojnë dividendët brenda fondit. Në disa juridiksione kjo shtyn taksimin; në të tjera jo. Ia vlen ta kontrolloni për vendin tuaj.',
-            'Llogaritë me përparësi tatimore, aty ku ekzistojnë, janë zakonisht mundësia e parë që duhet shfrytëzuar përpara një llogarie të zakonshme.',
-            'Dhe mbani dokumentacion: çmimet e blerjes, datat dhe konvertimet valutore. Rindërtimi i tyre pas pesë vjetësh është shumë më i vështirë se ruajtja e tyre sot.',
+            'Fondet akumuluese i riinvestojnë dividendët brenda fondit. Në disa juridiksione kjo e shtyn taksimin; në të tjera jo. Ia vlen ta kontrolloni për vendin tuaj.',
+            'Llogaritë me lehtësi tatimore, aty ku ekzistojnë, zakonisht duhen shfrytëzuar para një llogarie të zakonshme.',
+            'Dhe mbani dokumente: çmimet e blerjes, datat dhe këmbimet e monedhës. Të nxirren pas pesë vjetësh është shumë më vështirë se të ruhen sot.',
           ],
         },
       ],
@@ -242,35 +242,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'capital-gain',
           term: 'Fitim kapital',
           definition:
-            'Diferenca mes çmimit të shitjes dhe atij të blerjes së një aktivi.',
+            'Dallimi mes çmimit të shitjes dhe atij të blerjes së një aseti.',
           aliases: ['fitimi kapital'],
         },
         {
           slug: 'tax-deferral',
           term: 'Shtyrje tatimore',
           definition:
-            'Pagimi i taksës më vonë, që lejon shumën e plotë të vazhdojë të kompozohet.',
+            'Pagesa e taksës më vonë, që e lë shumën e plotë të vazhdojë të kompozohet.',
         },
         {
           slug: 'withholding-tax',
           term: 'Taksë e mbajtur në burim',
           definition:
-            'Taksa e ndalur automatikisht mbi dividendët e huaj përpara se t’ju arrijnë.',
+            'Taksa që ndalet vetvetiu mbi dividendët e huaj para se t’ju arrijnë.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Pse mbajtja afatgjatë mund të japë më shumë se tregtimi i shpeshtë, edhe me të njëjtin kthim bruto?',
+          'Pse mbajtja afatgjatë mund të japë më shumë se blerja e shitja e shpeshtë, edhe me të njëjtin kthim bruto?',
         options: [
           'Sepse komisionet janë të njëjta',
-          'Sepse taksa e shtyrë lejon shumën e plotë të vazhdojë të kompozohet',
+          'Sepse taksa e shtyrë e lë shumën e plotë të vazhdojë të kompozohet',
           'Sepse tregu shpërblen besnikërinë',
         ],
         answer: 1,
         explanation:
-          'Çdo shitje me fitim heq para nga kompozimi. Shtyrja e taksës e mban atë shumë duke punuar për ju.',
+          'Çdo shitje me fitim i heq para kompozimit. Shtyrja e taksës e mban atë shumë duke punuar për ju.',
       },
     },
     upNextSlugs: [
@@ -284,37 +284,37 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     slug: 'what-leverage-does',
     topicId: 'risk-and-costs',
     level: 'advanced',
-    title: { sq: 'Çfarë bën leva' },
+    title: { sq: 'Çka bën leva' },
     summary: {
-      sq: 'Shumëzon fitimet dhe humbjet, por jo simetrikisht — dhe asimetria është ajo që ju nxjerr jashtë.',
+      sq: 'I shumëzon fitimet dhe humbjet, por jo njësoj — dhe pikërisht kjo mospërputhje ju nxjerr jashtë loje.',
     },
     inOneSentence: {
-      sq: 'Leva ju lejon të kontrolloni më shumë sesa keni, dhe kostoja është që tani dikush tjetër vendos kur mbaron loja.',
+      sq: 'Leva ju lejon të mbani më shumë se sa keni, kurse kostoja është që tash e tutje kohën e mbarimit e vendos dikush tjetër.',
     },
     body: {
       sq: [
         {
           heading: 'Matematika e pabarabartë',
           paragraphs: [
-            'Nëse humbisni 50%, ju duhet një fitim prej 100% vetëm për t’u kthyer aty ku ishit. Kjo asimetri ekziston pa levë; leva e përkeqëson.',
-            'Me levë dyfishe, një rënie tregu prej 25% ju fshin gjysmën e kapitalit. Për t’u rikuperuar ju duhet një rritje prej 100% e asaj që mbetet.',
-            'Prandaj një portofol me levë mund të falimentojë edhe në një treg që përfundimisht rikuperohet plotësisht. Ai u nxor jashtë përpara rikuperimit.',
+            'Nëse humbni 50%, ju duhet fitim prej 100% vetëm për t’u kthyer aty ku ishit. Kjo mospërputhje ekziston edhe pa levë; leva e keqëson.',
+            'Me levë dyfishe, një rënie e tregut prej 25% jua fshin gjysmën e kapitalit. Që të rimëkëmbeni ju duhet rritje prej 100% e asaj që mbetet.',
+            'Prandaj një portofol me levë mund të shkojë në zero edhe në një treg që në fund rimëkëmbet plotësisht. U nxor jashtë para se të vinte rimëkëmbja.',
           ],
         },
         {
           heading: 'Thirrja për marzh',
           paragraphs: [
-            'Kur mbani me para të huazuara dhe vlera bie nën një prag, huadhënësi kërkon para shtesë menjëherë. Nëse nuk i keni, ai shet pozicionin tuaj për ju.',
-            'Kjo ndodh gjithmonë në momentin më të keq, sepse pragu preket pikërisht kur çmimet janë më të ulëta.',
-            'Kjo është ndryshimi thelbësor mes humbjes në letër dhe humbjes së realizuar: pa levë ju vendosni kur shisni, me levë vendos tjetri.',
+            'Kur mbani me para të marra hua dhe vlera bie nën një prag, huadhënësi kërkon para shtesë në çast. Nëse s’i keni, e shet ai pozicionin tuaj në vend tuajin.',
+            'Kjo ndodh gjithmonë në çastin më të keq, sepse pragu preket pikërisht kur çmimet janë më të ulëta.',
+            'Ky është dallimi thelbësor mes humbjes në letër dhe humbjes së vërtetë: pa levë vendosni ju kur shitni, me levë vendos tjetri.',
           ],
         },
         {
           heading: 'Produktet me levë ditore',
           paragraphs: [
-            'ETF-të «2x» ose «3x» rivendosen çdo ditë. Kjo do të thotë se mbi periudha më të gjata ato nuk japin dyfishin ose trefishin e kthimit të indeksit.',
-            'Në një treg që lëviz lart e poshtë pa shkuar askund, një produkt i tillë humbet vlerë vazhdimisht. Fenomeni quhet erozion i volatilitetit.',
-            'Këto instrumente janë ndërtuar për tregti brenda ditës. Mbajtja e tyre për muaj është një përdorim i ndryshëm nga ai për të cilin janë projektuar.',
+            'ETF-të “2x” a “3x” rifillojnë nga e para çdo ditë. Kjo do të thotë se për periudha më të gjata nuk e japin dyfishin as trefishin e kthimit të indeksit.',
+            'Në një treg që luan lart e poshtë pa shkuar askund, një produkt i tillë humb vlerë vazhdimisht. Kjo dukuri quhet erozion i volatilitetit.',
+            'Këto instrumente janë bërë për shitblerje brenda ditës. Të mbahen me muaj është përdorim krejt tjetër nga ai për të cilin janë projektuar.',
           ],
         },
       ],
@@ -342,28 +342,28 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'volatility-decay',
           term: 'Erozion volatiliteti',
           definition:
-            'Humbja graduale e vlerës në produkte me levë ditore kur tregu lëviz lart e poshtë.',
+            'Humbja e ngadaltë e vlerës te produktet me levë ditore kur tregu luan lart e poshtë.',
         },
         {
           slug: 'liquidation',
           term: 'Likuidim i detyruar',
           definition:
-            'Shitja e pozicionit tuaj nga huadhënësi kur nuk plotësoni një thirrje për marzh.',
+            'Shitja e pozicionit tuaj nga huadhënësi kur nuk e mbuloni një thirrje për marzh.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Pse një portofol me levë mund të falimentojë edhe nëse tregu përfundimisht rikuperohet plotësisht?',
+          'Pse një portofol me levë mund të shkojë në zero edhe nëse tregu në fund rimëkëmbet plotësisht?',
         options: [
           'Sepse leva ka tarifa shumë të larta',
-          'Sepse një thirrje për marzh mund t’ju nxjerrë jashtë përpara rikuperimit',
-          'Sepse tregjet nuk rikuperohen kurrë plotësisht',
+          'Sepse një thirrje për marzh mund t’ju nxjerrë jashtë para se të vijë rimëkëmbja',
+          'Sepse tregjet nuk rimëkëmben kurrë plotësisht',
         ],
         answer: 1,
         explanation:
-          'Me levë nuk vendosni ju kohën e shitjes. Likuidimi i detyruar e kthen një humbje të përkohshme në një humbje përfundimtare.',
+          'Me levë kohën e shitjes nuk e vendosni ju. Likuidimi i detyruar e kthen një humbje të përkohshme në humbje përfundimtare.',
       },
     },
     upNextSlugs: ['liquidity-risk', 'how-scams-work'],
@@ -377,35 +377,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     noMaths: true,
     title: { sq: 'Rreziku i likuiditetit' },
     summary: {
-      sq: 'Një çmim në ekran nuk është një premtim se dikush do të paguajë atë çmim.',
+      sq: 'Një çmim në ekran nuk është premtim se dikush do ta paguajë atë çmim.',
     },
     inOneSentence: {
-      sq: 'Likuiditeti është aftësia për të shitur shpejt me një çmim të drejtë, dhe ai zhduket pikërisht kur ju duhet më shumë.',
+      sq: 'Likuiditeti është mundësia për të shitur shpejt me çmim të drejtë, dhe zhduket pikërisht atëherë kur ju duhet më së shumti.',
     },
     body: {
       sq: [
         {
           heading: 'Çmimi kundrejt realizimit',
           paragraphs: [
-            'Çmimi i fundit tregon se sa pagoi dikush për një sasi të vogël. Ai nuk thotë asgjë për çmimin që do të merrnit nëse do të shisnit dhjetë herë atë sasi.',
-            'Në një aksion të madh diferenca është e papërfillshme. Në një aksion të vogël, në një obligacion korporativ ose në një pronë, ajo mund të jetë shumë përqindje.',
-            'Prandaj vlerësimi i një portofoli është gjithmonë pak optimist: ai supozon se çdo pozicion mund të shitet me çmimin e fundit, gjë që nuk është e vërtetë për të gjitha njëkohësisht.',
+            'Çmimi i fundit tregon sa pagoi dikush për një sasi të vogël. Nuk thotë asgjë për çmimin që do ta merrnit po ta shitnit dhjetëfishin e asaj sasie.',
+            'Te një aksion i madh ky dallim është i papërfillshëm. Te një aksion i vogël, te një obligacion korporativ a te një pronë, mund të jetë disa përqind.',
+            'Prandaj vlerësimi i një portofoli del gjithmonë pak optimist: merr si të mirëqenë se çdo pozicion mund të shitet me çmimin e fundit, gjë që nuk vlen për të gjitha përnjëherë.',
           ],
         },
         {
           heading: 'Kur zhduket',
           paragraphs: [
-            'Likuiditeti është më i bollshëm kur nuk ju duhet dhe më i pakti kur ju duhet. Në panik, blerësit largohen dhe spread-et zgjerohen menjëherë.',
-            'Kjo prek më së shumti aktivet që dukeshin të sigurta: obligacione korporative, fonde pasurish të paluajtshme, dhe çdo gjë me pak tregti të përditshme.',
-            'Disa fonde kanë pezulluar tërheqjet gjatë krizave pikërisht për këtë arsye — ato nuk mund të shisnin aktivet mjaftueshëm shpejt për të paguar investitorët.',
+            'Likuiditeti është më i bollshëm kur nuk ju duhet dhe më i pakti kur ju duhet. Në panik, blerësit ikin dhe spread-et zgjerohen në çast.',
+            'Kjo i godet më së shumti asetet që dukeshin të sigurta: obligacionet korporative, fondet e pasurive të paluajtshme dhe gjithçka që blihet e shitet pak për ditë.',
+            'Disa fonde i kanë pezulluar tërheqjet gjatë krizave pikërisht për këtë arsye — nuk arrinin t’i shitnin asetet aq shpejt sa për t’i paguar investitorët.',
           ],
         },
         {
           heading: 'Si ta gjykoni',
           paragraphs: [
-            'Shikoni volumin mesatar ditor. Nëse pozicioni juaj është një pjesë e madhe e tij, dalja do t’ju kushtojë.',
-            'Shikoni spread-in mes blerjes dhe shitjes. Një spread i gjerë është një kosto e menjëhershme dhe një paralajmërim për likuiditet të hollë.',
-            'Dhe lexoni kushtet e tërheqjes së çdo fondi që nuk tregtohet në bursë. Fjalët «në rrethana të jashtëzakonshme» meritojnë vëmendje përpara se t’ju duhen.',
+            'Shikojeni volumin mesatar ditor. Nëse pozicioni juaj zë një pjesë të madhe të tij, dalja do t’ju kushtojë.',
+            'Shikojeni spread-in mes blerjes dhe shitjes. Spread i gjerë do të thotë kosto e menjëhershme dhe paralajmërim se ka pak likuiditet.',
+            'Dhe lexojini kushtet e tërheqjes për çdo fond që nuk blihet e shitet në bursë. Fjalët “në rrethana të jashtëzakonshme” e meritojnë vëmendjen para se t’ju duhen.',
           ],
         },
       ],
@@ -416,35 +416,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'liquidity-risk',
           term: 'Rrezik likuiditeti',
           definition:
-            'Rreziku që të mos mund të shisni shpejt pa pranuar një çmim dukshëm më të keq.',
+            'Rreziku të mos mund të shitni shpejt pa e pranuar një çmim dukshëm më të keq.',
         },
         {
           slug: 'volume',
           term: 'Volum',
           definition:
-            'Sa njësi tregtohen mesatarisht në ditë. Tregues i drejtpërdrejtë i likuiditetit.',
+            'Sa njësi blihen e shiten mesatarisht në ditë. Tregues i drejtpërdrejtë i likuiditetit.',
           aliases: ['volumi'],
         },
         {
           slug: 'gating',
           term: 'Pezullim tërheqjesh',
           definition:
-            'Kur një fond ndalon përkohësisht tërheqjet sepse nuk mund të shesë aktivet e veta.',
+            'Kur një fond i ndal përkohësisht tërheqjet sepse nuk arrin t’i shesë asetet e veta.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Pse likuiditeti është rreziku që shfaqet pikërisht kur ju duhet më shumë?',
+          'Pse likuiditeti është rreziku që del pikërisht atëherë kur ju duhet më së shumti?',
         options: [
           'Sepse bursat mbyllen gjatë krizave',
-          'Sepse në panik blerësit largohen dhe spread-et zgjerohen',
+          'Sepse në panik blerësit ikin dhe spread-et zgjerohen',
           'Sepse rregullatorët ndalojnë shitjen',
         ],
         answer: 1,
         explanation:
-          'Likuiditeti varet nga prania e blerësve. Kur të gjithë duan të shesin njëkohësisht, ata blerës nuk janë aty.',
+          'Likuiditeti varet nga të pasurit blerës. Kur duan të shesin të gjithë përnjëherë, ata blerës nuk janë aty.',
       },
     },
     upNextSlugs: ['concentration-risk', 'how-scams-work'],
@@ -457,35 +457,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     level: 'beginner',
     title: { sq: 'Inflacioni si rrezik për kursimtarin' },
     summary: {
-      sq: 'Humbja e vetme e garantuar në financë, dhe e vetmja që nuk shfaqet kurrë në një pasqyrë llogarie.',
+      sq: 'Humbja e vetme e garantuar në financë dhe e vetmja që nuk del kurrë në pasqyrën e llogarisë.',
     },
     inOneSentence: {
-      sq: 'Inflacioni ju merr fuqi blerëse pa lëvizur asnjë shifër, ndaj është humbja e vetme që askush nuk e vëren derisa të jetë e madhe.',
+      sq: 'Inflacioni jua merr fuqinë blerëse pa u lëvizur asnjë shifër, prandaj është humbja e vetme që askush nuk e vëren derisa të bëhet e madhe.',
     },
     body: {
       sq: [
         {
           heading: 'Humbja e padukshme',
           paragraphs: [
-            'Nëse aksionet bien 20%, e shihni menjëherë. Nëse inflacioni ha 20% të fuqisë blerëse gjatë shtatë vjetësh, pasqyra juaj tregon të njëjtin numër dhe ju nuk vini re asgjë.',
-            'Kjo është arsyeja pse njerëzit e trajtojnë paranë si «pa rrezik». Ajo është pa luhatje, gjë krejt e ndryshme.',
-            'Me 3% inflacion, fuqia blerëse e parave tuaja përgjysmohet për njëzet e tre vjet. Kjo ndodh me siguri, jo me probabilitet.',
+            'Nëse aksionet bien për 20%, e shihni në çast. Nëse inflacioni ua ha 20% të fuqisë blerëse për shtatë vjet, pasqyra ju tregon të njëjtën shifër dhe nuk vëreni asgjë.',
+            'Prandaj njerëzit e marrin paranë si “pa rrezik”. Ajo është pa luhatje, e që është krejt gjë tjetër.',
+            'Me 3% inflacion, fuqia blerëse e parave tuaja përgjysmohet për njëzet e tre vjet. Kjo ndodh me siguri, jo si mundësi.',
           ],
         },
         {
           heading: 'Çfarë mbron dhe çfarë jo',
           paragraphs: [
-            'Historikisht aksionet kanë mbrojtur mbi periudha të gjata, sepse kompanitë i rrisin çmimet e tyre bashkë me inflacionin. Mbi periudha të shkurtra ato mund të vuajnë, sidomos kur inflacioni rritet papritur.',
-            'Obligacionet me normë fikse janë më të prekurat: kuponi është i fiksuar dhe inflacioni ha vlerën e tij reale çdo vit.',
-            'Pasuritë e paluajtshme dhe mallrat bazë ndihmojnë ndonjëherë, por jo në mënyrë të besueshme dhe me kosto e ndërlikime të tyre.',
+            'Historikisht, aksionet kanë mbrojtur për periudha të gjata, sepse kompanitë i rrisin çmimet bashkë me inflacionin. Për periudha të shkurtra mund të vuajnë, sidomos kur inflacioni rritet papritmas.',
+            'Obligacionet me normë të fiksuar goditen më së shumti: kuponi është i fiksuar dhe inflacioni ia ha vlerën reale çdo vit.',
+            'Pasuritë e paluajtshme dhe mallrat bazë nganjëherë ndihmojnë, por jo gjithherë, dhe vijnë me kostot e ndërlikimet e veta.',
           ],
         },
         {
           heading: 'Numri që duhet parë',
           paragraphs: [
-            'Kthimi që ka rëndësi është ai real: kthimi juaj minus inflacionin. Një depozitë me 4% gjatë një viti me 6% inflacion është një humbje reale prej 2%.',
-            'Kur krahasoni opsione, kthejini të gjitha në terma realë. Përndryshe një normë nominale e lartë duket tërheqëse pikërisht kur është më e keqe.',
-            'Ky është gjithashtu testi për çdo premtim «pa rrezik»: nëse kthimi nominal është nën inflacion, siguria që ju ofrohet është siguria e humbjes.',
+            'Kthimi që ka rëndësi është ai reali: kthimi juaj minus inflacionin. Një depozitë me 4% në një vit me 6% inflacion është humbje reale prej 2%.',
+            'Kur i krahasoni mundësitë, kthejini të gjitha në vlera reale. Përndryshe një normë nominale e lartë duket tërheqëse pikërisht atëherë kur është më e keqja.',
+            'Kjo është po ashtu prova për çdo premtim “pa rrezik”: nëse kthimi nominal është nën inflacion, siguria që ju ofrohet është siguri e humbjes.',
           ],
         },
       ],
@@ -516,35 +516,36 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         {
           slug: 'nominal-return',
           term: 'Kthim nominal',
-          definition: 'Kthimi para se të hiqet inflacioni. Numri i reklamuar.',
+          definition:
+            'Kthimi para se të hiqet inflacioni. Shifra që reklamohet.',
         },
         {
           slug: 'real-return',
           term: 'Kthim real',
           definition:
-            'Kthimi pas inflacionit — sa më shumë mund të blini në fakt.',
+            'Kthimi pas inflacionit — sa më shumë mund të blini vërtet.',
           aliases: ['kthimi real'],
         },
         {
           slug: 'inflation-linked-bond',
           term: 'Obligacion i lidhur me inflacionin',
           definition:
-            'Obligacion kuponi dhe principali i të cilit rriten me inflacionin.',
+            'Obligacion të cilit i rriten kuponi dhe principali bashkë me inflacionin.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Një depozitë paguan 4% kur inflacioni është 6%. Çfarë ju ndodh në terma realë?',
+          'Një depozitë paguan 4% kur inflacioni është 6%. Çka ju ndodh në vlera reale?',
         options: [
           'Fitoni 4%',
-          'Humbisni rreth 2% të fuqisë blerëse',
+          'Humbni rreth 2% të fuqisë blerëse',
           'Nuk ndryshon asgjë',
         ],
         answer: 1,
         explanation:
-          'Shifra në llogari rritet, por blen më pak. Kthimi real është nominali minus inflacioni.',
+          'Shifra në llogari rritet, por blen më pak. Kthimi real është ai nominal minus inflacioni.',
       },
     },
     relatedSymbols: ['gold'],
@@ -559,35 +560,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     noMaths: true,
     title: { sq: 'Rreziku i përqendrimit' },
     summary: {
-      sq: 'Rreziku më i madh që marrin shumica e njerëzve nuk është aksioni që zgjodhën, por sa prej gjithçkaje varet nga e njëjta gjë.',
+      sq: 'Rreziku më i madh që e marrin shumica e njerëzve nuk është aksioni që e zgjodhën, por sa nga gjithçka që kanë varet nga e njëjta gjë.',
     },
     inOneSentence: {
-      sq: 'Përqendrimi nuk matet me numrin e investimeve, por me numrin e mënyrave të ndryshme me të cilat mund të humbisni.',
+      sq: 'Përqendrimi nuk matet me numrin e investimeve, por me numrin e mënyrave të ndryshme si mund të humbni.',
     },
     body: {
       sq: [
         {
           heading: 'Përqendrimi që nuk e shihni',
           paragraphs: [
-            'Nëse punoni në një bankë, keni aksione të asaj banke nga skema e punonjësve, dhe mbani një ETF financiar, ju keni tri versione të së njëjtit bast.',
-            'Kur sektori bankar vuan, ju humbisni njëkohësisht sigurinë e punës, shpërblimin dhe investimet. Këto nuk janë tri rreziqe të pavarura.',
-            'Ky është përqendrimi më i rrezikshëm sepse është i padukshëm në një pasqyrë portofoli — që tregon vetëm investimet, jo pjesën tjetër të jetës suaj financiare.',
+            'Nëse punoni në një bankë, keni aksione të asaj banke nga skema e punëtorëve dhe mbani edhe një ETF financiar, i keni tri variante të të njëjtit bast.',
+            'Kur vuan sektori bankar, humbni përnjëherë sigurinë e vendit të punës, shpërblimin dhe investimet. Këto nuk janë tri rreziqe të veçanta.',
+            'Ky është përqendrimi më i rrezikshëm sepse nuk duket në pasqyrën e portofolit — ajo i tregon vetëm investimet, jo pjesën tjetër të jetës suaj financiare.',
           ],
         },
         {
           heading: 'Aksionet e punëdhënësit',
           paragraphs: [
-            'Skemat e punonjësve janë tërheqëse dhe shpesh me zbritje. Ato janë gjithashtu mënyra më e zakonshme me të cilën njerëzit e zakonshëm përfundojnë tepër të përqendruar.',
-            'Rregulli praktik i përdorur gjerësisht: mos lini aksionet e punëdhënësit të kalojnë një pjesë të vogël të pasurisë suaj, pavarësisht sa mirë ju duket kompania.',
-            'Ju e njihni kompaninë mirë, por kjo njohje nuk ju mbron — punonjësit e Enron dhe të Lehman e njihnin kompaninë e tyre shumë mirë.',
+            'Skemat e punëtorëve janë tërheqëse dhe shpesh me zbritje. Po ashtu, janë mënyra më e zakonshme si përfundojnë njerëzit tepër të përqendruar.',
+            'Rregull praktik që përdoret gjerësisht: mos i lini aksionet e punëdhënësit të kalojnë një pjesë të vogël të pasurisë suaj, sado e mirë t’ju duket kompania.',
+            'Ju e njihni mirë kompaninë, por kjo njohje nuk ju mbron — punëtorët e Enron-it dhe të Lehman-it e njihnin shumë mirë kompaninë e vet.',
           ],
         },
         {
           heading: 'Përqendrimi brenda një indeksi',
           paragraphs: [
-            'Edhe një fond «i gjerë» mund të jetë i përqendruar. Në vitet e fundit dhjetë kompanitë më të mëdha kanë përbërë një pjesë të konsiderueshme të vlerës së indeksit amerikan.',
-            'Kjo do të thotë se një ETF me pesëqind kompani mund të lëvizë kryesisht sipas fatit të pak emrave teknologjikë.',
-            'Nuk është domosdoshmërisht gabim ta mbani. Është gabim ta mbani duke menduar se keni pesëqind rreziqe të pavarura.',
+            'Edhe një fond “i gjerë” mund të jetë i përqendruar. Vitet e fundit, dhjetë kompanitë më të mëdha kanë zënë një pjesë të madhe të vlerës së indeksit amerikan.',
+            'Kjo do të thotë se një ETF me pesëqind kompani mund të luajë kryesisht sipas fatit të pak emrave teknologjikë.',
+            'Nuk është medoemos gabim ta mbani. Gabim është ta mbani duke menduar se keni pesëqind rreziqe të veçanta.',
           ],
         },
       ],
@@ -604,20 +605,20 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'human-capital',
           term: 'Kapital njerëzor',
           definition:
-            'Vlera e të ardhurave tuaja të ardhshme nga puna — pjesa më e madhe e pasurisë së shumicës së njerëzve.',
+            'Vlera e të ardhurave tuaja të ardhshme nga puna — te shumica e njerëzve, pjesa më e madhe e pasurisë.',
         },
         {
           slug: 'index-weighting',
           term: 'Peshimi i indeksit',
           definition:
-            'Si ndahet një indeks mes kompanive. Peshimi sipas madhësisë e përqendron tek më të mëdhatë.',
+            'Si ndahet një indeks mes kompanive. Peshimi sipas madhësisë e përqendron te më të mëdhatë.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Punoni në një kompani teknologjie, mbani aksionet e saj dhe një ETF teknologjik. Cili është problemi?',
+          'Punoni në një kompani teknologjie, i mbani aksionet e saj dhe një ETF teknologjik. Ku është problemi?',
         options: [
           'Keni shumë pak investime',
           'Puna, shpërblimi dhe investimet varen të gjitha nga i njëjti sektor',
@@ -625,7 +626,7 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         ],
         answer: 1,
         explanation:
-          'Këto nuk janë rreziqe të pavarura. Një rënie e sektorit i godet të treja njëkohësisht.',
+          'Këto nuk janë rreziqe të veçanta. Rënia e sektorit i godet të tria përnjëherë.',
       },
     },
     upNextSlugs: ['why-diversification-works', 'building-a-simple-portfolio'],
@@ -638,35 +639,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     level: 'beginner',
     title: { sq: 'Sjellja kushton më shumë se tarifat' },
     summary: {
-      sq: 'Diferenca mes kthimit të një fondi dhe kthimit të investitorëve të tij është një numër i matshëm, dhe është i madh.',
+      sq: 'Dallimi mes kthimit të një fondi dhe kthimit të investitorëve të tij është shifër që matet — dhe është e madhe.',
     },
     inOneSentence: {
-      sq: 'Shumica e njerëzve fitojnë më pak se fondet që zotërojnë, sepse blejnë pas rritjes dhe shesin pas rënies.',
+      sq: 'Shumica e njerëzve fitojnë më pak se fondet që i mbajnë, sepse blejnë pas rritjes dhe shesin pas rënies.',
     },
     body: {
       sq: [
         {
           heading: 'Boshllëku i sjelljes',
           paragraphs: [
-            'Një fond mund të raportojë 8% mesatare vjetore ndërsa investitori mesatar në atë fond ka fituar dukshëm më pak. Diferenca nuk vjen nga tarifat — ato janë tashmë të zbritura.',
-            'Ajo vjen nga koha e hyrjes dhe daljes. Paratë hyjnë pas viteve të mira dhe dalin pas viteve të këqija, kështu që shumica e kapitalit është e pranishme për rëniet dhe mungon për rikuperimet.',
-            'Ky boshllëk është matur vazhdimisht dhe zakonisht është më i madh se e gjithë tarifa vjetore e një fondi indeksor.',
+            'Një fond mund të raportojë 8% mesatare vjetore, kurse investitori mesatar në atë fond ka fituar dukshëm më pak. Dallimi nuk vjen nga tarifat — ato janë zbritur tashmë.',
+            'Vjen nga koha e hyrjes dhe e daljes. Paratë hyjnë pas viteve të mira dhe dalin pas atyre të këqija, kështu që pjesa më e madhe e kapitalit është aty për rëniet dhe mungon për rimëkëmbjet.',
+            'Ky boshllëk është matur vazhdimisht dhe zakonisht del më i madh se tërë tarifa vjetore e një fondi indeksor.',
           ],
         },
         {
           heading: 'Pse ndodh',
           paragraphs: [
-            'Humbja dhemb rreth dyfishin e kënaqësisë që jep një fitim i njëjtë. Kjo asimetri e bën shitjen gjatë një rënieje të ndihet si lehtësim, jo si gabim.',
-            'Shtoni pastaj tendencën për të parë modele në zhurmë, dhe besimin që rritet pikërisht kur çmimet janë të larta.',
-            'Asnjë prej këtyre nuk zhduket duke ditur për to. Ato menaxhohen me strukturë: rregulla të vendosura paraprakisht, kur jeni i qetë.',
+            'Humbja dhemb rreth dyfish më shumë se sa gëzon një fitim i njëjtë. Prandaj shitja gjatë një rënieje ndihet si lehtësim, jo si gabim.',
+            'Shtoni pastaj prirjen për të parë rregullsi aty ku ka vetëm zhurmë, dhe vetëbesimin që rritet pikërisht kur çmimet janë të larta.',
+            'Asnjëra prej tyre nuk zhduket vetëm se e di për të. Mbahen nën kontroll me strukturë: rregulla të vendosura që përpara, kur jeni i qetë.',
           ],
         },
         {
           heading: 'Çfarë ndihmon vërtet',
           paragraphs: [
-            'Kontributet automatike heqin vendimin mujor. Ribalancimi një herë në vit ju detyron të shisni atë që u rrit dhe të blini atë që ra, pa e menduar.',
-            'Shikimi më rrallë ndihmon në mënyrë të matshme. Sa më shpesh e kontrolloni portofolin, aq më shumë rënie shihni dhe aq më e madhe është tundimi për të vepruar.',
-            'Dhe një deklaratë e shkruar e planit — sa rrezik, pse, dhe çfarë do të bëni në një rënie 30% — vlen më shumë se çdo parashikim tregu.',
+            'Kontributet automatike e heqin vendimin mujor. Ribalancimi një herë në vit ju detyron ta shitni atë që u rrit dhe ta blini atë që ra, pa u menduar fare.',
+            'Të shikuarit më rrallë ndihmon dukshëm. Sa më shpesh ta kontrolloni portofolin, aq më shumë rënie shihni dhe aq më i madh bëhet tundimi për të vepruar.',
+            'Dhe një plan i shkruar — sa rrezik, pse dhe çka do të bëni në një rënie prej 30% — vlen më shumë se çdo parashikim i tregut.',
           ],
         },
       ],
@@ -677,25 +678,25 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'behaviour-gap',
           term: 'Boshllëk sjelljeje',
           definition:
-            'Diferenca mes kthimit të një fondi dhe kthimit që fituan në fakt investitorët e tij.',
+            'Dallimi mes kthimit të një fondi dhe kthimit që e fituan vërtet investitorët e tij.',
         },
         {
           slug: 'loss-aversion',
           term: 'Neveri ndaj humbjes',
           definition:
-            'Tendenca për ta ndier humbjen rreth dyfish më fort se një fitim të njëjtë.',
+            'Prirja për ta ndier humbjen rreth dyfish më fort se një fitim të njëjtë.',
         },
         {
           slug: 'recency-bias',
           term: 'Anshmëri e së fundit',
           definition:
-            'Prirja për të supozuar se ajo që ndodhi së fundmi do të vazhdojë.',
+            'Prirja për të menduar se ajo që ndodhi së fundi do të vazhdojë.',
         },
       ],
     },
     quiz: {
       sq: {
-        question: 'Pse investitori mesatar fiton më pak se fondi që zotëron?',
+        question: 'Pse investitori mesatar fiton më pak se fondi që e mban?',
         options: [
           'Sepse tarifat zbriten dy herë',
           'Sepse blen pas rritjeve dhe shet pas rënieve',
@@ -703,7 +704,7 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         ],
         answer: 1,
         explanation:
-          'Kthimi i fondit supozon mbajtje të vazhdueshme. Koha e hyrjes dhe daljes e shkurton atë kthim për personin.',
+          'Kthimi i fondit e merr të mirëqenë se mbahet pandërprerë. Koha e hyrjes dhe e daljes ia shkurton atë kthim njeriut.',
       },
     },
     upNextSlugs: ['when-to-sell', 'time-in-the-market'],
@@ -717,35 +718,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     noMaths: true,
     title: { sq: 'Si funksionojnë mashtrimet financiare' },
     summary: {
-      sq: 'Struktura është gjithmonë e njëjtë, edhe kur teknologjia ndryshon.',
+      sq: 'Struktura është gjithmonë e njëjta, edhe kur ndërrohet teknologjia.',
     },
     inOneSentence: {
-      sq: 'Çdo mashtrim premton kthim të lartë pa rrezik, krijon urgjencë, dhe e bën tërheqjen e parave më të vështirë se depozitimin.',
+      sq: 'Çdo mashtrim premton kthim të lartë pa rrezik, ju nxit të nxitoni dhe e bën tërheqjen e parave më të vështirë se depozitimin.',
     },
     body: {
       sq: [
         {
           heading: 'Shenjat që përsëriten',
           paragraphs: [
-            'Kthim i lartë dhe i qëndrueshëm, pa muaj të këqij. Tregjet e vërteta lëvizin; një vijë e drejtë lart është shenjë se numrat janë të shpikur, jo se strategjia është gjeniale.',
-            'Presion kohor: «oferta mbyllet sot», «vetëm dhjetë vende». Urgjenca ekziston për të parandaluar verifikimin.',
-            'Vështirësi në tërheqje. Depozitimi është gjithmonë i menjëhershëm; tërheqja kërkon «taksa», «verifikim» ose thjesht heshtje.',
+            'Kthim i lartë dhe i njëtrajtshëm, pa asnjë muaj të keq. Tregjet e vërteta luajnë; një vijë e drejtë kah lart tregon se shifrat janë të trilluara, jo se strategjia është gjeniale.',
+            'Presion me kohën: “oferta mbyllet sot”, “vetëm dhjetë vende”. Nxitimi është aty që të mos keni kohë të verifikoni.',
+            'Vështirësi me tërheqjen. Depozitimi është gjithmonë i menjëhershëm; tërheqja kërkon “taksa”, “verifikim” ose pritet me heshtje.',
           ],
         },
         {
           heading: 'Skema piramidale dhe Ponzi',
           paragraphs: [
-            'Në një skemë Ponzi nuk ka investim fare. Paratë e investitorëve të rinj u paguhen atyre të vjetërve si «fitim», derisa fluksi i ri ndalon.',
-            'Në një skemë piramidale, të ardhurat vijnë nga rekrutimi i njerëzve të tjerë, jo nga shitja e ndonjë produkti të vërtetë.',
-            'Të dyja funksionojnë ndërsa po rriten dhe kolapsojnë menjëherë kur ndalen. Prandaj presioni për të sjellë miq e familjarë është pjesë e mekanizmit, jo entuziazëm.',
+            'Në një skemë Ponzi nuk ka fare investim. Paratë e investitorëve të rinj u paguhen atyre të vjetërve si “fitim”, derisa të ndalet rrjedha e re.',
+            'Në një skemë piramidale, të ardhurat vijnë nga sjellja e njerëzve të rinj, jo nga shitja e ndonjë produkti të vërtetë.',
+            'Të dyja ecin përderisa rriten dhe shemben sapo ndalen. Prandaj presioni për të sjellë shokë e familjarë është pjesë e mekanizmit, jo entuziazëm.',
           ],
         },
         {
           heading: 'Mbrojtja praktike',
           paragraphs: [
-            'Kontrolloni licencën te rregullatori i vendit, jo te faqja e vetë firmës. Mashtruesit kopjojnë emra dhe numra licence të firmave reale.',
-            'Kërkoni gjithmonë të kuptoni se nga vjen kthimi. Nëse përgjigjja është «algoritëm i pronarit» ose «tregti me frekuencë të lartë» pa detaje, kjo është përgjigjja e vetme që do të merrni.',
-            'Dhe mbani rregullin që shpëton më shumë njerëz se çdo tjetër: askush nuk ju kontakton papritur me një mundësi të mirë investimi.',
+            'Kontrollojeni licencën te rregullatori i vendit, jo te faqja e vetë firmës. Mashtruesit i kopjojnë emrat dhe numrat e licencave të firmave reale.',
+            'Kërkoni gjithmonë ta kuptoni prej nga vjen kthimi. Nëse përgjigjja është “algoritëm i yni” ose “tregtim me frekuencë të lartë” pa asnjë hollësi, kjo do të mbetet e vetmja përgjigje që merrni.',
+            'Dhe mbajeni rregullin që shpëton më shumë njerëz se çdo tjetër: askush nuk ju kërkon papritmas për t’ju dhënë një mundësi të mirë investimi.',
           ],
         },
       ],
@@ -756,19 +757,19 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'ponzi-scheme',
           term: 'Skemë Ponzi',
           definition:
-            'Mashtrim ku «fitimet» e investitorëve të vjetër paguhen nga paratë e të rinjve.',
+            'Mashtrim ku “fitimet” e investitorëve të vjetër paguhen me paratë e atyre të rinj.',
         },
         {
           slug: 'pump-and-dump',
           term: 'Fryrje dhe shkarkim',
           definition:
-            'Ngritja artificiale e çmimit të një aktivi për t’ua shitur atyre që vijnë pas.',
+            'Ngritja artificiale e çmimit të një aseti për t’ua shitur atyre që vijnë pas.',
         },
         {
           slug: 'regulator',
           term: 'Rregullator',
           definition:
-            'Autoriteti që licencon dhe mbikëqyr firmat financiare në një vend.',
+            'Autoriteti që i licencon dhe i mbikëqyr firmat financiare në një vend.',
           aliases: ['rregullatori'],
         },
       ],
@@ -776,15 +777,15 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     quiz: {
       sq: {
         question:
-          'Një platformë tregon kthime mujore pozitive për tre vjet rresht, pa asnjë muaj negativ. Çfarë sugjeron kjo?',
+          'Një platformë tregon kthime mujore pozitive tri vjet me radhë, pa asnjë muaj negativ. Çka do të thotë kjo?',
         options: [
-          'Një strategji jashtëzakonisht e mirë',
-          'Se numrat ka gjasa të jenë të shpikur',
+          'Strategji jashtëzakonisht e mirë',
+          'Se shifrat ka gjasa të jenë të trilluara',
           'Se tregu ka qenë i qetë',
         ],
         answer: 1,
         explanation:
-          'Tregjet e vërteta luhaten. Mungesa e plotë e muajve të këqij është shenja klasike e rezultateve të fabrikuara.',
+          'Tregjet e vërteta luhaten. Mungesa e plotë e muajve të këqij është shenja klasike e rezultateve të trilluara.',
       },
     },
     upNextSlugs: ['reading-a-fund-factsheet', 'what-risk-actually-means'],
@@ -795,37 +796,37 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     slug: 'reading-a-fund-factsheet',
     topicId: 'risk-and-costs',
     level: 'intermediate',
-    title: { sq: 'Si të lexoni fletën informative të një fondi' },
+    title: { sq: 'Si të lexohet fleta informative e një fondi' },
     summary: {
-      sq: 'Dy faqe që përmbajnë gjithçka ju duhet, nëse dini cilat pesë rreshta të lexoni.',
+      sq: 'Dy faqe që e kanë gjithçka që ju duhet, nëse i dini cilët pesë rreshta duhen lexuar.',
     },
     inOneSentence: {
-      sq: 'Fleta informative ju thotë çfarë mban fondi, sa kushton, sa mirë e ndjek indeksin e vet dhe sa keq ka shkuar në të kaluarën.',
+      sq: 'Fleta informative ju tregon çka mban fondi, sa kushton, sa mirë e ndjek indeksin e vet dhe sa keq ka shkuar në të kaluarën.',
     },
     body: {
       sq: [
         {
           heading: 'Pesë rreshtat që kanë rëndësi',
           paragraphs: [
-            'Indeksi që ndjek: ky përcakton gjithçka. «MSCI World» dhe «MSCI World SRI» tingëllojnë njësoj dhe mbajnë gjëra shumë të ndryshme.',
-            'Tarifa vjetore totale, jo vetëm ajo e menaxhimit. Dhe madhësia e fondit — një fond shumë i vogël rrezikon të mbyllet dhe t’ju detyrojë të realizoni një shitje.',
-            'Zotërimet kryesore dhe pesha e tyre. Nëse dhjetë emrat e parë përbëjnë gjysmën e fondit, ju nuk keni blerë atë që sugjeron numri i kompanive.',
+            'Indeksi që e ndjek: ky e përcakton gjithçka. “MSCI World” dhe “MSCI World SRI” tingëllojnë njësoj, por mbajnë gjëra shumë të ndryshme.',
+            'Tarifa e plotë vjetore, jo vetëm ajo e menaxhimit. Dhe madhësia e fondit — një fond shumë i vogël rrezikon të mbyllet e t’ju detyrojë të shitni.',
+            'Zotërimet kryesore dhe pesha e tyre. Nëse dhjetë emrat e parë zënë gjysmën e fondit, ju nuk keni blerë atë që e tregon numri i kompanive.',
           ],
         },
         {
           heading: 'Ndjekja dhe replikimi',
           paragraphs: [
-            'Gabimi i ndjekjes tregon sa larg ka mbetur fondi nga indeksi i tij. Një fond i lirë me ndjekje të dobët mund të kushtojë më shumë se një pak më i shtrenjtë me ndjekje të saktë.',
-            'Metoda e replikimit ka rëndësi gjithashtu. Replikimi fizik do të thotë se fondi zotëron vërtet aksionet. Replikimi sintetik do të thotë se ai mban një kontratë me një bankë që premton kthimin e indeksit.',
-            'Sintetiku është zakonisht më i lirë dhe shton një rrezik të ri: nëse banka dështon, premtimi bie me të. Kjo është një zgjedhje, jo një gabim — por duhet të jetë e vetëdijshme.',
+            'Gabimi i ndjekjes tregon sa larg ka mbetur fondi nga indeksi i vet. Një fond i lirë me ndjekje të dobët mund t’ju kushtojë më shumë se një pak më i shtrenjtë që e ndjek saktë.',
+            'Rëndësi ka edhe mënyra e replikimit. Replikimi fizik do të thotë se fondi i ka vërtet aksionet. Replikimi sintetik do të thotë se mban një kontratë me një bankë që ia premton kthimin e indeksit.',
+            'Ai sintetiku zakonisht është më i lirë, por shton një rrezik të ri: nëse banka dështon, bie edhe premtimi me të. Kjo është zgjedhje, jo gabim — por duhet bërë me vetëdije.',
           ],
         },
         {
           heading: 'Numrat e performancës',
           paragraphs: [
-            'Performanca e kaluar tregohet gjithmonë dhe parashikon shumë pak. Ajo që është e dobishme nuk është mesatarja, por viti më i keq dhe rënia maksimale.',
-            'Ata dy numra ju thonë se çfarë duhet të jeni në gjendje të duroni. Nëse rënia maksimale historike është 45% dhe ju e dini se do të shisnit në 25%, ky fond nuk është për ju pavarësisht kthimit mesatar.',
-            'Kontrolloni edhe në cilën monedhë raportohet performanca. Të njëjtat numra në një monedhë tjetër tregojnë një histori të ndryshme.',
+            'Performanca e kaluar tregohet gjithmonë dhe parashikon fare pak. E dobishme nuk është mesatarja, por viti më i keq dhe rënia maksimale.',
+            'Ato dy shifra ju tregojnë çka duhet të jeni në gjendje ta duroni. Nëse rënia maksimale historike është 45% dhe ju e dini se do të shitnit te 25%, ky fond nuk është për ju, sado i mirë të jetë kthimi mesatar.',
+            'Kontrollojeni edhe në cilën monedhë raportohet performanca. Të njëjtat shifra në monedhë tjetër tregojnë krejt tjetër histori.',
           ],
         },
       ],
@@ -837,13 +838,13 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         rows: [
           {
             label: 'Indeksi i ndjekur',
-            value: 'Çfarë mbaj në fakt?',
+            value: 'Çka mbaj në të vërtetë?',
             cost: 'Emër i ngjashëm, përmbajtje tjetër',
           },
           {
             label: 'Tarifa totale',
             value: 'Sa më kushton?',
-            cost: 'Vetëm tarifa e menaxhimit e shfaqur',
+            cost: 'Tregohet vetëm tarifa e menaxhimit',
             tone: 'negative',
           },
           {
@@ -860,40 +861,40 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'factsheet',
           term: 'Fletë informative',
           definition:
-            'Dokumenti dyfaqësh që përmbledh strategjinë, kostot dhe performancën e një fondi.',
+            'Dokumenti dyfaqësh që i përmbledh strategjinë, kostot dhe performancën e një fondi.',
           aliases: ['fleta informative', 'KID'],
         },
         {
           slug: 'physical-replication',
           term: 'Replikim fizik',
-          definition: 'Kur fondi zotëron vërtet letrat me vlerë të indeksit.',
+          definition: 'Kur fondi i ka vërtet letrat me vlerë të indeksit.',
         },
         {
           slug: 'synthetic-replication',
           term: 'Replikim sintetik',
           definition:
-            'Kur fondi mban një kontratë me një bankë që premton kthimin e indeksit.',
+            'Kur fondi mban një kontratë me një bankë që ia premton kthimin e indeksit.',
         },
         {
           slug: 'counterparty-risk',
           term: 'Rrezik i palës tjetër',
           definition:
-            'Rreziku që pala që ju ka premtuar diçka të mos jetë në gjendje ta përmbushë.',
+            'Rreziku që pala e cila ju ka premtuar diçka të mos jetë në gjendje ta mbajë premtimin.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Dy fonde ndjekin të njëjtin indeks. Njëri ka tarifë 0,05% dhe gabim ndjekjeje 0,40%; tjetri 0,15% dhe 0,03%. Cili ka gjasa t’ju kushtojë më pak?',
+          'Dy fonde e ndjekin të njëjtin indeks. Njëri ka tarifë 0,05% dhe gabim ndjekjeje 0,40%; tjetri 0,15% dhe 0,03%. Cili ka gjasa t’ju dalë më lirë?',
         options: [
           'Gjithmonë i pari, sepse tarifa është më e ulët',
-          'I dyti, sepse ndjekja e dobët kushton më shumë se diferenca e tarifës',
-          'Nuk ka rëndësi, të dy ndjekin të njëjtin indeks',
+          'I dyti, sepse ndjekja e dobët kushton më shumë se dallimi në tarifë',
+          'S’ka rëndësi, të dy e ndjekin të njëjtin indeks',
         ],
         answer: 1,
         explanation:
-          'Kostoja reale është tarifa plus devijimi nga indeksi. Një ndjekje e dobët mund ta tejkalojë lehtë një tarifë të ulët.',
+          'Kostoja e vërtetë është tarifa plus largimi nga indeksi. Ndjekja e dobët mund ta kalojë lehtë kursimin nga një tarifë e ulët.',
       },
     },
     upNextSlugs: ['what-is-a-fund', 'building-a-simple-portfolio'],
@@ -907,35 +908,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     noMaths: true,
     title: { sq: 'Kur duhet shitur' },
     summary: {
-      sq: 'Tri arsye të mira dhe disa të këqija, dhe pse vendimi duhet marrë përpara se çmimi të lëvizë.',
+      sq: 'Tri arsye të mira dhe disa të këqija — dhe pse vendimi duhet marrë para se të luajë çmimi.',
     },
     inOneSentence: {
-      sq: 'Shitni kur ndryshon arsyeja pse blini, kur ju duhen paratë, ose kur pesha është rritur shumë — jo sepse çmimi ka rënë.',
+      sq: 'Shitni kur ndërrohet arsyeja pse e bletë, kur ju duhen paratë ose kur pesha është rritur shumë — jo sepse ka rënë çmimi.',
     },
     body: {
       sq: [
         {
           heading: 'Tri arsye të mira',
           paragraphs: [
-            'E para: teza juaj u prish. Blini një kompani sepse prisnit diçka; ajo gjë nuk po ndodh dhe nuk do të ndodhë. Çmimi është i parëndësishëm në këtë gjykim.',
-            'E dyta: ju duhen paratë. Ky është qëllimi i të investuarit. Shitja për të blerë një shtëpi ose për të financuar studimet nuk është dështim, është plotësimi i planit.',
-            'E treta: pesha ka dalë jashtë kontrollit. Nëse një pozicion është rritur nga 5% në 30% të portofolit, ju keni tani një përqendrim që nuk e zgjodhët.',
+            'E para: teza juaj u prish. E bletë një kompani sepse prisnit diçka; ajo gjë nuk po ndodh dhe nuk ka për të ndodhur. Çmimi nuk ka rëndësi në këtë gjykim.',
+            'E dyta: ju duhen paratë. Ky është qëllimi i investimit. Të shitesh për të blerë shtëpi ose për t’i paguar studimet nuk është dështim, është plotësim i planit.',
+            'E treta: pesha ka dalë jashtë kontrollit. Nëse një pozicion është rritur nga 5% në 30% të portofolit, tash keni një përqendrim që nuk e keni zgjedhur.',
           ],
         },
         {
           heading: 'Arsyet e këqija që tingëllojnë të mira',
           paragraphs: [
-            '«Është rritur shumë, po marr fitimin.» Çmimi që keni paguar është i parëndësishëm për vlerën e sotme. Tregu nuk e di se sa paguat dhe nuk i intereson.',
-            '«Është ulur shumë, po pres të rikuperohet për të shitur.» Kjo e lidh vendimin me një numër arbitrar — çmimin tuaj të blerjes — në vend të vlerës aktuale.',
-            '«Të gjithë po shesin.» Kjo është arsyeja që prodhon shitjen në fund të një rënieje, ku dëmi është maksimal.',
+            '“U rrit shumë, po e marr fitimin.” Çmimi që e keni paguar s’ka lidhje me vlerën e sotme. Tregu nuk e di sa keni paguar dhe as nuk i intereson.',
+            '“Ra shumë, po pres të kthehet e pastaj e shes.” Kjo e lidh vendimin me një shifër të rastit — çmimin tuaj të blerjes — në vend se me vlerën e sotme.',
+            '“Po shesin të gjithë.” Kjo është arsyeja që shkakton shitje pikërisht në fund të një rënieje, ku dëmi është më i madhi.',
           ],
         },
         {
           heading: 'Vendoseni paraprakisht',
           paragraphs: [
-            'Rregullat e shkruara përpara se të keni një pozicion janë shumë më të mira se gjykimi në momentin e stresit.',
-            'Një rregull i thjeshtë ribalancimi — kthe në peshat e synuara një herë në vit, ose kur diçka devijon më shumë se dhjetë pikë përqindjeje — merr shumicën e këtyre vendimeve për ju.',
-            'Kjo është arsyeja e vërtetë pse ribalancimi funksionon: jo sepse koha e tij është e mirë, por sepse ai heq nga duart tuaja vendimin që keni më shumë gjasa ta merrni gabim.',
+            'Rregullat e shkruara para se ta merrni një pozicion janë shumë më të mira se gjykimi në çastin e stresit.',
+            'Një rregull i thjeshtë ribalancimi — kthehu te peshat e synuara një herë në vit, ose kur diçka largohet më shumë se dhjetë pikë përqindjeje — i merr shumicën e këtyre vendimeve në vend tuajin.',
+            'Kjo është arsyeja e vërtetë pse funksionon ribalancimi: jo se e qëllon kohën, por se jua heq nga duart vendimin që keni më së shumti gjasa ta merrni gabim.',
           ],
         },
       ],
@@ -946,34 +947,34 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           slug: 'sunk-cost',
           term: 'Kosto e zhytur',
           definition:
-            'Para të shpenzuara tashmë që nuk duhet të ndikojnë asnjë vendim të ardhshëm.',
+            'Para të shpenzuara tashmë, që nuk duhet të ndikojnë në asnjë vendim të ardhshëm.',
         },
         {
           slug: 'anchoring',
           term: 'Ankorim',
           definition:
-            'Lidhja e një vendimi me një numër arbitrar, zakonisht çmimin që paguat.',
+            'Lidhja e një vendimi me një shifër të rastit, zakonisht me çmimin që e keni paguar.',
         },
         {
           slug: 'investment-thesis',
           term: 'Tezë investimi',
           definition:
-            'Arsyeja e shkruar pse blini diçka, dhe pra prova e vetme se kur duhet shitur.',
+            'Arsyeja e shkruar pse e blini diçka — dhe prandaj mënyra e vetme për ta ditur kur duhet shitur.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Një aksion ka rënë 30% dhe vendosni të prisni «derisa të kthehet te çmimi im» për të shitur. Cili është gabimi?',
+          'Një aksion ka rënë për 30% dhe vendosni të prisni “derisa të kthehet te çmimi im” për ta shitur. Ku është gabimi?',
         options: [
-          'Duhet shitur menjëherë çdo gjë që bie',
-          'Çmimi juaj i blerjes është arbitrar dhe nuk thotë asgjë për vlerën e sotme',
+          'Duhet shitur në çast gjithçka që bie',
+          'Çmimi juaj i blerjes është i rastit dhe nuk thotë asgjë për vlerën e sotme',
           'Duhet blerë më shumë gjithmonë',
         ],
         answer: 1,
         explanation:
-          'Tregu nuk e di sa paguat. Vendimi duhet të varet nga vlera dhe teza sot, jo nga një numër i së kaluarës suaj.',
+          'Tregu nuk e di sa keni paguar. Vendimi duhet të varet nga vlera dhe teza sot, jo nga një shifër e së kaluarës suaj.',
       },
     },
     upNextSlugs: [
@@ -987,37 +988,37 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
     slug: 'building-a-simple-portfolio',
     topicId: 'risk-and-costs',
     level: 'beginner',
-    title: { sq: 'Të ndërtosh një portofol të thjeshtë' },
+    title: { sq: 'Si të ndërtohet një portofol i thjeshtë' },
     summary: {
-      sq: 'Vendimi që shpjegon shumicën e rezultatit tuaj nuk është cilat aksione, por sa nga secili lloj.',
+      sq: 'Vendimi që e shpjegon pjesën më të madhe të rezultatit tuaj nuk është cilat aksione, por sa nga secili lloj.',
     },
     inOneSentence: {
-      sq: 'Zgjidhni ndarjen mes aksioneve dhe obligacioneve sipas afatit tuaj, mbajeni të gjerë dhe të lirë, dhe ribalancojeni një herë në vit.',
+      sq: 'Zgjidheni ndarjen mes aksioneve dhe obligacioneve sipas afatit tuaj, mbajeni të gjerë e të lirë dhe ribalancojeni një herë në vit.',
     },
     body: {
       sq: [
         {
           heading: 'Vendimi i parë dhe më i rëndësishmi',
           paragraphs: [
-            'Studimet e ndryshme japin shifra të ndryshme, por të gjitha bien dakord për drejtimin: pjesa dërrmuese e luhatjes së një portofoli shpjegohet nga ndarja mes llojeve të aktiveve, jo nga zgjedhja brenda tyre.',
-            'Me fjalë të tjera, «sa përqind në aksione» ka shumë më tepër rëndësi se «cilat aksione».',
-            'Ky është një lajm i mirë: vendimi më i rëndësishëm është edhe më i thjeshti, dhe nuk kërkon asnjë parashikim.',
+            'Studime të ndryshme japin shifra të ndryshme, por të gjitha pajtohen për drejtimin: pjesa dërrmuese e luhatjes së një portofoli shpjegohet nga ndarja mes llojeve të aseteve, jo nga zgjedhja brenda tyre.',
+            'Me fjalë të tjera, “sa përqind në aksione” ka shumë më shumë rëndësi se “cilat aksione”.',
+            'Ky është lajm i mirë: vendimi më i rëndësishëm është edhe më i thjeshti dhe nuk kërkon asnjë parashikim.',
           ],
         },
         {
           heading: 'Një strukturë që mjafton',
           paragraphs: [
-            'Një fond i gjerë global aksionesh mbulon mijëra kompani në dhjetëra vende. Një fond obligacionesh me cilësi të lartë mbulon pjesën e qëndrueshme.',
-            'Dy fonde janë të mjaftueshme për shumicën e njerëzve. Shtimi i një të treti ose të katërti duhet të përgjigjet një pyetjeje konkrete, jo dëshirës për të pasur më shumë.',
-            'Përmasat varen nga afati: sa më larg data kur ju duhen paratë, aq më e madhe mund të jetë pjesa e aksioneve.',
+            'Një fond i gjerë global aksionesh i mbulon mijëra kompani në dhjetëra shtete. Një fond obligacionesh cilësore e mbulon pjesën e qëndrueshme.',
+            'Për shumicën e njerëzve mjaftojnë dy fonde. Shtimi i një të treti a të katërti duhet t’i përgjigjet një pyetjeje konkrete, jo dëshirës për të pasur më shumë.',
+            'Përmasat varen nga afati: sa më larg dita kur ju duhen paratë, aq më e madhe mund të jetë pjesa e aksioneve.',
           ],
         },
         {
           heading: 'Mirëmbajtja',
           paragraphs: [
-            'Kontribuoni rregullisht dhe automatikisht. Ribalanconi një herë në vit. Shikojeni rrallë. Kjo është e gjitha.',
-            'Rezistoni tundimit për ta bërë më të sofistikuar. Çdo shtresë shtesë sjell kosto, ndërlikim dhe një vendim më shumë për të gabuar.',
-            'Portofoli më i mirë nuk është ai me kthimin më të lartë të pritur. Është ai që do ta mbani vërtet përgjatë dhjetë vjetësh, duke përfshirë vitet e këqija.',
+            'Kontribuoni rregullisht dhe vetvetiu. Ribalanconi një herë në vit. Shikojeni rrallë. Kaq është e tëra.',
+            'Mos i shkoni pas tundimit për ta bërë më të ndërlikuar. Çdo shtresë e re sjell kosto, ngatërresë dhe edhe një vendim ku mund të gaboni.',
+            'Portofoli më i mirë nuk është ai me kthimin më të lartë të pritur. Është ai që do ta mbani vërtet dhjetë vjet, bashkë me vitet e këqija.',
           ],
         },
       ],
@@ -1037,15 +1038,15 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       sq: [
         {
           title: 'Zgjidhni ndarjen',
-          body: 'Afat njëzetvjeçar, tolerancë e mirë: 80% aksione globale, 20% obligacione.',
+          body: 'Afat njëzetvjeçar, durim i mirë ndaj rrezikut: 80% aksione globale, 20% obligacione.',
         },
         {
           title: 'Kontribuoni automatikisht',
-          body: 'E njëjta shumë çdo muaj, e ndarë në të njëjtat përmasa. Asnjë vendim mujor.',
+          body: 'E njëjta shumë çdo muaj, e ndarë në të njëjtat përmasa. Asnjë vendim çdo muaj.',
         },
         {
           title: 'Ribalanconi një herë në vit',
-          body: 'Nëse aksionet janë rritur në 88%, shitni pak dhe blini obligacione derisa të ktheheni në 80/20.',
+          body: 'Nëse aksionet janë rritur në 88%, shitni pak dhe blini obligacione derisa të ktheheni te 80/20.',
         },
       ],
     },
@@ -1053,37 +1054,37 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       sq: [
         {
           slug: 'asset-allocation',
-          term: 'Shpërndarje aktivesh',
+          term: 'Shpërndarje asetesh',
           definition:
-            'Ndarja e portofolit mes llojeve të investimeve. Vendimi që shpjegon shumicën e rezultatit.',
-          aliases: ['shpërndarja e aktiveve'],
+            'Ndarja e portofolit nëpër lloje të investimeve. Vendimi që e shpjegon pjesën më të madhe të rezultatit.',
+          aliases: ['shpërndarja e aseteve', 'shpërndarje aktivesh'],
         },
         {
           slug: 'target-weight',
           term: 'Peshë e synuar',
           definition:
-            'Përqindja që ju keni vendosur për secilin komponent, dhe te e cila ktheheni kur ribalanconi.',
+            'Përqindja që e keni caktuar për secilën pjesë dhe te e cila ktheheni kur ribalanconi.',
         },
         {
           slug: 'core-satellite',
           term: 'Bërthamë dhe satelitë',
           definition:
-            'Një bazë e gjerë dhe e lirë, plus pozicione të vogla për gjithçka tjetër.',
+            'Një bazë e gjerë e lirë, plus pozicione të vogla për gjithçka tjetër.',
         },
       ],
     },
     quiz: {
       sq: {
         question:
-          'Cili vendim shpjegon pjesën më të madhe të luhatjes së një portofoli?',
+          'Cili vendim e shpjegon pjesën më të madhe të luhatjes së një portofoli?',
         options: [
-          'Cilat aksione individuale zgjidhni',
-          'Sa përqind mbani në aksione kundrejt obligacioneve',
+          'Cilat aksione i zgjidhni një nga një',
+          'Sa përqind mbani në aksione e sa në obligacione',
           'Në cilën ditë të muajit blini',
         ],
         answer: 1,
         explanation:
-          'Ndarja mes llojeve të aktiveve dominon rezultatin. Zgjedhja brenda secilit lloj ka shumë më pak peshë.',
+          'Ndarja mes llojeve të aseteve e vendos rezultatin. Zgjedhja brenda secilit lloj ka shumë më pak peshë.',
       },
     },
     relatedSymbols: ['sp-500', 'stoxx-600'],

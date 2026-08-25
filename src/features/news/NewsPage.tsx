@@ -1,6 +1,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import type { CalendarEvent } from '@/features/calendar';
 import { formatTimestamp } from '@/features/calendar/formatDate';
 import { ComingUp } from '@/features/markets/components/ComingUp';
@@ -47,7 +48,7 @@ export function NewsPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="news" />
+      <SiteHeader active="news" searchSlot={<NavSearch />} />
       <MarketTicker />
 
       <main className="flex-1">

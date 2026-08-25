@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import type { Locale } from '@/i18n/config';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { NavSearch } from '@/features/search';
 import { DayTabs } from './components/DayTabs';
 import { EventTable } from './components/EventTable';
 import { ImpactLegend } from './components/ImpactLegend';
@@ -56,7 +57,7 @@ export function CalendarPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="calendar" />
+      <SiteHeader active="calendar" searchSlot={<NavSearch />} />
 
       <main className="flex-1">
         <div className="page-container pt-10">
