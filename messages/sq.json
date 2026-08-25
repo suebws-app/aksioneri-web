@@ -314,5 +314,25 @@
       "article": "Lajme",
       "event": "Kalendari"
     }
+  },
+  "pages": {
+    "updated": "Përditësuar më {date}",
+    "emailLabel": "Shkruani në",
+    "about": {
+      "metaTitle": "Rreth nesh",
+      "metaDescription": "Kush e bën Aksionerin dhe pse: tregjet, lajmet dhe mësimet financiare të shpjeguara shqip, pa këshilla investimi dhe pa interes komercial."
+    },
+    "contact": {
+      "metaTitle": "Kontakt",
+      "metaDescription": "Na shkruani për gabime në përmbajtje, pyetje rreth të dhënave tuaja ose bashkëpunime. Një adresë e vetme dhe përgjigje brenda pak ditësh pune."
+    },
+    "privacy": {
+      "metaTitle": "Privatësia",
+      "metaDescription": "Faqja nuk ka llogari dhe nuk kërkon të dhëna personale. Këtu shpjegohet çka ruhet kur e lexoni, ku ruhet dhe si mund ta fshini kurdo që doni."
+    },
+    "terms": {
+      "metaTitle": "Kushtet e përdorimit",
+      "metaDescription": "Përmbajtja është edukative dhe jo këshillë investimi, të dhënat e tregut vijnë nga palë të treta, dhe lajmet mbeten pronë e publikuesve të tyre."
+    }
   }
 }

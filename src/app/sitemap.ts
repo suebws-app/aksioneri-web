@@ -28,6 +28,12 @@ const SECTIONS: SitemapPath[] = [
   { path: '/markets', priority: 0.8 },
   { path: '/learn', priority: 0.8 },
   { path: '/learn/glossary', priority: 0.7 },
+  // Standing pages: rarely edited, but a site with no about or privacy page
+  // in its sitemap looks abandoned to a crawler.
+  { path: '/about', priority: 0.4 },
+  { path: '/contact', priority: 0.4 },
+  { path: '/privacy', priority: 0.3 },
+  { path: '/terms', priority: 0.3 },
 ];
 
 /**

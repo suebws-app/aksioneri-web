@@ -3,11 +3,7 @@ import { Link } from '@/i18n/navigation';
 
 const SECTIONS = ['markets', 'news', 'learn', 'calendar'] as const;
 
-/**
- * Legal and company pages do not exist yet, so they render as plain text. The
- * design uses the same convention for its own unbuilt links, and a footer full
- * of 404s is worse than an obviously inactive label.
- */
+/** The standing pages, in the order the design lists them. */
 const LEGAL = ['about', 'contact', 'privacy', 'terms'] as const;
 
 const HREF: Record<(typeof SECTIONS)[number], string> = {
@@ -40,7 +36,9 @@ export function SiteFooter() {
               ))}
               {LEGAL.map((key) => (
                 <li key={key}>
-                  <span>{tFooter(key)}</span>
+                  <Link href={`/${key}`} className="hover:text-ink-inverse">
+                    {tFooter(key)}
+                  </Link>
                 </li>
               ))}
             </ul>
