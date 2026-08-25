@@ -86,6 +86,53 @@
      started and the jump back to 0% is invisible. 80 s is slow enough to
      read a label but fast enough that the strip does not feel frozen. */
   --animate-marquee: marquee 80s linear infinite;
+  /* The phone nav drawer: slides in from the right, with the scrim fading
+     under it. Long enough to read as a panel arriving, short enough not to
+     delay a tap. */
+  --animate-drawer-in: drawer-in 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  --animate-scrim-in: scrim-in 220ms ease-out;
+  --animate-panel-item-in: panel-item-in 260ms ease-out backwards;
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Rows arrive just after the drawer, staggered by an inline delay, so the list
+   reads top-down instead of appearing all at once. */
+@keyframes panel-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Motion is decoration here: anyone who has asked the system to reduce it gets
+   the panel with no movement at all. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-drawer-in,
+  .animate-scrim-in,
+  .animate-panel-item-in {
+    animation: none;
+  }
 }
 
 @keyframes marquee {
@@ -126,9 +173,24 @@ body {
   }
 }
 
+/* Chrome draws its own clear button inside `input[type="search"]`, in its own
+   grey. Masking a plain cross in `currentColor` keeps it the same ink as the
+   text it clears, at a size that matches the field rather than the browser. */
+input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.75rem;
+  width: 0.75rem;
+  cursor: pointer;
+  background-color: currentColor;
+  -webkit-mask: var(--clear-cross) center / contain no-repeat;
+  mask: var(--clear-cross) center / contain no-repeat;
+}
+
+:root {
+  --clear-cross: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1 1L11 11M11 1L1 11' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
 /* The design is a light editorial surface throughout. It is not a
    theme-switching system, so no dark-mode override is declared: inheriting the
    browser default would invert the paper ground and break the palette. */
-.text-ink-ghost {
-  display: none;
-}

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { MobileNav } from './MobileNav';
 
 const SECTIONS = ['markets', 'news', 'learn', 'calendar'] as const;
 
@@ -26,13 +27,26 @@ interface SiteHeaderProps {
    * `<NavSearch />` from `@/features/search`.
    */
   searchSlot?: ReactNode;
+  /**
+   * The same search, in the shape the phone header needs: an icon that opens a
+   * full-width sheet. Separate node rather than one slot reused, because the
+   * two render differently — see `NavSearchVariant`.
+   */
+  mobileSearchSlot?: ReactNode;
 }
 
-export function SiteHeader({ active, searchSlot }: SiteHeaderProps) {
+export function SiteHeader({
+  active,
+  searchSlot,
+  mobileSearchSlot,
+}: SiteHeaderProps) {
   const t = useTranslations('nav');
 
   return (
-    <header className="border-line border-b">
+    // Sticky and above the drawer below `sm`: the phone nav slides in
+    // underneath, and the wordmark and close button have to stay reachable.
+    // Static from `sm` up, where the design has no sticky header.
+    <header className="border-line bg-paper sticky top-0 z-50 border-b sm:static">
       <div className="page-container flex items-center justify-between gap-6 py-5">
         <Link
           href="/"
@@ -41,7 +55,9 @@ export function SiteHeader({ active, searchSlot }: SiteHeaderProps) {
           {t('brand')}
         </Link>
 
-        <nav aria-label={t('primaryLabel')}>
+        {/* Four links plus a search box need room the phone does not have;
+            below `sm` they move into `MobileNav`. */}
+        <nav aria-label={t('primaryLabel')} className="hidden sm:block">
           <ul className="text-ink-muted flex items-center gap-5 text-[15px] sm:gap-7.5">
             {SECTIONS.map((section) => {
               const isActive = section === active;
@@ -71,6 +87,19 @@ export function SiteHeader({ active, searchSlot }: SiteHeaderProps) {
             {searchSlot ? <li>{searchSlot}</li> : null}
           </ul>
         </nav>
+
+        {/* Search sits beside the menu button rather than inside it: it is
+            the control a reader reaches for directly. */}
+        <div className="flex items-center gap-0.5 sm:hidden">
+          {mobileSearchSlot}
+          <MobileNav
+            items={SECTIONS.map((section) => ({
+              href: HREF[section],
+              label: t(section),
+              current: section === active,
+            }))}
+          />
+        </div>
       </div>
     </header>
   );

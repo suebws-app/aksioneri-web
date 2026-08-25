@@ -73,7 +73,11 @@ export function LessonPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="learn" searchSlot={<NavSearch />} />
+      <SiteHeader
+        active="learn"
+        searchSlot={<NavSearch />}
+        mobileSearchSlot={<NavSearch variant="mobile" />}
+      />
 
       <main className="flex-1">
         <nav
@@ -105,13 +109,18 @@ export function LessonPage({
               aria-label={t('onThisPage')}
               className="lg:sticky lg:top-7 lg:h-fit lg:w-61 lg:shrink-0"
             >
-              <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                {t('onThisPage')}
-              </h2>
-              <LessonOutline entries={outline} />
+              {/* Hidden on phones: as a stacked block it pushed the article a
+                  full screen down, and a jump list is worth little when the
+                  whole lesson is a two-minute scroll. */}
+              <div className="hidden lg:block">
+                <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
+                  {t('onThisPage')}
+                </h2>
+                <LessonOutline entries={outline} />
+              </div>
 
               {lesson.track ? (
-                <div className="border-line mt-6.5 border-t pt-5.5">
+                <div className="border-line mt-6.5 border-t pt-5.5 lg:mt-6.5">
                   <p className="text-ink-faint mb-2.5 text-[13px]">
                     {t('trackPosition', {
                       position: lesson.track.position,

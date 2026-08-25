@@ -6,6 +6,8 @@
   "nav": {
     "brand": "Aksioneri",
     "primaryLabel": "Navigimi kryesor",
+    "openMenu": "Hap menynë",
+    "closeMenu": "Mbyll menynë",
     "markets": "Tregjet",
     "news": "Lajme",
     "learn": "Mëso",
@@ -294,7 +296,9 @@
     "heading": "Kërko",
     "intro": "Shkruaj një fjalë dhe kërko njëherësh nëpër mësime, fjalor, lajme, tregje dhe kalendar.",
     "label": "Kërko në faqe",
+    "close": "Mbyll kërkimin",
     "placeholder": "p.sh. inflacioni, ETF, obligacione",
+    "placeholderShort": "Kërko…",
     "submit": "Kërko",
     "prompt": "Shkruaj diçka më lart për të filluar kërkimin.",
     "loading": "Po ngarkohet…",

@@ -55,7 +55,11 @@ export function ArticlePage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="news" searchSlot={<NavSearch />} />
+      <SiteHeader
+        active="news"
+        searchSlot={<NavSearch />}
+        mobileSearchSlot={<NavSearch variant="mobile" />}
+      />
 
       <main className="flex-1">
         <nav

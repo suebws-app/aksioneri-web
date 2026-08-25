@@ -57,7 +57,11 @@ export function CalendarPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="calendar" searchSlot={<NavSearch />} />
+      <SiteHeader
+        active="calendar"
+        searchSlot={<NavSearch />}
+        mobileSearchSlot={<NavSearch variant="mobile" />}
+      />
 
       <main className="flex-1">
         <div className="page-container pt-10">

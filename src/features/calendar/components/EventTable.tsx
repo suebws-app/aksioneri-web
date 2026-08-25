@@ -13,9 +13,15 @@ import { ImpactBars } from './ImpactBars';
  * single full-row anchor, which is not valid inside a table row. Every row
  * links from its event title instead, which also leaves the figures selectable.
  *
- * Below the table's natural width it scrolls sideways inside its own container
- * rather than collapsing to cards: a release is read by comparing actual
- * against expected, and that comparison needs the columns side by side.
+ * Two renderings of the same events. From `sm` up it is the table above,
+ * scrolling sideways in its own container when the viewport is narrower than
+ * its natural width. On a phone that scroll hid everything that matters: the
+ * table needs 860px, so a 375px screen showed time, region and title and left
+ * actual, expected and previous off-screen.
+ *
+ * The phone layout stacks each release instead — but keeps the three figures
+ * in one row, because a release is read by comparing actual against expected
+ * and that comparison needs them side by side.
  */
 
 const SURPRISE_COLOR: Record<SurpriseDirection, string> = {
@@ -79,116 +85,194 @@ export function EventTable({
   // `relative` on the scroll container is load-bearing: `sr-only` positions
   // absolutely, and with no positioned ancestor those boxes resolve against the
   // page and widen the document, giving the whole page a horizontal scrollbar.
+  const figures = (event: CalendarEvent) => [
+    {
+      label: t('columns.actual'),
+      value: event.actual,
+      className: SURPRISE_COLOR[event.surprise],
+    },
+    {
+      label: t('columns.expected'),
+      value: event.expected,
+      className: 'text-ink-secondary',
+    },
+    {
+      label: t('columns.previous'),
+      value: event.previous,
+      className: 'text-ink-ghost',
+    },
+  ];
+
   return (
-    <div className="relative overflow-x-auto">
-      <table className="w-full min-w-[860px] border-collapse text-[15px]">
-        <caption className="sr-only">{caption}</caption>
-
-        <colgroup>
-          <col className="w-21" />
-          <col className="w-15" />
-          <col />
-          <col className="w-20" />
-          <col className="w-24" />
-          <col className="w-24" />
-          <col className="w-24" />
-        </colgroup>
-
-        <thead
-          className={cn(
-            'text-ink-ghost text-[11px] font-semibold tracking-[0.11em] uppercase',
-            // The header row is present for assistive technology on every
-            // table, but drawn only on the first one.
-            !showColumnHeaders && 'sr-only',
-          )}
-        >
-          <tr>
-            <th scope="col" className="pb-3 text-left">
-              {t('columns.time')}
-            </th>
-            <th scope="col" className="pb-3 text-left">
-              {t('columns.region')}
-            </th>
-            <th scope="col" className="pb-3 text-left">
-              {t('columns.event')}
-            </th>
-            <th scope="col" className="pb-3 text-left">
-              {t('columns.impact')}
-            </th>
-            <th scope="col" className="pb-3 text-right">
-              {t('columns.actual')}
-            </th>
-            <th scope="col" className="pb-3 text-right">
-              {t('columns.expected')}
-            </th>
-            <th scope="col" className="pb-3 text-right">
-              {t('columns.previous')}
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {events.map((event, index) => (
-            <tr
-              key={event.id}
-              className={cn(
-                'border-line border-t last:border-b',
-                variant === 'upcoming' && index === 0 && 'border-t-ink',
-                event.isNextUp
-                  ? 'bg-surface-tint'
-                  : variant === 'selected'
-                    ? 'bg-surface'
-                    : 'bg-transparent',
-              )}
-            >
-              <td className="py-3.5">
-                <time
-                  className={cn(
-                    'font-mono',
-                    event.isNextUp ? 'text-accent' : 'text-ink-subtle',
-                  )}
-                >
-                  {event.time}
-                </time>
-              </td>
-              <td className="text-accent py-3.5 font-mono text-[11px] tracking-[0.06em]">
-                {event.region}
-              </td>
-              <td
-                className={cn('py-3.5 pr-6', event.isNextUp && 'font-medium')}
+    <>
+      <ul className="sm:hidden">
+        {events.map((event) => (
+          <li
+            key={event.id}
+            className={cn(
+              'border-line border-t px-3 py-3.5 last:border-b',
+              event.isNextUp ? 'bg-surface-tint' : 'bg-transparent',
+            )}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <Link
+                href={`/calendar/${event.slug}`}
+                className={cn(
+                  'text-ink hover:text-accent text-[15px]',
+                  event.isNextUp && 'font-medium',
+                )}
               >
-                <Link
-                  href={`/calendar/${event.slug}`}
-                  className="text-ink hover:text-accent"
-                >
-                  {event.title}
-                </Link>
-                {event.isNextUp ? (
-                  <span className="text-accent"> · {t('nextUp.label')}</span>
-                ) : null}
-              </td>
-              <td className="py-3.5">
-                <ImpactBars impact={event.impact} />
-              </td>
-              <ValueCell
-                value={event.actual}
-                className={SURPRISE_COLOR[event.surprise]}
-                notReleasedLabel={notReleased}
-              />
-              <ValueCell
-                value={event.expected}
-                className="text-ink-secondary"
-                notReleasedLabel={notReleased}
-              />
-              <ValueCell
-                value={event.previous}
-                className="text-ink-ghost"
-                notReleasedLabel={notReleased}
-              />
+                {event.title}
+              </Link>
+              <ImpactBars impact={event.impact} />
+            </div>
+
+            <p className="text-ink-subtle mt-1 font-mono text-[12px]">
+              <time className={event.isNextUp ? 'text-accent' : undefined}>
+                {event.time}
+              </time>
+              <span className="text-accent"> · {event.region}</span>
+              {event.isNextUp ? (
+                <span className="text-accent"> · {t('nextUp.label')}</span>
+              ) : null}
+            </p>
+
+            <dl className="mt-2.5 grid grid-cols-3 gap-2">
+              {figures(event).map((figure) => (
+                <div key={figure.label}>
+                  <dt className="text-ink-ghost text-[10px] font-semibold tracking-[0.11em] uppercase">
+                    {figure.label}
+                  </dt>
+                  <dd
+                    className={cn(
+                      'mt-0.5 font-mono text-[14px]',
+                      figure.value ? figure.className : 'text-ink-ghost',
+                    )}
+                  >
+                    {figure.value ?? (
+                      <>
+                        <span aria-hidden>—</span>
+                        <span className="sr-only">{notReleased}</span>
+                      </>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </li>
+        ))}
+      </ul>
+
+      <div className="relative hidden overflow-x-auto sm:block">
+        <table className="w-full min-w-[860px] border-collapse text-[15px]">
+          <caption className="sr-only">{caption}</caption>
+
+          <colgroup>
+            <col className="w-21" />
+            <col className="w-15" />
+            <col />
+            <col className="w-20" />
+            <col className="w-24" />
+            <col className="w-24" />
+            <col className="w-24" />
+          </colgroup>
+
+          <thead
+            className={cn(
+              'text-ink-ghost text-[11px] font-semibold tracking-[0.11em] uppercase',
+              // The header row is present for assistive technology on every
+              // table, but drawn only on the first one.
+              !showColumnHeaders && 'sr-only',
+            )}
+          >
+            <tr>
+              <th scope="col" className="pb-3 text-left">
+                {t('columns.time')}
+              </th>
+              <th scope="col" className="pb-3 text-left">
+                {t('columns.region')}
+              </th>
+              <th scope="col" className="pb-3 text-left">
+                {t('columns.event')}
+              </th>
+              <th scope="col" className="pb-3 text-left">
+                {t('columns.impact')}
+              </th>
+              <th scope="col" className="pb-3 text-right">
+                {t('columns.actual')}
+              </th>
+              <th scope="col" className="pb-3 text-right">
+                {t('columns.expected')}
+              </th>
+              <th scope="col" className="pb-3 text-right">
+                {t('columns.previous')}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+
+          <tbody>
+            {events.map((event, index) => (
+              <tr
+                key={event.id}
+                className={cn(
+                  'border-line border-t last:border-b',
+                  variant === 'upcoming' && index === 0 && 'border-t-ink',
+                  event.isNextUp
+                    ? 'bg-surface-tint'
+                    : variant === 'selected'
+                      ? 'bg-surface'
+                      : 'bg-transparent',
+                )}
+              >
+                <td className="py-3.5">
+                  <time
+                    className={cn(
+                      'font-mono',
+                      event.isNextUp ? 'text-accent' : 'text-ink-subtle',
+                    )}
+                  >
+                    {event.time}
+                  </time>
+                </td>
+                <td className="text-accent py-3.5 font-mono text-[11px] tracking-[0.06em]">
+                  {event.region}
+                </td>
+                <td
+                  className={cn('py-3.5 pr-6', event.isNextUp && 'font-medium')}
+                >
+                  <Link
+                    href={`/calendar/${event.slug}`}
+                    className="text-ink hover:text-accent"
+                  >
+                    {event.title}
+                  </Link>
+                  {event.isNextUp ? (
+                    <span className="text-accent"> · {t('nextUp.label')}</span>
+                  ) : null}
+                </td>
+                <td className="py-3.5">
+                  <ImpactBars impact={event.impact} />
+                </td>
+                <ValueCell
+                  value={event.actual}
+                  className={SURPRISE_COLOR[event.surprise]}
+                  notReleasedLabel={notReleased}
+                />
+                <ValueCell
+                  value={event.expected}
+                  className="text-ink-secondary"
+                  notReleasedLabel={notReleased}
+                />
+                <ValueCell
+                  value={event.previous}
+                  className="text-ink-ghost"
+                  notReleasedLabel={notReleased}
+                />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }

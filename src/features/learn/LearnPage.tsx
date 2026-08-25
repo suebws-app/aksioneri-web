@@ -49,7 +49,11 @@ export function LearnPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader active="learn" searchSlot={<NavSearch />} />
+      <SiteHeader
+        active="learn"
+        searchSlot={<NavSearch />}
+        mobileSearchSlot={<NavSearch variant="mobile" />}
+      />
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">

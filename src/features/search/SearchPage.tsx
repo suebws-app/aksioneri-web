@@ -41,7 +41,10 @@ export function SearchPage({ query, results }: SearchPageProps) {
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader searchSlot={<NavSearch />} />
+      <SiteHeader
+        searchSlot={<NavSearch />}
+        mobileSearchSlot={<NavSearch variant="mobile" />}
+      />
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">
