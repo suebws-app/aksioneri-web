@@ -52,7 +52,7 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
   }, [visible]);
 
   return (
-    <div className="mx-auto max-w-[1280px] px-6 py-10 sm:px-11">
+    <div className="page-container py-10">
       <div className="mb-7 flex flex-col gap-5">
         <label className="max-w-md">
           <span className="sr-only">{t('glossary.searchLabel')}</span>

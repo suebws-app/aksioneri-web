@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { getCalendarWeek } from '@/features/calendar';
 import { getLessonSlugs, getTopics } from '@/features/learn';
-import { getQuotes } from '@/features/markets';
 import { getArticleIndex } from '@/features/news';
+import { SUPPORTED_SYMBOLS } from '@/lib/api/markets';
 import { defaultLocale } from '@/i18n/config';
 import { localizedAbsoluteUrl } from '@/lib/seo/urls';
 
@@ -60,8 +60,8 @@ async function detailPaths(): Promise<SitemapPath[]> {
     ...getCalendarWeek(defaultLocale)
       .days.flatMap((day) => day.events)
       .map((event) => ({ path: `/calendar/${event.slug}`, priority: 0.6 })),
-    ...getQuotes(defaultLocale).map((quote) => ({
-      path: `/markets/${quote.symbol}`,
+    ...SUPPORTED_SYMBOLS.map((symbol) => ({
+      path: `/markets/${symbol}`,
       priority: 0.6,
     })),
   ];

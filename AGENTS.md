@@ -33,24 +33,25 @@ open the skill matching your task and follow it. They document this repo's real
 patterns and the Next.js 16 breaking changes; writing from general Next.js
 knowledge produces code that fails lint or silently breaks i18n and SEO.
 
-| If your task involves…                  | Read                                  |
-| --------------------------------------- | ------------------------------------- |
-| Where a file goes                       | `project-bootstrap/project-setup.md`  |
-| An environment variable                 | `project-bootstrap/env-management.md` |
-| Styling, tokens, variants               | `ui/tailwind-design-system.md`        |
-| Building a component                    | `ui/component-conventions.md`         |
-| Translations, navigation                | `i18n/next-intl-setup.md`             |
-| Any user-facing string                  | `i18n/no-hardcoded-text.md`           |
-| Adding a route                          | `app-router/route-structure.md`       |
-| Layouts, providers, server/client split | `app-router/layouts-and-providers.md` |
-| Titles, canonicals, hreflang            | `seo/metadata.md`                     |
-| JSON-LD, sitemap, robots, OG images     | `seo/structured-data.md`              |
-| Sessions, sign-in, protecting a route   | `auth/better-auth-setup.md`           |
-| Fetching from the API                   | `data-layer/data-layer.md`            |
-| Global client state                     | `state/zustand-patterns.md`           |
-| Forms and validation                    | `forms/react-hook-form-patterns.md`   |
-| Types, strict-mode errors               | `typescript/typescript-patterns.md`   |
-| Tests                                   | `testing/testing-patterns.md`         |
+| If your task involves…                   | Read                                  |
+| ---------------------------------------- | ------------------------------------- |
+| Where a file goes                        | `project-bootstrap/project-setup.md`  |
+| An environment variable                  | `project-bootstrap/env-management.md` |
+| Styling, tokens, variants                | `ui/tailwind-design-system.md`        |
+| Building a component                     | `ui/component-conventions.md`         |
+| Translations, navigation                 | `i18n/next-intl-setup.md`             |
+| Any user-facing string                   | `i18n/no-hardcoded-text.md`           |
+| Writing or translating any Albanian text | `i18n/kosovo-albanian-translation.md` |
+| Adding a route                           | `app-router/route-structure.md`       |
+| Layouts, providers, server/client split  | `app-router/layouts-and-providers.md` |
+| Titles, canonicals, hreflang             | `seo/metadata.md`                     |
+| JSON-LD, sitemap, robots, OG images      | `seo/structured-data.md`              |
+| Sessions, sign-in, protecting a route    | `auth/better-auth-setup.md`           |
+| Fetching from the API                    | `data-layer/data-layer.md`            |
+| Global client state                      | `state/zustand-patterns.md`           |
+| Forms and validation                     | `forms/react-hook-form-patterns.md`   |
+| Types, strict-mode errors                | `typescript/typescript-patterns.md`   |
+| Tests                                    | `testing/testing-patterns.md`         |
 
 ## Non-negotiable rules
 

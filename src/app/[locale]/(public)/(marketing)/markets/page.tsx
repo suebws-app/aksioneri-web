@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import {
-  getQuotes,
-  MARKET_TIMESTAMP,
-  MarketsIndexPage,
-} from '@/features/markets';
+import { MARKET_TIMESTAMP, MarketsIndexPage } from '@/features/markets';
 import type { Locale } from '@/i18n/config';
+import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 /**
@@ -46,7 +43,7 @@ export default async function Page({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const quotes = getQuotes(locale);
+  const quotes = await getQuotes();
   const grouped = GROUPS.map((group) => ({
     key: group.key,
     quotes: quotes.filter((quote) => group.symbols.includes(quote.symbol)),

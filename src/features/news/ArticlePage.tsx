@@ -59,7 +59,7 @@ export function ArticlePage({
       <main className="flex-1">
         <nav
           aria-label={t('breadcrumbLabel')}
-          className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11"
+          className="page-container pt-6.5"
         >
           <ol className="text-ink-faint flex items-center gap-2.5 text-[13px]">
             <li>
@@ -74,7 +74,7 @@ export function ArticlePage({
           </ol>
         </nav>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-14 px-6 pt-7 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-14 pt-7 lg:flex-row">
           <article className="min-w-0 flex-1 lg:max-w-[760px]">
             <h1 className="text-ink mb-4.5 font-serif text-[46px] leading-[1.1] font-medium tracking-[-0.022em] text-pretty">
               {article.title}

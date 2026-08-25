@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { Link } from '@/i18n/navigation';
-import type { Quote } from '../marketsTypes';
+import type { Quote } from '@/lib/api/markets';
 
 /**
  * "Markets today" — a real table, so a screen reader announces each figure with

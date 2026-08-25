@@ -2,14 +2,10 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getFeaturedLessons } from '@/features/learn/learnData';
-import {
-  getMovers,
-  getQuotes,
-  MARKET_TIMESTAMP,
-  MarketsPage,
-} from '@/features/markets';
+import { MARKET_TIMESTAMP, MarketsPage } from '@/features/markets';
 import { getArticles, getFeaturedArticle } from '@/features/news';
 import type { Locale } from '@/i18n/config';
+import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 /** Matches the API's poll interval — see `lib/api/news.ts`. */
@@ -39,9 +35,10 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [articles, featured] = await Promise.all([
+  const [articles, featured, quotes] = await Promise.all([
     getArticles(locale),
     getFeaturedArticle(locale),
+    getQuotes(),
   ]);
   const week = getCalendarWeek(locale);
 
@@ -51,8 +48,7 @@ export default async function HomePage({
 
   return (
     <MarketsPage
-      quotes={getQuotes(locale)}
-      movers={getMovers()}
+      quotes={quotes}
       featured={featured}
       sidebarStories={rest.slice(0, 3)}
       latestNews={rest.slice(3, 8)}

@@ -23,7 +23,7 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-surface-inverse">
-      <div className="mx-auto max-w-[1280px] px-6 pt-8.5 pb-10 sm:px-11">
+      <div className="page-container pt-8.5 pb-10">
         <div className="border-line-inverse flex flex-col gap-5 border-b pb-6 sm:flex-row sm:items-baseline sm:justify-between">
           <span className="text-ink-inverse font-serif text-[21px]">
             {t('brand')}

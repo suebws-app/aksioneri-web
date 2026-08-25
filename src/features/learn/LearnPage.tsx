@@ -51,7 +51,7 @@ export function LearnPage({
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">
-          <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-6 py-13 sm:px-11 lg:flex-row lg:items-end lg:justify-between">
+          <div className="page-container flex flex-col gap-12 py-13 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[620px]">
               <p className="text-accent mb-3.5 text-[11px] font-semibold tracking-[0.12em] uppercase">
                 {t('heading')}
@@ -91,7 +91,7 @@ export function LearnPage({
           </div>
         </section>
 
-        <div className="mx-auto max-w-[1280px] px-6 pt-11 sm:px-11">
+        <div className="page-container pt-11">
           <LessonSearch entries={searchIndex} />
 
           <ContinueReading lessons={allLessons} />
@@ -115,7 +115,7 @@ export function LearnPage({
         </div>
 
         {primaryTopic ? (
-          <div className="mx-auto max-w-[1280px] px-6 pt-11 sm:px-11">
+          <div className="page-container pt-11">
             <SectionHeading
               title={primaryTopic.title}
               action={{
@@ -157,7 +157,7 @@ export function LearnPage({
           </div>
         ) : null}
 
-        <div className="mx-auto grid max-w-[1280px] gap-11 px-6 pt-11 sm:px-11 lg:grid-cols-2">
+        <div className="page-container grid gap-11 pt-11 lg:grid-cols-2">
           {secondaryTopics.map((topic) => (
             <section key={topic.id}>
               <SectionHeading
@@ -194,7 +194,7 @@ export function LearnPage({
           ))}
         </div>
 
-        <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
+        <div className="page-container py-11">
           <section className="border-line bg-surface rounded-sm border p-8 sm:p-9">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>

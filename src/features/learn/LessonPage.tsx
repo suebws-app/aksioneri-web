@@ -76,7 +76,7 @@ export function LessonPage({
       <main className="flex-1">
         <nav
           aria-label={tNews('breadcrumbLabel')}
-          className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11"
+          className="page-container pt-6.5"
         >
           <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
             <li>
@@ -97,7 +97,7 @@ export function LessonPage({
           </ol>
         </nav>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-14 px-6 pt-7 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-14 pt-7 lg:flex-row">
           {outline.length > 0 ? (
             <nav
               aria-label={t('onThisPage')}

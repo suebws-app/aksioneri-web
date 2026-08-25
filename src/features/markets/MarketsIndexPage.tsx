@@ -6,7 +6,7 @@ import { formatTimestamp } from '@/features/calendar/formatDate';
 import type { Locale } from '@/i18n/config';
 import { QuoteTable } from './components/QuoteTable';
 import { MarketTicker } from './components/MarketTicker';
-import type { Quote } from './marketsTypes';
+import type { Quote } from '@/lib/api/markets';
 
 /**
  * The full instrument list.
@@ -31,7 +31,7 @@ export function MarketsIndexPage({ groups, updatedAt }: MarketsIndexPageProps) {
       <MarketTicker />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-6 pt-10 sm:px-11">
+        <div className="page-container pt-10">
           <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h1 className="text-ink mb-2 font-serif text-[38px] font-medium tracking-[-0.02em]">
@@ -45,7 +45,7 @@ export function MarketsIndexPage({ groups, updatedAt }: MarketsIndexPageProps) {
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-6 pb-11 sm:px-11">
+        <div className="page-container flex flex-col gap-10 pb-11">
           {groups.map((group) => (
             <section key={group.key}>
               <SectionHeading title={t(`groups.${group.key}`)} />

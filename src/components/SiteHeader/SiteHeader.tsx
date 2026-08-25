@@ -23,7 +23,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
 
   return (
     <header className="border-line border-b">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-6 px-6 py-5 sm:px-11">
+      <div className="page-container flex items-center justify-between gap-6 py-5">
         <Link
           href="/"
           className="text-ink font-serif text-[25px] font-semibold tracking-[-0.015em]"

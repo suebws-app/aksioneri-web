@@ -114,7 +114,7 @@ export function EventPage({
       <main className="flex-1">
         <nav
           aria-label={tNews('breadcrumbLabel')}
-          className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11"
+          className="page-container pt-6.5"
         >
           <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
             <li>
@@ -129,7 +129,7 @@ export function EventPage({
           </ol>
         </nav>
 
-        <header className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11">
+        <header className="page-container pt-6.5">
           <div className="border-ink flex flex-col gap-8 border-b-2 pb-5.5 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <div className="mb-3.5 flex flex-wrap items-center gap-3">
@@ -166,7 +166,7 @@ export function EventPage({
           </div>
         </header>
 
-        <div className="mx-auto max-w-[1280px] px-6 sm:px-11">
+        <div className="page-container">
           <div className="border-line bg-surface relative overflow-x-auto border-b">
             <dl className="grid min-w-[720px] grid-cols-5">
               {[
@@ -214,7 +214,7 @@ export function EventPage({
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-6 pt-10 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-12 pt-10 lg:flex-row">
           <div className="min-w-0 flex-1 lg:max-w-[780px]">
             {event.explainer ? (
               <section className="mb-8.5">

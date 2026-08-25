@@ -80,6 +80,21 @@
   --font-serif: var(--font-newsreader), Georgia, serif;
   --font-sans: var(--font-plex-sans), system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Ticker strip scroll. The rail renders its cells twice back-to-back and
+     translates -50%, so after one cycle the second copy sits where the first
+     started and the jump back to 0% is invisible. 80 s is slow enough to
+     read a label but fast enough that the strip does not feel frozen. */
+  --animate-marquee: marquee 80s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 body {
@@ -88,6 +103,32 @@ body {
   font-family: var(--font-sans);
 }
 
+/**
+ * The one column every full-width page section sits inside.
+ *
+ * 1280 px max, centred, with the 24 px / 44 px gutters the design uses.
+ * Extend it on the call site for vertical padding, flex/grid layout,
+ * `overflow-hidden`, etc. — this class is only the horizontal frame, so
+ * that section-specific spacing stays local to the section.
+ */
+.page-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1280px;
+  padding-left: 1.5rem; /* 24px */
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .page-container {
+    padding-left: 2.75rem; /* 44px */
+    padding-right: 2.75rem;
+  }
+}
+
 /* The design is a light editorial surface throughout. It is not a
    theme-switching system, so no dark-mode override is declared: inheriting the
    browser default would invert the paper ground and break the palette. */
+.text-ink-ghost {
+  display: none;
+}

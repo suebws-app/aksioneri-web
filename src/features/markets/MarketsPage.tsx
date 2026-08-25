@@ -14,13 +14,12 @@ import type { NewsArticle } from '@/features/news/newsTypes';
 import { ComingUp } from './components/ComingUp';
 import { MarketMiniChart } from './components/MarketMiniChart';
 import { MarketMovers } from './components/MarketMovers';
-import { QuoteTable } from './components/QuoteTable';
 import { MarketTicker } from './components/MarketTicker';
-import type { MarketMovers as Movers, Quote } from './marketsTypes';
+import { QuoteTableLive } from './components/QuoteTableLive';
+import type { Quote } from '@/lib/api/markets';
 
 export interface MarketsPageProps {
   quotes: Quote[];
-  movers: Movers;
   /** Null while the wire is empty — a cold API, or a first ingest still running. */
   featured: NewsArticle | null;
   sidebarStories: NewsArticle[];
@@ -37,7 +36,6 @@ export interface MarketsPageProps {
 
 export function MarketsPage({
   quotes,
-  movers,
   featured,
   sidebarStories,
   latestNews,
@@ -57,7 +55,7 @@ export function MarketsPage({
       <MarketTicker />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-6 pt-11 pb-10 sm:px-11">
+        <div className="page-container pt-11 pb-10">
           <SectionHeading title={t('todayHeading')} size="lg" rule="strong">
             <time dateTime={updatedAt} className="text-ink-faint text-[13px]">
               {formatTimestamp(locale, updatedAt)}
@@ -92,24 +90,24 @@ export function MarketsPage({
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-11 px-6 pb-11 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-11 pb-11 lg:flex-row">
           <section className="lg:w-[528px] lg:shrink-0">
             <SectionHeading
               title={t('quotesHeading')}
               action={{ label: t('viewAllMarkets'), href: '/markets' }}
             />
-            <QuoteTable quotes={quotes} />
+            <QuoteTableLive initial={quotes} />
           </section>
 
           {showMovers ? (
             <div className="min-w-0 flex-1">
-              <MarketMovers movers={movers} />
+              <MarketMovers index="sp-500" />
             </div>
           ) : null}
         </div>
 
         <div className="border-line bg-surface border-t">
-          <div className="mx-auto max-w-[1280px] px-6 py-10 sm:px-11">
+          <div className="page-container py-10">
             <SectionHeading
               title={t('latestNewsHeading')}
               action={{ label: t('viewAllNews'), href: '/news' }}
@@ -137,7 +135,7 @@ export function MarketsPage({
         </div>
 
         <div className="border-line bg-surface-muted border-t">
-          <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
+          <div className="page-container py-11">
             <div className="mb-6.5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-ink mb-1.5 font-serif text-[27px] font-medium">

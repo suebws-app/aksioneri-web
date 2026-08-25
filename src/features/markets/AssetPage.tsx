@@ -10,7 +10,7 @@ import { ArticleMeta } from '@/features/news/components/ArticleMeta';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
-import type { AssetDetail, Quote } from './marketsTypes';
+import type { AssetDetail, Quote } from '@/lib/api/markets';
 
 export interface AssetPageProps {
   asset: AssetDetail;
@@ -49,7 +49,7 @@ export function AssetPage({
       <main className="flex-1">
         <nav
           aria-label={tNews('breadcrumbLabel')}
-          className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11"
+          className="page-container pt-6.5"
         >
           <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
             <li>
@@ -64,7 +64,7 @@ export function AssetPage({
           </ol>
         </nav>
 
-        <header className="mx-auto max-w-[1280px] px-6 pt-6.5 sm:px-11">
+        <header className="page-container pt-6.5">
           <div className="border-ink flex flex-col gap-8 border-b-2 pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-3">
@@ -122,7 +122,7 @@ export function AssetPage({
           </div>
         </header>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-6 pt-8 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-12 pt-8 lg:flex-row">
           <div className="min-w-0 flex-1">
             {asset.series.length > 0 ? (
               <section className="border-line bg-surface mb-8 rounded-sm border p-6.5 sm:px-7">

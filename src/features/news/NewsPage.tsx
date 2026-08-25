@@ -51,7 +51,7 @@ export function NewsPage({
       <MarketTicker />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-6 pt-10 sm:px-11">
+        <div className="page-container pt-10">
           <div className="mb-5.5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h1 className="text-ink mb-2 font-serif text-[38px] font-medium tracking-[-0.02em]">
@@ -67,7 +67,7 @@ export function NewsPage({
           <CategoryTabs selected={category} />
         </div>
 
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-11 px-6 pt-8.5 pb-11 sm:px-11 lg:flex-row">
+        <div className="page-container flex flex-col gap-11 pt-8.5 pb-11 lg:flex-row">
           <div className="min-w-0 flex-1">
             {lead ? (
               <div className="border-ink border-b-2 pb-8">

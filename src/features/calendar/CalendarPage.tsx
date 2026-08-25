@@ -59,7 +59,7 @@ export function CalendarPage({
       <SiteHeader active="calendar" />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-6 pt-10 sm:px-11">
+        <div className="page-container pt-10">
           <div className="mb-6.5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h1 className="text-ink mb-2 font-serif text-[38px] font-medium tracking-[-0.02em]">
@@ -84,7 +84,7 @@ export function CalendarPage({
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1280px] px-6 pt-5 sm:px-11">
+        <div className="page-container pt-5">
           {selectedEvents.length > 0 ? (
             <EventTable
               events={selectedEvents}
@@ -117,7 +117,7 @@ export function CalendarPage({
         </div>
 
         {showPrimer ? (
-          <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
+          <div className="page-container py-11">
             <ReadingPrimer />
           </div>
         ) : null}

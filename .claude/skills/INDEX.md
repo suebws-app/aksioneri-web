@@ -8,24 +8,25 @@ this repo's actual patterns, not generic Next.js advice.
 
 ## Quick Reference
 
-| Skill                                                         | When to Use                                           |
-| ------------------------------------------------------------- | ----------------------------------------------------- |
-| [project-setup](project-bootstrap/project-setup.md)           | Where a file goes, path aliases, directory map        |
-| [env-management](project-bootstrap/env-management.md)         | Environment variables, server/client split            |
-| [tailwind-design-system](ui/tailwind-design-system.md)        | Tokens via `@theme`, `cn()`, `cva` variants           |
-| [component-conventions](ui/component-conventions.md)          | Component folders, server/client split, props         |
-| [next-intl-setup](i18n/next-intl-setup.md)                    | Locales, navigation helpers, translations             |
-| [no-hardcoded-text](i18n/no-hardcoded-text.md)                | Every user-facing string is a translation key         |
-| [route-structure](app-router/route-structure.md)              | Route groups, async params, dynamic vs static         |
-| [layouts-and-providers](app-router/layouts-and-providers.md)  | Layout composition, providers, server/client boundary |
-| [metadata](seo/metadata.md)                                   | Titles, canonicals, hreflang, Open Graph              |
-| [structured-data](seo/structured-data.md)                     | JSON-LD, sitemap, robots, OG images                   |
-| [better-auth-setup](auth/better-auth-setup.md)                | Sessions, sign-in/up, route protection                |
-| [data-layer](data-layer/data-layer.md)                        | Calling the API, React Query, mutations               |
-| [zustand-patterns](state/zustand-patterns.md)                 | When a client store is justified                      |
-| [react-hook-form-patterns](forms/react-hook-form-patterns.md) | Forms, Zod, localised errors                          |
-| [typescript-patterns](typescript/typescript-patterns.md)      | Types, strict-mode idioms                             |
-| [testing-patterns](testing/testing-patterns.md)               | Vitest, Testing Library, Playwright                   |
+| Skill                                                              | When to Use                                              |
+| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| [project-setup](project-bootstrap/project-setup.md)                | Where a file goes, path aliases, directory map           |
+| [env-management](project-bootstrap/env-management.md)              | Environment variables, server/client split               |
+| [tailwind-design-system](ui/tailwind-design-system.md)             | Tokens via `@theme`, `cn()`, `cva` variants              |
+| [component-conventions](ui/component-conventions.md)               | Component folders, server/client split, props            |
+| [next-intl-setup](i18n/next-intl-setup.md)                         | Locales, navigation helpers, translations                |
+| [no-hardcoded-text](i18n/no-hardcoded-text.md)                     | Every user-facing string is a translation key            |
+| [kosovo-albanian-translation](i18n/kosovo-albanian-translation.md) | Writing any Albanian text — `sq` means Kosovar, not Tosk |
+| [route-structure](app-router/route-structure.md)                   | Route groups, async params, dynamic vs static            |
+| [layouts-and-providers](app-router/layouts-and-providers.md)       | Layout composition, providers, server/client boundary    |
+| [metadata](seo/metadata.md)                                        | Titles, canonicals, hreflang, Open Graph                 |
+| [structured-data](seo/structured-data.md)                          | JSON-LD, sitemap, robots, OG images                      |
+| [better-auth-setup](auth/better-auth-setup.md)                     | Sessions, sign-in/up, route protection                   |
+| [data-layer](data-layer/data-layer.md)                             | Calling the API, React Query, mutations                  |
+| [zustand-patterns](state/zustand-patterns.md)                      | When a client store is justified                         |
+| [react-hook-form-patterns](forms/react-hook-form-patterns.md)      | Forms, Zod, localised errors                             |
+| [typescript-patterns](typescript/typescript-patterns.md)           | Types, strict-mode idioms                                |
+| [testing-patterns](testing/testing-patterns.md)                    | Vitest, Testing Library, Playwright                      |
 
 ## Next.js 16 — differences from what you probably remember
 

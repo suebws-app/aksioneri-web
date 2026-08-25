@@ -26,7 +26,7 @@ export function GlossaryPage({ terms }: GlossaryPageProps) {
 
       <main className="flex-1">
         <section className="border-line bg-surface-muted border-b">
-          <div className="mx-auto max-w-[1280px] px-6 py-11 sm:px-11">
+          <div className="page-container py-11">
             <nav aria-label={t('heading')} className="mb-4">
               <Link
                 href="/learn"
