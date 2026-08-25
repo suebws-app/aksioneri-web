@@ -220,9 +220,11 @@ export function AssetPage({
                       </tr>
                     </thead>
                     <tbody>
-                      {asset.holdings.map((holding) => (
+                      {/* Index, not name: an index can hold two share classes
+                          of the same company under one name. */}
+                      {asset.holdings.map((holding, index) => (
                         <tr
-                          key={holding.name}
+                          key={index}
                           className="border-line border-t last:border-b"
                         >
                           <td className="text-ink py-3.5">{holding.name}</td>
@@ -323,9 +325,9 @@ export function AssetPage({
                   {t('sectorsToday')}
                 </h2>
                 <dl>
-                  {asset.sectors.map((sector) => (
+                  {asset.sectors.map((sector, index) => (
                     <div
-                      key={sector.name}
+                      key={index}
                       className="border-line-soft flex justify-between gap-3 border-b py-2.5 text-[14.5px] first:pt-0 last:border-b-0 last:pb-0"
                     >
                       <dt className="text-ink">{sector.name}</dt>

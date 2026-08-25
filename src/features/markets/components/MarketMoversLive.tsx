@@ -32,8 +32,11 @@ export function MarketMoversLive({
             {t('gainers')}
           </h3>
           <ul className="flex flex-col gap-3 text-[15px]">
-            {movers.gainers.map((mover) => (
-              <li key={mover.name} className="flex justify-between gap-2.5">
+            {movers.gainers.map((mover, index) => (
+              // Index, not name: a company can appear twice under one name —
+              // Alphabet ships as two share classes, both labelled "Alphabet
+              // Inc." — and the wire gives no ticker to key on.
+              <li key={index} className="flex justify-between gap-2.5">
                 <span className="text-ink">{mover.name}</span>
                 <ChangeValue
                   percent={mover.changePercent}
@@ -49,8 +52,11 @@ export function MarketMoversLive({
             {t('losers')}
           </h3>
           <ul className="flex flex-col gap-3 text-[15px]">
-            {movers.losers.map((mover) => (
-              <li key={mover.name} className="flex justify-between gap-2.5">
+            {movers.losers.map((mover, index) => (
+              // Index, not name: a company can appear twice under one name —
+              // Alphabet ships as two share classes, both labelled "Alphabet
+              // Inc." — and the wire gives no ticker to key on.
+              <li key={index} className="flex justify-between gap-2.5">
                 <span className="text-ink">{mover.name}</span>
                 <ChangeValue
                   percent={mover.changePercent}
