@@ -201,6 +201,34 @@ export const getArticles = cache(
   },
 );
 
+/** How many stories a search returns before the reader should narrow it. */
+export const SEARCH_LIMIT = 12;
+
+/**
+ * Search the whole archive, not the page of twenty the wire is showing.
+ *
+ * The site's own index carries only the newest stories — enough for the nav
+ * dropdown, useless for "that piece about Nvidia last month". This asks the
+ * API, which searches headlines and standfirsts across everything it holds, in
+ * both the source text and the Albanian translation.
+ *
+ * Fails soft like every other read here: no wire means no news results, not a
+ * broken search page.
+ */
+export const searchArticles = cache(
+  async (locale: Locale, query: string): Promise<NewsArticle[]> =>
+    safely(async () => {
+      const response = await apiFetch<PaginatedResponse<NewsArticle>>(
+        'news/search',
+        {
+          searchParams: { locale, q: query, limit: SEARCH_LIMIT },
+          ...cacheOptions,
+        },
+      );
+      return response.data;
+    }, []),
+);
+
 /** The lead story. `null` while the wire is still empty. */
 export const getFeaturedArticle = cache(
   async (locale: Locale): Promise<NewsArticle | null> =>

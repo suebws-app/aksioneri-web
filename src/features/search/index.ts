@@ -1,3 +1,4 @@
+export { articleEntry } from './articleEntry';
 export { buildSearchIndex } from './buildSearchIndex';
 export { NavSearch } from './components/NavSearch';
 export { createIndexLoader } from './indexCache';

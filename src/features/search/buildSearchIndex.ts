@@ -5,6 +5,7 @@ import { getArticles } from '@/features/news';
 import type { Locale } from '@/i18n/config';
 import { getQuote } from '@/features/markets';
 import { SUPPORTED_SYMBOLS } from '@/lib/api/markets';
+import { articleEntry } from './articleEntry';
 import type { SearchEntry } from './searchTypes';
 
 /**
@@ -61,13 +62,9 @@ export async function buildSearchIndex(locale: Locale): Promise<SearchEntry[]> {
     keywords: term.aliases ?? [],
   }));
 
-  const articleEntries: SearchEntry[] = articles.map((article) => ({
-    kind: 'article',
-    title: article.title,
-    subtitle: article.summary,
-    href: `/news/${article.slug}`,
-    keywords: [article.category],
-  }));
+  const articleEntries: SearchEntry[] = articles.flatMap(
+    (article) => articleEntry(article) ?? [],
+  );
 
   const week = getCalendarWeek(locale);
   const eventEntries: SearchEntry[] = week.days.flatMap((day) =>

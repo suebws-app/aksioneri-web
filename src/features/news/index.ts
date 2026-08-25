@@ -11,6 +11,7 @@ export {
   getArticleSlugs,
   getFeaturedArticle,
   getMostRead,
+  searchArticles,
 } from '@/lib/api/news';
 export type { ArticleFeed } from '@/lib/api/news';
 export type { MostReadEntry, NewsArticle, NewsCategory } from './newsTypes';

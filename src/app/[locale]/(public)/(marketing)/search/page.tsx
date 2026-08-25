@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { searchArticles } from '@/features/news';
 import {
+  articleEntry,
   buildSearchIndex,
   rankResults,
   readQuery,
@@ -50,7 +52,21 @@ export default async function Page({
     return <SearchPage query="" results={[]} />;
   }
 
-  const results = rankResults(await buildSearchIndex(locale), query);
+  // Two sources, one ranking. The index holds the site's own content plus the
+  // newest stories; the API search reaches the rest of the archive, which is
+  // the only way an older story can be found at all. Merging them before
+  // ranking keeps one order rather than two lists glued together.
+  const [index, wire] = await Promise.all([
+    buildSearchIndex(locale),
+    searchArticles(locale, query),
+  ]);
+
+  const known = new Set(index.map((entry) => entry.href));
+  const fromWire = wire
+    .flatMap((article) => articleEntry(article) ?? [])
+    .filter((entry) => !known.has(entry.href));
+
+  const results = rankResults([...index, ...fromWire], query);
 
   return <SearchPage query={query} results={results} />;
 }

@@ -226,9 +226,9 @@ export function EventPage({
                 <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
                   {event.explainer.heading}
                 </h2>
-                {event.explainer.paragraphs.map((paragraph) => (
+                {event.explainer.paragraphs.map((paragraph, index) => (
                   <p
-                    key={paragraph.slice(0, 40)}
+                    key={index}
                     className="mb-4.5 text-[17.5px] leading-[1.68] text-[color:var(--ink-secondary)]"
                   >
                     {paragraph}

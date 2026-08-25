@@ -1,6 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
@@ -18,6 +24,32 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
   const t = useTranslations('learn');
   const [query, setQuery] = useState('');
   const [letter, setLetter] = useState<string | null>(null);
+  const targetSlug = useTargetSlug();
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  // The router changes the URL with the History API, which neither scrolls to
+  // the fragment nor re-evaluates `:target` — so arriving from a linked word
+  // in an article left the reader at the top of two hundred definitions.
+  useEffect(() => {
+    if (!targetSlug) return;
+
+    let cancelled = false;
+    const align = () => {
+      if (!cancelled) targetRef.current?.scrollIntoView({ block: 'start' });
+    };
+
+    // Twice, deliberately. The first pass puts the reader roughly there; the
+    // serif face then swaps in, every definition above the target changes
+    // height, and the entry drifts hundreds of pixels off. Re-aligning once
+    // the fonts have settled is what actually lands on it.
+    const frame = requestAnimationFrame(align);
+    void document.fonts?.ready.then(align);
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+  }, [targetSlug]);
 
   const letters = useMemo(
     () =>
@@ -115,7 +147,18 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
             </h2>
             <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
               {entries.map((term) => (
-                <div key={term.slug} id={term.slug} className="scroll-mt-6">
+                // `glossary-entry` is what the `:target` rule in globals.css
+                // hooks on to: a reader arriving from a linked word in an
+                // article needs to see which definition they were sent to.
+                // The scroll offset clears the header, which is sticky on
+                // phones and would otherwise cover the term just scrolled to.
+                <div
+                  key={term.slug}
+                  id={term.slug}
+                  ref={term.slug === targetSlug ? targetRef : undefined}
+                  data-targeted={term.slug === targetSlug ? 'true' : undefined}
+                  className="glossary-entry scroll-mt-24 sm:scroll-mt-6"
+                >
                   <dt className="text-ink mb-1 text-base font-medium">
                     {term.term}
                   </dt>
@@ -155,3 +198,27 @@ const normalise = (value: string): string =>
 
 const firstLetter = (term: string): string =>
   term.charAt(0).toLocaleUpperCase('sq');
+
+/**
+ * The slug in the URL fragment, or null.
+ *
+ * `useSyncExternalStore` rather than an effect that writes state: the server
+ * renders with no fragment, and this is the primitive that says so explicitly
+ * — the third argument is the server snapshot. It also subscribes to
+ * `hashchange`, which fires when a reader clicks a second linked word while
+ * already on this page.
+ */
+const subscribeToHash = (onChange: () => void): (() => void) => {
+  window.addEventListener('hashchange', onChange);
+  return () => window.removeEventListener('hashchange', onChange);
+};
+
+function useTargetSlug(): string | null {
+  const hash = useSyncExternalStore(
+    subscribeToHash,
+    () => window.location.hash,
+    () => '',
+  );
+
+  return hash ? decodeURIComponent(hash.slice(1)) : null;
+}

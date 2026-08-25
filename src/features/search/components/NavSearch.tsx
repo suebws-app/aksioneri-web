@@ -7,12 +7,21 @@ import { getPathname, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { createIndexLoader } from '../indexCache';
 import { MIN_QUERY_LENGTH, rankResults } from '../rankResults';
-import { loadSearchIndex } from '../searchAction';
+import { loadSearchIndex, searchWire } from '../searchAction';
 import { QUERY_PARAM } from '../searchParams';
 import type { SearchEntry } from '../searchTypes';
 
 /** Results the dropdown shows before the reader is better off narrowing. */
 const VISIBLE_RESULTS = 7;
+
+/**
+ * How long typing has to pause before the archive is queried.
+ *
+ * The local index answers instantly and covers most queries; this is the extra
+ * round trip that finds older stories, so it waits for the reader to stop
+ * rather than firing on every keystroke.
+ */
+const WIRE_DEBOUNCE_MS = 280;
 
 /**
  * Height of the header the phone sheet hangs from. Hardcoded because the sheet
@@ -69,6 +78,8 @@ export function NavSearch({
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [highlight, setHighlight] = useState(0);
+  // Stories from the archive, which the client-side index does not hold.
+  const [wire, setWire] = useState<SearchEntry[]>([]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -98,6 +109,7 @@ export function NavSearch({
   const close = () => {
     setOpen(false);
     setQuery('');
+    setWire([]);
   };
 
   useEffect(() => {
@@ -113,12 +125,40 @@ export function NavSearch({
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [open]);
 
-  const results = useMemo(
-    () => rankResults(entries, query, { limit: VISIBLE_RESULTS }),
-    [entries, query],
-  );
-
   const searching = query.trim().length >= MIN_QUERY_LENGTH;
+
+  useEffect(() => {
+    if (!open || !searching) return;
+
+    // `stale` rather than an AbortController: a server action cannot be
+    // cancelled, so the guard is to ignore whatever a superseded call returns.
+    let stale = false;
+    const timer = setTimeout(() => {
+      void searchWire(query)
+        .then((found) => {
+          if (!stale) setWire(found);
+        })
+        .catch(() => {
+          // An unreachable wire costs the archive results, nothing else.
+        });
+    }, WIRE_DEBOUNCE_MS);
+
+    return () => {
+      stale = true;
+      clearTimeout(timer);
+    };
+  }, [open, query, searching]);
+
+  const results = useMemo(() => {
+    // The index already carries the newest stories; the archive answer repeats
+    // them, so dedupe before ranking the two together.
+    const known = new Set(entries.map((entry) => entry.href));
+    const extra = wire.filter((entry) => !known.has(entry.href));
+
+    return rankResults([...entries, ...extra], query, {
+      limit: VISIBLE_RESULTS,
+    });
+  }, [entries, wire, query]);
 
   const go = (entry: SearchEntry | undefined) => {
     if (!entry) return;

@@ -175,9 +175,9 @@ export function AssetPage({
                 <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
                   {asset.explainer.heading}
                 </h2>
-                {asset.explainer.paragraphs.map((paragraph) => (
+                {asset.explainer.paragraphs.map((paragraph, index) => (
                   <p
-                    key={paragraph.slice(0, 40)}
+                    key={index}
                     className="mb-4.5 max-w-[72ch] text-[17.5px] leading-[1.7] text-[color:var(--ink-secondary)]"
                   >
                     {paragraph}

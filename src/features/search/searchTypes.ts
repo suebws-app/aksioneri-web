@@ -32,7 +32,10 @@ export interface SearchEntry {
    * two lessons actually about ETFs. Shown when there is no `subtitle`.
    */
   context?: string;
-  /** Unlocalised path; `@/i18n/navigation` adds the locale prefix. */
+  /**
+   * Unlocalised path; `@/i18n/navigation` adds the locale prefix. Always a
+   * page on this site — anything the site does not hold is not indexed.
+   */
   href: string;
   /**
    * Extra words that should find this entry but do not belong in the title:

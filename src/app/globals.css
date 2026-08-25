@@ -173,6 +173,44 @@ body {
   }
 }
 
+/* The glossary entry a reader was sent to.
+   Words in articles and lessons link to `/learn/glossary#slug`, which used to
+   scroll the page and then leave the reader to work out which of two hundred
+   definitions they had been sent to. The attribute is set from the URL
+   fragment in `GlossarySearch`: `:target` looks like the obvious answer but
+   never fires here, because the router pushes the URL rather than navigating
+   to the fragment. */
+.glossary-entry[data-targeted] {
+  border-left: 2px solid var(--accent);
+  margin-left: -0.875rem;
+  padding-left: 0.75rem;
+}
+
+.glossary-entry[data-targeted] dt {
+  color: var(--accent);
+}
+
+/* The tint fades; the rule above stays, so the entry is still identifiable
+   after the animation has finished. */
+.glossary-entry[data-targeted] {
+  animation: glossary-target 2.4s ease-out;
+}
+
+@keyframes glossary-target {
+  from {
+    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glossary-entry[data-targeted] {
+    animation: none;
+  }
+}
+
 /* Chrome draws its own clear button inside `input[type="search"]`, in its own
    grey. Masking a plain cross in `currentColor` keeps it the same ink as the
    text it clears, at a size that matches the field rather than the browser. */

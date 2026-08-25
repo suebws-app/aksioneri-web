@@ -160,9 +160,9 @@ export function ArticlePage({
               </div>
             ) : null}
 
-            {article.body?.map((paragraph) => (
+            {article.body?.map((paragraph, index) => (
               <p
-                key={paragraph.slice(0, 40)}
+                key={index}
                 className="mb-5 text-lg leading-[1.72] text-[color:var(--ink-secondary)]"
               >
                 <GlossaryText text={paragraph} linker={linker} />
@@ -174,9 +174,9 @@ export function ArticlePage({
                 <h2 className="text-ink mt-9 mb-3.5 font-serif text-[27px] font-medium tracking-[-0.012em]">
                   {section.heading}
                 </h2>
-                {section.paragraphs.map((paragraph) => (
+                {section.paragraphs.map((paragraph, index) => (
                   <p
-                    key={paragraph.slice(0, 40)}
+                    key={index}
                     className="mb-5 text-lg leading-[1.72] text-[color:var(--ink-secondary)]"
                   >
                     <GlossaryText text={paragraph} linker={linker} />

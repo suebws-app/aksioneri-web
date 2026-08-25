@@ -77,9 +77,9 @@ export function NextUpCard({ event }: NextUpCardProps) {
         <h3 className="text-accent mb-3 text-[11px] font-semibold tracking-[0.12em] uppercase">
           {t('whyItMatters')}
         </h3>
-        {event.whyItMatters.map((paragraph) => (
+        {event.whyItMatters.map((paragraph, index) => (
           <p
-            key={paragraph.slice(0, 32)}
+            key={index}
             className="text-ink-secondary mb-3.5 text-[15.5px] leading-relaxed"
           >
             {paragraph}

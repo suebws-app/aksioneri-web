@@ -1,8 +1,11 @@
 'use server';
 
 import { getLocale } from 'next-intl/server';
+import { searchArticles } from '@/features/news';
 import type { Locale } from '@/i18n/config';
+import { articleEntry } from './articleEntry';
 import { buildSearchIndex } from './buildSearchIndex';
+import { MIN_QUERY_LENGTH } from './rankResults';
 import type { SearchEntry } from './searchTypes';
 
 /**
@@ -43,4 +46,28 @@ export async function loadSearchIndex(): Promise<SearchEntry[]> {
     subtitle: trim(entry.subtitle),
     context: trim(entry.context),
   }));
+}
+
+/**
+ * Stories matching a query, from the whole archive.
+ *
+ * The index the dropdown filters against holds only the newest twenty stories
+ * — enough to answer "what's on the wire", useless for "that piece about
+ * Nvidia last month". This asks the API's search endpoint, which reads the
+ * archive and matches the Albanian translation as well as the source text.
+ *
+ * Called per query rather than once per session, so it is deliberately small:
+ * a dozen results, headlines and standfirsts only.
+ */
+export async function searchWire(query: string): Promise<SearchEntry[]> {
+  const trimmed = query.trim();
+  if (trimmed.length < MIN_QUERY_LENGTH) return [];
+
+  const locale = (await getLocale()) as Locale;
+  const articles = await searchArticles(locale, trimmed);
+
+  return articles.flatMap((article) => {
+    const entry = articleEntry(article);
+    return entry ? [{ ...entry, subtitle: trim(entry.subtitle) }] : [];
+  });
 }

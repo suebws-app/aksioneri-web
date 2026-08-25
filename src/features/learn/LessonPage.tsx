@@ -200,9 +200,9 @@ export function LessonPage({
                 <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
                   {section.heading}
                 </h2>
-                {section.paragraphs.map((paragraph) => (
+                {section.paragraphs.map((paragraph, index) => (
                   <p
-                    key={paragraph.slice(0, 40)}
+                    key={index}
                     className="mb-5 text-[17.5px] leading-[1.7] text-[color:var(--ink-secondary)]"
                   >
                     {paragraph}
