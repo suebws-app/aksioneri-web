@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { Breadcrumb } from '@/components/Breadcrumb';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
@@ -80,28 +81,20 @@ export function LessonPage({
       />
 
       <main className="flex-1">
-        <nav
-          aria-label={tNews('breadcrumbLabel')}
-          className="page-container pt-6.5"
-        >
-          <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
-            <li>
-              <Link href="/learn" className="hover:text-accent">
-                {t('heading')}
-              </Link>
-            </li>
-            {lesson.track ? (
-              <>
-                <li aria-hidden>/</li>
-                <li>{lesson.track.topicTitle}</li>
-                <li aria-hidden>/</li>
-                <li className="text-accent">
-                  {t('lessonNumber', { number: lesson.track.position })}
-                </li>
-              </>
-            ) : null}
-          </ol>
-        </nav>
+        <Breadcrumb
+          label={tNews('breadcrumbLabel')}
+          items={[
+            { label: t('heading'), href: '/learn' },
+            ...(lesson.track
+              ? [
+                  { label: lesson.track.topicTitle },
+                  {
+                    label: t('lessonNumber', { number: lesson.track.position }),
+                  },
+                ]
+              : []),
+          ]}
+        />
 
         <div className="page-container flex flex-col gap-14 pt-7 lg:flex-row">
           {outline.length > 0 ? (

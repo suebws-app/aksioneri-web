@@ -38,15 +38,16 @@ export function SiteHeader({
     // Sticky and above the drawer below `sm`: the phone nav slides in
     // underneath, and the wordmark and close button have to stay reachable.
     // Static from `sm` up, where the design has no sticky header.
-    <header className="border-line bg-paper sticky top-0 z-50 border-b sm:static">
+    <header className="border-line bg-paper sticky top-0 z-50 border-b md:static">
       <div className="page-container flex items-center justify-between gap-6 py-5">
         <Link href="/" aria-label={t('brand')} className="text-ink">
           <BrandMark size="header" ariaLabel={t('brand')} />
         </Link>
 
-        {/* Four links plus a search box need room the phone does not have;
-            below `sm` they move into `MobileNav`. */}
-        <nav aria-label={t('primaryLabel')} className="hidden sm:block">
+        {/* Five links plus a search box need room neither a phone nor a
+            small tablet has: at 640px the row wants ~560px and the column
+            gives ~552px. Below `md` they move into `MobileNav`. */}
+        <nav aria-label={t('primaryLabel')} className="hidden md:block">
           <ul className="text-ink-muted flex items-center gap-5 text-[15px] sm:gap-7.5">
             {PRIMARY_SECTIONS.map((section) => {
               const isActive = section === active;
@@ -79,7 +80,7 @@ export function SiteHeader({
 
         {/* Search sits beside the menu button rather than inside it: it is
             the control a reader reaches for directly. */}
-        <div className="flex items-center gap-0.5 sm:hidden">
+        <div className="flex items-center gap-0.5 md:hidden">
           {mobileSearchSlot}
           <MobileNav
             items={PRIMARY_SECTIONS.map((section) => ({

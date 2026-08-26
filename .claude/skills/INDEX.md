@@ -27,6 +27,7 @@ this repo's actual patterns, not generic Next.js advice.
 | [react-hook-form-patterns](forms/react-hook-form-patterns.md)      | Forms, Zod, localised errors                             |
 | [typescript-patterns](typescript/typescript-patterns.md)           | Types, strict-mode idioms                                |
 | [testing-patterns](testing/testing-patterns.md)                    | Vitest, Testing Library, Playwright                      |
+| [adding-a-calculator](calculators/adding-a-calculator.md)          | Adding or changing a financial calculator                |
 
 ## Next.js 16 — differences from what you probably remember
 

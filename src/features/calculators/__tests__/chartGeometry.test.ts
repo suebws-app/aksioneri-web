@@ -1,0 +1,186 @@
+import { describe, expect, it } from 'vitest';
+import {
+  axisTicks,
+  bandPath,
+  linePath,
+  maxOf,
+  PADDING,
+  PLOT,
+  stack,
+  xAt,
+  yAt,
+} from '../charts/geometry';
+import { summariseChart } from '../charts/summary';
+import type { ChartSpec } from '../types';
+
+describe('xAt', () => {
+  it('spans the plot from the first index to the last', () => {
+    expect(xAt(0, 5)).toBe(PADDING.left);
+    expect(xAt(4, 5)).toBeCloseTo(PADDING.left + PLOT.width, 6);
+  });
+
+  it('pins a single point to the left edge instead of dividing by zero', () => {
+    // A one-year projection is a legitimate input.
+    expect(xAt(0, 1)).toBe(PADDING.left);
+    expect(Number.isFinite(xAt(0, 1))).toBe(true);
+  });
+
+  it('never divides by zero on an empty series', () => {
+    expect(Number.isFinite(xAt(0, 0))).toBe(true);
+  });
+});
+
+describe('yAt', () => {
+  it('puts the minimum at the bottom and the maximum at the top', () => {
+    expect(yAt(0, 0, 100)).toBeCloseTo(PADDING.top + PLOT.height, 6);
+    expect(yAt(100, 0, 100)).toBeCloseTo(PADDING.top, 6);
+  });
+
+  it('draws a flat series along the bottom rather than producing NaN', () => {
+    // An all-zero or constant series has no range; the guard keeps it finite.
+    const y = yAt(5, 5, 5);
+    expect(Number.isFinite(y)).toBe(true);
+    expect(y).toBeCloseTo(PADDING.top + PLOT.height, 6);
+  });
+});
+
+describe('stack', () => {
+  it('accumulates each series onto the ones before it', () => {
+    const tops = stack([{ values: [1, 2, 3] }, { values: [10, 20, 30] }]);
+
+    expect(tops[0]).toEqual([1, 2, 3]);
+    expect(tops[1]).toEqual([11, 22, 33]);
+  });
+
+  it('makes the top band equal the sum of every series', () => {
+    // If this drifts, the chart shows a total that disagrees with the result
+    // card printed beside it.
+    const series = [
+      { values: [3, 5] },
+      { values: [7, 11] },
+      { values: [1, 2] },
+    ];
+    const tops = stack(series);
+
+    expect(tops.at(-1)).toEqual([11, 18]);
+  });
+
+  it('handles an empty series list', () => {
+    expect(stack([])).toEqual([]);
+  });
+
+  it('treats a short series as zero rather than NaN', () => {
+    const tops = stack([{ values: [1, 2, 3] }, { values: [10] }]);
+    expect(tops[1]).toEqual([11, 2, 3]);
+  });
+});
+
+describe('maxOf', () => {
+  it('takes the largest value across every row', () => {
+    expect(
+      maxOf([
+        [1, 9],
+        [4, 2],
+      ]),
+    ).toBe(9);
+  });
+
+  it('ignores non-finite values instead of poisoning the scale', () => {
+    expect(maxOf([[1, Number.NaN, 5]])).toBe(5);
+  });
+
+  it('is zero for no data', () => {
+    expect(maxOf([])).toBe(0);
+  });
+});
+
+describe('paths', () => {
+  it('starts with a move and continues with lines', () => {
+    const path = linePath([
+      { x: 0, y: 1 },
+      { x: 2, y: 3 },
+    ]);
+
+    expect(path.startsWith('M')).toBe(true);
+    expect(path).toContain('L');
+    expect(path).not.toContain('NaN');
+  });
+
+  it('closes a band and walks the lower edge backwards', () => {
+    const upper = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+    ];
+    const lower = [
+      { x: 0, y: 10 },
+      { x: 10, y: 10 },
+    ];
+
+    const path = bandPath(upper, lower);
+
+    expect(path.endsWith('Z')).toBe(true);
+    // Reversed: the return leg must reach x=10 before x=0, or the fill
+    // renders as a bowtie.
+    expect(path.indexOf('L10.00 10.00')).toBeLessThan(
+      path.indexOf('L0.00 10.00'),
+    );
+  });
+
+  it('returns an empty path for no points', () => {
+    expect(bandPath([], [])).toBe('');
+  });
+});
+
+describe('axisTicks', () => {
+  it('labels every point when there are few', () => {
+    expect(axisTicks(3)).toEqual([0, 1, 2]);
+  });
+
+  it('always includes the first and last', () => {
+    const ticks = axisTicks(40);
+    expect(ticks[0]).toBe(0);
+    expect(ticks.at(-1)).toBe(39);
+  });
+
+  it('caps the number of labels so they cannot collide', () => {
+    expect(axisTicks(40).length).toBeLessThanOrEqual(5);
+    expect(axisTicks(100).length).toBeLessThanOrEqual(5);
+  });
+
+  it('returns nothing for no data', () => {
+    expect(axisTicks(0)).toEqual([]);
+  });
+});
+
+describe('summariseChart', () => {
+  const spec: ChartSpec = {
+    kind: 'stackedArea',
+    xLabelKey: 'chart.xAxis',
+    x: [1, 2, 3],
+    series: [
+      { idKey: 'chart.contributions', values: [100, 200, 300] },
+      { idKey: 'chart.growth', values: [5, 20, 60] },
+    ],
+  };
+
+  const strings = {
+    intro: 'Kontributet krahas rritjes.',
+    seriesLabel: (id: string) => id.split('.')[1] ?? id,
+    formatValue: (value: number) => `${String(value)} €`,
+    xLabel: 'viti',
+    endLabel: 'Në fund',
+  };
+
+  it('states the span and the closing figure of every series', () => {
+    const summary = summariseChart(spec, strings);
+
+    expect(summary).toContain('viti 1–3');
+    expect(summary).toContain('contributions 300 €');
+    expect(summary).toContain('growth 60 €');
+  });
+
+  it('degrades to the intro when there is no data', () => {
+    const empty: ChartSpec = { ...spec, x: [], series: [] };
+    expect(summariseChart(empty, strings)).toBe(strings.intro);
+  });
+});

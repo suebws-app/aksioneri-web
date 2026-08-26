@@ -114,7 +114,8 @@ const PRIVACY: StaticPageContent = {
     {
       heading: 'Cookies dhe palët e treta',
       paragraphs: [
-        'Për momentin nuk përdorim cookie gjurmuese dhe as mjete analitike si Google Analytics.',
+        'Nuk përdorim cookie gjurmuese dhe as mjete analitike të palëve të treta si Google Analytics.',
+        'Te llogaritësit financiarë mbajmë një numërues të thjeshtë: sa herë është hapur, përdorur ose ndarë secili llogaritës në një ditë të caktuar. Nuk ruhet asnjë cookie, asnjë identifikues, asnjë adresë IP dhe — mbi të gjitha — asnjë shifër që e shkruani ju. Paga, kredia dhe kursimet tuaja nuk dalin kurrë nga shfletuesi juaj.',
         'Fotografitë e lajmeve ngarkohen drejtpërdrejt nga serverët e publikuesve, prandaj ata e shohin kërkesën e shfletuesit tuaj kur hapni një lajm. E njëjta vlen kur ndiqni një lidhje jashtë faqes.',
       ],
     },

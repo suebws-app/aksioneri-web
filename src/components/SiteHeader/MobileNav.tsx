@@ -14,10 +14,12 @@ export interface MobileNavItem {
 /**
  * The narrow-screen half of the site nav.
  *
- * Four section links, a wordmark and a search box do not fit across 375px —
+ * Five section links, a wordmark and a search box do not fit across 375px —
  * the header used to push the page 110px wider than the viewport, so every
- * page on a phone scrolled sideways. Below `sm` the links collapse behind this
- * button and open as a drawer from the right.
+ * page on a phone scrolled sideways. Below `md` the links collapse behind this
+ * button and open as a drawer from the right. The breakpoint moved from `sm`
+ * when the calculators section made it five links: at 640px the desktop row
+ * wants about 560px and the column gives about 552px.
  *
  * The drawer sits *under* the header — the header is sticky on phones and
  * keeps its own stacking context above it — so the wordmark and the close
@@ -54,7 +56,7 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
   }, [open]);
 
   return (
-    <div className="sm:hidden">
+    <div className="md:hidden">
       {/* Above the panel, so the same button closes what it opened. */}
       <button
         type="button"

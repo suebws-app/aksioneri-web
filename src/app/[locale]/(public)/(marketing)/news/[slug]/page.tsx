@@ -11,6 +11,7 @@ import {
   getArticleSlugs,
   getMostRead,
 } from '@/features/news';
+import { matchCalculatorForArticle } from '@/features/calculators';
 import { locales, type Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -89,6 +90,14 @@ export default async function Page({ params }: PageProps) {
   return (
     <ArticlePage
       article={article}
+      // Matched from the story's own words each render. Nothing is stored, so
+      // nothing can go stale — the failure `matchNews.ts` documents.
+      calculatorEmbed={matchCalculatorForArticle({
+        title: article.title,
+        summary: article.summary,
+        body: article.body ?? null,
+        category: article.category,
+      })}
       related={related.filter((entry) => entry.id !== article.id).slice(0, 3)}
       mostRead={mostRead}
       glossary={getGlossary(locale)}

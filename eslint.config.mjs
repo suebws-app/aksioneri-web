@@ -42,6 +42,32 @@ const eslintConfig = defineConfig([
     files: ['src/app/not-found.tsx', 'src/app/global-error.tsx'],
     rules: { 'no-restricted-imports': 'off' },
   },
+  // The calculator engine is the site's financial arithmetic, and it has to
+  // stay portable: the same functions should be liftable into the API, a
+  // published package or a future mobile app without a rewrite.
+  //
+  // Portability is a property of dependencies, not of the folder something
+  // sits in. A single `import { useTranslations }` would end it, and nobody
+  // would notice for forty commits. So the engine may import its own siblings
+  // and nothing else — not React, not Next, not zod, not `@/`. Validation
+  // messages, formatting and data fetching all belong to the layer above.
+  {
+    files: ['src/features/calculators/engine/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/*', 'react', 'react-*', 'next', 'next/*', 'next-intl', 'zod', '../*'],
+              message:
+                'The calculator engine must stay portable: import only from within engine/.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Layering, enforced rather than documented.
   {
     files: ['src/**/*.{ts,tsx}'],

@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { Breadcrumb } from '@/components/Breadcrumb';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -65,22 +66,14 @@ export function AssetPage({
       />
 
       <main className="flex-1">
-        <nav
-          aria-label={tNews('breadcrumbLabel')}
-          className="page-container pt-6.5"
-        >
-          <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
-            <li>
-              <Link href="/" className="hover:text-accent">
-                {t('breadcrumbRoot')}
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li>{tCategories(asset.category)}</li>
-            <li aria-hidden>/</li>
-            <li className="text-accent">{asset.name}</li>
-          </ol>
-        </nav>
+        <Breadcrumb
+          label={tNews('breadcrumbLabel')}
+          items={[
+            { label: t('breadcrumbRoot'), href: '/' },
+            { label: tCategories(asset.category) },
+            { label: asset.name },
+          ]}
+        />
 
         <header className="page-container pt-6.5">
           <div className="border-ink flex flex-col gap-8 border-b-2 pb-6 lg:flex-row lg:items-end lg:justify-between">

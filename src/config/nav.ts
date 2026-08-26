@@ -7,7 +7,13 @@
  * kept the old four).
  */
 
-export const PRIMARY_SECTIONS = ['home', 'news', 'learn', 'calendar'] as const;
+export const PRIMARY_SECTIONS = [
+  'home',
+  'news',
+  'learn',
+  'calendar',
+  'calculators',
+] as const;
 
 export type SiteSection = (typeof PRIMARY_SECTIONS)[number];
 
@@ -22,6 +28,7 @@ export const HREF: Record<SiteSection, string> = {
   news: '/news',
   learn: '/learn',
   calendar: '/calendar',
+  calculators: '/calculators',
 };
 
 /** The standing pages, in the order the design lists them. */
@@ -65,6 +72,7 @@ export const FOOTER_GROUPS: FooterGroup[] = [
     links: [
       { namespace: 'nav', labelKey: 'learn', href: '/learn' },
       { namespace: 'footer', labelKey: 'glossary', href: '/learn/glossary' },
+      { namespace: 'nav', labelKey: 'calculators', href: '/calculators' },
     ],
   },
   {

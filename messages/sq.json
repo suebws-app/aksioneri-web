@@ -13,7 +13,8 @@
     "news": "Lajme",
     "learn": "Mëso",
     "calendar": "Kalendari",
-    "search": "Kërko"
+    "search": "Kërko",
+    "calculators": "Kalkulatorë"
   },
   "footer": {
     "label": "Navigimi i fundfaqes",
@@ -28,7 +29,8 @@
     "privacy": "Privatësia",
     "terms": "Kushtet",
     "glossary": "Fjalorthi",
-    "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen."
+    "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen.",
+    "calculators": "Kalkulatorë"
   },
   "calendar": {
     "metaTitle": "Kalendari ekonomik",
@@ -380,6 +382,921 @@
     "terms": {
       "metaTitle": "Kushtet e përdorimit",
       "metaDescription": "Përmbajtja është edukative dhe jo këshillë investimi, të dhënat e tregut vijnë nga palë të treta, dhe lajmet mbeten pronë e publikuesve të tyre."
+    }
+  },
+  "calculators": {
+    "metaTitle": "Kalkulatorë financiarë",
+    "metaDescription": "Mjete interaktive për kursimin, investimin, kredinë dhe inflacionin — llogarit shpejt se çka domethënë një shifër për paratë e tua.",
+    "heading": "Kalkulatorë financiarë",
+    "heroBody": "Kupto paratë, investimet dhe tregjet me mjete interaktive.",
+    "breadcrumbLabel": "Rruga e faqes",
+    "breadcrumbRoot": "Kalkulatorë",
+    "units": {
+      "years": "vjet",
+      "months": "muaj",
+      "perMonth": "në muaj",
+      "shares": "aksione"
+    },
+    "ui": {
+      "advancedOptions": "Opsione të avancuara",
+      "howCalculated": "Si kalkulohet",
+      "resultsHeading": "Rezultati",
+      "share": "Ndaje",
+      "copyLink": "Kopjo lidhjen",
+      "copied": "U kopjua",
+      "reset": "Rikthe vlerat fillestare",
+      "showAllRows": "Shfaq të gjitha vitet",
+      "dataTable": "Të dhënat e grafikut",
+      "assumption": "Supozim",
+      "assumptionNote": "Shifrat e shënuara si supozim varen nga normat që i vendos ti, jo nga të dhëna të matura.",
+      "faqHeading": "Pyetje të shpeshta",
+      "exampleHeading": "Shembull",
+      "relatedCalculators": "Kalkulatorë të ngjashëm",
+      "relatedArticles": "Nga lajmet",
+      "currencyLabel": "Valuta",
+      "allCategories": "Të gjitha",
+      "allCalculators": "Të gjithë kalkulatorët",
+      "filterLabel": "Filtro sipas kategorisë",
+      "calculate": "Kalkulo",
+      "chartEnd": "Në fund",
+      "dataAsOf": "Të dhënat e datës {date}",
+      "sources": {
+        "ecb": "Burimi: Banka Qendrore Evropiane — kurs referues, jo kurs tregtimi",
+        "eurostat": "Burimi: Eurostat",
+        "nyfed": "Burimi: Federal Reserve Bank of New York"
+      },
+      "embedKicker": "Kalkulo vetë",
+      "embedCta": "Hap kalkulatorin"
+    },
+    "errors": {
+      "number": "Shkruaj një numër.",
+      "notNegative": "Kjo shifër nuk mund të jetë negative.",
+      "tooLarge": "Kjo shifër është tepër e madhe.",
+      "rateRange": "Norma del jashtë kufijve që mund të llogariten.",
+      "yearsRange": "Afati duhet të jetë mes 1 dhe {max} vjetësh.",
+      "ageRange": "Mosha duhet të jetë realiste.",
+      "retireAfterNow": "Mosha e pensionit duhet të jetë pas moshës së tanishme."
+    },
+    "refusals": {
+      "heading": "Nuk del rezultat",
+      "nonFinite": "Njëra prej shifrave nuk është numër i vlefshëm. Kontrollo fushat dhe provo prapë.",
+      "negativeAmount": "Shumat e investuara nuk mund të jenë negative.",
+      "rateOutOfRange": "Norma e dhënë del jashtë kufijve që kjo llogari mund t'i mbulojë.",
+      "termOutOfRange": "Afati duhet të jetë mes 1 dhe 100 vjetësh.",
+      "divideByZero": "Me vlerë fillestare zero kjo llogari nuk jep rezultat kuptimplotë.",
+      "overflow": "Rezultati del jashtë kufijve ku shifrat mbeten të sakta, prandaj nuk po shfaqet.",
+      "noData": "Të dhënat e nevojshme nuk janë të disponueshme për momentin."
+    },
+    "disclaimers": {
+      "general": "Rezultati është vlerësim i bazuar në shifrat që i vendos ti dhe shërben vetëm për informim.",
+      "investment": "Ky është projeksion i bazuar në supozimet e tua, jo garanci dhe as këshillë investimi. Kthimet reale luhaten nga viti në vit dhe mund të jenë negative.",
+      "loan": "Vlerësim orientues. Kësti real varet nga banka, nga kushtet e kontratës dhe nga tarifat që nuk janë përfshirë këtu.",
+      "tax": "Rregullat tatimore ndryshojnë sipas shtetit dhe rrethanave personale. Konsultohu me një kontabilist para se të marrësh vendim.",
+      "fx": "Kursi i përdorur është kurs referues ditor, jo kurs tregtimi. Banka ose këmbimori të jep një kurs tjetër."
+    },
+    "compoundInterest": {
+      "metaTitle": "Kalkulatori i interesit të përbërë",
+      "metaDescription": "Llogarit sa rriten kursimet me interes të përbërë: vendos shumën fillestare, kontributin mujor, normën vjetore dhe inflacionin, e shih rezultatin menjëherë.",
+      "heading": "Kalkulatori i interesit të përbërë",
+      "intro": "Shih sa mund të rritet një shumë kur interesi i shtohet vetes vit pas viti, dhe sa prej saj vjen nga paratë që i ke shtuar ti.",
+      "cardBlurb": "Sa rriten kursimet kur interesi fiton interes.",
+      "fields": {
+        "initial": {
+          "label": "Investimi fillestar",
+          "hint": "Shuma që e ke në fillim."
+        },
+        "monthly": {
+          "label": "Kontributi mujor",
+          "hint": "Sa shton çdo muaj. E marrim si depozitë në fund të muajit."
+        },
+        "ratePercent": {
+          "label": "Norma vjetore e kthimit",
+          "hint": "Kthim nominal, para inflacionit."
+        },
+        "years": {
+          "label": "Periudha",
+          "hint": "Sa vjet i lë paratë të rriten."
+        },
+        "compounding": {
+          "label": "Kapitalizimi i interesit",
+          "hint": "Sa shpesh interesi i shtohet bilancit."
+        },
+        "inflationPercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Përdoret vetëm për ta kthyer rezultatin në para të sotme."
+        }
+      },
+      "options": {
+        "compounding": {
+          "annually": "Një herë në vit",
+          "semiannually": "Dy herë në vit",
+          "quarterly": "Çdo tremujor",
+          "monthly": "Çdo muaj",
+          "daily": "Çdo ditë"
+        }
+      },
+      "results": {
+        "finalBalance": "Bilanci i parashikuar",
+        "totalContributions": "Sa ke shtuar ti",
+        "totalInterest": "Rritja nga interesi",
+        "inflationAdjusted": "Vlera në para të sotme",
+        "effectiveGain": "Fitimi real",
+        "columns": {
+          "year": "Viti",
+          "contributed": "Kontribute",
+          "growth": "Rritje",
+          "balance": "Bilanci",
+          "realBalance": "Në para të sotme"
+        }
+      },
+      "chart": {
+        "heading": "Kontributet krahas rritjes",
+        "xAxis": "Viti",
+        "contributions": "Kontributet",
+        "growth": "Rritja"
+      },
+      "explanation": [
+        "Interesi i përbërë do të thotë se interesi i fituar nuk nxirret jashtë, por mbetet brenda dhe fillon të fitojë interes vetë. Prandaj rritja në fillim duket e ngadaltë e më vonë përshpejtohet.",
+        "Llogaria këtu ecën muaj pas muaji. Bilanci shumëzohet me faktorin e rritjes së atij muaji, pastaj i shtohet kontributi. Norma vjetore që e shkruan ti është nominale, ndaj sa herë kapitalizohet interesi brenda vitit ka rëndësi: e njëjta normë jep pak më shumë nëse kapitalizohet çdo muaj sesa një herë në vit.",
+        "Vlera në para të sotme e ndan rritjen nominale nga rritja reale. Nëse bilanci trefishohet për njëzet vjet, por edhe çmimet rriten, fuqia blerëse nuk është trefishuar. Prandaj shifra e fundit është ajo që tregon çka mund të blesh vërtet."
+      ],
+      "example": "Me 10.000 € në fillim, 500 € shtuar çdo muaj dhe një kthim mesatar prej 7% për njëzet vjet, kontributet arrijnë 130.000 € — por bilanci del rreth 300.000 €. Pjesa tjetër nuk vjen nga paratë e shtuara, por nga interesi që ka fituar interes.",
+      "faq": [
+        {
+          "question": "A është 7% normë realiste?",
+          "answer": "Është mesatarja historike afatgjate e një indeksi të gjerë aksionesh, para inflacionit. Nuk është premtim: ka vite me minus dhe vite shumë më të mira. Provo edhe me 4% e me 10% për ta parë sa ndryshon rezultati."
+        },
+        {
+          "question": "Pse ndryshon rezultati kur ndërroj kapitalizimin?",
+          "answer": "Sepse norma që e shkruan është vjetore nominale. Nëse interesi i shtohet bilancit çdo muaj, muajt e mëvonshëm fitojnë interes edhe mbi interesin e muajve të parë. Sa më shpesh të kapitalizohet, aq më i madh del bilanci me të njëjtën normë."
+        },
+        {
+          "question": "A janë përfshirë tatimet dhe tarifat?",
+          "answer": "Jo. Rezultati është para tatimit mbi fitimin kapital dhe pa komisionet e fondit apo të platformës. Nëse do një pamje më të afërt me realitetin, ule normën e kthimit me sa të kushtojnë tarifat vjetore."
+        },
+        {
+          "question": "Kur depozitohet kontributi mujor?",
+          "answer": "Në fund të çdo muaji. Nëse investon në fillim të muajit, secili kontribut fiton një muaj më shumë interes, ndaj rezultati real do të dalë pak më i lartë se ky."
+        }
+      ]
+    },
+    "categories": {
+      "investing": "Investime",
+      "markets": "Tregje",
+      "personal-finance": "Financa personale",
+      "borrowing": "Kredi",
+      "retirement": "Pensioni",
+      "economy": "Ekonomi",
+      "currency": "Valuta"
+    },
+    "investmentReturn": {
+      "metaTitle": "Kalkulatori i kthimit të investimit",
+      "metaDescription": "Llogarit fitimin, kthimin në përqindje dhe CAGR-në e një investimi, duke përfshirë dividendët, tarifat dhe efektin e inflacionit mbi kthimin real.",
+      "heading": "Kalkulatori i kthimit të investimit",
+      "intro": "Shih sa ke fituar vërtet nga një investim — pasi të llogariten dividendët, tarifat dhe inflacioni.",
+      "cardBlurb": "Fitimi, kthimi vjetor dhe CAGR e një investimi.",
+      "fields": {
+        "invested": {
+          "label": "Sa ke investuar",
+          "hint": "Shuma totale e paguar, përfshirë blerjet e mëvonshme."
+        },
+        "currentValue": {
+          "label": "Vlera e sotme",
+          "hint": "Sa vlen tani, ose për sa e ke shitur."
+        },
+        "purchaseDate": {
+          "label": "Data e blerjes",
+          "hint": "Kur e ke blerë."
+        },
+        "saleDate": {
+          "label": "Data e shitjes",
+          "hint": "Kur e ke shitur, ose data e sotme."
+        },
+        "dividends": {
+          "label": "Dividendë të marrë",
+          "hint": "Të gjitha pagesat në para gjatë periudhës."
+        },
+        "fees": {
+          "label": "Tarifa dhe komisione",
+          "hint": "Komisione, spread dhe tarifa platforme."
+        },
+        "inflationPercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Për ta llogaritur kthimin real."
+        }
+      },
+      "results": {
+        "profit": "Fitimi neto",
+        "returnPercent": "Kthimi total",
+        "cagr": "CAGR (kthim vjetor)",
+        "realCagr": "CAGR real",
+        "totalDividends": "Dividendë",
+        "totalFees": "Tarifa",
+        "years": "Vite mbajtje",
+        "columns": {}
+      },
+      "explanation": [
+        "Kthimi total mat sa ke fituar mbi gjithçka që ke paguar. Dividendët i shtohen vlerës përfundimtare dhe tarifat i zbresim para se të nxjerrim çdo gjë tjetër — një titull që i lë jashtë e mbivlerëson kthimin.",
+        "CAGR-ja është norma e njëtrajtshme vjetore që do të kishte prodhuar të njëjtin rezultat. Nuk është mesatarja e kthimeve vjetore, që del gjithmonë më e lartë dhe prandaj përdoret shpesh gabimisht.",
+        "Kthimi real e heq inflacionin. Nëse një investim është rritur 40% për gjashtë vjet ndërsa çmimet janë rritur 20%, fuqia blerëse nuk është rritur 40%."
+      ],
+      "example": "10.000 € të investuara në janar 2020, që sot vlejnë 18.500 €, me 900 € dividendë dhe 120 € tarifa: fitimi neto është 9.280 €, kthimi total 92,8%, dhe CAGR-ja rreth 11,4% në vit.",
+      "faq": [
+        {
+          "question": "Pse CAGR-ja është më e ulët se mesatarja e kthimeve vjetore?",
+          "answer": "Sepse humbjet dëmtojnë më shumë sesa ndihmojnë fitimet e njëjta në përqindje. Një rënie prej 50% kërkon një rritje prej 100% vetëm për t'u kthyer aty ku ishe. CAGR-ja e reflekton këtë; mesatarja e thjeshtë jo."
+        },
+        {
+          "question": "A duhet t'i përfshij dividendët?",
+          "answer": "Po, nëse i ke marrë. Kthimi total është ai që tregon rezultatin e vërtetë; kthimi vetëm nga çmimi e nënvlerëson një investim që paguan dividendë."
+        },
+        {
+          "question": "A janë llogaritur tatimet?",
+          "answer": "Jo. Rezultati është para tatimit mbi fitimin kapital dhe para tatimit në dividendë. Rregullat ndryshojnë sipas shtetit dhe sipas rrethanave personale."
+        }
+      ]
+    },
+    "mortgage": {
+      "metaTitle": "Kalkulatori i kredisë banesore",
+      "metaDescription": "Llogarit këstin mujor të hipotekës, interesin total dhe raportin kredi-vlerë, duke përfshirë tatimin, sigurimin dhe shpenzimet e tjera mujore.",
+      "heading": "Kalkulatori i kredisë banesore",
+      "intro": "Sa kushton vërtet një banesë çdo muaj — jo vetëm kësti që të thotë banka, por edhe tatimi, sigurimi dhe shpenzimet e tjera.",
+      "cardBlurb": "Kësti mujor, interesi total dhe LTV e një hipoteke.",
+      "fields": {
+        "propertyPrice": {
+          "label": "Çmimi i pronës",
+          "hint": "Çmimi i plotë i blerjes."
+        },
+        "downPayment": {
+          "label": "Paradhënia",
+          "hint": "Sa paguan vetë në fillim."
+        },
+        "ratePercent": {
+          "label": "Norma vjetore e interesit",
+          "hint": "Norma nominale që të ofron banka."
+        },
+        "years": {
+          "label": "Afati i kredisë",
+          "hint": "Sa vjet zgjat shlyerja."
+        },
+        "propertyTax": {
+          "label": "Tatimi vjetor në pronë",
+          "hint": "Ndahet në dymbëdhjetë muaj."
+        },
+        "insurance": {
+          "label": "Sigurimi vjetor",
+          "hint": "Sigurimi i pronës, ndarë për muaj."
+        },
+        "otherMonthly": {
+          "label": "Shpenzime të tjera mujore",
+          "hint": "Mirëmbajtje, administrim, shërbime."
+        },
+        "fees": {
+          "label": "Tarifa njëherëshe",
+          "hint": "Tarifa aprovimi, vlerësimi, noteri."
+        },
+        "frequency": {
+          "label": "Sa shpesh paguhet",
+          "hint": "Zakonisht çdo muaj."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Çdo muaj",
+          "quarterly": "Çdo tremujor",
+          "annually": "Një herë në vit"
+        }
+      },
+      "results": {
+        "monthlyTotal": "Sa paguan në muaj",
+        "principalInterest": "Vetëm kredia (principal + interes)",
+        "loanAmount": "Shuma e kredisë",
+        "totalInterest": "Interesi total",
+        "totalRepaid": "Shuma totale e paguar",
+        "loanToValue": "Kredi ndaj vlerës (LTV)",
+        "columns": {
+          "period": "Kësti",
+          "payment": "Pagesa",
+          "interest": "Interes",
+          "principal": "Principal",
+          "balance": "Mbetja"
+        }
+      },
+      "chart": {
+        "heading": "Principali krahas interesit",
+        "xAxis": "Kësti",
+        "principal": "Principal",
+        "interest": "Interes"
+      },
+      "explanation": [
+        "Këstin e nxjerrim me formulën standarde të anuitetit: e njëjta pagesë çdo muaj, por përbërja e saj ndryshon. Në fillim pjesa më e madhe shkon në interes; me kalimin e viteve shkon gjithnjë e më shumë në principal.",
+        "Tabela e amortizimit e tregon këtë ndarje muaj pas muaji. Kolona e principalit mblidhet saktësisht sa shuma e kredisë — llogarinë e bëjmë në centë, jo me numra me presje dhjetore, që kolona të përputhet me shifrën lart.",
+        "Tatimi, sigurimi dhe shpenzimet e tjera nuk janë pjesë e kredisë, por janë pjesë e asaj që paguan çdo muaj. Prandaj shifra kryesore këtu është totali i familjes, jo kësti i bankës — dallimi mes tyre është aty ku prishen buxhetet."
+      ],
+      "example": "Për një banesë 150.000 €, me 30.000 € paradhënie, 4,5% interes për 25 vjet: kësti i bankës del rreth 667 € në muaj, por me tatimin dhe sigurimin totali mujor shkon rreth 708 €. Interesi i paguar gjatë 25 viteve i kalon 80.000 €.",
+      "faq": [
+        {
+          "question": "Pse ndryshon aq shumë interesi total kur ndryshoj afatin?",
+          "answer": "Sepse interesi paguhet mbi mbetjen e kredisë. Një afat më i gjatë do të thotë këst më i vogël, por edhe një bilanc që bie më ngadalë — dhe mbi të cilin paguhet interes për më shumë vite."
+        },
+        {
+          "question": "Çka është LTV dhe pse ka rëndësi?",
+          "answer": "Raporti kredi-vlerë tregon sa përqind të çmimit e mbulon kredia. Sa më i ulët, aq më pak rrezik për bankën, dhe zakonisht aq më e mirë norma që të ofrohet. Nën 80% e shohin si të favorshme."
+        },
+        {
+          "question": "A ndryshon kësti nëse norma është e ndryshueshme?",
+          "answer": "Po. Kjo llogari supozon një normë fikse për gjithë afatin. Nëse kredia jote është me normë të ndryshueshme, provo ta rikalkulosh me disa norma për ta parë sa ndikon një rritje prej një pike përqindjeje."
+        },
+        {
+          "question": "A janë përfshirë tarifat e noterisë dhe të regjistrimit?",
+          "answer": "Vetëm nëse i shton te tarifat njëherëshe. Ato nuk i shtohen bilancit të kredisë dhe nuk paguajnë interes, prandaj i llogarisim veç, në koston totale."
+        }
+      ]
+    },
+    "inflationAdjustment": {
+      "metaTitle": "Kalkulatori i inflacionit",
+      "metaDescription": "Shih sa fuqi blerëse humbet një shumë me kalimin e viteve dhe sa do të kushtojë e njëjta shportë mallrash pas një periudhe me inflacion të caktuar.",
+      "heading": "Kalkulatori i inflacionit",
+      "intro": "Sa do të vlejnë paratë e tua pas disa vjetësh, dhe sa do të kushtojë atëherë ajo që blen sot.",
+      "cardBlurb": "Fuqia blerëse e një shume me kalimin e kohës.",
+      "fields": {
+        "amount": {
+          "label": "Shuma",
+          "hint": "Sa para po flasim, në vlerën e sotme."
+        },
+        "ratePercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Norma mesatare që po supozon."
+        },
+        "years": {
+          "label": "Periudha",
+          "hint": "Sa vjet përpara."
+        }
+      },
+      "results": {
+        "purchasingPower": "Fuqia blerëse pas periudhës",
+        "futureCost": "Sa do të kushtojë e njëjta shportë",
+        "cumulative": "Inflacioni i grumbulluar",
+        "lostValue": "Vlera e humbur",
+        "columns": {}
+      },
+      "explanation": [
+        "Inflacioni nuk mblidhet, por përbëhet. Tri përqind në vit për dhjetë vjet nuk është tridhjetë përqind gjithsej, por rreth tridhjetë e katër — sepse çdo vit rritja bie mbi çmime tashmë të rritura.",
+        "Ka dy pyetje të ndryshme këtu, dhe shpesh ngatërrohen. E para: sa do të kushtojë më vonë ajo që blen sot. E dyta: sa do të blejnë më vonë paratë që i ke sot. Njëra është shumëzim, tjetra pjesëtim, dhe rezultatet nuk janë të njëjta.",
+        "Norma që e vendos ti është supozim, jo matje. Kur t'i lidhim seritë reale të indeksit të çmimeve, kjo faqe do të mund të llogarisë mes dy viteve konkrete në vend të një norme mesatare."
+      ],
+      "example": "10.000 € sot, me 3% inflacion në vit, do të kenë fuqinë blerëse të rreth 7.441 € pas dhjetë vjetësh. E njëjta shportë mallrash që sot kushton 10.000 € do të kushtojë atëherë rreth 13.439 €.",
+      "faq": [
+        {
+          "question": "Cila normë inflacioni është realiste?",
+          "answer": "Objektivi i Bankës Qendrore Evropiane është 2% në vit afatmesëm. Vitet 2022–2023 e kaluan shumë atë nivel. Për një projeksion afatgjatë, 2–3% është supozim i arsyeshëm, por provo edhe me norma më të larta."
+        },
+        {
+          "question": "Pse dy shifra të ndryshme për të njëjtën periudhë?",
+          "answer": "Sepse janë dy pyetje. Fuqia blerëse tregon sa blejnë paratë e sotme më vonë; kostoja e ardhshme tregon sa do të kushtojë e njëjta gjë. Njëra pjesëton me faktorin e inflacionit, tjetra shumëzon."
+        },
+        {
+          "question": "A e mbulon kjo rritjen e pagave?",
+          "answer": "Jo. Kjo mat vetëm çmimet. Nëse paga jote rritet me të njëjtin ritëm si inflacioni, fuqia blerëse e saj mbetet e njëjtë edhe pse shifra rritet."
+        }
+      ]
+    },
+    "loan": {
+      "metaTitle": "Kalkulatori i kredisë dhe i APR-së",
+      "metaDescription": "Llogarit këstin mujor, interesin total dhe koston e vërtetë të një kredie konsumatore, duke përfshirë tarifat njëherëshe që zakonisht nuk hyjnë në normë.",
+      "heading": "Kalkulatori i kredisë",
+      "intro": "Sa kushton një kredi në total — jo vetëm kësti, por interesi dhe tarifat së bashku.",
+      "cardBlurb": "Kësti, interesi total dhe kostoja e vërtetë e një kredie.",
+      "fields": {
+        "principal": {
+          "label": "Shuma e kredisë",
+          "hint": "Sa po merr hua."
+        },
+        "ratePercent": {
+          "label": "Norma vjetore e interesit",
+          "hint": "Norma nominale, jo APR."
+        },
+        "years": {
+          "label": "Afati",
+          "hint": "Sa vjet zgjat shlyerja."
+        },
+        "fees": {
+          "label": "Tarifa njëherëshe",
+          "hint": "Tarifa aprovimi ose administrimi."
+        },
+        "frequency": {
+          "label": "Sa shpesh paguhet",
+          "hint": "Zakonisht çdo muaj."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Çdo muaj",
+          "quarterly": "Çdo tremujor",
+          "annually": "Një herë në vit"
+        }
+      },
+      "results": {
+        "payment": "Kësti",
+        "totalInterest": "Interesi total",
+        "totalFees": "Tarifat",
+        "totalRepaid": "Shuma totale e paguar",
+        "costOfBorrowing": "Kostoja e huamarrjes",
+        "columns": {
+          "period": "Kësti",
+          "payment": "Pagesa",
+          "interest": "Interes",
+          "principal": "Principal",
+          "balance": "Mbetja"
+        }
+      },
+      "chart": {
+        "heading": "Principali krahas interesit",
+        "xAxis": "Kësti",
+        "principal": "Principal",
+        "interest": "Interes"
+      },
+      "explanation": [
+        "Kësti është i njëjtë çdo muaj, por përbërja e tij jo. Interesin e paguan mbi mbetjen, prandaj në fillim ai zë pjesën më të madhe të pagesës dhe zvogëlohet me kalimin e kohës.",
+        "Tarifat njëherëshe nuk i shtohen bilancit këtu, prandaj mbi to nuk paguhet interes. Disa banka i fusin brenda kredisë; nëse e jotja e bën këtë, shtoji te shuma e kredisë në vend se te tarifat.",
+        "Kostoja e huamarrjes i mbledh interesin dhe tarifat dhe i shpreh si përqindje të shumës së marrë. Kjo është shifra që i bën dy oferta të krahasueshme kur njëra ka normë më të ulët por tarifa më të larta."
+      ],
+      "example": "Për një kredi 15.000 € me 8,5% për pesë vjet dhe 150 € tarifë aprovimi: kësti del rreth 308 € në muaj, interesi total rreth 3.470 €, dhe kostoja e plotë e huamarrjes rreth 24% e shumës së marrë.",
+      "faq": [
+        {
+          "question": "Cili është dallimi mes normës dhe APR-së?",
+          "answer": "Norma mat vetëm interesin. APR-ja duhet t'i përfshijë edhe tarifat e detyrueshme, prandaj del më e lartë. Kur krahason oferta, krahaso APR me APR — ose përdor koston e huamarrjes që e nxjerr kjo faqe."
+        },
+        {
+          "question": "A ia vlen ta shlyej më herët?",
+          "answer": "Zakonisht po, sepse interesi paguhet mbi mbetjen dhe një bilanc më i vogël prodhon më pak interes. Por disa kontrata kanë penalitet për shlyerje të parakohshme — kontrollo para se të vendosësh."
+        },
+        {
+          "question": "Pse kësti i fundit del pak ndryshe?",
+          "answer": "Sepse çdo këst e rrumbullakojmë në centë. Kësti i fundit e mbyll saktësisht atë që mbetet, ashtu siç bën edhe banka, në vend që të lërë disa centë të pashlyer."
+        }
+      ]
+    },
+    "dividend": {
+      "metaTitle": "Kalkulatori i dividendëve",
+      "metaDescription": "Llogarit të ardhurat vjetore dhe mujore nga dividendët, yield-in mbi koston fillestare dhe efektin e riinvestimit të pagesave gjatë viteve.",
+      "heading": "Kalkulatori i dividendëve",
+      "intro": "Sa të ardhura sjell një portofol me dividendë — dhe sa ndryshon nëse pagesat riinvestohen.",
+      "cardBlurb": "Të ardhurat nga dividendët dhe efekti i riinvestimit.",
+      "fields": {
+        "investment": {
+          "label": "Shuma e investuar",
+          "hint": "Sa para po investon."
+        },
+        "sharePrice": {
+          "label": "Çmimi i aksionit",
+          "hint": "Çmimi aktual për një aksion."
+        },
+        "dividendPerShare": {
+          "label": "Dividendi për aksion",
+          "hint": "Sa paguan një aksion në vit."
+        },
+        "reinvest": {
+          "label": "Riinvestimi i dividendëve",
+          "hint": "Nëse pagesat blejnë aksione të reja."
+        },
+        "growthPercent": {
+          "label": "Rritja vjetore e dividendit",
+          "hint": "Sa rritet vetë dividendi çdo vit."
+        },
+        "priceGrowthPercent": {
+          "label": "Rritja vjetore e çmimit",
+          "hint": "Supozim për çmimin e aksionit."
+        },
+        "years": {
+          "label": "Periudha",
+          "hint": "Sa vjet përpara."
+        }
+      },
+      "options": {
+        "reinvest": {
+          "yes": "Po",
+          "no": "Jo"
+        }
+      },
+      "results": {
+        "annualIncome": "Të ardhura vjetore",
+        "monthlyIncome": "Mesatarisht në muaj",
+        "currentYield": "Yield-i aktual",
+        "yieldOnCost": "Yield mbi koston fillestare",
+        "futureIncome": "Të ardhura në vitin e fundit",
+        "totalDividends": "Dividendë gjithsej",
+        "portfolioValue": "Vlera e portofolit",
+        "columns": {
+          "year": "Viti",
+          "shares": "Aksione",
+          "income": "Të ardhura",
+          "cumulativeIncome": "Gjithsej",
+          "portfolioValue": "Portofoli"
+        }
+      },
+      "chart": {
+        "heading": "Të ardhurat vjetore dhe totali i grumbulluar",
+        "xAxis": "Viti",
+        "income": "Të ardhura vjetore",
+        "cumulative": "Gjithsej"
+      },
+      "explanation": [
+        "Dy gjëra rriten njëkohësisht dhe zakonisht shohim vetëm njërën: dividendi për aksion rritet, dhe — nëse i riinvestron pagesat — rritet edhe numri i aksioneve. Të dyja bashkë e përshpejtojnë rritjen e të ardhurave.",
+        "Yield-i mbi koston fillestare është shifra që ka rëndësi për investitorin që kërkon të ardhura. Një aksion i blerë sot me 4% yield mund të paguajë dhjetë ose më shumë përqind ndaj çmimit fillestar pas njëzet vjetësh, edhe pse yield-i i tij aktual mbetet 4%.",
+        "Llogaria supozon aksione të pjesshme dhe blerje në fund të vitit, me çmimin e atij viti. Blerja në fillim të vitit do t'i jepte pagesës një vit rritje që ende nuk e kishte fituar."
+      ],
+      "example": "25.000 € të investuara me 4% yield japin 1.000 € të ardhura në vitin e parë. Me dividend që rritet 5% në vit dhe pagesa të riinvestuara, pas njëzet vjetësh të ardhurat vjetore i kalojnë 4.000 € — mbi 16% ndaj shumës fillestare.",
+      "faq": [
+        {
+          "question": "Çka është yield-i mbi koston fillestare?",
+          "answer": "Të ardhurat e sotme të pjesëtuara me atë që ke paguar në fillim, jo me çmimin e sotëm. Ai rritet me kalimin e viteve edhe kur yield-i i publikuar i aksionit mbetet i njëjtë."
+        },
+        {
+          "question": "A janë të garantuar dividendët?",
+          "answer": "Jo. Kompanitë mund t'i ulin ose t'i heqin dividendët në çdo kohë, dhe zakonisht e bëjnë pikërisht kur ekonomia është keq. Rritja e supozuar këtu është supozimi yt, jo premtim."
+        },
+        {
+          "question": "A ndikon tatimi mbi dividendët?",
+          "answer": "Po, dhe nuk është përfshirë. Në shumë vende dividendët tatohen kur paguhen, çka e ul shumën që mbetet për riinvestim. Rregullat ndryshojnë sipas shtetit."
+        },
+        {
+          "question": "Pse ndryshon kaq shumë rezultati me riinvestim?",
+          "answer": "Sepse çdo pagesë blen aksione të reja, që paguajnë vetë dividendë. Ky është interesi i përbërë i zbatuar mbi të ardhurat, dhe efekti duket vetëm pas dhjetë a më shumë vjetësh."
+        }
+      ]
+    },
+    "dca": {
+      "metaTitle": "Kalkulatori i investimit mujor",
+      "metaDescription": "Shih sa mund të rritet një investim i rregullt mujor, sa prej tij vjen nga kontributet dhe cili është kthimi real vjetor mbi paratë e derdhura.",
+      "heading": "Kalkulatori i investimit mujor",
+      "intro": "Sa mblidhet nga një shumë e vogël e investuar rregullisht, dhe sa prej rezultatit vjen nga tregu e sa nga xhepi yt.",
+      "cardBlurb": "Rritja e një investimi të rregullt mujor.",
+      "fields": {
+        "contribution": {
+          "label": "Sa investon çdo periudhë",
+          "hint": "Shuma e rregullt që e derdh."
+        },
+        "ratePercent": {
+          "label": "Kthimi vjetor i pritur",
+          "hint": "Supozim për tregun, para inflacionit."
+        },
+        "years": {
+          "label": "Periudha",
+          "hint": "Sa vjet vazhdon."
+        },
+        "initial": {
+          "label": "Shuma fillestare",
+          "hint": "Nëse fillon me diçka të kursyer."
+        },
+        "frequency": {
+          "label": "Sa shpesh investon",
+          "hint": "Më shpesh do të thotë më herët në treg."
+        },
+        "inflationPercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Për vlerën në para të sotme."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Çdo muaj",
+          "quarterly": "Çdo tremujor",
+          "annually": "Një herë në vit"
+        }
+      },
+      "results": {
+        "finalValue": "Vlera e portofolit",
+        "totalContributions": "Sa ke derdhur ti",
+        "gain": "Fitimi nga investimi",
+        "realValue": "Vlera në para të sotme",
+        "annualisedReturn": "Kthimi real vjetor mbi kontributet",
+        "columns": {
+          "year": "Viti",
+          "contributed": "Kontribute",
+          "value": "Vlera",
+          "gain": "Fitimi"
+        }
+      },
+      "chart": {
+        "heading": "Kontributet krahas fitimit",
+        "xAxis": "Viti",
+        "contributions": "Kontributet",
+        "gain": "Fitimi"
+      },
+      "explanation": [
+        "Investimi i rregullt e shpërndan blerjen në kohë. Kur çmimet janë të ulëta e njëjta shumë blen më shumë, kur janë të larta blen më pak — prandaj çmimi mesatar i blerjes del më i qëndrueshëm se një blerje e vetme e madhe.",
+        "Shifra që ngatërrohet më shpesh është kthimi. Një plan që supozon 7% në vit nuk fiton 7% mbi paratë e derdhura, sepse pjesa më e madhe e tyre ka qenë në treg vetëm një pjesë të afatit. Kthimi mbi kontributet, i llogaritur këtu, është gjithmonë më i ulët se norma e supozuar — dhe është ai që tregon çka ke fituar vërtet.",
+        "Sa më shpesh t'i investosh të njëjtat para gjatë vitit, aq më herët hyn në treg dhe aq më shumë kohë ka për t'u rritur. Prandaj dymbëdhjetë pagesa mujore japin pak më shumë se katër tremujore me të njëjtin total."
+      ],
+      "example": "200 € çdo muaj për pesëmbëdhjetë vjet me 7% kthim janë 36.000 € kontribute që rriten në rreth 63.000 €. Por kthimi mbi paratë e derdhura del rreth 3,8% në vit — jo 7% — sepse gjysma e tyre është investuar vetëm në gjysmën e dytë të afatit.",
+      "faq": [
+        {
+          "question": "Pse kthimi mbi kontributet është më i ulët se norma që vendosa?",
+          "answer": "Sepse euroja e derdhur në muajin e fundit ka qenë e investuar një muaj, jo pesëmbëdhjetë vjet. Norma e supozuar përshkruan tregun; kthimi mbi kontributet përshkruan planin tënd."
+        },
+        {
+          "question": "A është më mirë të investoj gjithçka njëherësh?",
+          "answer": "Historikisht një investim i vetëm i madh ka dalë pak më mirë mesatarisht, sepse paratë hyjnë më herët në treg. Por investimi i rregullt e zvogëlon rrezikun e hyrjes në momentin e gabuar, dhe për shumicën është i vetmi opsion praktik."
+        },
+        {
+          "question": "A janë përfshirë tarifat e fondit?",
+          "answer": "Jo. Nëse fondi yt merr 0,3% në vit, ule normën e kthimit me aq. Për pesëmbëdhjetë vjet dallimi është më i madh nga sa duket."
+        }
+      ]
+    },
+    "retirement": {
+      "metaTitle": "Kalkulatori i pensionit",
+      "metaDescription": "Shih sa mund të kursesh deri në pension, sa të ardhura mujore mban ajo shumë, dhe sa duhet të kursesh çdo muaj për ta mbyllur mungesën.",
+      "heading": "Kalkulatori i pensionit",
+      "intro": "Sa do të kesh kur të dalësh në pension, sa të ardhura mban ajo shumë, dhe çka mungon.",
+      "cardBlurb": "Kursimi për pension dhe mungesa deri te synimi.",
+      "fields": {
+        "currentAge": {
+          "label": "Mosha e tanishme",
+          "hint": "Sa vjeç je tani."
+        },
+        "retirementAge": {
+          "label": "Mosha e pensionit",
+          "hint": "Kur planifikon të dalësh."
+        },
+        "monthlyContribution": {
+          "label": "Kursimi mujor",
+          "hint": "Sa lë mënjanë çdo muaj tani."
+        },
+        "desiredMonthlyIncome": {
+          "label": "Të ardhura mujore të dëshiruara",
+          "hint": "Në para të sotme, gjatë pensionit."
+        },
+        "currentSavings": {
+          "label": "Kursimet e tanishme",
+          "hint": "Sa ke grumbulluar deri tani."
+        },
+        "returnPercent": {
+          "label": "Kthimi vjetor i pritur",
+          "hint": "Supozim, para inflacionit."
+        },
+        "inflationPercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Për llogaritjen në para të sotme."
+        },
+        "retirementYears": {
+          "label": "Sa vjet duhet të mjaftojë",
+          "hint": "Kohëzgjatja e pritur e pensionit."
+        },
+        "existingPensionMonthly": {
+          "label": "Pensioni shtetëror i pritur",
+          "hint": "Në para të sotme, në muaj."
+        }
+      },
+      "results": {
+        "gap": "Tepricë ose mungesë",
+        "projectedPot": "Shuma e parashikuar",
+        "realPot": "Në para të sotme",
+        "requiredPot": "Sa nevojitet",
+        "sustainableIncome": "Të ardhura mujore të qëndrueshme",
+        "requiredContribution": "Sa duhet kursyer në muaj",
+        "yearsToRetirement": "Vite deri në pension",
+        "columns": {
+          "rate": "Kthimi",
+          "projectedPot": "Shuma",
+          "realPot": "Në para të sotme",
+          "sustainableIncome": "Të ardhura"
+        }
+      },
+      "chart": {
+        "heading": "Rritja e kursimeve deri në pension",
+        "xAxis": "Mosha",
+        "balance": "Bilanci"
+      },
+      "explanation": [
+        "Llogarinë e bëjmë në dy hapa. Së pari grumbullimi: kursimet e tanishme plus kontributet mujore, të rritura deri në moshën e pensionit. Pastaj tërheqja: sa mund të nxjerrësh çdo muaj që shuma të mjaftojë për gjithë periudhën.",
+        "Krahasimin e bëjmë në para të sotme. Të ardhurat që i kërkon janë në vlerën e sotme, prandaj edhe shuma e grumbulluar kthehet në para të sotme para se ta krahasojmë. Krahasimi i një shume nominale me një nevojë reale është mënyra më e zakonshme se si këto llogari e mbivlerësojnë rezultatin.",
+        "Tri skenarët nuk janë parashikime. Janë i njëjti plan me tri supozime të ndryshme kthimi, dhe hapësira mes tyre është informacioni i vërtetë: tregon sa varet rezultati nga diçka që askush nuk e kontrollon."
+      ],
+      "example": "Në moshën 35 vjeç, me 10.000 € kursime dhe 250 € në muaj deri në 65 vjeç me 6% kthim: shuma e grumbulluar i kalon 270.000 €, që në para të sotme janë rreth 150.000 €. Kjo mban rreth 800 € në muaj për njëzet vjet.",
+      "faq": [
+        {
+          "question": "Pse shuma në para të sotme është shumë më e vogël?",
+          "answer": "Sepse inflacioni e ha vlerën e parasë gjatë tridhjetë viteve. Shifra nominale duket e madhe, por ajo që ka rëndësi është sa blen ajo shumë kur të dalësh në pension."
+        },
+        {
+          "question": "A është realiste norma e tërheqjes këtu?",
+          "answer": "Llogaria e shpërndan shumën në mënyrë që të mbarojë saktësisht në fund të periudhës që e ke vendosur, duke fituar ende kthim real. Kjo është më e kujdesshme se rregulli i njohur i 4% nëse periudha është e gjatë, dhe më bujare nëse është e shkurtër."
+        },
+        {
+          "question": "Çka nëse jetoj më gjatë se sa kam llogaritur?",
+          "answer": "Atëherë shuma mbaron para teje. Prandaj ia vlen ta provosh me një periudhë më të gjatë — për shembull tridhjetë vjet në vend të njëzet — dhe ta shohësh sa ndryshon kursimi mujor i nevojshëm."
+        },
+        {
+          "question": "A e përfshin kjo pensionin shtetëror?",
+          "answer": "Po, nëse e shkruan. Atë e zbresim nga të ardhurat që duhet t'i mbulojë vetë kursimi, prandaj shuma e nevojshme del më e vogël. Nëse nuk je i sigurt sa do të marrësh, lëre zero."
+        }
+      ]
+    },
+    "percentageReturn": {
+      "metaTitle": "Kalkulatori i ndryshimit në përqindje",
+      "metaDescription": "Llogarit ndryshimin në përqindje dhe në pikë përqindjeje mes dy shifrave — dallimi që ngatërrohet më shpesh kur raportohen normat dhe çmimet.",
+      "heading": "Kalkulatori i ndryshimit në përqindje",
+      "intro": "Sa ka ndryshuar një shifër — në përqindje dhe në pikë përqindjeje, sepse nuk janë e njëjta gjë.",
+      "cardBlurb": "Ndryshimi në përqindje dhe në pikë përqindjeje.",
+      "fields": {
+        "from": {
+          "label": "Vlera fillestare",
+          "hint": "Nga sa ka nisur."
+        },
+        "to": {
+          "label": "Vlera përfundimtare",
+          "hint": "Ku ka arritur."
+        }
+      },
+      "results": {
+        "changePercent": "Ndryshimi në përqindje",
+        "changePoints": "Ndryshimi në pikë",
+        "multiple": "Sa herë",
+        "columns": {}
+      },
+      "explanation": [
+        "Nëse një normë interesi kalon nga 2% në 3%, ajo është rritur me një pikë përqindjeje dhe me pesëdhjetë përqind. Të dyja janë të sakta dhe përshkruajnë të njëjtin ndryshim, por kuptohen krejt ndryshe.",
+        "Ky ngatërrim është burimi më i shpeshtë i titujve mashtrues në lajmet ekonomike. Kur raportojnë një ndryshim në normë interesi, inflacioni ose papunësi, gati gjithmonë bëhet fjalë për pikë përqindjeje.",
+        "Ndryshimin e nxjerrim ndaj vlerës absolute të shifrës fillestare, që drejtimi të mbetet i saktë edhe kur nis nga një numër negativ."
+      ],
+      "example": "Nga 100 në 125 është një rritje prej 25%, ose 25 pikë nëse të dyja shifrat janë përqindje. Nga 2% në 3% është një pikë përqindjeje — por edhe një rritje prej 50%.",
+      "faq": [
+        {
+          "question": "Kur duhet ta përdorësh 'pikë përqindjeje'?",
+          "answer": "Kur të dyja shifrat janë vetë përqindje: norma interesi, inflacion, papunësi, marzhe. Thuaj 'u rrit me një pikë përqindjeje', jo 'u rrit me një përqind'."
+        },
+        {
+          "question": "Pse s'del ndryshimi kur nis nga zero?",
+          "answer": "Sepse ndryshimi në përqindje kërkon pjesëtim me vlerën fillestare, dhe pjesëtimi me zero nuk jep numër. Në atë rast ka kuptim vetëm ndryshimi absolut."
+        },
+        {
+          "question": "Çka do të thotë kolona 'sa herë'?",
+          "answer": "Sa fish është shifra e re ndaj asaj të vjetrës. Një rritje prej 100% do të thotë dy herë; një rritje prej 300% do të thotë katër herë. Kjo shmang një gabim tjetër të shpeshtë."
+        }
+      ]
+    },
+    "currencyConverter": {
+      "metaTitle": "Konvertuesi i valutave",
+      "metaDescription": "Konverto mes euros, dollarit dhe monedhave të tjera me kurset referuese ditore të Bankës Qendrore Evropiane, me datën e publikimit gjithmonë të shënuar.",
+      "heading": "Konvertuesi i valutave",
+      "intro": "Konverto mes monedhave me kurset referuese të Bankës Qendrore Evropiane. Data e kursit shfaqet gjithmonë — këto janë kurse referuese, jo kurse tregtimi.",
+      "cardBlurb": "Konvertim me kurset referuese të BQE-së.",
+      "fields": {
+        "amount": {
+          "label": "Shuma",
+          "hint": "Sa para do t'i konvertosh."
+        },
+        "from": {
+          "label": "Prej",
+          "hint": "Monedha që e ke."
+        },
+        "to": {
+          "label": "Në",
+          "hint": "Monedha që e do."
+        }
+      },
+      "options": {
+        "from": {
+          "EUR": "Euro (EUR)",
+          "USD": "Dollar amerikan (USD)",
+          "GBP": "Sterlinë britanike (GBP)",
+          "CHF": "Frangë zvicerane (CHF)",
+          "JPY": "Jen japonez (JPY)",
+          "SEK": "Kronë suedeze (SEK)",
+          "NOK": "Kronë norvegjeze (NOK)",
+          "DKK": "Kronë daneze (DKK)",
+          "PLN": "Zlot polak (PLN)",
+          "CZK": "Koronë çeke (CZK)",
+          "HUF": "Forint hungarez (HUF)",
+          "RON": "Leu rumun (RON)",
+          "BGN": "Lev bullgar (BGN)",
+          "TRY": "Lirë turke (TRY)",
+          "CAD": "Dollar kanadez (CAD)",
+          "AUD": "Dollar australian (AUD)",
+          "CNY": "Juan kinez (CNY)"
+        },
+        "to": {
+          "EUR": "Euro (EUR)",
+          "USD": "Dollar amerikan (USD)",
+          "GBP": "Sterlinë britanike (GBP)",
+          "CHF": "Frangë zvicerane (CHF)",
+          "JPY": "Jen japonez (JPY)",
+          "SEK": "Kronë suedeze (SEK)",
+          "NOK": "Kronë norvegjeze (NOK)",
+          "DKK": "Kronë daneze (DKK)",
+          "PLN": "Zlot polak (PLN)",
+          "CZK": "Koronë çeke (CZK)",
+          "HUF": "Forint hungarez (HUF)",
+          "RON": "Leu rumun (RON)",
+          "BGN": "Lev bullgar (BGN)",
+          "TRY": "Lirë turke (TRY)",
+          "CAD": "Dollar kanadez (CAD)",
+          "AUD": "Dollar australian (AUD)",
+          "CNY": "Juan kinez (CNY)"
+        }
+      },
+      "results": {
+        "converted": "Shuma e konvertuar",
+        "rate": "Kursi",
+        "inverseRate": "Kursi i kundërt",
+        "amount": "Shuma fillestare",
+        "columns": {}
+      },
+      "explanation": [
+        "Kurset vijnë nga Banka Qendrore Evropiane, që i fikson një herë çdo ditë pune rreth orës 16:00 dhe i publikon menjëherë pas. Prandaj në fundjavë dhe në festa del kursi i ditës së fundit të punës — dhe data e asaj dite shënohet gjithmonë nën rezultatin.",
+        "Të gjitha kurset ruhen ndaj euros. Për një çift që nuk përfshin euron, si dollari me sterlinën, kursin e nxjerrim duke i kaluar të dyja përmes euros. Kjo është mënyra si e bëjnë edhe bankat, dhe prandaj rezultati mund të ndryshojë pak nga një kurs i publikuar drejtpërdrejt për atë çift.",
+        "Këto janë kurse referuese, të destinuara për statistika dhe kontabilitet. Banka, këmbimori ose karta jote do të japë një kurs tjetër, zakonisht më të keq, sepse aty përfshihet edhe marzhi i tyre."
+      ],
+      "example": "1.000 € me kursin referues të BQE-së prej rreth 1,17 dollarë për euro bëhen rreth 1.170 dollarë. Në një këmbimor do të merrje disa dollarë më pak — dallimi është fitimi i tyre.",
+      "faq": [
+        {
+          "question": "Pse kursi këtu ndryshon nga ai i bankës sime?",
+          "answer": "Sepse ky është kurs referues i BQE-së, jo një ofertë tregtimi. Banka e shton marzhin e vet mbi të, dhe për karta shtohen edhe tarifat e transaksionit. Përdore këtë si pikë referimi për të kuptuar sa po paguan mbi kursin zyrtar."
+        },
+        {
+          "question": "Pse në fundjavë del data e së premtes?",
+          "answer": "Sepse BQE-ja fikson kurse vetëm ditëve të punës. Nuk ekziston një kurs referues për të shtunën. Në vend që të shpikim një, shfaqim fiksimin e fundit real dhe datën e tij."
+        },
+        {
+          "question": "Si kalkulohet një çift pa euron, si USD/GBP?",
+          "answer": "Përmes euros: kursin e sterlinës ndaj euros e pjesëtojmë me kursin e dollarit ndaj euros. Nëse njëra prej të dyjave mungon për atë ditë, nuk japim rezultat, në vend që të përdorim kursin e një dite tjetër."
+        }
+      ]
+    },
+    "stockProfit": {
+      "metaTitle": "Kalkulatori i fitimit nga aksionet",
+      "metaDescription": "Llogarit fitimin nga aksionet: vlera aktuale, fitimi nga çmimi, të ardhurat nga dividendët, kthimi vjetor dhe çmimi ku dilni në zero pas tarifave.",
+      "heading": "Kalkulatori i fitimit nga aksionet",
+      "intro": "Sa ke fituar vërtet nga një pozicion në aksione — nga çmimi, nga dividendët, dhe pas tarifave.",
+      "cardBlurb": "Fitimi, kthimi vjetor dhe çmimi i baraspeshës.",
+      "fields": {
+        "shares": {
+          "label": "Numri i aksioneve",
+          "hint": "Sa aksione ke blerë."
+        },
+        "purchasePrice": {
+          "label": "Çmimi i blerjes",
+          "hint": "Për një aksion, kur e ke blerë."
+        },
+        "currentPrice": {
+          "label": "Çmimi i sotëm ose i shitjes",
+          "hint": "Për një aksion, tani."
+        },
+        "purchaseDate": {
+          "label": "Data e blerjes",
+          "hint": "Kur e ke hapur pozicionin."
+        },
+        "saleDate": {
+          "label": "Data e shitjes",
+          "hint": "Kur e ke mbyllur, ose data e sotme."
+        },
+        "dividendPerShare": {
+          "label": "Dividendë për aksion",
+          "hint": "Gjithsej të marrë për një aksion gjatë gjithë periudhës."
+        },
+        "fees": {
+          "label": "Tarifa tregtimi",
+          "hint": "Komisionet e blerjes dhe të shitjes së bashku."
+        },
+        "inflationPercent": {
+          "label": "Inflacioni vjetor",
+          "hint": "Për kthimin real."
+        }
+      },
+      "results": {
+        "totalProfit": "Fitimi total",
+        "totalReturn": "Kthimi total",
+        "annualised": "Kthimi vjetor",
+        "realAnnualised": "Kthimi vjetor real",
+        "currentValue": "Vlera aktuale",
+        "priceProfit": "Fitimi nga çmimi",
+        "dividendIncome": "Të ardhura nga dividendët",
+        "breakEven": "Çmimi i baraspeshës",
+        "cost": "Kostoja totale",
+        "columns": {}
+      },
+      "explanation": [
+        "Kostoja totale përfshin edhe tarifat, jo vetëm aksionet: nëse ke paguar 15.000 € për aksionet dhe 20 € komision, pozicioni të ka kushtuar 15.020 €. Kthimi del mbi këtë shifër, sepse ajo është ajo që ke dhënë vërtet.",
+        "Fitimi ndahet në dy pjesë sepse burimet janë të ndryshme. Fitimi nga çmimi vjen nga lëvizja e tregut dhe e merr vetëm kur shet. Të ardhurat nga dividendët i ke marrë tashmë në para, pavarësisht ku ka shkuar çmimi.",
+        "Çmimi i baraspeshës është ai ku pozicioni del në zero pasi i llogarisim tarifat dhe i zbresim dividendët e marrë. Nëse çmimi i sotëm është mbi të, je në fitim; nëse jo, nuk je — edhe kur çmimi duket më i lartë se ai i blerjes."
+      ],
+      "example": "100 aksione të blera me 150 € dhe që sot vlejnë 210 €, me 2,50 € dividend për aksion dhe 20 € tarifa: fitimi total del 6.230 €, ose rreth 41% për tri vjet — që janë rreth 12% në vit.",
+      "faq": [
+        {
+          "question": "Pse çmimi i baraspeshës nuk është çmimi i blerjes?",
+          "answer": "Sepse tarifat e rrisin koston dhe dividendët e ulin atë. Pas 20 € tarifa dhe 250 € dividendë të marrë, pozicioni del në zero në një çmim më të ulët se ai i blerjes — dividendët tashmë e kanë mbuluar një pjesë."
+        },
+        {
+          "question": "A duhet ta përdor këtë për tatimin?",
+          "answer": "Jo si dokument. Rregullat për tatimin mbi fitimin kapital dhe mbi dividendët ndryshojnë sipas shtetit, dhe këtu nuk kemi llogaritur asnjë tatim. Përdore për të kuptuar pozicionin, jo për deklaratë."
+        },
+        {
+          "question": "Pse kthimi vjetor duket i ulët krahasuar me kthimin total?",
+          "answer": "Sepse kthimi total nuk e merr parasysh kohën. 41% për tri vjet janë rreth 12% në vit, jo 41%. Kthimi vjetor është shifra që mund ta krahasosh me një depozitë ose me një investim tjetër."
+        }
+      ]
     }
   }
 }

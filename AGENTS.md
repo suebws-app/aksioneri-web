@@ -52,6 +52,7 @@ knowledge produces code that fails lint or silently breaks i18n and SEO.
 | Forms and validation                     | `forms/react-hook-form-patterns.md`   |
 | Types, strict-mode errors                | `typescript/typescript-patterns.md`   |
 | Tests                                    | `testing/testing-patterns.md`         |
+| Adding or changing a calculator          | `calculators/adding-a-calculator.md`  |
 
 ## Non-negotiable rules
 

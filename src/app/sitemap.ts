@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getCalendarWeek } from '@/features/calendar';
 import { getLessonSlugs, getTopics } from '@/features/learn';
+import { getCalculators } from '@/features/calculators';
 import { getArticleIndex } from '@/features/news';
 import { getQuotes } from '@/lib/api/markets';
 import { defaultLocale } from '@/i18n/config';
@@ -32,6 +33,10 @@ const SECTIONS: SitemapPath[] = [
   { path: '/calendar', priority: 0.9, changeFrequency: 'daily' },
   { path: '/markets', priority: 0.8, changeFrequency: 'daily' },
   { path: '/learn', priority: 0.8, changeFrequency: 'monthly' },
+  // The index itself only gains a card when a calculator ships, but the
+  // cards carry live blurbs and the section is a crawl entry point for
+  // pages that do change daily — weekly is the honest middle.
+  { path: '/calculators', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/learn/glossary', priority: 0.7, changeFrequency: 'monthly' },
   // Standing pages: rarely edited, but a site with no about or privacy page
   // in its sitemap looks abandoned to a crawler.
@@ -64,6 +69,22 @@ async function detailPaths(): Promise<SitemapPath[]> {
   ]);
 
   return [
+    // Calculators are listed at their bare path. Their inputs live in the
+    // query string, and the parameterised variants all canonicalise back to
+    // this URL, so there is exactly one entry each.
+    // A calculator's cadence follows its data, not its code. The compound
+    // interest page renders the same figures until someone edits its copy;
+    // the currency converter renders a new rate every business day, because
+    // the ECB fixes one. Deriving it from the calculator's own declared
+    // market-data need keeps the hint honest as calculators are added.
+    ...getCalculators().map((calculator) => ({
+      path: `/calculators/${calculator.slug}`,
+      priority: 0.7,
+      changeFrequency:
+        calculator.marketData.kind === 'none'
+          ? ('monthly' as const)
+          : ('daily' as const),
+    })),
     ...articles.map((entry) => ({
       path: `/news/${entry.slug}`,
       priority: 0.7,

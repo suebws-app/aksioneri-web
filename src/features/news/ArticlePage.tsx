@@ -1,4 +1,6 @@
 import { useLocale, useTranslations } from 'next-intl';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { CalculatorEmbed } from '@/features/calculators';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
@@ -31,6 +33,16 @@ export interface ArticlePageProps {
   showWhyItMatters?: boolean;
   showInNumbers?: boolean;
   showTerms?: boolean;
+  /**
+   * The calculator this story should offer, matched at render time.
+   *
+   * A prop rather than something this component works out, so the choice can
+   * later come from a stored column instead of the matcher without touching
+   * the article page at all.
+   */
+  calculatorEmbed?: string | null;
+  /** Escape hatch, mirroring the flags above. */
+  showCalculatorEmbed?: boolean;
 }
 
 export function ArticlePage({
@@ -44,6 +56,8 @@ export function ArticlePage({
   showWhyItMatters = true,
   showInNumbers = true,
   showTerms = true,
+  calculatorEmbed = null,
+  showCalculatorEmbed = true,
 }: ArticlePageProps) {
   const t = useTranslations('news');
   const locale = useLocale() as Locale;
@@ -61,22 +75,13 @@ export function ArticlePage({
       />
 
       <main className="flex-1">
-        <nav
-          aria-label={t('breadcrumbLabel')}
-          className="page-container pt-6.5"
-        >
-          <ol className="text-ink-faint flex items-center gap-2.5 text-[13px]">
-            <li>
-              <Link href="/news" className="hover:text-accent">
-                {t('heading')}
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li className="text-accent">
-              {t(`categories.${article.category}`)}
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumb
+          label={t('breadcrumbLabel')}
+          items={[
+            { label: t('heading'), href: '/news' },
+            { label: t(`categories.${article.category}`) },
+          ]}
+        />
 
         <div className="page-container flex flex-col gap-14 pt-7 lg:flex-row">
           <article className="min-w-0 flex-1 lg:max-w-[760px]">
@@ -160,6 +165,13 @@ export function ArticlePage({
                     <GlossaryText text={paragraph} linker={linker} />
                   </p>
                 ))}
+
+                {/* The calculator sits after the first section too, below
+                    the figures strip: far enough in that the reader has the
+                    context to want it, not so far that they never reach it. */}
+                {index === 0 && showCalculatorEmbed && calculatorEmbed ? (
+                  <CalculatorEmbed slug={calculatorEmbed} locale={locale} />
+                ) : null}
 
                 {/* The figures strip sits after the first section, where the
                     design places it. */}

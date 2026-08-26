@@ -43,6 +43,23 @@
   /* Impact bars */
   --impact-on: #14385e;
   --impact-off: #dfdcd3;
+
+  /* Calculator chart series.
+   *
+   * Three steps down the accent navy plus one ochre, rather than a generic
+   * categorical palette: a projection chart sits beside the same headlines as
+   * everything else and should read as the same publication. The ochre breaks
+   * the ramp so a four-series chart never asks a reader to rank two adjacent
+   * blues by lightness alone.
+   *
+   * Every value clears 3:1 against --surface, the WCAG 1.4.11 floor for
+   * non-text graphics: 11.0, 5.4, 3.1, 4.9. Colour is still never the only
+   * signal — the chart kit pairs each series with a dash pattern and an
+   * end-of-line label. */
+  --chart-1: #14385e;
+  --chart-2: #3d6e96;
+  --chart-3: #6e97b8;
+  --chart-4: #8a6d3b;
 }
 
 @theme inline {
@@ -74,6 +91,11 @@
 
   --color-impact-on: var(--impact-on);
   --color-impact-off: var(--impact-off);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
 
   /* Newsreader carries headlines, Plex Sans the interface, Plex Mono every
      figure — aligned columns of numbers depend on tabular glyph widths. */

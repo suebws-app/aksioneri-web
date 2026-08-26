@@ -1,4 +1,5 @@
 import { useLocale, useTranslations } from 'next-intl';
+import { Breadcrumb } from '@/components/Breadcrumb';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
@@ -118,22 +119,14 @@ export function EventPage({
       />
 
       <main className="flex-1">
-        <nav
-          aria-label={tNews('breadcrumbLabel')}
-          className="page-container pt-6.5"
-        >
-          <ol className="text-ink-faint flex flex-wrap items-center gap-2.5 text-[13px]">
-            <li>
-              <Link href="/calendar" className="hover:text-accent">
-                {t('heading')}
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li>{event.regionName}</li>
-            <li aria-hidden>/</li>
-            <li className="text-accent">{event.shortName}</li>
-          </ol>
-        </nav>
+        <Breadcrumb
+          label={tNews('breadcrumbLabel')}
+          items={[
+            { label: t('heading'), href: '/calendar' },
+            { label: event.regionName },
+            { label: event.shortName },
+          ]}
+        />
 
         <header className="page-container pt-6.5">
           <div className="border-ink flex flex-col gap-8 border-b-2 pb-5.5 lg:flex-row lg:items-end lg:justify-between">
