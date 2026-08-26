@@ -68,7 +68,7 @@ export default async function Page({ params }: PageProps) {
   const article = await getArticleBySlug(locale, slug);
   if (!article) notFound();
 
-  const week = getCalendarWeek(locale);
+  const week = await getCalendarWeek(locale);
   const [related, mostRead] = await Promise.all([
     getArticles(locale),
     getMostRead(locale),

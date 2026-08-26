@@ -1,11 +1,9 @@
-import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { ImageSlot } from '@/components/ImageSlot';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { cn } from '@/lib/utils/cn';
 import type { NewsArticle } from '../newsTypes';
 import { ArticleMeta } from './ArticleMeta';
+import { NewsImage } from './NewsImage';
 
 /**
  * A story in a listing. Three shapes, all the same data:
@@ -58,7 +56,10 @@ function ArticleLink({
   );
 }
 
-/** The publisher's art when the wire supplied it, the placeholder when not. */
+/**
+ * Article art with a full fallback ladder — publisher image → category pool
+ * → branded placeholder. See `NewsImage` for the layer details.
+ */
 function ArticleImage({
   article,
   className,
@@ -68,24 +69,7 @@ function ArticleImage({
   className: string;
   sizes: string;
 }) {
-  if (!article.imageUrl) return <ImageSlot className={className} />;
-
-  return (
-    <div
-      className={cn(
-        'border-line relative overflow-hidden rounded-sm border',
-        className,
-      )}
-    >
-      <Image
-        src={article.imageUrl}
-        alt=""
-        fill
-        sizes={sizes}
-        className="object-cover"
-      />
-    </div>
-  );
+  return <NewsImage article={article} className={className} sizes={sizes} />;
 }
 
 export function ArticleCard({ article, variant }: ArticleCardProps) {

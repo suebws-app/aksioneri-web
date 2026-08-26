@@ -31,15 +31,27 @@ export const marketsKeys = {
     [...marketsKeys.all, 'movers', index] as const,
 };
 
-/** Poll cadence for every markets query. */
+/** Poll cadence retained for endpoints that still need it (asset page). */
 const POLL_INTERVAL_MS = 15_000;
 
+/**
+ * Quotes are sockets-only.
+ *
+ * The SSR-hydrated `initialData` paints the first frame; from tick 1 the
+ * `/markets` WebSocket owns all updates via `useLiveQuotes`, which
+ * patches this same cache key. `staleTime: Infinity` keeps TanStack
+ * Query from refetching on remount, and the polling / focus refetches
+ * are both off — a socket outage now shows a frozen strip rather than a
+ * hidden 15 s fallback pretending everything is live.
+ */
 export const quotesQuery = (initialData?: Quote[]) =>
   queryOptions({
     queryKey: marketsKeys.quotes(),
     queryFn: fetchQuotes,
-    refetchInterval: POLL_INTERVAL_MS,
-    staleTime: POLL_INTERVAL_MS,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity,
     ...(initialData ? { initialData } : {}),
   });
 

@@ -41,18 +41,6 @@ export function CalendarPage({
     matchesRegionFilter(event.region, region),
   );
 
-  // Every later day that still has events after filtering, rendered below the
-  // selected day as the design does for "Monday 24 August".
-  const upcomingDays = week.days
-    .filter((day) => day.date > week.selectedDate)
-    .map((day) => ({
-      ...day,
-      events: day.events.filter((event) =>
-        matchesRegionFilter(event.region, region),
-      ),
-    }))
-    .filter((day) => day.events.length > 0);
-
   const longDate = (date: string) => formatLongDate(locale, date);
 
   return (
@@ -89,6 +77,10 @@ export function CalendarPage({
           </div>
         </div>
 
+        {/* Only the currently-selected day's events render below. Later
+            days used to be shown inline as extra sections; the tabs are
+            now the sole way to switch dates, which reads cleaner and
+            keeps the page short on a busy week. */}
         <div className="page-container pt-5">
           {selectedEvents.length > 0 ? (
             <EventTable
@@ -101,24 +93,6 @@ export function CalendarPage({
               {t('empty')}
             </p>
           )}
-
-          {upcomingDays.map((day) => (
-            <section key={day.date}>
-              <div className="flex items-baseline justify-between pt-8.5 pb-3">
-                <h2 className="text-ink font-serif text-2xl font-medium">
-                  {longDate(day.date)}
-                </h2>
-                <span className="text-ink-faint text-[13px]">
-                  {t('eventCount', { count: day.events.length })}
-                </span>
-              </div>
-              <EventTable
-                events={day.events}
-                caption={t('tableCaption', { date: longDate(day.date) })}
-                variant="upcoming"
-              />
-            </section>
-          ))}
         </div>
 
         {showPrimer ? (

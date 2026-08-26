@@ -229,13 +229,20 @@ export const searchArticles = cache(
     }, []),
 );
 
-/** The lead story. `null` while the wire is still empty. */
+/**
+ * The lead story. `null` while the wire is still empty. When `category`
+ * is passed, the lead is scoped to that desk — used by the news page so
+ * clicking a filter pill also swaps the featured slot.
+ */
 export const getFeaturedArticle = cache(
-  async (locale: Locale): Promise<NewsArticle | null> =>
+  async (
+    locale: Locale,
+    category?: NewsCategory,
+  ): Promise<NewsArticle | null> =>
     safely(
       () =>
         apiFetch<NewsArticle | null>('news/featured', {
-          searchParams: { locale },
+          searchParams: { locale, category },
           ...cacheOptions,
         }),
       null,

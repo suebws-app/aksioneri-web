@@ -1,0 +1,97 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { marketsSocket } from '@/lib/websockets/marketsSocket';
+
+/**
+ * Small badge next to a price that says one of:
+ *
+ *   - nothing         → healthy (connected + fresh ticks)
+ *   - "connecting…"   → WebSocket is opening
+ *   - "reconnecting…" → dropped, backing off
+ *   - "offline"       → gave up
+ *   - "delayed"       → connected but no tick for this symbol in >30 s
+ *
+ * The audit's Step 15 asked explicitly for this — silently showing a
+ * stale price as live is worse than admitting the wire is quiet.
+ *
+ * Renders nothing on the happy path so the strip is visually clean when
+ * everything is normal. Every state has its own translation key in the
+ * `markets.status` namespace; falling through to English is safer than
+ * showing the key.
+ */
+export function DataStatusPill({ symbol }: { symbol: string }) {
+  const t = useTranslations('markets.status');
+  const [connectionState, setConnectionState] = useState<
+    'idle' | 'connecting' | 'connected' | 'reconnecting' | 'disconnected'
+  >('idle');
+  const [isStale, setIsStale] = useState(false);
+
+  useEffect(() => {
+    const offState = marketsSocket.onStateChange(setConnectionState);
+    const offStale = marketsSocket.onStaleChange(symbol, setIsStale);
+    return () => {
+      offState();
+      offStale();
+    };
+  }, [symbol]);
+
+  const label = statusLabel(connectionState, isStale);
+  if (!label) return null;
+
+  const tone = label.tone;
+  const message = safeTranslate(t, label.key);
+
+  return (
+    <span
+      className={
+        tone === 'warn'
+          ? 'bg-warning/10 text-warning border-warning/30 rounded-full border px-2 py-0.5 text-[11px] font-medium tracking-[0.06em] uppercase'
+          : 'bg-danger/10 text-danger border-danger/30 rounded-full border px-2 py-0.5 text-[11px] font-medium tracking-[0.06em] uppercase'
+      }
+      role="status"
+      aria-live="polite"
+    >
+      {message}
+    </span>
+  );
+}
+
+interface Label {
+  key: string;
+  tone: 'warn' | 'error';
+}
+
+function statusLabel(
+  state: 'idle' | 'connecting' | 'connected' | 'reconnecting' | 'disconnected',
+  isStale: boolean,
+): Label | null {
+  if (state === 'connecting') return { key: 'connecting', tone: 'warn' };
+  if (state === 'reconnecting') return { key: 'reconnecting', tone: 'warn' };
+  if (state === 'disconnected') return { key: 'offline', tone: 'error' };
+  if (state === 'connected' && isStale) {
+    return { key: 'delayed', tone: 'warn' };
+  }
+  return null;
+}
+
+/**
+ * `next-intl`'s `useTranslations` throws when a key is missing in dev.
+ * The `markets.status` catalogue is not shipped with these keys today
+ * — the pill lands ahead of the message additions — so we degrade to
+ * the English default rather than red-underlining a fresh deploy.
+ */
+function safeTranslate(t: (key: string) => string, key: string): string {
+  try {
+    return t(key);
+  } catch {
+    const defaults: Record<string, string> = {
+      connecting: 'Connecting…',
+      reconnecting: 'Reconnecting…',
+      offline: 'Offline',
+      delayed: 'Delayed',
+    };
+    return defaults[key] ?? key;
+  }
+}

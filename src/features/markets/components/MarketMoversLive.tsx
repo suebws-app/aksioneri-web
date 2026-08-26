@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { SectionHeading } from '@/components/SectionHeading';
-import type { IndexSymbol, Movers } from '@/lib/api/markets';
+import { Link } from '@/i18n/navigation';
+import type { IndexSymbol, Mover, Movers } from '@/lib/api/markets';
 import { moversQuery } from '@/lib/query/marketsQueries';
 
 /**
@@ -27,57 +28,68 @@ export function MarketMoversLive({
       <SectionHeading title={t('heading')} action={{ label: t('session') }} />
 
       <div className="mt-5.5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-0">
-        <div className="lg:pr-6">
-          <h3 className="text-ink-faint mb-3.5 text-[11px] font-semibold tracking-[0.11em] uppercase">
-            {t('gainers')}
-          </h3>
-          <ul className="flex flex-col gap-3 text-[15px]">
-            {movers.gainers.map((mover, index) => (
-              // Index, not name: a company can appear twice under one name —
-              // Alphabet ships as two share classes, both labelled "Alphabet
-              // Inc." — and the wire gives no ticker to key on.
-              <li key={index} className="flex justify-between gap-2.5">
-                <span className="text-ink">{mover.name}</span>
-                <ChangeValue
-                  percent={mover.changePercent}
-                  className="text-sm"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:border-line lg:border-l lg:px-6">
-          <h3 className="text-ink-faint mb-3.5 text-[11px] font-semibold tracking-[0.11em] uppercase">
-            {t('losers')}
-          </h3>
-          <ul className="flex flex-col gap-3 text-[15px]">
-            {movers.losers.map((mover, index) => (
-              // Index, not name: a company can appear twice under one name —
-              // Alphabet ships as two share classes, both labelled "Alphabet
-              // Inc." — and the wire gives no ticker to key on.
-              <li key={index} className="flex justify-between gap-2.5">
-                <span className="text-ink">{mover.name}</span>
-                <ChangeValue
-                  percent={mover.changePercent}
-                  className="text-sm"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:border-line lg:border-l lg:pl-6">
-          <h3 className="text-ink-faint mb-3.5 text-[11px] font-semibold tracking-[0.11em] uppercase">
-            {t('mostWatched')}
-          </h3>
-          <ul className="text-ink flex flex-col gap-3 text-[15px]">
-            {movers.mostWatched.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
+        <MoverColumn
+          label={t('gainers')}
+          movers={movers.gainers}
+          showChange
+          className="lg:pr-6"
+        />
+        <MoverColumn
+          label={t('losers')}
+          movers={movers.losers}
+          showChange
+          className="lg:border-line lg:border-l lg:px-6"
+        />
+        <MoverColumn
+          label={t('mostWatched')}
+          movers={movers.mostWatched}
+          showChange={false}
+          className="lg:border-line lg:border-l lg:pl-6"
+        />
       </div>
     </section>
+  );
+}
+
+/**
+ * One column of the movers panel. Each row links to `/markets/:symbol` so a
+ * click opens the constituent's own asset page — the API accepts raw
+ * tickers and 404s on anything it cannot resolve.
+ */
+function MoverColumn({
+  label,
+  movers,
+  showChange,
+  className,
+}: {
+  label: string;
+  movers: Mover[];
+  showChange: boolean;
+  className: string;
+}) {
+  return (
+    <div className={className}>
+      <h3 className="text-ink-faint mb-3.5 text-[11px] font-semibold tracking-[0.11em] uppercase">
+        {label}
+      </h3>
+      <ul className="flex flex-col gap-3 text-[15px]">
+        {movers.map((mover) => (
+          <li key={mover.symbol}>
+            <Link
+              href={`/markets/${mover.symbol}`}
+              className="hover:text-accent flex justify-between gap-2.5"
+            >
+              <span className="text-ink">{mover.name}</span>
+              {showChange ? (
+                <ChangeValue
+                  percent={mover.changePercent}
+                  className="text-sm"
+                />
+              ) : null}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

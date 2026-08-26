@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
-import { ImageSlot } from '@/components/ImageSlot';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
@@ -15,6 +13,7 @@ import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { ArticleMeta } from './components/ArticleMeta';
+import { NewsImage } from './components/NewsImage';
 import { WhyItMatters } from './components/WhyItMatters';
 import type { MostReadEntry } from './newsTypes';
 import type { NewsArticle } from './newsTypes';
@@ -126,23 +125,17 @@ export function ArticlePage({
               </div>
             ) : null}
 
-            {article.imageUrl ? (
-              <div className="border-line relative mb-3 h-[400px] w-full overflow-hidden rounded-sm border">
-                <Image
-                  src={article.imageUrl}
-                  alt=""
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 760px"
-                  className="object-cover"
-                  // Wire art is decorative here: the headline above already
-                  // carries the meaning, and the feed supplies no caption to
-                  // build honest alt text from.
-                  priority
-                />
-              </div>
-            ) : (
-              <ImageSlot className="mb-3 h-[400px] w-full" />
-            )}
+            {/* Wire art is decorative here: the headline above already
+                carries the meaning, and the feed supplies no caption to
+                build honest alt text from. NewsImage cascades through
+                imageUrl → category pool → branded placeholder. */}
+            <NewsImage
+              article={article}
+              className="mb-3 h-[400px] w-full"
+              sizes="(max-width: 1024px) 100vw, 760px"
+              priority
+            />
+
             {(article.heroCaption ?? article.sourceName) ? (
               <p className="text-ink-faint mb-8.5 text-[12.5px]">
                 {article.heroCaption ?? ''}{' '}
@@ -275,11 +268,21 @@ export function ArticlePage({
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {related.map((entry) => (
                     <article key={entry.id}>
-                      <ImageSlot className="mb-3.5 h-33 w-full" />
+                      <Link
+                        href={`/news/${entry.slug}`}
+                        className="mb-3.5 block"
+                        aria-label={entry.title}
+                      >
+                        <NewsImage
+                          article={entry}
+                          className="h-33 w-full"
+                          sizes="(max-width: 640px) 100vw, 240px"
+                        />
+                      </Link>
                       <p className="text-accent mb-2 text-[11px] font-semibold tracking-[0.12em] uppercase">
                         {t(`categories.${entry.category}`)}
                       </p>
-                      <h3 className="text-ink mb-2 font-serif text-[19px] leading-[1.26] font-medium">
+                      <h3 className="text-ink mb-2 line-clamp-2 font-serif text-[19px] leading-[1.26] font-medium">
                         <Link
                           href={`/news/${entry.slug}`}
                           className="hover:text-accent"
@@ -288,33 +291,6 @@ export function ArticlePage({
                         </Link>
                       </h3>
                       <ArticleMeta article={entry} className="text-[12.5px]" />
-
-                      {/* Required attribution. The wire supplies the text; the story is
-                the publisher's, and every page has to say so and point back
-                at the original. */}
-                      {article.sourceUrl ? (
-                        <aside className="border-line bg-surface-muted mt-9 rounded-sm border p-5.5">
-                          <p className="text-ink-subtle mb-2 text-[13.5px]">
-                            {t('source.credit', {
-                              source:
-                                article.sourceName ?? t('source.fallbackName'),
-                            })}
-                          </p>
-                          <a
-                            href={article.sourceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="text-accent text-[14.5px] font-medium hover:underline"
-                          >
-                            {t('source.readOriginal')}
-                          </a>
-                          {article.translated ? (
-                            <p className="text-ink-faint mt-2.5 text-[12.5px]">
-                              {t('source.machineTranslated')}
-                            </p>
-                          ) : null}
-                        </aside>
-                      ) : null}
                     </article>
                   ))}
                 </div>

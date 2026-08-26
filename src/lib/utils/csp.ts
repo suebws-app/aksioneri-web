@@ -24,8 +24,20 @@ const originOf = (apiUrl: string): string => {
   }
 };
 
+/**
+ * WebSocket origin twin for `connect-src`. Chromium and Firefox reject a
+ * `ws://<host>` connection when the policy only lists `http://<host>` —
+ * they treat schemes as distinct, spec-notwithstanding — so both variants
+ * have to be enumerated. The markets Socket.io gateway upgrades to `ws://`
+ * (or `wss://` in production) on the API origin, and that upgrade is what
+ * this expression clears.
+ */
+const wsOriginOf = (httpOrigin: string): string =>
+  httpOrigin.replace(/^http:/, 'ws:').replace(/^https:/, 'wss:');
+
 export function buildCsp(apiUrl: string, isProduction: boolean): string {
   const apiOrigin = originOf(apiUrl);
+  const apiWsOrigin = wsOriginOf(apiOrigin);
 
   const scriptSrc = isProduction
     ? "'self' 'unsafe-inline'"
@@ -37,7 +49,7 @@ export function buildCsp(apiUrl: string, isProduction: boolean): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
-    `connect-src 'self' ${apiOrigin}`,
+    `connect-src 'self' ${apiOrigin} ${apiWsOrigin}`,
     "frame-src 'none'",
     "frame-ancestors 'none'",
     "base-uri 'self'",

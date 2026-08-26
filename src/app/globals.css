@@ -11,10 +11,10 @@
  */
 :root {
   /* Surfaces */
-  --paper: #fbfaf7; /* page ground */
+  --paper: #ffffff; /* page ground */
   --surface: #ffffff; /* rows, cards */
   --surface-tint: #f2f5f9; /* highlighted row, "why it matters" panel */
-  --surface-muted: #f4f1ea; /* primer block */
+  --surface-muted: #fbfaf7; /* primer block */
   --surface-inverse: #15181c; /* footer */
 
   /* Text */

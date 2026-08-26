@@ -66,7 +66,8 @@ export async function buildSearchIndex(locale: Locale): Promise<SearchEntry[]> {
     (article) => articleEntry(article) ?? [],
   );
 
-  const week = getCalendarWeek(locale);
+  // Calendar is now API-backed; the getter is async.
+  const week = await getCalendarWeek(locale);
   const eventEntries: SearchEntry[] = week.days.flatMap((day) =>
     day.events.map((event) => ({
       kind: 'event' as const,

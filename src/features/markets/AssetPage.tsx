@@ -4,7 +4,6 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
-import { Sparkline } from '@/components/Sparkline';
 import type { CalendarEvent } from '@/features/calendar';
 import type { Lesson } from '@/features/learn/learnTypes';
 import { ArticleMeta } from '@/features/news/components/ArticleMeta';
@@ -12,6 +11,8 @@ import type { NewsArticle } from '@/features/news/newsTypes';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import type { AssetDetail, Quote } from '@/lib/api/markets';
+import { AssetChartLive } from './components/AssetChartLive';
+import { AssetPriceLive } from './components/AssetPriceLive';
 
 export interface AssetPageProps {
   asset: AssetDetail;
@@ -24,8 +25,15 @@ export interface AssetPageProps {
   showComposition?: boolean;
 }
 
-/** Range buttons in the design. No history API yet, so 1D is fixed. */
-const RANGES = ['1D', '1W', '1M', '6M', '1Y', '5Y'] as const;
+/**
+ * Number of decimals in a formatted price string ("7,689.62" → 2). Used
+ * to hand `AssetChartLive` the same precision the header shows without
+ * hard-coding a per-instrument table on the frontend.
+ */
+function decimalsIn(formatted: string): number {
+  const dot = formatted.indexOf('.');
+  return dot === -1 ? 0 : formatted.length - dot - 1;
+}
 
 export function AssetPage({
   asset,
@@ -40,6 +48,11 @@ export function AssetPage({
   const tNews = useTranslations('news');
   const tLearn = useTranslations('learn');
   const tCal = useTranslations('calendar');
+  // The API sends stable keys for these fields (audit Step 5); the web
+  // translates on render so a locale swap does not require a redeploy
+  // of the API.
+  const tCategories = useTranslations('markets.categories');
+  const tStats = useTranslations('markets.stats');
 
   const heaviest = Math.max(...(asset.holdings?.map((h) => h.weight) ?? [1]));
 
@@ -63,7 +76,7 @@ export function AssetPage({
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li>{asset.category}</li>
+            <li>{tCategories(asset.category)}</li>
             <li aria-hidden>/</li>
             <li className="text-accent">{asset.name}</li>
           </ol>
@@ -87,58 +100,28 @@ export function AssetPage({
                 {asset.name}
               </h1>
 
-              <p className="flex flex-wrap items-baseline gap-4">
-                <span className="text-ink font-mono text-[38px]">
-                  {asset.price}
-                </span>
-                <span
-                  className={cn(
-                    'font-mono text-[17px]',
-                    asset.changePercent < 0 ? 'text-negative' : 'text-positive',
-                  )}
-                >
-                  {asset.changeAbsolute
-                    ? `${asset.changeAbsolute} (${asset.changePercent < 0 ? '−' : '+'}${Math.abs(asset.changePercent).toFixed(2)}%)`
-                    : `${asset.changePercent < 0 ? '−' : '+'}${Math.abs(asset.changePercent).toFixed(2)}%`}
-                </span>
-              </p>
-              <p className="text-ink-faint mt-2 text-[13px]">
-                {asset.statusLine}
-              </p>
+              <AssetPriceLive
+                symbol={asset.symbol}
+                initialPrice={asset.price}
+                initialChangePercent={asset.changePercent}
+                initialChangeAbsolute={asset.changeAbsolute}
+              />
             </div>
 
-            {/* Only the day series exists; the other ranges are shown as the
-                design has them, inactive, rather than as dead controls. */}
-            <ul className="flex flex-wrap gap-1.5 pb-1.5 text-[13px]">
-              {RANGES.map((range, index) => (
-                <li
-                  key={range}
-                  className={cn(
-                    'rounded-[3px] px-3.5 py-2',
-                    index === 0
-                      ? 'bg-ink text-paper'
-                      : 'border-line-strong text-ink-muted border',
-                  )}
-                >
-                  {range}
-                </li>
-              ))}
-            </ul>
+            {/* Range buttons moved into `AssetChartLive` — they now
+                drive the chart's series, so ownership lives next to the
+                consumer instead of being a decorative sibling. */}
           </div>
         </header>
 
         <div className="page-container flex flex-col gap-12 pt-8 lg:flex-row">
           <div className="min-w-0 flex-1">
-            {asset.series.length > 0 ? (
-              <section className="border-line bg-surface mb-8 rounded-sm border p-6.5 sm:px-7">
-                <Sparkline values={asset.series} className="h-75" />
-                <div className="text-ink-ghost mt-3 flex justify-between font-mono text-[11px]">
-                  {asset.sessionTimes.map((time) => (
-                    <span key={time}>{time}</span>
-                  ))}
-                </div>
-              </section>
-            ) : null}
+            <AssetChartLive
+              symbol={asset.symbol}
+              initialSeries={asset.series}
+              sessionTimes={asset.sessionTimes}
+              digits={decimalsIn(asset.price)}
+            />
 
             {asset.statistics.length > 0 ? (
               <section className="border-line bg-surface mb-9 rounded-sm border">
@@ -150,7 +133,7 @@ export function AssetPage({
                       className="border-line-soft border-b px-6 py-5 last:border-b-0 lg:not-[:nth-child(3n)]:border-r sm:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:nth-last-child(-n+3)]:border-b-0"
                     >
                       <dt className="text-ink-faint mb-1.5 text-xs tracking-[0.06em] uppercase">
-                        {stat.label}
+                        {tStats(stat.label)}
                       </dt>
                       <dd
                         className={cn(

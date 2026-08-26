@@ -45,13 +45,20 @@ export default async function Page({ params, searchParams }: PageProps) {
   setRequestLocale(locale);
 
   const query = await searchParams;
-  const week = getCalendarWeek(locale);
-
   const requestedDate = Array.isArray(query.date) ? query.date[0] : query.date;
+
+  // Pass the requested date through — the API returns the week containing
+  // it, so `selectedDate` in the response is already the right day. Falls
+  // back to today (the API's default) when the query string omits it.
+  const week = await getCalendarWeek(
+    locale,
+    requestedDate ? { date: requestedDate } : {},
+  );
+
   const selectedDate =
     requestedDate && week.days.some((day) => day.date === requestedDate)
       ? requestedDate
-      : TODAY;
+      : week.todayDate || TODAY;
 
   return (
     <CalendarPage

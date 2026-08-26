@@ -101,6 +101,8 @@
       "inLine": "në linjë",
       "atAGlance": "Me një shikim",
       "reactingAssets": "Aktivet që reagojnë",
+      "whyItMatters": "Pse ka rëndësi",
+      "howToRead": "Si të lexohet",
       "alsoThisWeek": "Gjithashtu këtë javë",
       "learnBackground": "Mëso sfondin",
       "relatedNews": "Lajme të lidhura",
@@ -131,6 +133,38 @@
       "gainers": "Rritjet më të mëdha",
       "losers": "Rëniet më të mëdha",
       "mostWatched": "Më të ndjekurat"
+    },
+    "status": {
+      "connecting": "Po lidhet…",
+      "reconnecting": "Po rilidhet…",
+      "offline": "Jashtë linje",
+      "delayed": "Me vonesë"
+    },
+    "chart": {
+      "loading": "Po ngarkohet…",
+      "empty": "S’ka të dhëna për këtë interval."
+    },
+    "categories": {
+      "indices": "Indekse",
+      "crypto": "Kripto",
+      "commodities": "Mallra",
+      "currencies": "Monedha",
+      "stock": "Aksione"
+    },
+    "stats": {
+      "previousClose": "Mbyllja e mëparshme",
+      "dayRange": "Diapazoni i ditës",
+      "fiftyTwoWeekRange": "Diapazoni 52-javor",
+      "marketCap": "Kapitalizimi i tregut",
+      "peRatio": "Raporti P/E",
+      "level": "Niveli"
+    },
+    "session": {
+      "open": "Hapur",
+      "closed": "Mbyllur",
+      "unknown": "I panjohur",
+      "live": "drejtpërdrejt",
+      "delayed": "me vonesë 15 min"
     },
     "comingUp": {
       "heading": "Në vijim",
@@ -174,6 +208,10 @@
     "readingTime": "{minutes} min lexim",
     "minutesAgo": "{minutes} min më parë",
     "hoursAgo": "{hours} orë më parë",
+    "daysAgo": "{days} ditë më parë",
+    "weeksAgo": "{weeks} javë më parë",
+    "monthsAgo": "{months} muaj më parë",
+    "yearsAgo": "{years, plural, one {# vit} other {# vjet}} më parë",
     "relatedHeading": "Lexo më tej",
     "backToNews": "← Kthehu te lajmet",
     "categories": {
@@ -216,7 +254,7 @@
     "source": {
       "credit": "Ky lajm u publikua nga {source}.",
       "fallbackName": "publikuesi origjinal",
-      "readOriginal": "Lexo lajmin e plotë te burimi →",
+      "readOriginal": "Lexo lajmin",
       "machineTranslated": "Ky tekst është përkthyer automatikisht. Origjinali është në anglisht."
     },
     "loadingMore": "Duke ngarkuar…"

@@ -21,8 +21,28 @@ export function SiteFooter() {
     <footer className="bg-surface-inverse">
       <div className="page-container pt-8.5 pb-10">
         <div className="border-line-inverse flex flex-col gap-5 border-b pb-6 sm:flex-row sm:items-baseline sm:justify-between">
-          <span className="text-ink-inverse font-serif text-[21px]">
-            {t('brand')}
+          <span
+            aria-label={t('brand')}
+            className="text-ink-inverse flex items-end font-sans text-[21px] leading-none font-semibold tracking-[-0.035em]"
+          >
+            <span>aks</span>
+            <svg
+              width="0.275em"
+              height="1em"
+              viewBox="0 0 27.5 100"
+              aria-hidden
+              className="mx-[0.02em] mb-[0.13em]"
+            >
+              <path d="M13.75 25 23.75 43 3.75 43Z" fill="#3FA97A" />
+              <rect
+                x="8.75"
+                y="46.5"
+                width="10"
+                height="53.5"
+                fill="currentColor"
+              />
+            </svg>
+            <span>oneri</span>
           </span>
 
           <nav aria-label={tFooter('label')}>

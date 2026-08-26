@@ -1,79 +1,24 @@
 import type { Locale } from '@/i18n/config';
 
-/**
- * How much a release typically moves markets. Rendered as one, two or three
- * filled bars — the design uses it as a scanning filter rather than a precise
- * measure.
- */
-export type EventImpact = 'low' | 'medium' | 'high';
-
-/** ISO 3166-1 alpha-2, or `EU` for the euro area as a bloc. */
-export type EventRegion = 'US' | 'EU' | 'DE' | 'UK' | 'JP';
-
-/**
- * Whether a released figure landed under or over the consensus forecast.
- *
- * Deliberately *not* "good" and "bad": the same surprise is welcome for an
- * inflation print and unwelcome for a jobs print. The colour states the
- * direction, and the reader supplies the meaning.
- */
-export type SurpriseDirection = 'below' | 'above' | 'inline';
-
-export interface CalendarEvent {
-  id: string;
-  slug: string;
-  /** Local time of the release, `HH:mm` in the reader's market timezone. */
-  time: string;
-  region: EventRegion;
-  title: string;
-  impact: EventImpact;
-  /**
-   * The released figure, already formatted for display, or `null` when the
-   * event has not happened yet. Formatting varies per indicator (`3.1%`,
-   * `221k`, `−14.2`), so the source formats it rather than the component.
-   */
-  actual: string | null;
-  /** Consensus forecast, or `null` for events with no numeric expectation. */
-  expected: string | null;
-  /** The prior reading, for context on the direction of travel. */
-  previous: string | null;
-  surprise: SurpriseDirection;
-  /** Marks the row the "next up" card refers to. At most one per week. */
-  isNextUp?: boolean;
-}
-
-export interface CalendarDay {
-  /** `YYYY-MM-DD`, used as the key and for building the tab label. */
-  date: string;
-  events: CalendarEvent[];
-}
-
-/** The expanded explainer for the release the reader will meet next. */
-export interface NextUpEvent {
-  slug: string;
-  title: string;
-  summary: string;
-  time: string;
-  expected: string;
-  previous: string;
-  impact: EventImpact;
-  /** Minutes until release, formatted into "in 2 h 12 min" at render time. */
-  minutesAway: number;
-  /** Two short paragraphs explaining why the release matters. */
-  whyItMatters: string[];
-}
-
-export interface CalendarWeek {
-  days: CalendarDay[];
-  /** The date whose events are currently listed — driven by `?date=`. */
-  selectedDate: string;
-  /**
-   * The actual current date. Distinct from `selectedDate`: browsing to next
-   * Monday selects that tab, but "Today" still belongs to today's.
-   */
-  todayDate: string;
-  nextUp: NextUpEvent | null;
-}
+// The core calendar shapes now live in the API-layer (a boundaries-rule
+// requirement: `lib/api` cannot depend on `features`). Re-exported here so
+// the many consumers who import from `@/features/calendar` do not have to
+// move — nothing but the source-of-truth location has moved.
+export type {
+  CalendarDay,
+  CalendarEvent,
+  CalendarExplanation,
+  CalendarWeek,
+  EventImpact,
+  EventRegion,
+  NextUpEvent,
+  SurpriseDirection,
+} from '@/lib/api/calendar';
+import type {
+  EventRegion,
+  EventImpact,
+  SurpriseDirection,
+} from '@/lib/api/calendar';
 
 /**
  * Content that differs per locale. The API will return values already resolved

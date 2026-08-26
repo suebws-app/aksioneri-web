@@ -1,12 +1,10 @@
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Link } from '@/i18n/navigation';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
 import type { CalendarEvent } from '@/features/calendar';
-import { formatTimestamp } from '@/features/calendar/formatDate';
-import type { Locale } from '@/i18n/config';
 import { LessonCard } from '@/features/learn/components/LessonCard';
 import type { Lesson } from '@/features/learn/learnTypes';
 import { ArticleCard } from '@/features/news/components/ArticleCard';
@@ -27,8 +25,6 @@ export interface MarketsPageProps {
   latestNews: NewsArticle[];
   upcomingEvents: CalendarEvent[];
   lessons: Lesson[];
-  /** ISO instant shown beside "What matters today". */
-  updatedAt: string;
   /** Mirrors the design's three sc-if props. */
   showWhyItMatters?: boolean;
   showMovers?: boolean;
@@ -42,13 +38,11 @@ export function MarketsPage({
   latestNews,
   upcomingEvents,
   lessons,
-  updatedAt,
   showWhyItMatters = true,
   showMovers = true,
   showComingUp = true,
 }: MarketsPageProps) {
   const t = useTranslations('markets');
-  const locale = useLocale() as Locale;
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -61,11 +55,7 @@ export function MarketsPage({
 
       <main className="flex-1">
         <div className="page-container pt-11 pb-10">
-          <SectionHeading title={t('todayHeading')} size="lg" rule="strong">
-            <time dateTime={updatedAt} className="text-ink-faint text-[13px]">
-              {formatTimestamp(locale, updatedAt)}
-            </time>
-          </SectionHeading>
+          <SectionHeading title={t('todayHeading')} size="lg" rule="strong" />
 
           <div className="mt-7.5 flex flex-col gap-11 lg:flex-row">
             <div className="min-w-0 flex-1">

@@ -63,8 +63,8 @@ async function detailPaths(): Promise<SitemapPath[]> {
       path: `/learn/${slug}`,
       priority: 0.6,
     })),
-    ...getCalendarWeek(defaultLocale)
-      .days.flatMap((day) => day.events)
+    ...(await getCalendarWeek(defaultLocale)).days
+      .flatMap((day) => day.events)
       .map((event) => ({ path: `/calendar/${event.slug}`, priority: 0.6 })),
     ...SUPPORTED_SYMBOLS.map((symbol) => ({
       path: `/markets/${symbol}`,

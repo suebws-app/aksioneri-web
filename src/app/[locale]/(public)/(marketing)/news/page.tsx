@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
-import { MARKET_TIMESTAMP } from '@/features/markets';
 import {
   getArticlePage,
   getFeaturedArticle,
@@ -66,10 +65,12 @@ export default async function Page({
   // has fifty. Paging is client-side from here — see `ArticleFeed`.
   const [feed, lead, mostRead] = await Promise.all([
     getArticlePage(locale, category === 'all' ? {} : { category }),
-    getFeaturedArticle(locale),
+    // `lead` tracks the filter — clicking a desk pill swaps both the
+    // feed below and the featured card above.
+    getFeaturedArticle(locale, category === 'all' ? undefined : category),
     getMostRead(locale),
   ]);
-  const week = getCalendarWeek(locale);
+  const week = await getCalendarWeek(locale);
 
   return (
     <NewsPage
@@ -83,7 +84,6 @@ export default async function Page({
           .slice(0, 2) ?? []
       }
       category={category}
-      updatedAt={MARKET_TIMESTAMP}
     />
   );
 }

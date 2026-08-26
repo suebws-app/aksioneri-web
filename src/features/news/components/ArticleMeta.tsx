@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { formatMinutesAgo } from '@/lib/format/relativeTime';
 import { cn } from '@/lib/utils/cn';
 import type { NewsArticle } from '../newsTypes';
 
@@ -27,11 +28,7 @@ export function ArticleMeta({
 }: ArticleMetaProps) {
   const t = useTranslations('news');
 
-  const hours = Math.floor(article.minutesAgo / 60);
-  const age =
-    hours >= 1
-      ? t('hoursAgo', { hours })
-      : t('minutesAgo', { minutes: article.minutesAgo });
+  const age = formatMinutesAgo(article.minutesAgo, t);
 
   return (
     <div

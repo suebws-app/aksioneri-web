@@ -1,9 +1,11 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import type { Quote, SupportedSymbol } from '@/lib/api/markets';
 import { quotesQuery } from '@/lib/query/marketsQueries';
+import { useLiveQuotes } from '@/lib/websockets/useLiveQuotes';
 
 /**
  * The instruments the strip shows, left to right.
@@ -22,7 +24,7 @@ const STRIP_ORDER: SupportedSymbol[] = [
 ];
 
 /**
- * Live-polling quote strip.
+ * Live-updating quote strip.
  *
  * Each cell keeps the design's editorial stack — small tracked label above,
  * price + change in Plex Mono below — and the whole rail scrolls on an 80 s
@@ -34,11 +36,17 @@ const STRIP_ORDER: SupportedSymbol[] = [
  * to `/markets/[symbol]`. The TradingView iframe this replaced owned its
  * own markup and dropped every intra-site link.
  *
- * The numbers themselves refresh every 15 s through `quotesQuery` — separate
- * from the scroll, which is purely visual.
+ * **Updates arrive via the `/markets` WebSocket**, not a REST poll.
+ * `useLiveQuotes` subscribes to the six strip symbols and patches this
+ * cache on every tick; the SSR-hydrated `initial` fills the first paint.
+ * `quotesQuery` is configured with `refetchInterval: false` and
+ * `staleTime: Infinity` — a socket outage now shows a frozen strip
+ * rather than a silent 15 s fallback pretending live. The refcounted
+ * client dedups subscriptions across every mounted consumer.
  */
 export function MarketTickerLive({ initial }: { initial: Quote[] }) {
   const { data } = useQuery(quotesQuery(initial));
+  useLiveQuotes(STRIP_ORDER);
   const quotes = data ?? initial;
 
   const bySymbol = new Map(quotes.map((q) => [q.symbol, q]));
@@ -88,6 +96,7 @@ function TickerRail({
 function TickerCell({ quote }: { quote: Quote }) {
   const isNegative = quote.changePercent < 0;
   const sign = isNegative ? '−' : '+';
+  const flash = usePriceFlash(quote.price);
 
   return (
     <Link
@@ -98,7 +107,18 @@ function TickerCell({ quote }: { quote: Quote }) {
         {quote.name}
       </div>
       <div className="flex items-baseline gap-2.5 whitespace-nowrap">
-        <span className="text-ink font-mono text-base">{quote.price}</span>
+        <span
+          className={[
+            'font-mono text-base transition-colors duration-500',
+            flash === 'up'
+              ? 'text-positive'
+              : flash === 'down'
+                ? 'text-negative'
+                : 'text-ink',
+          ].join(' ')}
+        >
+          {quote.price}
+        </span>
         <span
           className={
             'font-mono text-[13px] ' +
@@ -111,4 +131,36 @@ function TickerCell({ quote }: { quote: Quote }) {
       </div>
     </Link>
   );
+}
+
+/**
+ * TradingView-style price flash: green when the last render's price was
+ * lower than this one, red when it was higher, nothing when unchanged.
+ * Fades back to neutral 600 ms after the tick — long enough for the eye
+ * to register, short enough that a busy symbol does not strobe.
+ *
+ * Compares the *formatted* price string but parses numerically so a
+ * "6,421.20" → "6,421.20" no-op is silent even under React 18's strict-
+ * mode double-render.
+ */
+function usePriceFlash(price: string): 'up' | 'down' | null {
+  const prevRef = useRef<string>(price);
+  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
+
+  useEffect(() => {
+    const prev = prevRef.current;
+    prevRef.current = price;
+    if (prev === price) return;
+
+    const prevNum = Number(prev.replace(/,/g, ''));
+    const currNum = Number(price.replace(/,/g, ''));
+    if (!Number.isFinite(prevNum) || !Number.isFinite(currNum)) return;
+    if (prevNum === currNum) return;
+
+    setFlash(currNum > prevNum ? 'up' : 'down');
+    const timer = setTimeout(() => setFlash(null), 600);
+    return () => clearTimeout(timer);
+  }, [price]);
+
+  return flash;
 }

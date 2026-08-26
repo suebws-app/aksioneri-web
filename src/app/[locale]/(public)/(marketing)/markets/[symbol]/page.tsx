@@ -11,7 +11,6 @@ import {
   getAssetDetail,
   getQuotes,
   SUPPORTED_SYMBOLS,
-  type SupportedSymbol,
 } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
@@ -19,9 +18,18 @@ interface PageProps {
   params: Promise<{ locale: Locale; symbol: string }>;
 }
 
-const isSupportedSymbol = (value: string): value is SupportedSymbol =>
-  (SUPPORTED_SYMBOLS as readonly string[]).includes(value);
-
+/**
+ * `symbol` is no longer restricted to the seven curated slugs — it is
+ * anything that URL-decodes to a plausible ticker (`NVDA`, `BRK-B`), so a
+ * click in the "Lëvizësit e tregut" panel opens the constituent's page.
+ * The API is the source of truth: it accepts both slugs and raw tickers
+ * and answers 404 for anything Yahoo cannot resolve. This page treats
+ * that 404 as `notFound()`.
+ *
+ * `generateStaticParams` still pre-renders the curated seven so the
+ * common pages are static; unknown tickers render on-demand because
+ * Next.js keeps `dynamicParams` true by default.
+ */
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
     SUPPORTED_SYMBOLS.map((symbol) => ({ locale, symbol })),
@@ -33,16 +41,6 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { locale, symbol } = await params;
   const t = await getTranslations({ locale, namespace: 'markets' });
-
-  if (!isSupportedSymbol(symbol)) {
-    return buildMetadata({
-      title: t('assetNotFoundTitle'),
-      description: t('metaDescription'),
-      path: `/markets/${symbol}`,
-      locale,
-      noIndex: true,
-    });
-  }
 
   const asset = await getAssetDetail(symbol);
 
@@ -68,15 +66,15 @@ export default async function Page({ params }: PageProps) {
   const { locale, symbol } = await params;
   setRequestLocale(locale);
 
-  if (!isSupportedSymbol(symbol)) notFound();
-
   const [asset, quotes] = await Promise.all([
     getAssetDetail(symbol),
     getQuotes(),
   ]);
   if (!asset) notFound();
 
-  const everyEvent = getCalendarWeek(locale).days.flatMap((day) => day.events);
+  const everyEvent = (await getCalendarWeek(locale)).days.flatMap(
+    (day) => day.events,
+  );
   const everyLesson = getTopics(locale).flatMap((topic) => topic.lessons);
 
   const relatedArticles = findArticlesMentioning(

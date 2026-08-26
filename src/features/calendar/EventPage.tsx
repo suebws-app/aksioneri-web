@@ -8,6 +8,7 @@ import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
+import { formatMinutesAgo } from '@/lib/format/relativeTime';
 import { cn } from '@/lib/utils/cn';
 import { ImpactBars } from './components/ImpactBars';
 import type {
@@ -498,29 +499,22 @@ export function EventPage({
                   {t('event.relatedNews')}
                 </h2>
                 <ul>
-                  {articles.map((entry) => {
-                    const hours = Math.floor(entry.minutesAgo / 60);
-                    return (
-                      <li
-                        key={entry.id}
-                        className="border-line-soft border-b py-3.5 first:pt-0 last:border-b-0 last:pb-0"
+                  {articles.map((entry) => (
+                    <li
+                      key={entry.id}
+                      className="border-line-soft border-b py-3.5 first:pt-0 last:border-b-0 last:pb-0"
+                    >
+                      <Link
+                        href={`/news/${entry.slug}`}
+                        className="text-ink hover:text-accent mb-1.5 block font-serif text-[17px] leading-tight"
                       >
-                        <Link
-                          href={`/news/${entry.slug}`}
-                          className="text-ink hover:text-accent mb-1.5 block font-serif text-[17px] leading-tight"
-                        >
-                          {entry.title}
-                        </Link>
-                        <p className="text-ink-faint text-xs">
-                          {hours >= 1
-                            ? tNews('hoursAgo', { hours })
-                            : tNews('minutesAgo', {
-                                minutes: entry.minutesAgo,
-                              })}
-                        </p>
-                      </li>
-                    );
-                  })}
+                        {entry.title}
+                      </Link>
+                      <p className="text-ink-faint text-xs">
+                        {formatMinutesAgo(entry.minutesAgo, tNews)}
+                      </p>
+                    </li>
+                  ))}
                 </ul>
               </section>
             ) : null}

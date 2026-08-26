@@ -50,9 +50,29 @@ export function SiteHeader({
       <div className="page-container flex items-center justify-between gap-6 py-5">
         <Link
           href="/"
-          className="text-ink font-serif text-[25px] font-semibold tracking-[-0.015em]"
+          aria-label={t('brand')}
+          className="text-ink flex items-end font-sans text-[25px] leading-none font-semibold tracking-[-0.035em]"
         >
-          {t('brand')}
+          <span>aks</span>
+          {/* The dot on the "i" becomes the same up-tick marker the site prints
+              beside every rising number — the entire brand mark in one glyph. */}
+          <svg
+            width="0.275em"
+            height="1em"
+            viewBox="0 0 27.5 100"
+            aria-hidden
+            className="mx-[0.02em] mb-[0.13em]"
+          >
+            <path d="M13.75 25 23.75 43 3.75 43Z" fill="var(--positive)" />
+            <rect
+              x="8.75"
+              y="46.5"
+              width="10"
+              height="53.5"
+              fill="currentColor"
+            />
+          </svg>
+          <span>oneri</span>
         </Link>
 
         {/* Four links plus a search box need room the phone does not have;

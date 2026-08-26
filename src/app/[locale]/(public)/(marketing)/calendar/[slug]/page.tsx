@@ -4,14 +4,16 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   detailFromEvent,
   EventPage,
+  getCalendarSlugs,
   getCalendarWeek,
   getEventDetail,
+  getSeedEventDetail,
 } from '@/features/calendar';
 import { getLessonBySlug, getTopics } from '@/features/learn';
 import { getQuote } from '@/features/markets';
 import { findArticlesMentioning } from '@/features/learn/matchNews';
 import { getArticles } from '@/features/news';
-import { locales, type Locale, defaultLocale } from '@/i18n/config';
+import { locales, type Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 interface PageProps {
@@ -27,11 +29,15 @@ const REGION_KEY = {
   JP: 'japan',
 } as const;
 
-export function generateStaticParams() {
-  const slugs = getCalendarWeek(defaultLocale)
-    .days.flatMap((day) => day.events)
-    .map((event) => event.slug);
-
+/**
+ * Since the calendar list is now dynamic (BiQuote sync fills the table),
+ * `generateStaticParams` pre-renders slugs known at build time from a
+ * single API call. Unknown slugs render on-demand — Next.js keeps
+ * `dynamicParams: true` by default.
+ */
+export async function generateStaticParams() {
+  const entries = await getCalendarSlugs();
+  const slugs = entries.map((e) => e.slug);
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
@@ -41,12 +47,12 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'calendar' });
 
-  const detail = getEventDetail(locale, slug);
-  const row = getCalendarWeek(locale)
-    .days.flatMap((day) => day.events)
-    .find((event) => event.slug === slug);
+  // Editorial `EventDetail` (hand-authored copy for known slugs) takes
+  // precedence; the live wire fills the gap for anything new.
+  const seedDetail = getSeedEventDetail(locale, slug);
+  const row = seedDetail ? null : await getEventDetail(locale, slug);
 
-  if (!detail && !row) {
+  if (!seedDetail && !row) {
     return buildMetadata({
       title: t('event.notFoundTitle'),
       description: t('metaDescription'),
@@ -56,13 +62,15 @@ export async function generateMetadata({
     });
   }
 
-  const title = detail?.title ?? row?.title ?? '';
+  const title = seedDetail?.title ?? row?.title ?? '';
 
   return buildMetadata({
     title,
-    // A row without an explainer has no summary of its own; the page describes
-    // what the reader will find instead of shipping an empty description.
-    description: detail?.summary || t('event.fallbackDescription', { title }),
+    // A row without an editorial explainer has no summary of its own; the
+    // page describes what the reader will find instead of shipping an
+    // empty description.
+    description:
+      seedDetail?.summary || t('event.fallbackDescription', { title }),
     path: `/calendar/${slug}`,
     locale,
   });
@@ -73,18 +81,32 @@ export default async function Page({ params }: PageProps) {
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: 'calendar' });
-  const week = getCalendarWeek(locale);
+  const week = await getCalendarWeek(locale);
   const everyEvent = week.days.flatMap((day) => day.events);
-  const row = everyEvent.find((event) => event.slug === slug);
+
+  // Always fetch the by-slug row — that endpoint is the only one that
+  // carries the Kosovar-Albanian `explanation` payload (the week endpoint
+  // omits it to keep list sizes down). React `cache()` dedupes with the
+  // metadata pass so this is one round trip per render, not two.
+  const row =
+    (await getEventDetail(locale, slug)) ??
+    everyEvent.find((event) => event.slug === slug);
 
   const detail =
-    getEventDetail(locale, slug) ??
+    getSeedEventDetail(locale, slug) ??
     (row
       ? detailFromEvent(
           row,
           t(`regionNames.${REGION_KEY[row.region]}`),
           t(`impact.${row.impact}`),
-          `${week.todayDate}T${row.time}:00Z`,
+          // Row time is `HH:mm` in the reader's timezone; the seed used
+          // `${todayDate}T${time}:00Z`. Kept identical so the countdown
+          // and dateline render exactly as before.
+          `${week.todayDate || new Date().toISOString().slice(0, 10)}T${row.time}:00Z`,
+          {
+            whyItMatters: t('event.whyItMatters'),
+            howToRead: t('event.howToRead'),
+          },
         )
       : null);
 

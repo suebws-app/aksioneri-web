@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getFeaturedLessons } from '@/features/learn/learnData';
-import { MARKET_TIMESTAMP, MarketsPage } from '@/features/markets';
+import { MarketsPage } from '@/features/markets';
 import { getArticles, getFeaturedArticle } from '@/features/news';
 import type { Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
@@ -40,7 +40,7 @@ export default async function HomePage({
     getFeaturedArticle(locale),
     getQuotes(),
   ]);
-  const week = getCalendarWeek(locale);
+  const week = await getCalendarWeek(locale);
 
   // The lead story appears once, at the top; the sidebar and the news list take
   // the rest so no headline is printed twice on the page.
@@ -59,7 +59,6 @@ export default async function HomePage({
           .slice(0, 2) ?? []
       }
       lessons={getFeaturedLessons(locale)}
-      updatedAt={MARKET_TIMESTAMP}
     />
   );
 }

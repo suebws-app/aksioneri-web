@@ -1,12 +1,10 @@
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
 import type { CalendarEvent } from '@/features/calendar';
-import { formatTimestamp } from '@/features/calendar/formatDate';
 import { ComingUp } from '@/features/markets/components/ComingUp';
 import { MarketTicker } from '@/features/markets/components/MarketTicker';
-import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
 import { ArticleCard } from './components/ArticleCard';
 import { ArticleFeed } from './components/ArticleFeed';
@@ -27,7 +25,6 @@ export interface NewsPageProps {
   mostRead: MostReadEntry[];
   upcomingEvents: CalendarEvent[];
   category: CategoryFilter;
-  updatedAt: string;
   /** Mirrors the design's sc-if props. */
   showWhyItMatters?: boolean;
   showComingUp?: boolean;
@@ -39,12 +36,10 @@ export function NewsPage({
   mostRead,
   upcomingEvents,
   category,
-  updatedAt,
   showWhyItMatters = true,
   showComingUp = true,
 }: NewsPageProps) {
   const t = useTranslations('news');
-  const locale = useLocale() as Locale;
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -64,9 +59,6 @@ export function NewsPage({
               </h1>
               <p className="text-ink-muted text-base">{t('subheading')}</p>
             </div>
-            <time dateTime={updatedAt} className="text-ink-faint text-[13px]">
-              {formatTimestamp(locale, updatedAt)}
-            </time>
           </div>
 
           <CategoryTabs selected={category} />

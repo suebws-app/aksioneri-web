@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 442 100" role="img" aria-label="Aksioneri">
+  <g fill="#15181C" font-family="'IBM Plex Sans','Inter','Segoe UI',system-ui,-apple-system,sans-serif" font-weight="600" font-size="100" letter-spacing="-3.5">
+    <text x="0" y="82" textLength="132" lengthAdjust="spacingAndGlyphs">aks</text>
+    <text x="169" y="82" textLength="273" lengthAdjust="spacingAndGlyphs">oneri</text>
+  </g>
+  <g transform="translate(139 0)">
+    <path d="M13.75 25 23.75 43 3.75 43Z" fill="#157F4A"/>
+    <rect x="8.75" y="46.5" width="10" height="53.5" fill="#15181C"/>
+  </g>
+</svg>

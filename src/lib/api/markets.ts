@@ -29,14 +29,34 @@ export type SupportedSymbol = (typeof SUPPORTED_SYMBOLS)[number];
 /** Kept in sync with `INDEX_SYMBOLS` in the API. */
 export type IndexSymbol = 'sp-500' | 'nasdaq-100' | 'dow-jones' | 'stoxx-600';
 
+export type AssetType = 'index' | 'crypto' | 'commodity' | 'currency' | 'stock';
+
+export type DataSource = 'biquote' | 'yahoo';
+
+export type MarketStatus = 'open' | 'closed' | 'unknown';
+
 export interface Quote {
   symbol: SupportedSymbol;
   name: string;
   price: string;
   changePercent: number;
+
+  // Optional Step-5 metadata added by the provider-abstraction phase. The
+  // strip renders without them if absent, so old server responses keep
+  // working while a new deploy rolls out.
+  providerSymbol?: string;
+  assetType?: AssetType;
+  dataSource?: DataSource;
+  marketStatus?: MarketStatus;
+  quotedAt?: string | null;
 }
 
 export interface Mover {
+  /**
+   * Raw Yahoo ticker (`NVDA`, `BRK-B`). Used as the URL segment when the
+   * movers panel links each row to its own asset page.
+   */
+  symbol: string;
   name: string;
   changePercent: number;
 }
@@ -44,7 +64,11 @@ export interface Mover {
 export interface Movers {
   gainers: Mover[];
   losers: Mover[];
-  mostWatched: string[];
+  /**
+   * Was `string[]` — the only column in the movers panel that could not be
+   * clicked. Now carries the full `Mover` shape so every row links out.
+   */
+  mostWatched: Mover[];
 }
 
 export interface Holding {
@@ -78,6 +102,18 @@ export interface AssetDetail {
   sessionTimes: string[];
   statistics: Statistic[];
   holdings?: Holding[] | null;
+
+  /**
+   * Provider-abstraction metadata. Optional so older responses render fine
+   * while a new deploy is going out. `dataSource` tells the UI which
+   * upstream actually served this tick — used by the eventual "Powered by
+   * …" attribution and the stale-data indicator.
+   */
+  providerSymbol?: string;
+  assetType?: AssetType;
+  dataSource?: DataSource;
+  marketStatus?: MarketStatus;
+  quotedAt?: string | null;
 
   /**
    * Editorial extras. The API does not populate these — they were rendered
@@ -126,8 +162,15 @@ export const getQuotes = cache(async (): Promise<Quote[]> =>
   safely(() => apiFetch<Quote[]>('markets/quotes', cacheOptions), []),
 );
 
+/**
+ * Fetches one asset. `symbol` is either a known slug (`sp-500`) or a raw
+ * ticker (`NVDA`, `BRK-B`) — the API accepts both and 404s on tickers it
+ * cannot resolve. Kept as `string` rather than `SupportedSymbol` because
+ * the movers panel builds these URLs from Yahoo tickers it does not know
+ * ahead of time.
+ */
 export const getAssetDetail = cache(
-  async (symbol: SupportedSymbol): Promise<AssetDetail | null> =>
+  async (symbol: string): Promise<AssetDetail | null> =>
     safely(
       () =>
         apiFetch<AssetDetail>(
@@ -154,10 +197,78 @@ export const getMovers = cache(async (index: IndexSymbol): Promise<Movers> =>
 export const fetchQuotes = (): Promise<Quote[]> =>
   apiFetch<Quote[]>('markets/quotes');
 
-export const fetchAssetDetail = (
-  symbol: SupportedSymbol,
-): Promise<AssetDetail> =>
+export const fetchAssetDetail = (symbol: string): Promise<AssetDetail> =>
   apiFetch<AssetDetail>(`markets/asset/${encodeURIComponent(symbol)}`);
 
 export const fetchMovers = (index: IndexSymbol): Promise<Movers> =>
   apiFetch<Movers>(`markets/movers/${encodeURIComponent(index)}`);
+
+// ── Candles ────────────────────────────────────────────────────────────
+
+export type CandleInterval = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d';
+
+export interface OhlcBar {
+  /** Unix milliseconds when the bar opened. */
+  openTime: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number | null;
+}
+
+export interface Candles {
+  symbol: string;
+  providerSymbol: string;
+  interval: CandleInterval;
+  bars: OhlcBar[];
+  dataSource: DataSource;
+}
+
+/**
+ * OHLCV bars for the interactive chart. Server-rendered initial data
+ * hydrates the chart on first paint; the client then patches new bars
+ * from the live WebSocket instead of re-polling this endpoint.
+ */
+export const getCandles = cache(
+  async (
+    symbol: string,
+    interval: CandleInterval = '1h',
+    limit = 200,
+  ): Promise<Candles | null> =>
+    safely(
+      () =>
+        apiFetch<Candles>(
+          `markets/asset/${encodeURIComponent(symbol)}/candles`,
+          {
+            searchParams: { interval, limit },
+            ...cacheOptions,
+          },
+        ),
+      null,
+    ),
+);
+
+export const fetchCandles = (
+  symbol: string,
+  interval: CandleInterval = '1h',
+  limit = 200,
+): Promise<Candles> =>
+  apiFetch<Candles>(`markets/asset/${encodeURIComponent(symbol)}/candles`, {
+    searchParams: { interval, limit },
+  });
+
+// ── Health ─────────────────────────────────────────────────────────────
+
+export interface ProviderHealth {
+  name: DataSource;
+  healthy: boolean;
+}
+
+export interface MarketsHealth {
+  socket: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
+  providers: ProviderHealth[];
+}
+
+export const fetchMarketsHealth = (): Promise<MarketsHealth> =>
+  apiFetch<MarketsHealth>('markets/health');
