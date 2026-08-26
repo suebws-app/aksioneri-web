@@ -423,7 +423,8 @@
       },
       "embedKicker": "Kalkulo vetë",
       "embedCta": "Hap kalkulatorin",
-      "chartTotal": "Gjithsej"
+      "chartTotal": "Gjithsej",
+      "pickDate": "Zgjidh datën"
     },
     "errors": {
       "number": "Shkruaj një numër.",
@@ -563,11 +564,11 @@
         },
         "purchaseDate": {
           "label": "Data e blerjes",
-          "hint": "Kur e ke blerë."
+          "hint": "Kur e ke blerë. Datat nuk e ndryshojnë fitimin — vetëm kthimin vjetor."
         },
         "saleDate": {
           "label": "Data e shitjes",
-          "hint": "Kur e ke shitur, ose data e sotme."
+          "hint": "Kur e ke shitur, ose data e sotme. Përcakton sa vjet e ke mbajtur."
         },
         "dividends": {
           "label": "Dividendë të marrë",
@@ -1243,11 +1244,11 @@
         },
         "purchaseDate": {
           "label": "Data e blerjes",
-          "hint": "Kur e ke hapur pozicionin."
+          "hint": "Kur e ke hapur pozicionin. Datat prekin vetëm kthimin vjetor, jo fitimin."
         },
         "saleDate": {
           "label": "Data e shitjes",
-          "hint": "Kur e ke mbyllur, ose data e sotme."
+          "hint": "Kur e ke mbyllur, ose data e sotme. Përcakton sa vjet e ke mbajtur."
         },
         "dividendPerShare": {
           "label": "Dividendë për aksion",

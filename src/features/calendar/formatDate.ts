@@ -1,4 +1,9 @@
 import { formattingLocales, type Locale } from '@/i18n/config';
+import {
+  SQ_MONTH_LONG,
+  SQ_WEEKDAY_LONG,
+  SQ_WEEKDAY_SHORT,
+} from '@/lib/format/albanianDates';
 
 /**
  * Dates in the calendar are calendar days, not instants: "21 August" is the
@@ -18,30 +23,6 @@ const atUtcMidnight = (isoDate: string): Date =>
  * for the language-dependent parts and compose the strings ourselves.
  * Server and client agree byte-for-byte.
  */
-const SQ_WEEKDAY_SHORT = ['die', 'hën', 'mar', 'mër', 'enj', 'pre', 'sht'];
-const SQ_WEEKDAY_LONG = [
-  'e diel',
-  'e hënë',
-  'e martë',
-  'e mërkurë',
-  'e enjte',
-  'e premte',
-  'e shtunë',
-];
-const SQ_MONTH_LONG = [
-  'janar',
-  'shkurt',
-  'mars',
-  'prill',
-  'maj',
-  'qershor',
-  'korrik',
-  'gusht',
-  'shtator',
-  'tetor',
-  'nëntor',
-  'dhjetor',
-];
 
 /** "hën 21" — the day-tab label. */
 export const formatDayTab = (locale: Locale, isoDate: string): string => {

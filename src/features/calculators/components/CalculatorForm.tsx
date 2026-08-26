@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { DatePicker } from '@/components/DatePicker';
 import { Field } from '@/components/Field';
 import { NumericInput } from '@/components/NumericInput';
 import { Select } from '@/components/Select';
@@ -151,17 +152,15 @@ export function CalculatorForm({
 
                 case 'date':
                   return (
-                    <input
-                      type="date"
+                    <DatePicker
                       id={id}
-                      name={name}
                       value={value}
                       aria-describedby={describedBy}
-                      aria-invalid={invalid}
-                      onChange={(event) => {
-                        onChange(name, event.target.value);
+                      invalid={invalid}
+                      placeholder={shared('ui.pickDate')}
+                      onChange={(next) => {
+                        onChange(name, next);
                       }}
-                      className="border-line-strong bg-surface text-ink focus:border-accent min-h-11 w-full rounded-sm border px-3.5 py-2.5 font-mono text-[15px] outline-none"
                     />
                   );
               }
