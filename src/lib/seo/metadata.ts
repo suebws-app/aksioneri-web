@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
 import { openGraphLocales, type Locale } from '@/i18n/config';
+import { clientEnv } from '@/lib/utils/env.client';
 import { absoluteUrl, localizedAbsoluteUrl } from './urls';
 
-export const SITE_NAME = 'Aksioneri';
+/**
+ * Human-facing brand name — Open Graph `siteName`, JSON-LD publisher, OG
+ * image title. `NEXT_PUBLIC_SITE_NAME` lets staging append an environment
+ * marker ("Aksioneri (Staging)") without a code deploy.
+ */
+export const SITE_NAME = clientEnv.NEXT_PUBLIC_SITE_NAME;
 
 /** Recommended maximums before search engines truncate. Enforced by `pnpm seo:audit-meta`. */
 export const TITLE_MAX_LENGTH = 60;

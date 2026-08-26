@@ -59,7 +59,7 @@ export function AssetPage({
   return (
     <div className="bg-paper flex min-h-screen flex-col">
       <SiteHeader
-        active="markets"
+        active="home"
         searchSlot={<NavSearch />}
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />

@@ -88,40 +88,25 @@ export function ArticlePage({
             </p>
 
             {article.author ? (
-              <div className="border-line mb-7.5 flex flex-wrap items-center justify-between gap-5 border-y py-4.5">
-                <div className="flex items-center gap-3.5">
-                  <span
-                    aria-hidden
-                    className="text-ink-subtle flex size-9.5 items-center justify-center rounded-full bg-[#e9e5da] text-[13px] font-semibold"
-                  >
-                    {article.author.initials}
-                  </span>
-                  <div>
-                    <p className="text-ink text-[14.5px] font-medium">
-                      {article.author.name}
-                    </p>
-                    <p className="text-ink-faint text-[13px]">
-                      {article.author.desk ? `${article.author.desk} · ` : ''}
-                      {article.publishedAt
-                        ? `${formatTimestamp(locale, article.publishedAt)} · `
-                        : ''}
-                      {t('readingTime', { minutes: article.readingMinutes })}
-                    </p>
-                  </div>
+              <div className="border-line mb-7.5 flex items-center gap-3.5 border-y py-4.5">
+                <span
+                  aria-hidden
+                  className="text-ink-subtle flex size-9.5 items-center justify-center rounded-full bg-[#e9e5da] text-[13px] font-semibold"
+                >
+                  {article.author.initials}
+                </span>
+                <div>
+                  <p className="text-ink text-[14.5px] font-medium">
+                    {article.author.name}
+                  </p>
+                  <p className="text-ink-faint text-[13px]">
+                    {article.author.desk ? `${article.author.desk} · ` : ''}
+                    {article.publishedAt
+                      ? `${formatTimestamp(locale, article.publishedAt)} · `
+                      : ''}
+                    {t('readingTime', { minutes: article.readingMinutes })}
+                  </p>
                 </div>
-
-                {/* Save, Share and Listen have no implementation yet; shown as
-                    the design has them rather than as links to nowhere. */}
-                <ul className="text-ink-subtle flex items-center gap-2 text-[13px]">
-                  {(['save', 'share', 'listen'] as const).map((action) => (
-                    <li
-                      key={action}
-                      className="border-line-strong rounded-[3px] border px-3 py-1.5"
-                    >
-                      {t(`actions.${action}`)}
-                    </li>
-                  ))}
-                </ul>
               </div>
             ) : null}
 

@@ -8,11 +8,11 @@ import {
   getTopics,
   LessonPage,
 } from '@/features/learn';
-import { getQuote } from '@/features/markets';
 import { getGlossary } from '@/features/learn/learnData';
 import { findArticleForLesson } from '@/features/learn/matchNews';
 import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
+import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { learningResourceSchema } from '@/lib/seo/schemas';
 
@@ -72,11 +72,17 @@ export default async function Page({ params }: PageProps) {
   // Matched against the live wire rather than looked up by a stored slug.
   // Article slugs are generated per feed item and rotate hourly, so the nine
   // slugs the lessons used to carry never resolved even once.
+  const [articles, quotes] = await Promise.all([
+    getArticles(locale),
+    getQuotes(),
+  ]);
   const relatedArticle = findArticleForLesson(
     lesson,
-    await getArticles(locale),
+    articles,
     getGlossary(locale),
   );
+
+  const relatedSymbols = new Set(lesson.relatedSymbols ?? []);
 
   const schema = learningResourceSchema(locale, {
     title: lesson.title,
@@ -97,9 +103,9 @@ export default async function Page({ params }: PageProps) {
       <LessonPage
         lesson={lesson}
         upNext={upNext}
-        relatedQuotes={(lesson.relatedSymbols ?? [])
-          .map((symbol) => getQuote(locale, symbol))
-          .filter((quote) => quote !== null)}
+        relatedQuotes={quotes.filter((quote) =>
+          relatedSymbols.has(quote.symbol),
+        )}
         relatedArticle={relatedArticle}
       />
     </>

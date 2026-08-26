@@ -8,6 +8,7 @@
     "primaryLabel": "Navigimi kryesor",
     "openMenu": "Hap menynë",
     "closeMenu": "Mbyll menynë",
+    "home": "Kryefaqja",
     "markets": "Tregjet",
     "news": "Lajme",
     "learn": "Mëso",
@@ -16,10 +17,17 @@
   },
   "footer": {
     "label": "Navigimi i fundfaqes",
+    "groups": {
+      "data": "Të dhënat",
+      "learn": "Mëso",
+      "about": "Për ne",
+      "legal": "Ligjore"
+    },
     "about": "Rreth nesh",
     "contact": "Kontakt",
     "privacy": "Privatësia",
     "terms": "Kushtet",
+    "glossary": "Fjalorthi",
     "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen."
   },
   "calendar": {
@@ -113,6 +121,7 @@
   "markets": {
     "metaTitle": "Tregjet dhe lajmet financiare",
     "metaDescription": "Çmimet e drejtpërdrejta, lajmet që lëvizin tregjet dhe kalendari ekonomik — të gjitha të shpjeguara në gjuhë të thjeshtë.",
+    "tickerAriaLabel": "Shirit i tregjeve",
     "todayHeading": "Çfarë ka rëndësi sot",
     "quotesHeading": "Tregjet sot",
     "quotesCaption": "Çmimet e sotme të tregut",

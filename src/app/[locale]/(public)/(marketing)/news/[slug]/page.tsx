@@ -4,7 +4,6 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getGlossary, getLessons } from '@/features/learn/learnData';
 import { findLessonForArticle } from '@/features/learn/matchNews';
-import { getQuote } from '@/features/markets';
 import {
   ArticlePage,
   getArticleBySlug,
@@ -13,6 +12,7 @@ import {
   getMostRead,
 } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
+import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 interface PageProps {
@@ -69,10 +69,13 @@ export default async function Page({ params }: PageProps) {
   if (!article) notFound();
 
   const week = await getCalendarWeek(locale);
-  const [related, mostRead] = await Promise.all([
+  const [related, mostRead, quotes] = await Promise.all([
     getArticles(locale),
     getMostRead(locale),
+    getQuotes(),
   ]);
+
+  const mentionedSymbols = new Set(article.mentionedSymbols ?? []);
 
   // Matched over the glossary vocabulary the article actually uses. The
   // `relatedLessonSlug` field this replaces was declared on the DTO and
@@ -89,9 +92,7 @@ export default async function Page({ params }: PageProps) {
       related={related.filter((entry) => entry.id !== article.id).slice(0, 3)}
       mostRead={mostRead}
       glossary={getGlossary(locale)}
-      mentioned={(article.mentionedSymbols ?? [])
-        .map((symbol) => getQuote(locale, symbol))
-        .filter((quote) => quote !== null)}
+      mentioned={quotes.filter((quote) => mentionedSymbols.has(quote.symbol))}
       nextRelease={
         article.relatedEventSlug
           ? (week.days

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useRouter } from '@/i18n/navigation';
+import { POST_SIGN_IN_ROUTE } from '@/lib/auth/constants';
 import { signUp } from '@/lib/auth/client';
 import { signUpSchema, type SignUpValues } from './authSchema';
 
@@ -38,7 +39,7 @@ export function SignUpPage() {
       return;
     }
 
-    router.push('/dashboard');
+    router.push(POST_SIGN_IN_ROUTE);
   });
 
   return (

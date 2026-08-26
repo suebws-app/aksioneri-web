@@ -5,7 +5,7 @@ import { getFeaturedLessons } from '@/features/learn/learnData';
 import { MarketsPage } from '@/features/markets';
 import { getArticles, getFeaturedArticle } from '@/features/news';
 import type { Locale } from '@/i18n/config';
-import { getQuotes } from '@/lib/api/markets';
+import { FEATURED_SYMBOLS, getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 /** Matches the API's poll interval — see `lib/api/news.ts`. */
@@ -46,9 +46,16 @@ export default async function HomePage({
   // the rest so no headline is printed twice on the page.
   const rest = articles.filter((article) => article.id !== featured?.id);
 
+  // Homepage "Tregjet sot" mirrors the ticker: same six symbols, same order.
+  // The full instrument list lives behind the "view all" link at /tregjet.
+  const bySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
+  const featuredQuotes = FEATURED_SYMBOLS.map((symbol) =>
+    bySymbol.get(symbol),
+  ).filter((quote): quote is (typeof quotes)[number] => quote !== undefined);
+
   return (
     <MarketsPage
-      quotes={quotes}
+      quotes={featuredQuotes}
       featured={featured}
       sidebarStories={rest.slice(0, 3)}
       latestNews={rest.slice(3, 8)}

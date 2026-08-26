@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { clientEnv } from '@/lib/utils/env.client';
 import { cn } from '@/lib/utils/cn';
 import type { CalendarEvent, SurpriseDirection } from '../calendarTypes';
 import { ImpactBars } from './ImpactBars';
@@ -10,8 +11,11 @@ import { ImpactBars } from './ImpactBars';
  * short-name switches automatically. The API already formats each
  * event's `time` in this zone; the header just labels which zone the
  * numbers are in.
+ *
+ * Sourced from `NEXT_PUBLIC_DISPLAY_TZ`; a per-viewer picker will
+ * override it once the account area lands.
  */
-const DISPLAY_TZ = 'Europe/Belgrade';
+const DISPLAY_TZ = clientEnv.NEXT_PUBLIC_DISPLAY_TZ;
 
 /**
  * Returns the short timezone abbreviation ("CEST" or "CET") for

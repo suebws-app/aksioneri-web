@@ -215,10 +215,12 @@ export function NavSearch({
           aria-controls={listboxId}
           aria-autocomplete="list"
           className={cn(
-            'border-line-strong bg-surface text-ink placeholder:text-ink-ghost focus:border-accent w-full rounded-sm border outline-none',
+            'text-ink placeholder:text-ink-ghost w-full bg-transparent outline-none',
             onPhone
-              ? 'px-3.5 py-2.5 text-[16px]'
-              : 'px-3 py-1.5 text-[14px] sm:w-72',
+              ? 'border-line-strong focus:border-accent rounded-sm border px-3.5 py-2.5 text-[16px]'
+              : // Desktop nav variant: no box, just a bottom rule that
+                // tightens on focus. Sits flush with the wordmark row.
+                'border-line-strong focus:border-accent border-b px-1 py-1.5 text-[14px] sm:w-72',
           )}
         />
       </label>
@@ -273,9 +275,51 @@ export function NavSearch({
 
   return (
     <div ref={containerRef} className="relative">
-      {open && !onPhone ? field : null}
-
-      {onPhone ? (
+      {!onPhone ? (
+        // Desktop nav: the slot is button-sized when closed and grows to
+        // the field's width when open, so sibling nav items sit next to
+        // "Kërko" until the reader opens search. Button and field both
+        // stay in the DOM (positioned absolutely) so opacity can
+        // cross-fade — a conditional render would just pop out.
+        <div
+          className={cn(
+            // h-9 (not h-8) so the input's py-1.5 + 14px text + border-b
+            // fit inside `overflow-hidden` — otherwise the bottom rule
+            // sits at ~34px and gets clipped by a 32px slot.
+            'relative h-9 overflow-hidden transition-[width] duration-200 ease-out',
+            open ? 'w-72' : 'w-24',
+          )}
+        >
+          <button
+            type="button"
+            onClick={openSearch}
+            aria-expanded={open}
+            className={cn(
+              'text-ink-subtle hover:text-accent absolute inset-0 flex items-center justify-end gap-[7px]',
+              'transition-opacity duration-150 ease-out',
+              open ? 'pointer-events-none opacity-0' : 'opacity-100',
+            )}
+          >
+            <SearchIcon />
+            {tNav('search')}
+          </button>
+          <div
+            className={cn(
+              // Small delay so the field arrives once the slot has room
+              // for it rather than clipping mid-transition.
+              'absolute inset-0 transition-opacity duration-200 ease-out',
+              open ? 'opacity-100 delay-100' : 'pointer-events-none opacity-0',
+            )}
+            aria-hidden={!open}
+            // Match `aria-hidden` — otherwise the input inside stays keyboard-
+            // reachable while invisible, which Lighthouse flags and screen-
+            // reader users experience as an unreachable focus stop.
+            inert={!open || undefined}
+          >
+            {field}
+          </div>
+        </div>
+      ) : (
         // Stays put and turns into a cross while the sheet is open: without
         // it the field appeared with no visible way back, and tapping outside
         // is not a control anyone can see.
@@ -288,16 +332,6 @@ export function NavSearch({
           className="text-ink flex size-10 items-center justify-center"
         >
           {open ? <CloseIcon /> : <SearchIcon size={21} />}
-        </button>
-      ) : open ? null : (
-        <button
-          type="button"
-          onClick={openSearch}
-          aria-expanded={false}
-          className="text-ink-subtle hover:text-accent flex items-center gap-[7px]"
-        >
-          <SearchIcon />
-          {tNav('search')}
         </button>
       )}
 

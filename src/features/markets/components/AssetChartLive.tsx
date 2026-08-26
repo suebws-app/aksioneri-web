@@ -109,13 +109,10 @@ export function AssetChartLive({
         }
       : { values: [] as number[], times: undefined, endLabels: [] };
 
-  const priceFormatter = new Intl.NumberFormat(
-    locale === 'sq' ? 'sq' : 'en-US',
-    {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    },
-  );
+  const priceFormatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
 
   return (
     <section className="border-line bg-surface mb-8 rounded-sm border p-6.5 sm:px-7">

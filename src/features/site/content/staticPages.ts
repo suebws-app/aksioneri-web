@@ -1,3 +1,4 @@
+import { clientEnv } from '@/lib/utils/env.client';
 import type { StaticPageContent } from '../siteTypes';
 
 /**
@@ -5,13 +6,17 @@ import type { StaticPageContent } from '../siteTypes';
  *
  * One constant rather than a string repeated across three pages: it appears in
  * the contact page, in the privacy page's data-request section and in the
- * terms. **Replace it with the real inbox before launch** — nothing checks
- * that it receives mail.
+ * terms. Sourced from `NEXT_PUBLIC_CONTACT_EMAIL`, which is REQUIRED in
+ * production so the local `kontakt@aksioneri.com` default cannot ship live.
  */
-export const CONTACT_EMAIL = 'kontakt@aksioneri.com';
+export const CONTACT_EMAIL = clientEnv.NEXT_PUBLIC_CONTACT_EMAIL;
 
-/** Last substantive edit to the legal text. Shown on privacy and terms. */
-const LEGAL_UPDATED_AT = '2026-08-25';
+/**
+ * Last substantive edit to the legal text. Split per document so a change to
+ * the terms does not silently bump the privacy date and vice versa.
+ */
+const PRIVACY_UPDATED_AT = '2026-08-25';
+const TERMS_UPDATED_AT = '2026-08-25';
 
 const ABOUT: StaticPageContent = {
   slug: 'about',
@@ -31,7 +36,7 @@ const ABOUT: StaticPageContent = {
       paragraphs: [
         'Tregjet ndjekin indekset, mallrat dhe monedhat kryesore, me lëvizjen e ditës dhe një shpjegim se çka e lëviz secilën.',
         'Lajmet mbledhin atë që ndodh sot në tregje, të përmbledhura shkurt. Kalendari tregon shifrat ekonomike që vijnë, çka pritet dhe pse ka rëndësi.',
-        'Qendra e Mësimit ka 48 mësime të shkurtra dhe një fjalorth me mbi 150 terma — pjesa e faqes që nuk vjetrohet.',
+        'Qendra e Mësimit ka mësime të shkurtra dhe një fjalorth me terma — pjesa e faqes që nuk vjetrohet.',
       ],
     },
     {
@@ -84,7 +89,7 @@ const PRIVACY: StaticPageContent = {
   title: 'Privatësia',
   intro:
     'Faqja nuk ka llogari dhe nuk ju kërkon asnjë të dhënë personale. Këtu shpjegohet saktësisht çka ruhet kur e lexoni, ku ruhet dhe si mund ta fshini.',
-  updatedAt: LEGAL_UPDATED_AT,
+  updatedAt: PRIVACY_UPDATED_AT,
   sections: [
     {
       heading: 'Nuk ka llogari dhe nuk ka profile',
@@ -116,9 +121,7 @@ const PRIVACY: StaticPageContent = {
     {
       heading: 'Të drejtat tuaja',
       paragraphs: [
-        'Meqë nuk mbajmë të dhëna që ju identifikojnë, zakonisht nuk ka çka të kërkohet ose të fshihet. Nëse mendoni ndryshe, ose doni të dini më shumë, na shkruani te ' +
-          CONTACT_EMAIL +
-          ' dhe përgjigjemi.',
+        `Meqë nuk mbajmë të dhëna që ju identifikojnë, zakonisht nuk ka çka të kërkohet ose të fshihet. Nëse mendoni ndryshe, ose doni të dini më shumë, na shkruani te ${CONTACT_EMAIL} dhe përgjigjemi.`,
         'Nëse kjo ndryshon — për shembull nëse një ditë shtohen reklamat, mjetet analitike ose llogaritë — kjo faqe përditësohet para se ndryshimi të hyjë në fuqi, dhe data lart e tregon se kur.',
       ],
     },
@@ -130,7 +133,7 @@ const TERMS: StaticPageContent = {
   title: 'Kushtet e përdorimit',
   intro:
     'Çka mund të pritni nga kjo faqe dhe çka jo. Shkurt, dhe pa gjuhë të koklavitur.',
-  updatedAt: LEGAL_UPDATED_AT,
+  updatedAt: TERMS_UPDATED_AT,
   sections: [
     {
       heading: 'Përmbajtja është edukative',

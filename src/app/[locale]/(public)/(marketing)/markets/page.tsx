@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { MARKET_TIMESTAMP, MarketsIndexPage } from '@/features/markets';
+import { MarketsIndexPage } from '@/features/markets';
 import type { Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -12,11 +12,29 @@ import { buildMetadata } from '@/lib/seo/metadata';
 const GROUPS: { key: string; symbols: string[] }[] = [
   {
     key: 'indices',
-    symbols: ['sp-500', 'nasdaq-100', 'dow-jones', 'stoxx-600'],
+    symbols: [
+      'sp-500',
+      'nasdaq-100',
+      'dow-jones',
+      'stoxx-600',
+      'ftse-100',
+      'dax-40',
+      'nikkei-225',
+      'hang-seng',
+    ],
   },
-  { key: 'commodities', symbols: ['gold'] },
-  { key: 'crypto', symbols: ['bitcoin'] },
-  { key: 'currencies', symbols: ['eur-usd'] },
+  {
+    key: 'commodities',
+    symbols: ['gold', 'silver', 'oil-wti', 'oil-brent', 'natural-gas'],
+  },
+  {
+    key: 'crypto',
+    symbols: ['bitcoin', 'ethereum', 'solana', 'ripple'],
+  },
+  {
+    key: 'currencies',
+    symbols: ['eur-usd', 'gbp-usd', 'usd-jpy', 'aud-usd', 'usd-cad'],
+  },
 ];
 
 export async function generateMetadata({
@@ -55,5 +73,5 @@ export default async function Page({
   const groups =
     rest.length > 0 ? [...grouped, { key: 'other', quotes: rest }] : grouped;
 
-  return <MarketsIndexPage groups={groups} updatedAt={MARKET_TIMESTAMP} />;
+  return <MarketsIndexPage groups={groups} />;
 }

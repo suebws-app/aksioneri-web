@@ -4,7 +4,23 @@
  * looks for the default `better-auth.session_token` and silently finds nothing,
  * so every protected route redirects even for a signed-in user.
  *
- * Changing this means changing `AUTH_COOKIE_NAME` in aksioneri-api to match:
- * the full cookie name is `<prefix>.session_token`.
+ * Changing this means changing `AUTH_COOKIE_PREFIX` in aksioneri-api to match:
+ * both apps derive `<prefix>.session_token` and `<prefix>.csrf_token` from
+ * the same base string.
  */
 export const AUTH_COOKIE_PREFIX = 'aksioneri';
+
+/**
+ * HTTP header the API expects on state-changing requests. Kept alongside
+ * the cookie prefix so any future rename touches one file. The API pins
+ * the same string in `common/guards/auth.guard.ts`.
+ */
+export const CSRF_HEADER_NAME = 'X-CSRF-Token';
+
+/**
+ * Where a successful sign-in or sign-up lands. Home for now — the site has no
+ * authenticated surface yet (see `proxy.ts`), so a `/dashboard` redirect would
+ * 404. Kept as a single source of truth so the destination moves in one place
+ * when the account area lands.
+ */
+export const POST_SIGN_IN_ROUTE = '/';

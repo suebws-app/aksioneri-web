@@ -1,27 +1,12 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from '@/i18n/navigation';
-import type { Quote, SupportedSymbol } from '@/lib/api/markets';
+import { FEATURED_SYMBOLS, type Quote } from '@/lib/api/markets';
 import { quotesQuery } from '@/lib/query/marketsQueries';
 import { useLiveQuotes } from '@/lib/websockets/useLiveQuotes';
-
-/**
- * The instruments the strip shows, left to right.
- *
- * Six deliberate slots to match the design — the API's seventh (STOXX 600)
- * lives on the markets index instead. Kept in this order so a change to the
- * design (or the fixture list) is a one-line edit here.
- */
-const STRIP_ORDER: SupportedSymbol[] = [
-  'sp-500',
-  'nasdaq-100',
-  'dow-jones',
-  'bitcoin',
-  'gold',
-  'eur-usd',
-];
 
 /**
  * Live-updating quote strip.
@@ -45,12 +30,13 @@ const STRIP_ORDER: SupportedSymbol[] = [
  * client dedups subscriptions across every mounted consumer.
  */
 export function MarketTickerLive({ initial }: { initial: Quote[] }) {
+  const t = useTranslations('markets');
   const { data } = useQuery(quotesQuery(initial));
-  useLiveQuotes(STRIP_ORDER);
+  useLiveQuotes(FEATURED_SYMBOLS);
   const quotes = data ?? initial;
 
   const bySymbol = new Map(quotes.map((q) => [q.symbol, q]));
-  const strip = STRIP_ORDER.map((symbol) => bySymbol.get(symbol)).filter(
+  const strip = FEATURED_SYMBOLS.map((symbol) => bySymbol.get(symbol)).filter(
     (q): q is Quote => q !== undefined,
   );
 
@@ -62,7 +48,7 @@ export function MarketTickerLive({ initial }: { initial: Quote[] }) {
       <div className="page-container overflow-hidden">
         <div
           className="animate-marquee flex w-max hover:[animation-play-state:paused]"
-          aria-label="Market ticker"
+          aria-label={t('tickerAriaLabel')}
         >
           {/* Rendered twice — the second copy is what the marquee reveals as
               the first slides off. aria-hidden on the clone keeps a screen
@@ -83,7 +69,14 @@ function TickerRail({
   ariaHidden?: boolean;
 }) {
   return (
-    <ul className="flex shrink-0" aria-hidden={ariaHidden || undefined}>
+    // `inert` removes the clone's anchors from the tab order, matching the
+    // `aria-hidden` promise — otherwise keyboard users tab through the same
+    // symbols twice and Lighthouse flags "focusable descendents".
+    <ul
+      className="flex shrink-0"
+      aria-hidden={ariaHidden || undefined}
+      inert={ariaHidden || undefined}
+    >
       {quotes.map((quote) => (
         <li key={quote.symbol}>
           <TickerCell quote={quote} />

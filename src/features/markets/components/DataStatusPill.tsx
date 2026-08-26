@@ -41,7 +41,7 @@ export function DataStatusPill({ symbol }: { symbol: string }) {
   if (!label) return null;
 
   const tone = label.tone;
-  const message = safeTranslate(t, label.key);
+  const message = t(label.key);
 
   return (
     <span
@@ -74,24 +74,4 @@ function statusLabel(
     return { key: 'delayed', tone: 'warn' };
   }
   return null;
-}
-
-/**
- * `next-intl`'s `useTranslations` throws when a key is missing in dev.
- * The `markets.status` catalogue is not shipped with these keys today
- * — the pill lands ahead of the message additions — so we degrade to
- * the English default rather than red-underlining a fresh deploy.
- */
-function safeTranslate(t: (key: string) => string, key: string): string {
-  try {
-    return t(key);
-  } catch {
-    const defaults: Record<string, string> = {
-      connecting: 'Connecting…',
-      reconnecting: 'Reconnecting…',
-      offline: 'Offline',
-      delayed: 'Delayed',
-    };
-    return defaults[key] ?? key;
-  }
 }

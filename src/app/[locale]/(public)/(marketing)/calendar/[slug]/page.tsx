@@ -7,13 +7,12 @@ import {
   getCalendarSlugs,
   getCalendarWeek,
   getEventDetail,
-  getSeedEventDetail,
 } from '@/features/calendar';
 import { getLessonBySlug, getTopics } from '@/features/learn';
-import { getQuote } from '@/features/markets';
 import { findArticlesMentioning } from '@/features/learn/matchNews';
 import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
+import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 interface PageProps {
@@ -47,12 +46,9 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'calendar' });
 
-  // Editorial `EventDetail` (hand-authored copy for known slugs) takes
-  // precedence; the live wire fills the gap for anything new.
-  const seedDetail = getSeedEventDetail(locale, slug);
-  const row = seedDetail ? null : await getEventDetail(locale, slug);
+  const row = await getEventDetail(locale, slug);
 
-  if (!seedDetail && !row) {
+  if (!row) {
     return buildMetadata({
       title: t('event.notFoundTitle'),
       description: t('metaDescription'),
@@ -62,15 +58,11 @@ export async function generateMetadata({
     });
   }
 
-  const title = seedDetail?.title ?? row?.title ?? '';
-
   return buildMetadata({
-    title,
-    // A row without an editorial explainer has no summary of its own; the
-    // page describes what the reader will find instead of shipping an
-    // empty description.
+    title: row.title,
     description:
-      seedDetail?.summary || t('event.fallbackDescription', { title }),
+      row.explanation?.summary ||
+      t('event.fallbackDescription', { title: row.title }),
     path: `/calendar/${slug}`,
     locale,
   });
@@ -84,31 +76,29 @@ export default async function Page({ params }: PageProps) {
   const week = await getCalendarWeek(locale);
   const everyEvent = week.days.flatMap((day) => day.events);
 
-  // Always fetch the by-slug row — that endpoint is the only one that
-  // carries the Kosovar-Albanian `explanation` payload (the week endpoint
-  // omits it to keep list sizes down). React `cache()` dedupes with the
-  // metadata pass so this is one round trip per render, not two.
+  // The by-slug endpoint is the only one that carries the Kosovar-Albanian
+  // `explanation` payload (the week endpoint omits it to keep list sizes
+  // down). React `cache()` dedupes with the metadata pass so this is one
+  // round trip per render, not two.
   const row =
     (await getEventDetail(locale, slug)) ??
     everyEvent.find((event) => event.slug === slug);
 
-  const detail =
-    getSeedEventDetail(locale, slug) ??
-    (row
-      ? detailFromEvent(
-          row,
-          t(`regionNames.${REGION_KEY[row.region]}`),
-          t(`impact.${row.impact}`),
-          // Row time is `HH:mm` in the reader's timezone; the seed used
-          // `${todayDate}T${time}:00Z`. Kept identical so the countdown
-          // and dateline render exactly as before.
-          `${week.todayDate || new Date().toISOString().slice(0, 10)}T${row.time}:00Z`,
-          {
-            whyItMatters: t('event.whyItMatters'),
-            howToRead: t('event.howToRead'),
-          },
-        )
-      : null);
+  const detail = row
+    ? detailFromEvent(
+        row,
+        t(`regionNames.${REGION_KEY[row.region]}`),
+        t(`impact.${row.impact}`),
+        // Row time is `HH:mm` in the reader's timezone; the seed used
+        // `${todayDate}T${time}:00Z`. Kept identical so the countdown
+        // and dateline render exactly as before.
+        `${week.todayDate || new Date().toISOString().slice(0, 10)}T${row.time}:00Z`,
+        {
+          whyItMatters: t('event.whyItMatters'),
+          howToRead: t('event.howToRead'),
+        },
+      )
+    : null;
 
   if (!detail) notFound();
 
@@ -116,10 +106,16 @@ export default async function Page({ params }: PageProps) {
 
   // Matched on what the release is called rather than the stored
   // `articleSlugs`, which never resolved against the live wire.
+  const [quotes, articles] = await Promise.all([
+    getQuotes(),
+    getArticles(locale),
+  ]);
   const relatedArticles = findArticlesMentioning(
     [detail.shortName, detail.title],
-    await getArticles(locale),
+    articles,
   );
+
+  const reactingSymbols = new Set(detail.reactingSymbols ?? []);
 
   return (
     <EventPage
@@ -127,9 +123,9 @@ export default async function Page({ params }: PageProps) {
       alsoThisWeek={everyEvent
         .filter((event) => event.slug !== slug)
         .slice(0, 3)}
-      reactingQuotes={(detail.reactingSymbols ?? [])
-        .map((symbol) => getQuote(locale, symbol))
-        .filter((quote) => quote !== null)}
+      reactingQuotes={quotes.filter((quote) =>
+        reactingSymbols.has(quote.symbol),
+      )}
       lessons={(detail.lessonSlugs ?? [])
         .map(
           (lessonSlug) =>

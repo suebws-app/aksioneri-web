@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useRouter } from '@/i18n/navigation';
+import { POST_SIGN_IN_ROUTE } from '@/lib/auth/constants';
 import { signIn } from '@/lib/auth/client';
 import { signInSchema, type SignInValues } from './authSchema';
 
@@ -36,7 +37,7 @@ export function SignInPage() {
       return;
     }
 
-    router.push(searchParams.get('callbackUrl') ?? '/dashboard');
+    router.push(searchParams.get('callbackUrl') ?? POST_SIGN_IN_ROUTE);
   });
 
   return (

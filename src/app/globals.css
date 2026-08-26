@@ -23,7 +23,7 @@
   --ink-body: #4a5058;
   --ink-muted: #5a6068;
   --ink-subtle: #6e7683;
-  --ink-faint: #8a8f98;
+  --ink-faint: #6c7280; /* 4.7:1 on --paper — WCAG AA for normal text */
   --ink-ghost: #a8a49b; /* table labels, empty values */
   --ink-inverse: #fbfaf7;
   --ink-inverse-muted: #a7adb6;

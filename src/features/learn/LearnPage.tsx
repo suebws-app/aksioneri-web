@@ -88,7 +88,9 @@ export function LearnPage({
                 </dt>
               </div>
               <div>
-                <dd className="text-ink mb-1.5 font-mono text-[30px]">0</dd>
+                <dd className="text-ink mb-1.5 font-mono text-[30px]">
+                  {stats.glossarySize}
+                </dd>
                 <dt className="text-ink-subtle text-[13px]">
                   {t('stats.jargon')}
                 </dt>

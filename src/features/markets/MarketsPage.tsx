@@ -15,7 +15,7 @@ import { MarketMiniChart } from './components/MarketMiniChart';
 import { MarketMovers } from './components/MarketMovers';
 import { MarketTicker } from './components/MarketTicker';
 import { QuoteTableLive } from './components/QuoteTableLive';
-import type { Quote } from '@/lib/api/markets';
+import { LEAD_INDEX, type Quote } from '@/lib/api/markets';
 
 export interface MarketsPageProps {
   quotes: Quote[];
@@ -47,7 +47,7 @@ export function MarketsPage({
   return (
     <div className="bg-paper flex min-h-screen flex-col">
       <SiteHeader
-        active="markets"
+        active="home"
         searchSlot={<NavSearch />}
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
@@ -71,7 +71,7 @@ export function MarketsPage({
               ) : null}
             </div>
 
-            <div className="flex flex-col lg:w-[372px] lg:shrink-0">
+            <div className="flex flex-col lg:w-93 lg:shrink-0">
               {sidebarStories.map((story) => (
                 <div
                   key={story.id}
@@ -80,13 +80,13 @@ export function MarketsPage({
                   <ArticleCard article={story} variant="sidebar" />
                 </div>
               ))}
-              <MarketMiniChart symbol="sp-500" className="pt-6" />
+              <MarketMiniChart symbol={LEAD_INDEX} className="pt-6" />
             </div>
           </div>
         </div>
 
         <div className="page-container flex flex-col gap-11 pb-11 lg:flex-row">
-          <section className="lg:w-[528px] lg:shrink-0">
+          <section className="lg:w-132 lg:shrink-0">
             <SectionHeading
               title={t('quotesHeading')}
               action={{ label: t('viewAllMarkets'), href: '/markets' }}
@@ -96,7 +96,7 @@ export function MarketsPage({
 
           {showMovers ? (
             <div className="min-w-0 flex-1">
-              <MarketMovers index="sp-500" />
+              <MarketMovers index={LEAD_INDEX} />
             </div>
           ) : null}
         </div>

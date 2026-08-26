@@ -1,22 +1,16 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils/cn';
-import { CATEGORY_TINTS, pickPoolImage } from '../newsImages';
+import { CATEGORY_TINTS } from '../newsImages';
 import type { NewsCategory } from '../newsTypes';
 
 /**
- * Renders the hero art for an article across three fallback layers.
+ * Renders the hero art for an article across two fallback layers.
  *
  *   1. `imageUrl` — the feed's `<enclosure>` or the scraped `og:image`.
  *      This is what the publisher chose to advertise for the story.
- *   2. A deterministic pick from `NEWS_IMAGE_POOL[category]` — self-hosted
- *      or externally-hosted images the operator added for the category.
- *   3. A category-tinted placeholder with the category name, always
+ *   2. A category-tinted placeholder with the category name, always
  *      available so no card ever renders as an empty grey square.
- *
- * Each layer is used only when the ones above it are unavailable. Layers
- * 1 and 2 always use `next/image`; layer 3 is a pure DOM block, no image
- * request at all.
  */
 interface NewsImageProps {
   article: {
@@ -35,9 +29,7 @@ export function NewsImage({
   sizes,
   priority,
 }: NewsImageProps) {
-  const src = article.imageUrl ?? pickPoolImage(article.category, article.id);
-
-  if (src) {
+  if (article.imageUrl) {
     return (
       <div
         className={cn(
@@ -46,7 +38,7 @@ export function NewsImage({
         )}
       >
         <Image
-          src={src}
+          src={article.imageUrl}
           alt=""
           fill
           sizes={sizes}

@@ -1,4 +1,5 @@
 import type { Locale } from '@/i18n/config';
+import { clientEnv } from '@/lib/utils/env.client';
 import { SITE_NAME } from './metadata';
 import { absoluteUrl, localizedAbsoluteUrl } from './urls';
 
@@ -17,6 +18,11 @@ export const organizationSchema = () => ({
   name: SITE_NAME,
   url: absoluteUrl('/'),
   logo: absoluteUrl('/icon.svg'),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: clientEnv.NEXT_PUBLIC_CONTACT_EMAIL,
+    contactType: 'customer support',
+  },
 });
 
 /**

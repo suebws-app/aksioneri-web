@@ -64,12 +64,21 @@ function ArticleImage({
   article,
   className,
   sizes,
+  priority,
 }: {
   article: NewsArticle;
   className: string;
   sizes: string;
+  priority?: boolean;
 }) {
-  return <NewsImage article={article} className={className} sizes={sizes} />;
+  return (
+    <NewsImage
+      article={article}
+      className={className}
+      sizes={sizes}
+      priority={priority}
+    />
+  );
 }
 
 export function ArticleCard({ article, variant }: ArticleCardProps) {
@@ -82,6 +91,11 @@ export function ArticleCard({ article, variant }: ArticleCardProps) {
           article={article}
           className="mb-5.5 h-[300px] w-full"
           sizes="(max-width: 1024px) 100vw, 760px"
+          // This is the homepage hero — the LCP element. Priority makes
+          // next/image drop `loading=lazy`, add `fetchpriority=high`, and
+          // emit a preload link so the browser starts the download during
+          // the initial HTML parse.
+          priority
         />
         <ArticleMeta article={article} variant="full" className="mb-3.5" />
         <h2 className="text-ink mb-4 font-serif text-[41px] leading-[1.12] font-medium tracking-[-0.02em] text-balance">

@@ -30,7 +30,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: env.REQUIRE_EMAIL_VERIFICATION,
-    minPasswordLength: 8,
+    minPasswordLength: env.MIN_PASSWORD_LENGTH,
     autoSignIn: true,
   },
 
@@ -60,8 +60,8 @@ export const auth = betterAuth({
   },
 
   session: {
-    expiresIn: 60 * 60 * 24 * 30,
-    updateAge: 60 * 60 * 24 * 7,
+    expiresIn: env.SESSION_TTL_SECONDS,
+    updateAge: env.SESSION_UPDATE_AGE_SECONDS,
     // The API reads the session row on every request, so a cached cookie copy
     // would let a revoked session keep working until the cache expired.
     cookieCache: { enabled: false },

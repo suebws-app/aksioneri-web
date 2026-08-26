@@ -3,8 +3,7 @@ import { getCalendarWeek } from '@/features/calendar';
 import { getGlossary, getLessons, getTopics } from '@/features/learn';
 import { getArticles } from '@/features/news';
 import type { Locale } from '@/i18n/config';
-import { getQuote } from '@/features/markets';
-import { SUPPORTED_SYMBOLS } from '@/lib/api/markets';
+import { getQuotes } from '@/lib/api/markets';
 import { articleEntry } from './articleEntry';
 import type { SearchEntry } from './searchTypes';
 
@@ -28,11 +27,12 @@ export async function buildSearchIndex(locale: Locale): Promise<SearchEntry[]> {
     getTranslations({ locale, namespace: 'learn' }),
   ]);
 
-  const [lessons, glossary, articles] = [
-    getLessons(locale),
-    getGlossary(locale),
-    await getArticles(locale),
-  ];
+  const [articles, quotes] = await Promise.all([
+    getArticles(locale),
+    getQuotes(),
+  ]);
+  const lessons = getLessons(locale);
+  const glossary = getGlossary(locale);
 
   // A lesson's topic is only known from the topic tree, not the lesson itself.
   const topicBySlug = new Map<string, string>();
@@ -78,28 +78,23 @@ export async function buildSearchIndex(locale: Locale): Promise<SearchEntry[]> {
     })),
   );
 
-  const marketEntries: SearchEntry[] = SUPPORTED_SYMBOLS.flatMap((symbol) => {
-    const quote = getQuote(locale, symbol);
-    if (!quote) return [];
-
+  const marketEntries: SearchEntry[] = quotes.map((quote) => {
     // Readers type a ticker every way it is written: `sp-500`, `s&p 500`,
     // `sp500`. The condensed forms are the ones the punctuation would
     // otherwise hide.
     const condensed = quote.name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-    return [
-      {
-        kind: 'market' as const,
-        title: quote.name,
-        href: `/markets/${symbol}`,
-        keywords: [
-          symbol,
-          symbol.replace(/-/g, ' '),
-          symbol.replace(/-/g, ''),
-          condensed,
-        ],
-      },
-    ];
+    return {
+      kind: 'market' as const,
+      title: quote.name,
+      href: `/markets/${quote.symbol}`,
+      keywords: [
+        quote.symbol,
+        quote.symbol.replace(/-/g, ' '),
+        quote.symbol.replace(/-/g, ''),
+        condensed,
+      ],
+    };
   });
 
   /**

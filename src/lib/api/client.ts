@@ -1,3 +1,4 @@
+import { AUTH_COOKIE_PREFIX, CSRF_HEADER_NAME } from '@/lib/auth/constants';
 import { clientEnv } from '@/lib/utils/env.client';
 
 /** Mirrors the error envelope `GlobalExceptionFilter` produces in aksioneri-api. */
@@ -40,7 +41,6 @@ export interface RequestOptions extends Omit<RequestInit, 'body'> {
   next?: { revalidate?: number | false; tags?: string[] };
 }
 
-const CSRF_HEADER = 'X-CSRF-Token';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
 const buildUrl = (
@@ -79,7 +79,9 @@ export async function apiFetch<T>(
     credentials: 'include',
     headers: {
       ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
-      ...(SAFE_METHODS.has(method) ? {} : { [CSRF_HEADER]: readCsrfToken() }),
+      ...(SAFE_METHODS.has(method)
+        ? {}
+        : { [CSRF_HEADER_NAME]: readCsrfToken() }),
       ...headers,
     },
     body: body === undefined ? undefined : JSON.stringify(body),
@@ -116,9 +118,10 @@ export const apiFetchPaginated = <T>(
  */
 function readCsrfToken(): string {
   if (typeof document === 'undefined') return '';
+  const cookiePrefix = `${AUTH_COOKIE_PREFIX}.csrf_token=`;
   const match = document.cookie
     .split(';')
     .map((part) => part.trim())
-    .find((part) => part.startsWith('aksioneri.csrf_token='));
+    .find((part) => part.startsWith(cookiePrefix));
   return match ? decodeURIComponent(match.split('=')[1] ?? '') : '';
 }

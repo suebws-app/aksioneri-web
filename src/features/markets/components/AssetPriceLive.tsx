@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
@@ -27,6 +28,7 @@ export function AssetPriceLive({
   initialChangePercent,
   initialChangeAbsolute,
 }: AssetPriceLiveProps) {
+  const locale = useLocale();
   const [price, setPrice] = useState(initialPrice);
   const [changePercent, setChangePercent] = useState(initialChangePercent);
   const [changeAbsolute, setChangeAbsolute] = useState(initialChangeAbsolute);
@@ -48,6 +50,7 @@ export function AssetPriceLive({
             tick.price,
             precisionRef.current.digits,
             precisionRef.current.grouping,
+            locale,
           ),
         );
       }
@@ -58,12 +61,13 @@ export function AssetPriceLive({
             tick.changeAbsolute,
             precisionRef.current.digits,
             precisionRef.current.grouping,
+            locale,
           ),
         );
       }
     });
     return dispose;
-  }, [symbol]);
+  }, [symbol, locale]);
 
   const flash = usePriceFlash(price);
   const isNegative = changePercent < 0;
@@ -133,8 +137,9 @@ function formatWithPrecision(
   value: number,
   digits: number,
   grouping: boolean,
+  locale: string,
 ): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(locale, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
     useGrouping: grouping,
@@ -145,7 +150,8 @@ function formatSignedWithPrecision(
   value: number,
   digits: number,
   grouping: boolean,
+  locale: string,
 ): string {
   const sign = value >= 0 ? '+' : '−';
-  return `${sign}${formatWithPrecision(Math.abs(value), digits, grouping)}`;
+  return `${sign}${formatWithPrecision(Math.abs(value), digits, grouping, locale)}`;
 }

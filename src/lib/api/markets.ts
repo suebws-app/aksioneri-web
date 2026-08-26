@@ -13,21 +13,74 @@ import { ApiError, apiFetch, type RequestOptions } from './client';
  * visitor a section, not the whole site.
  */
 
-/** Kept in sync with `SUPPORTED_SYMBOLS` in the API. */
+/**
+ * Compile-time knowledge of the symbols the API guarantees to serve. Used
+ * only as a TypeScript type for props (`SupportedSymbol`) and for the ticker
+ * strip's `useLiveQuotes` subscription — every runtime enumeration goes
+ * through `getQuotes()` so a new instrument on the backend surfaces in the
+ * sitemap and search index without a web deploy.
+ *
+ * Kept in sync by contract with `SUPPORTED_SYMBOLS` in
+ * `aksioneri-api/src/modules/markets/markets.symbols.ts`. Extending the API
+ * list without adding it here still works at runtime (`getQuotes()` returns
+ * the new symbol) but the value stays untyped in props until this list is
+ * updated.
+ */
 export const SUPPORTED_SYMBOLS = [
+  // Indices
   'sp-500',
   'nasdaq-100',
   'dow-jones',
   'stoxx-600',
+  'ftse-100',
+  'dax-40',
+  'nikkei-225',
+  'hang-seng',
+  // Crypto
   'bitcoin',
+  'ethereum',
+  'solana',
+  'ripple',
+  // Commodities
   'gold',
+  'silver',
+  'oil-wti',
+  'oil-brent',
+  'natural-gas',
+  // Currencies
   'eur-usd',
+  'gbp-usd',
+  'usd-jpy',
+  'aud-usd',
+  'usd-cad',
 ] as const;
 
 export type SupportedSymbol = (typeof SUPPORTED_SYMBOLS)[number];
 
 /** Kept in sync with `INDEX_SYMBOLS` in the API. */
 export type IndexSymbol = 'sp-500' | 'nasdaq-100' | 'dow-jones' | 'stoxx-600';
+
+/**
+ * The default lead index — the one the homepage strip and movers panel
+ * anchor to when a caller does not pass an explicit symbol. Central here
+ * so `MarketsPage`, `MarketMovers`, and `MarketMiniChart` cannot drift.
+ */
+export const LEAD_INDEX: IndexSymbol = 'sp-500';
+
+/**
+ * The six instruments the homepage highlights — same set the ticker strip
+ * shows, in the same order. The `/markets` index behind the "view all" link
+ * still renders every symbol grouped; the homepage table stays focused on the
+ * headline six so the strip and the "Tregjet sot" block read as one thing.
+ */
+export const FEATURED_SYMBOLS = [
+  'sp-500',
+  'nasdaq-100',
+  'dow-jones',
+  'bitcoin',
+  'gold',
+  'eur-usd',
+] as const satisfies readonly SupportedSymbol[];
 
 export type AssetType = 'index' | 'crypto' | 'commodity' | 'currency' | 'stock';
 

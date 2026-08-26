@@ -5,7 +5,6 @@ import {
   CalendarPage,
   getCalendarWeek,
   isRegionFilterValue,
-  TODAY,
   type RegionFilterValue,
 } from '@/features/calendar';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -58,7 +57,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const selectedDate =
     requestedDate && week.days.some((day) => day.date === requestedDate)
       ? requestedDate
-      : week.todayDate || TODAY;
+      : week.todayDate || new Date().toISOString().slice(0, 10);
 
   return (
     <CalendarPage

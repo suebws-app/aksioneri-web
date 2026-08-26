@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { PRIVATE_PATHS } from '@/config/routes';
 import { appUrl } from '@/lib/seo/urls';
 
 /**
@@ -7,11 +8,9 @@ import { appUrl } from '@/lib/seo/urls';
  * (`/en/foo`), so each entry is emitted in both forms — otherwise a crawler
  * reaches the path through the prefix.
  *
- * The site is entirely public right now. Excluded are the route handlers and
- * the search results page: `/search?q=` is one URL per query, thin, and every
- * result duplicates a page that is already indexed on its own.
+ * The list itself lives in `@/config/routes` so `proxy.ts` can consume the
+ * same source of truth when the auth gate is wired back on.
  */
-const PRIVATE_PATHS = ['/api/', '/search'];
 
 export default function robots(): MetadataRoute.Robots {
   return {
