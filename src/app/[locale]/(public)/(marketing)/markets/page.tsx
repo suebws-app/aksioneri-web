@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { MarketsIndexPage } from '@/features/markets';
 import type { Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
@@ -53,14 +53,7 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-
+export default async function Page() {
   const quotes = await getQuotes();
   const grouped = GROUPS.map((group) => ({
     key: group.key,

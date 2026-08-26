@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import {
   getArticlePage,
@@ -55,7 +55,6 @@ export default async function Page({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const query = await searchParams;
   const raw = first(query.category);

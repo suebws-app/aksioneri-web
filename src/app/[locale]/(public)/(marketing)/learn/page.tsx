@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import {
   getFeaturedLessons,
   getGlossary,
@@ -33,7 +33,6 @@ export default async function Page({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const topics = getTopics(locale);
 

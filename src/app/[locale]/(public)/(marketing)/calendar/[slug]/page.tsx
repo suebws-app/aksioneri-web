@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import {
   detailFromEvent,
   EventPage,
@@ -70,7 +70,6 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { locale, slug } = await params;
-  setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: 'calendar' });
   const week = await getCalendarWeek(locale);

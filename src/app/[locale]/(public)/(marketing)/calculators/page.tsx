@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/config';
 import {
   CalculatorsIndexPage,
@@ -32,7 +32,6 @@ export async function generateMetadata({
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const query = await searchParams;
   const t = await getTranslations({ locale, namespace: 'calculators' });

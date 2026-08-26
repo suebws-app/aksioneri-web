@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/config';
 import {
   CalendarPage,
@@ -41,7 +41,6 @@ const readRegion = (
 export default async function Page({ params, searchParams }: PageProps) {
   // Next.js 16: both are Promises.
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const query = await searchParams;
   const requestedDate = Array.isArray(query.date) ? query.date[0] : query.date;

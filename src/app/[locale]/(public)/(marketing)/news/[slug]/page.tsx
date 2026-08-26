@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getGlossary, getLessons } from '@/features/learn/learnData';
 import { findLessonForArticle } from '@/features/learn/matchNews';
@@ -64,7 +64,6 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { locale, slug } = await params;
-  setRequestLocale(locale);
 
   const article = await getArticleBySlug(locale, slug);
   if (!article) notFound();

@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { searchArticles } from '@/features/news';
+import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 import {
-  articleEntry,
-  buildSearchIndex,
-  rankResults,
   readQuery,
   SearchPage,
+  SearchResults,
+  SearchResultsSkeleton,
 } from '@/features/search';
 import type { Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -42,31 +41,18 @@ export default async function Page({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const query = readQuery(await searchParams);
 
-  // Nothing typed yet: render the empty form without building an index or
-  // touching the API.
-  if (query.length === 0) {
-    return <SearchPage query="" results={[]} />;
-  }
-
-  // Two sources, one ranking. The index holds the site's own content plus the
-  // newest stories; the API search reaches the rest of the archive, which is
-  // the only way an older story can be found at all. Merging them before
-  // ranking keeps one order rather than two lists glued together.
-  const [index, wire] = await Promise.all([
-    buildSearchIndex(locale),
-    searchArticles(locale, query),
-  ]);
-
-  const known = new Set(index.map((entry) => entry.href));
-  const fromWire = wire
-    .flatMap((article) => articleEntry(article) ?? [])
-    .filter((entry) => !known.has(entry.href));
-
-  const results = rankResults([...index, ...fromWire], query);
-
-  return <SearchPage query={query} results={results} />;
+  // The shell (heading, intro, search field) renders synchronously so
+  // typing a new query never blanks the page. `key={query}` remounts the
+  // suspense boundary on each search, so the skeleton reappears for the
+  // results block alone.
+  return (
+    <SearchPage query={query}>
+      <Suspense key={query} fallback={<SearchResultsSkeleton />}>
+        <SearchResults locale={locale} query={query} />
+      </Suspense>
+    </SearchPage>
+  );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getGlossary, GlossaryPage } from '@/features/learn';
 import type { Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -27,7 +27,6 @@ export default async function Page({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const terms = getGlossary(locale);
 

@@ -21,8 +21,10 @@ type: skill
 - **`params` and `searchParams` are Promises in Next.js 16.** Await them in
   server components; `use()` them in client components.
 - **`cookies()` and `headers()` are async** too.
-- Call `setRequestLocale(locale)` in every page and layout. Without it the route
-  opts out of static rendering entirely.
+- **Locale is resolved once in `src/i18n/request.ts`** (via the middleware-matched
+  `requestLocale`). Pages and layouts do not call `setRequestLocale` — that
+  per-page opt-in is deprecated. Await `params` only when the page needs a
+  segment for its own logic.
 
 ## The groups
 
@@ -57,13 +59,10 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);   // required for static rendering
+export default function Page() {
+  // No params needed — `getTranslations()` reads the locale from
+  // `next/root-params` under the hood. Await `params` only when the
+  // page uses a segment for its own logic (see next example).
   return <AuctionsPage />;
 }
 ```
@@ -74,10 +73,9 @@ export default async function Page({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ locale: Locale; slug: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { locale, slug } = await params;
-  setRequestLocale(locale);
+  const { slug } = await params;
 
   const auction = await getAuction(slug);
   if (!auction) notFound();   // renders the nearest not-found.tsx as a real 404
@@ -110,12 +108,12 @@ whole route opts out of static rendering — see the sign-in page for the patter
 
 ## Anti-Patterns
 
-| Don't                                  | Do                                            |
-| -------------------------------------- | --------------------------------------------- |
-| `const { locale } = params`            | `await params`                                |
-| `const cookieStore = cookies()`        | `await cookies()`                             |
-| Omitting `setRequestLocale`            | Call it in every page and layout              |
-| A route outside `[locale]`             | Only metadata and auth endpoints belong there |
-| Private route missing from `robots.ts` | Add to both proxy and robots                  |
-| `redirect()` from `next/navigation`    | `redirect` from `@/i18n/navigation`           |
-| Returning `null` for a missing entity  | `notFound()`                                  |
+| Don't                                  | Do                                                             |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `const { locale } = params`            | `await params`                                                 |
+| `const cookieStore = cookies()`        | `await cookies()`                                              |
+| `setRequestLocale(locale)`             | Nothing — deprecated in Next.js 16; `next/root-params` does it |
+| A route outside `[locale]`             | Only metadata and auth endpoints belong there                  |
+| Private route missing from `robots.ts` | Add to both proxy and robots                                   |
+| `redirect()` from `next/navigation`    | `redirect` from `@/i18n/navigation`                            |
+| Returning `null` for a missing entity  | `notFound()`                                                   |

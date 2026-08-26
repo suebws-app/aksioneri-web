@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n/config';
 import {
   CalculatorPage,
@@ -57,9 +57,7 @@ export async function generateMetadata({
  * manual entry. That chain is the whole reason the need is declared rather
  * than discovered.
  */
-async function loadMarketData(
-  kind: string,
-): Promise<{
+async function loadMarketData(kind: string): Promise<{
   rates?: Record<string, number>;
   dataDate?: string;
   dataSource?: string;
@@ -92,7 +90,6 @@ async function loadMarketData(
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale, slug } = await params;
-  setRequestLocale(locale);
 
   const calculator = getCalculator(slug);
   if (!calculator) notFound();

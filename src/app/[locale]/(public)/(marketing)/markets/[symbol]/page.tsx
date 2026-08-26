@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getTopics } from '@/features/learn';
 import { AssetPage } from '@/features/markets';
@@ -64,7 +64,6 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { locale, symbol } = await params;
-  setRequestLocale(locale);
 
   const [asset, quotes] = await Promise.all([
     getAssetDetail(symbol),

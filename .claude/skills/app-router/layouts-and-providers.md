@@ -57,7 +57,6 @@ export default async function PrivateLayout({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   // proxy.ts only checks that a cookie exists. This is the real check.
   const user = await getCurrentUser();

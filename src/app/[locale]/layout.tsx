@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { locales, type Locale } from '@/i18n/config';
@@ -77,7 +77,6 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   // Required for static rendering — without it every page opts into dynamic.
-  setRequestLocale(locale);
 
   const typedLocale = locale as Locale;
 

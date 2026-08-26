@@ -24,23 +24,43 @@ type: skill
 - `getTranslations` on the server, `useTranslations` in client components.
 - Messages fall back to `sq`, so a missing `en` key renders Albanian rather than
   a raw key — invisible in the browser, which is why `pnpm i18n:check` runs in CI.
-- Every page and layout calls `setRequestLocale(locale)`, or static rendering is
-  silently disabled.
+- **`src/i18n/request.ts` reads the locale from the middleware-matched
+  `requestLocale`**, populated automatically per request. Pages and layouts
+  do not call `setRequestLocale` — that per-page opt-in is deprecated in
+  Next.js 16 and no longer needed. The full migration to `next/root-params`
+  is deferred until `[locale]/layout.tsx` becomes the actual root layout
+  (today `app/layout.tsx` sits above it for routes outside `[locale]`).
 
 ## Code Templates
 
 ### Server component
 
 ```typescript
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
-export default async function Page({ params }: { params: Promise<{ locale: Locale }> }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-
+export default async function Page() {
   const t = await getTranslations('auctions');
   return <h1>{t('heading')}</h1>;
 }
+```
+
+`getTranslations()` picks up the locale from the request context that
+`src/i18n/request.ts` set up, so the page does not need to await `params`
+just to hand the locale off. If the page needs `locale` for something else
+(a URL segment, a downstream API call), await `params` normally.
+
+### i18n request config
+
+```typescript
+// src/i18n/request.ts
+import { getRequestConfig } from 'next-intl/server';
+
+export default getRequestConfig(async ({ requestLocale }) => {
+  // Populated automatically from the `[locale]` segment the middleware
+  // matched; no per-page `setRequestLocale` call needed.
+  const requested = await requestLocale;
+  // ...validate + return { locale, messages }
+});
 ```
 
 ### Client component
@@ -107,11 +127,11 @@ nothing else needs touching.
 
 ## Anti-Patterns
 
-| Don't                          | Do                                         |
-| ------------------------------ | ------------------------------------------ |
-| `import Link from 'next/link'` | `import { Link } from '@/i18n/navigation'` |
-| `router.push('/en/dashboard')` | `router.push('/dashboard')`                |
-| `` `${t('hello')} ${name}` ``  | `t('hello', { name })`                     |
-| `date.toLocaleDateString()`    | `useFormatter().dateTime(...)`             |
-| Skipping `setRequestLocale`    | Call it in every page and layout           |
-| Adding a key to `sq` only      | Add to every catalogue; CI enforces it     |
+| Don't                          | Do                                                             |
+| ------------------------------ | -------------------------------------------------------------- |
+| `import Link from 'next/link'` | `import { Link } from '@/i18n/navigation'`                     |
+| `router.push('/en/dashboard')` | `router.push('/dashboard')`                                    |
+| `` `${t('hello')} ${name}` ``  | `t('hello', { name })`                                         |
+| `date.toLocaleDateString()`    | `useFormatter().dateTime(...)`                                 |
+| `setRequestLocale(locale)`     | Nothing — deprecated in Next.js 16; `next/root-params` does it |
+| Adding a key to `sq` only      | Add to every catalogue; CI enforces it                         |

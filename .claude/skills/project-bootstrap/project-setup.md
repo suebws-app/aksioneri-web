@@ -61,9 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return buildMetadata({ title: t('signIn.metaTitle'), /* ... */ });
 }
 
-export default async function Page({ params }: { params: Promise<{ locale: Locale }> }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default function Page() {
   return <SignInPage />;
 }
 ```

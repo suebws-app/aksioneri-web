@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getCalendarWeek } from '@/features/calendar';
 import { getFeaturedLessons } from '@/features/learn/learnData';
 import { MarketsPage } from '@/features/markets';
@@ -33,7 +33,6 @@ export default async function HomePage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
 
   const [articles, featured, quotes] = await Promise.all([
     getArticles(locale),
