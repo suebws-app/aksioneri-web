@@ -109,7 +109,6 @@ function CalculatorIsland({
   );
   const [currency, setCurrency] = useState<Currency>(ctx.currency);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const fields = calculator.fields as readonly FieldSpec<never>[];
 
@@ -188,7 +187,7 @@ function CalculatorIsland({
     [calculator, parsed],
   );
 
-  const { commit, currentUrl } = useShareableUrl(urlParams);
+  const { commit } = useShareableUrl(urlParams);
 
   // Anonymous counters: a slug and an event name, nothing else. See
   // `useCalculatorEvent.ts` for what is deliberately not sent.
@@ -201,7 +200,6 @@ function CalculatorIsland({
 
   const handleChange = (name: string, value: string) => {
     setValues((previous) => ({ ...previous, [name]: value }));
-    setCopied(false);
 
     if (!countedCompute.current) {
       countedCompute.current = true;
@@ -211,17 +209,6 @@ function CalculatorIsland({
 
   const handleReset = () => {
     setValues(toFormValues(calculator.defaults as Record<string, unknown>));
-    setCopied(false);
-  };
-
-  const handleCopy = () => {
-    // The reader is about to copy this URL, so it has to be current now
-    // rather than up to 400 ms from now.
-    commit();
-    reportCalculatorEvent(calculator.slug, 'share');
-    void navigator.clipboard.writeText(currentUrl()).then(() => {
-      setCopied(true);
-    });
   };
 
   const hasAdvanced = fields.some((field) => field.advanced);
@@ -318,12 +305,6 @@ function CalculatorIsland({
             currency={currency}
           />
         ) : null}
-
-        <div className="mt-4 flex items-center gap-3">
-          <Button intent="outline" size="sm" onClick={handleCopy}>
-            {copied ? t('ui.copied') : t('ui.copyLink')}
-          </Button>
-        </div>
       </section>
     </div>
   );

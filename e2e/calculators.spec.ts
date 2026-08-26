@@ -91,18 +91,6 @@ test.describe('calculator pages', () => {
     await expect(page).not.toHaveURL(/compound-interest/);
   });
 
-  test('copying the link does not add a history entry either', async ({
-    page,
-  }) => {
-    await page.goto('/kalkulatoret/compound-interest');
-    await page.getByLabel(/Norma vjetore/).fill('9');
-
-    const before = await page.evaluate(() => window.history.length);
-    await page.getByRole('button', { name: /Kopjo lidhjen/ }).click();
-
-    expect(await page.evaluate(() => window.history.length)).toBe(before);
-  });
-
   test('an unknown calculator is a 404', async ({ page }) => {
     const response = await page.goto('/kalkulatoret/not-a-calculator');
     expect(response?.status()).toBe(404);

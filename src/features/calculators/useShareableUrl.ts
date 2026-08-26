@@ -69,14 +69,5 @@ export function useShareableUrl(params: Record<string, string>) {
     write(serialised);
   }, [serialised, write]);
 
-  /** The absolute URL as it stands, for the copy-link button. */
-  const currentUrl = useCallback(
-    () =>
-      serialised
-        ? `${window.location.origin}${window.location.pathname}?${serialised}`
-        : `${window.location.origin}${window.location.pathname}`,
-    [serialised],
-  );
-
-  return { commit, currentUrl };
+  return { commit };
 }

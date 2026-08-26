@@ -348,8 +348,6 @@ describe('registry invariants', () => {
       'ui.advancedOptions',
       'ui.howCalculated',
       'ui.reset',
-      'ui.copyLink',
-      'ui.copied',
       'ui.faqHeading',
       'ui.exampleHeading',
       'ui.relatedCalculators',

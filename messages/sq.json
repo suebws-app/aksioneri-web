@@ -401,12 +401,8 @@
       "advancedOptions": "Opsione të avancuara",
       "howCalculated": "Si kalkulohet",
       "resultsHeading": "Rezultati",
-      "share": "Ndaje",
-      "copyLink": "Kopjo lidhjen",
-      "copied": "U kopjua",
       "reset": "Rikthe vlerat fillestare",
       "showAllRows": "Shfaq të gjitha vitet",
-      "dataTable": "Të dhënat e grafikut",
       "assumption": "Supozim",
       "assumptionNote": "Shifrat e shënuara si supozim varen nga normat që i vendos ti, jo nga të dhëna të matura.",
       "faqHeading": "Pyetje të shpeshta",
@@ -426,7 +422,8 @@
         "nyfed": "Burimi: Federal Reserve Bank of New York"
       },
       "embedKicker": "Kalkulo vetë",
-      "embedCta": "Hap kalkulatorin"
+      "embedCta": "Hap kalkulatorin",
+      "chartTotal": "Gjithsej"
     },
     "errors": {
       "number": "Shkruaj një numër.",

@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils/cn';
 import type { ChartSpec } from '../types';
 import {
-  axisTicks,
+  axisLabels,
   bandPath,
   linePath,
   maxOf,
+  niceTicks,
   PADDING,
   PLOT,
   stack,
@@ -47,10 +48,13 @@ export const seriesDash = (index: number): string =>
 export function PlotSvg({
   spec,
   formatX,
+  formatY,
   className,
 }: {
   spec: ChartSpec;
   formatX: (value: number) => string;
+  /** Compact money, for the value scale down the left edge. */
+  formatY: (value: number) => string;
   className?: string;
 }) {
   const count = spec.x.length;
@@ -72,30 +76,63 @@ export function PlotSvg({
   // A stacked chart is scaled by the total, a line chart by the tallest
   // series: stacking by the tallest series would push the top band off the
   // plot.
-  const max = stacked
+  const dataMax = stacked
     ? maxOf(stacked)
     : maxOf(spec.series.map((series) => series.values));
 
-  const ticks = axisTicks(count);
+  // Scale to the top gridline, not to the data. Otherwise the peak sits on
+  // the frame with no label next to it and cannot be read off the axis.
+  const { ticks: valueTicks, axisMax: max } = niceTicks(dataMax);
+
+  const labels = axisLabels(spec.x);
+
+  // Denser axis, smaller type. At 40 labels there are ~16 units between them,
+  // which only works at 9.
+  const xFontSize = labels.length > 30 ? 9 : labels.length > 20 ? 9.5 : 11;
+
+  // Markers stay on every period for as long as they are distinguishable —
+  // the axis collapsing into ranges must not thin the data. At 80 points they
+  // sit ~8 units apart, which is the floor for a 2.6-radius dot with a gap.
+  const showMarkers = count <= 80;
 
   return (
     <svg
       viewBox={`0 0 ${String(VIEWBOX.width)} ${String(VIEWBOX.height)}`}
       preserveAspectRatio="none"
       aria-hidden
-      className={cn('h-[220px] w-full', className)}
+      className={cn('h-[260px] w-full', className)}
     >
-      {/* Baseline. The only rule drawn: gridlines behind a two-band area
-          chart add ink without adding information. */}
-      <line
-        x1={PADDING.left}
-        y1={PADDING.top + PLOT.height}
-        x2={PADDING.left + PLOT.width}
-        y2={PADDING.top + PLOT.height}
-        stroke="var(--line)"
-        strokeWidth="1"
-        vectorEffect="non-scaling-stroke"
-      />
+      {/* The value scale. Hairline rules rather than a heavy grid: enough to
+          carry the eye across to a label, faint enough that the shape of the
+          data still reads first. */}
+      {valueTicks.map((value) => {
+        const y = yAt(value, 0, max);
+        const isBase = value === 0;
+
+        return (
+          <g key={value}>
+            <line
+              x1={PADDING.left}
+              y1={y}
+              x2={PADDING.left + PLOT.width}
+              y2={y}
+              stroke={isBase ? 'var(--line-strong)' : 'var(--line-soft)'}
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+            <text
+              x={PADDING.left - 10}
+              y={y + 3.5}
+              textAnchor="end"
+              fill="var(--ink-faint)"
+              fontSize="10.5"
+              fontFamily="var(--font-mono)"
+            >
+              {formatY(value)}
+            </text>
+          </g>
+        );
+      })}
 
       {stacked
         ? spec.series.map((series, index) => {
@@ -118,42 +155,74 @@ export function PlotSvg({
                   strokeDasharray={seriesDash(index)}
                   vectorEffect="non-scaling-stroke"
                 />
+                {showMarkers
+                  ? upper.map((point, i) => (
+                      <circle
+                        key={i}
+                        cx={point.x}
+                        cy={point.y}
+                        r="2.6"
+                        fill="var(--surface)"
+                        stroke={seriesColor(index)}
+                        strokeWidth="1.5"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    ))
+                  : null}
               </g>
             );
           })
-        : spec.series.map((series, index) => (
-            <path
-              key={series.idKey}
-              d={linePath(toPoints(series.values, max))}
-              fill="none"
-              stroke={seriesColor(index)}
-              strokeWidth={series.emphasis ? 2.5 : 1.5}
-              strokeDasharray={seriesDash(index)}
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
+        : spec.series.map((series, index) => {
+            const points = toPoints(series.values, max);
 
-      {ticks.map((index) => {
-        const value = spec.x[index];
-        if (value === undefined) return null;
+            return (
+              <g key={series.idKey}>
+                <path
+                  d={linePath(points)}
+                  fill="none"
+                  stroke={seriesColor(index)}
+                  strokeWidth={series.emphasis ? 2.5 : 1.5}
+                  strokeDasharray={seriesDash(index)}
+                  vectorEffect="non-scaling-stroke"
+                />
+                {showMarkers
+                  ? points.map((point, i) => (
+                      <circle
+                        key={i}
+                        cx={point.x}
+                        cy={point.y}
+                        r="2.6"
+                        fill="var(--surface)"
+                        stroke={seriesColor(index)}
+                        strokeWidth="1.5"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    ))
+                  : null}
+              </g>
+            );
+          })}
 
-        return (
-          <text
-            key={index}
-            x={xAt(index, count)}
-            y={VIEWBOX.height - 8}
-            // The first and last labels would otherwise hang off the plot.
-            textAnchor={
-              index === 0 ? 'start' : index === count - 1 ? 'end' : 'middle'
-            }
-            fill="var(--ink-faint)"
-            fontSize="11"
-            fontFamily="var(--font-mono)"
-          >
-            {formatX(value)}
-          </text>
-        );
-      })}
+      {labels.map((label) => (
+        <text
+          key={label.index}
+          x={xAt(label.index, count)}
+          y={VIEWBOX.height - 8}
+          // The first and last labels would otherwise hang off the plot.
+          textAnchor={
+            label.index === 0
+              ? 'start'
+              : label.index === count - 1
+                ? 'end'
+                : 'middle'
+          }
+          fill="var(--ink-faint)"
+          fontSize={xFontSize}
+          fontFamily="var(--font-mono)"
+        >
+          {formatX(label.value)}
+        </text>
+      ))}
     </svg>
   );
 }

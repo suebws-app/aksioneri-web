@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  axisTicks,
+  axisLabels,
+  axisStep,
+  LABELS_TARGET,
+  niceTicks,
   bandPath,
   linePath,
   maxOf,
@@ -131,24 +134,119 @@ describe('paths', () => {
   });
 });
 
-describe('axisTicks', () => {
-  it('labels every point when there are few', () => {
-    expect(axisTicks(3)).toEqual([0, 1, 2]);
+describe('axisLabels', () => {
+  const years = (n: number) => Array.from({ length: n }, (_, i) => i + 1);
+  const shown = (n: number) => axisLabels(years(n)).map((l) => l.value);
+
+  it('labels every year up to twenty', () => {
+    expect(shown(20)).toEqual(years(20));
   });
 
-  it('always includes the first and last', () => {
-    const ticks = axisTicks(40);
-    expect(ticks[0]).toBe(0);
-    expect(ticks.at(-1)).toBe(39);
+  it('labels every second year past twenty', () => {
+    expect(shown(30)).toEqual([
+      2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30,
+    ]);
   });
 
-  it('caps the number of labels so they cannot collide', () => {
-    expect(axisTicks(40).length).toBeLessThanOrEqual(5);
-    expect(axisTicks(100).length).toBeLessThanOrEqual(5);
+  it('steps by three past forty and by four past sixty', () => {
+    expect(axisStep(50)).toBe(3);
+    expect(axisStep(70)).toBe(4);
+  });
+
+  it('always labels the final period', () => {
+    // Stepping forwards from year one would label 1, 3, 5 … 29 on a
+    // thirty-year chart — leaving nothing under the year the reader came for.
+    for (const n of [20, 21, 30, 47, 70, 100, 360]) {
+      expect(shown(n).at(-1)).toBe(n);
+    }
+  });
+
+  it('never labels more than the axis can hold', () => {
+    for (const n of [21, 40, 61, 100, 360]) {
+      expect(axisLabels(years(n)).length).toBeLessThanOrEqual(LABELS_TARGET);
+    }
+  });
+
+  it('leaves enough room between labels that they cannot overlap', () => {
+    // The real constraint, checked rather than assumed: label spacing in
+    // viewBox units against the widest label the series can produce, at the
+    // font size the chart uses for that density. Monospace, so width is
+    // simply characters × advance.
+    const MONO_ADVANCE = 0.6;
+
+    for (const n of [20, 21, 30, 50, 70, 100, 360]) {
+      const labels = axisLabels(years(n));
+      const fontSize = labels.length > 30 ? 9 : labels.length > 20 ? 9.5 : 11;
+
+      const gap =
+        labels.length > 1
+          ? ((labels[1]?.index ?? 0) - (labels[0]?.index ?? 0)) *
+            (PLOT.width / Math.max(n - 1, 1))
+          : PLOT.width;
+
+      const widest = Math.max(...labels.map((l) => String(l.value).length));
+      const labelWidth = widest * fontSize * MONO_ADVANCE;
+
+      expect(
+        gap,
+        `${String(n)} periods: ${String(labels.length)} labels`,
+      ).toBeGreaterThan(labelWidth);
+    }
   });
 
   it('returns nothing for no data', () => {
-    expect(axisTicks(0)).toEqual([]);
+    expect(axisLabels([])).toEqual([]);
+  });
+});
+
+describe('niceTicks', () => {
+  it('rounds the scale to figures a person would say', () => {
+    // The peak of the default compound projection. An axis labelled 50.170
+    // reads as an artefact; 50.000 reads as a scale.
+    const { ticks } = niceTicks(300_851);
+
+    expect(ticks).toContain(0);
+    for (const tick of ticks) {
+      expect(tick % 50_000).toBe(0);
+    }
+  });
+
+  it('does not waste the top of the plot on empty headroom', () => {
+    // The regression: 300,851 produced an axis to 400,000, leaving a third
+    // of the chart blank, because the step ladder jumped 5× → 10×.
+    for (const max of [300_851, 63_000, 87_654, 222_400, 1_200]) {
+      const { axisMax } = niceTicks(max);
+      expect(axisMax / max).toBeLessThanOrEqual(1.25);
+    }
+  });
+
+  it('puts the axis maximum at or above the data, never below', () => {
+    for (const max of [1, 999, 1_234, 87_654, 300_851, 9_999_999]) {
+      const { axisMax } = niceTicks(max);
+      expect(axisMax).toBeGreaterThanOrEqual(max);
+    }
+  });
+
+  it('keeps the label count readable', () => {
+    for (const max of [500, 12_345, 300_851, 4_500_000]) {
+      const { ticks } = niceTicks(max);
+      expect(ticks.length).toBeGreaterThanOrEqual(2);
+      expect(ticks.length).toBeLessThanOrEqual(9);
+    }
+  });
+
+  it('produces exact labels, not floating-point noise', () => {
+    // A 2.5e4 step accumulates error if simply added in a loop.
+    const { ticks } = niceTicks(120_000);
+    for (const tick of ticks) {
+      expect(Number.isInteger(tick)).toBe(true);
+    }
+  });
+
+  it('degrades safely for no data', () => {
+    expect(niceTicks(0).ticks).toEqual([0]);
+    expect(niceTicks(Number.NaN).axisMax).toBe(1);
+    expect(niceTicks(-5).ticks).toEqual([0]);
   });
 });
 
