@@ -13,7 +13,12 @@ import type { GlossaryTerm, LessonLevel, Localized } from '../learnTypes';
  */
 export interface SeedLesson {
   id: string;
-  slug: string;
+  /**
+   * URL slug, per locale — the router uses whichever slug matches the current
+   * locale. `id` stays stable and English so cross-references and any
+   * slug-keyed storage do not shift when a translation is edited.
+   */
+  slug: Localized<string>;
   /** Topic the lesson belongs to. Must match a `SeedTopic.id`. */
   topicId: string;
   title: Localized<string>;
@@ -42,7 +47,7 @@ export interface SeedLesson {
   /** Only set where the lesson genuinely involves no arithmetic. */
   noMaths?: boolean;
   relatedSymbols?: string[];
-  upNextSlugs?: string[];
+  upNextSlugs?: Localized<string[]>;
 }
 
 /**
@@ -55,5 +60,6 @@ export interface SeedLesson {
 export interface SeedTopic {
   id: string;
   title: Localized<string>;
-  slugs: string[];
+  /** Reading order — a per-locale list of that locale's lesson slugs. */
+  slugs: Localized<string[]>;
 }

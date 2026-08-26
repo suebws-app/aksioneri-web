@@ -11,26 +11,28 @@ import type { SeedLesson, SeedTopic } from './types';
 export const RISK_COSTS_TOPIC: SeedTopic = {
   id: 'risk-and-costs',
   title: { sq: 'Rreziku dhe kostot' },
-  slugs: [
-    'what-risk-actually-means',
-    'currency-risk',
-    'tax-on-investments',
-    'what-leverage-does',
-    'liquidity-risk',
-    'inflation-as-a-risk',
-    'concentration-risk',
-    'behaviour-costs-more-than-fees',
-    'how-scams-work',
-    'reading-a-fund-factsheet',
-    'when-to-sell',
-    'building-a-simple-portfolio',
-  ],
+  slugs: {
+    sq: [
+      'cka-eshte-rreziku',
+      'rreziku-i-monedhes',
+      'taksat-mbi-investimet',
+      'cka-ben-leva',
+      'rreziku-i-likuiditetit',
+      'inflacioni-si-rrezik',
+      'rreziku-i-perqendrimit',
+      'sjellja-kushton-me-shume-se-tarifat',
+      'si-funksionojne-mashtrimet',
+      'si-lexohet-fleta-e-fondit',
+      'kur-duhet-shitur',
+      'si-ndertohet-nje-portofol',
+    ],
+  },
 };
 
 export const RISK_COSTS_LESSONS: SeedLesson[] = [
   {
     id: 'what-risk-actually-means',
-    slug: 'what-risk-actually-means',
+    slug: { sq: 'cka-eshte-rreziku' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
@@ -105,12 +107,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Luhatja është zero, por rreziku për të mos e arritur qëllimin është i lartë. Siguria e shifrës nuk është siguri e rezultatit.',
       },
     },
-    upNextSlugs: ['inflation-as-a-risk', 'concentration-risk'],
+    upNextSlugs: { sq: ['inflacioni-si-rrezik', 'rreziku-i-perqendrimit'] },
   },
 
   {
     id: 'currency-risk',
-    slug: 'currency-risk',
+    slug: { sq: 'rreziku-i-monedhes' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     title: { sq: 'Rreziku i monedhës' },
@@ -193,12 +195,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['eur-usd'],
-    upNextSlugs: ['tax-on-investments', 'reading-a-fund-factsheet'],
+    upNextSlugs: { sq: ['taksat-mbi-investimet', 'si-lexohet-fleta-e-fondit'] },
   },
 
   {
     id: 'tax-on-investments',
-    slug: 'tax-on-investments',
+    slug: { sq: 'taksat-mbi-investimet' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     title: { sq: 'Taksat mbi investimet' },
@@ -273,15 +275,17 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Çdo shitje me fitim i heq para kompozimit. Shtyrja e taksës e mban atë shumë duke punuar për ju.',
       },
     },
-    upNextSlugs: [
-      'behaviour-costs-more-than-fees',
-      'fees-that-change-everything',
-    ],
+    upNextSlugs: {
+      sq: [
+        'sjellja-kushton-me-shume-se-tarifat',
+        'tarifat-qe-ndryshojne-gjithcka',
+      ],
+    },
   },
 
   {
     id: 'what-leverage-does',
-    slug: 'what-leverage-does',
+    slug: { sq: 'cka-ben-leva' },
     topicId: 'risk-and-costs',
     level: 'advanced',
     title: { sq: 'Çka bën leva' },
@@ -366,12 +370,14 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Me levë kohën e shitjes nuk e vendosni ju. Likuidimi i detyruar e kthen një humbje të përkohshme në humbje përfundimtare.',
       },
     },
-    upNextSlugs: ['liquidity-risk', 'how-scams-work'],
+    upNextSlugs: {
+      sq: ['rreziku-i-likuiditetit', 'si-funksionojne-mashtrimet'],
+    },
   },
 
   {
     id: 'liquidity-risk',
-    slug: 'liquidity-risk',
+    slug: { sq: 'rreziku-i-likuiditetit' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     noMaths: true,
@@ -447,12 +453,14 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Likuiditeti varet nga të pasurit blerës. Kur duan të shesin të gjithë përnjëherë, ata blerës nuk janë aty.',
       },
     },
-    upNextSlugs: ['concentration-risk', 'how-scams-work'],
+    upNextSlugs: {
+      sq: ['rreziku-i-perqendrimit', 'si-funksionojne-mashtrimet'],
+    },
   },
 
   {
     id: 'inflation-as-a-risk',
-    slug: 'inflation-as-a-risk',
+    slug: { sq: 'inflacioni-si-rrezik' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     title: { sq: 'Inflacioni si rrezik për kursimtarin' },
@@ -549,12 +557,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['gold'],
-    upNextSlugs: ['what-is-compounding', 'saving-vs-investing'],
+    upNextSlugs: { sq: ['cka-eshte-kompozimi', 'kursim-apo-investim'] },
   },
 
   {
     id: 'concentration-risk',
-    slug: 'concentration-risk',
+    slug: { sq: 'rreziku-i-perqendrimit' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
@@ -629,12 +637,14 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Këto nuk janë rreziqe të veçanta. Rënia e sektorit i godet të tria përnjëherë.',
       },
     },
-    upNextSlugs: ['why-diversification-works', 'building-a-simple-portfolio'],
+    upNextSlugs: {
+      sq: ['pse-funksionon-diversifikimi', 'si-ndertohet-nje-portofol'],
+    },
   },
 
   {
     id: 'behaviour-costs-more-than-fees',
-    slug: 'behaviour-costs-more-than-fees',
+    slug: { sq: 'sjellja-kushton-me-shume-se-tarifat' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     title: { sq: 'Sjellja kushton më shumë se tarifat' },
@@ -707,12 +717,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Kthimi i fondit e merr të mirëqenë se mbahet pandërprerë. Koha e hyrjes dhe e daljes ia shkurton atë kthim njeriut.',
       },
     },
-    upNextSlugs: ['when-to-sell', 'time-in-the-market'],
+    upNextSlugs: { sq: ['kur-duhet-shitur', 'koha-ne-treg'] },
   },
 
   {
     id: 'how-scams-work',
-    slug: 'how-scams-work',
+    slug: { sq: 'si-funksionojne-mashtrimet' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
@@ -788,12 +798,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Tregjet e vërteta luhaten. Mungesa e plotë e muajve të këqij është shenja klasike e rezultateve të trilluara.',
       },
     },
-    upNextSlugs: ['reading-a-fund-factsheet', 'what-risk-actually-means'],
+    upNextSlugs: { sq: ['si-lexohet-fleta-e-fondit', 'cka-eshte-rreziku'] },
   },
 
   {
     id: 'reading-a-fund-factsheet',
-    slug: 'reading-a-fund-factsheet',
+    slug: { sq: 'si-lexohet-fleta-e-fondit' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     title: { sq: 'Si të lexohet fleta informative e një fondi' },
@@ -897,12 +907,12 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Kostoja e vërtetë është tarifa plus largimi nga indeksi. Ndjekja e dobët mund ta kalojë lehtë kursimin nga një tarifë e ulët.',
       },
     },
-    upNextSlugs: ['what-is-a-fund', 'building-a-simple-portfolio'],
+    upNextSlugs: { sq: ['cka-eshte-nje-fond', 'si-ndertohet-nje-portofol'] },
   },
 
   {
     id: 'when-to-sell',
-    slug: 'when-to-sell',
+    slug: { sq: 'kur-duhet-shitur' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     noMaths: true,
@@ -977,15 +987,14 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           'Tregu nuk e di sa keni paguar. Vendimi duhet të varet nga vlera dhe teza sot, jo nga një shifër e së kaluarës suaj.',
       },
     },
-    upNextSlugs: [
-      'building-a-simple-portfolio',
-      'behaviour-costs-more-than-fees',
-    ],
+    upNextSlugs: {
+      sq: ['si-ndertohet-nje-portofol', 'sjellja-kushton-me-shume-se-tarifat'],
+    },
   },
 
   {
     id: 'building-a-simple-portfolio',
-    slug: 'building-a-simple-portfolio',
+    slug: { sq: 'si-ndertohet-nje-portofol' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     title: { sq: 'Si të ndërtohet një portofol i thjeshtë' },
@@ -1088,6 +1097,6 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'stoxx-600'],
-    upNextSlugs: ['when-to-sell', 'your-first-hundred-euros'],
+    upNextSlugs: { sq: ['kur-duhet-shitur', 'njeqind-eurot-e-para'] },
   },
 ];

@@ -1,5 +1,6 @@
 import { cache } from 'react';
 import type { Locale } from '@/i18n/config';
+import { decodeHtmlEntities } from '@/lib/utils/htmlEntities';
 import {
   ApiError,
   apiFetch,
@@ -121,6 +122,61 @@ async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
   }
 }
 
+/**
+ * Decode any HTML entities the upstream feed left in a wire article's text
+ * fields. RSS items regularly arrive with `&#39;`, `&amp;` and `&nbsp;`
+ * still encoded; the API's own decoder catches most of it but historical
+ * rows and any future upstream bug slip through. Runs at the API-mapping
+ * boundary so every consumer (list, detail, search, "most read", featured)
+ * shows clean text without having to remember to decode.
+ */
+function sanitizeArticle(article: NewsArticle): NewsArticle {
+  return {
+    ...article,
+    title: decodeHtmlEntities(article.title),
+    summary: decodeHtmlEntities(article.summary),
+    ...(article.whyItMatters
+      ? { whyItMatters: decodeHtmlEntities(article.whyItMatters) }
+      : {}),
+    ...(article.heroCaption
+      ? { heroCaption: decodeHtmlEntities(article.heroCaption) }
+      : {}),
+    ...(article.body
+      ? { body: article.body.map((paragraph) => decodeHtmlEntities(paragraph)) }
+      : {}),
+    ...(article.sections
+      ? {
+          sections: article.sections.map((section) => ({
+            heading: decodeHtmlEntities(section.heading),
+            paragraphs: section.paragraphs.map((paragraph) =>
+              decodeHtmlEntities(paragraph),
+            ),
+          })),
+        }
+      : {}),
+    ...(article.pullQuote
+      ? {
+          pullQuote: {
+            quote: decodeHtmlEntities(article.pullQuote.quote),
+            attribution: decodeHtmlEntities(article.pullQuote.attribution),
+          },
+        }
+      : {}),
+    ...(article.terms
+      ? {
+          terms: article.terms.map((term) => ({
+            term: decodeHtmlEntities(term.term),
+            definition: decodeHtmlEntities(term.definition),
+          })),
+        }
+      : {}),
+  };
+}
+
+function sanitizeMostRead(entry: MostReadEntry): MostReadEntry {
+  return { ...entry, title: decodeHtmlEntities(entry.title) };
+}
+
 /** How many stories a page of the wire holds. */
 export const ARTICLES_PER_PAGE = 20;
 
@@ -165,7 +221,10 @@ export async function fetchArticlePage(
       limit: ARTICLES_PER_PAGE,
     },
   });
-  return { articles: response.data, nextCursor: response.nextCursor };
+  return {
+    articles: response.data.map(sanitizeArticle),
+    nextCursor: response.nextCursor,
+  };
 }
 
 export const getArticlePage = cache(
@@ -187,7 +246,10 @@ export const getArticlePage = cache(
             ...cacheOptions,
           },
         );
-        return { articles: response.data, nextCursor: response.nextCursor };
+        return {
+          articles: response.data.map(sanitizeArticle),
+          nextCursor: response.nextCursor,
+        };
       },
       { articles: [], nextCursor: null },
     ),
@@ -225,7 +287,7 @@ export const searchArticles = cache(
           ...cacheOptions,
         },
       );
-      return response.data;
+      return response.data.map(sanitizeArticle);
     }, []),
 );
 
@@ -239,38 +301,38 @@ export const getFeaturedArticle = cache(
     locale: Locale,
     category?: NewsCategory,
   ): Promise<NewsArticle | null> =>
-    safely(
-      () =>
-        apiFetch<NewsArticle | null>('news/featured', {
-          searchParams: { locale, category },
-          ...cacheOptions,
-        }),
-      null,
-    ),
+    safely(async () => {
+      const article = await apiFetch<NewsArticle | null>('news/featured', {
+        searchParams: { locale, category },
+        ...cacheOptions,
+      });
+      return article ? sanitizeArticle(article) : null;
+    }, null),
 );
 
 export const getMostRead = cache(
   async (locale: Locale): Promise<MostReadEntry[]> =>
-    safely(
-      () =>
-        apiFetch<MostReadEntry[]>('news/most-read', {
-          searchParams: { locale },
-          ...cacheOptions,
-        }),
-      [],
-    ),
+    safely(async () => {
+      const rows = await apiFetch<MostReadEntry[]>('news/most-read', {
+        searchParams: { locale },
+        ...cacheOptions,
+      });
+      return rows.map(sanitizeMostRead);
+    }, []),
 );
 
 export const getArticleBySlug = cache(
   async (locale: Locale, slug: string): Promise<NewsArticle | null> =>
-    safely(
-      () =>
-        apiFetch<NewsArticle>(`news/${encodeURIComponent(slug)}`, {
+    safely(async () => {
+      const article = await apiFetch<NewsArticle>(
+        `news/${encodeURIComponent(slug)}`,
+        {
           searchParams: { locale },
           ...cacheOptions,
-        }),
-      null,
-    ),
+        },
+      );
+      return sanitizeArticle(article);
+    }, null),
 );
 
 /**

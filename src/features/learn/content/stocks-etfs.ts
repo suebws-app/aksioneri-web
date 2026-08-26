@@ -11,26 +11,28 @@ import type { SeedLesson, SeedTopic } from './types';
 export const STOCKS_ETFS_TOPIC: SeedTopic = {
   id: 'stocks-etfs',
   title: { sq: 'Aksione dhe ETF' },
-  slugs: [
-    'what-moves-a-share-price',
-    'sectors-move-together',
-    'what-is-a-pe-ratio',
-    'reading-an-earnings-report',
-    'reading-a-balance-sheet',
-    'how-to-value-a-company',
-    'growth-vs-value',
-    'dividends-getting-paid-to-hold',
-    'share-buybacks',
-    'what-is-a-stock-split',
-    'what-an-ipo-really-is',
-    'index-funds-vs-stock-picking',
-  ],
+  slugs: {
+    sq: [
+      'si-levizin-cmimet-e-aksioneve',
+      'sektoret-levizin-bashke',
+      'raporti-p-e',
+      'si-lexohet-raporti-i-fitimeve',
+      'si-lexohet-bilanci',
+      'si-vleresohet-nje-kompani',
+      'rritje-apo-vlere',
+      'dividendet',
+      'riblerjet-e-aksioneve',
+      'ndarja-e-aksioneve',
+      'cka-eshte-ipo',
+      'fonde-indeksore-apo-zgjedhje-aksionesh',
+    ],
+  },
 };
 
 export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
   {
     id: 'what-moves-a-share-price',
-    slug: 'what-moves-a-share-price',
+    slug: { sq: 'si-levizin-cmimet-e-aksioneve' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     noMaths: true,
@@ -109,12 +111,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'nasdaq-100'],
-    upNextSlugs: ['sectors-move-together', 'what-is-a-pe-ratio'],
+    upNextSlugs: { sq: ['sektoret-levizin-bashke', 'raporti-p-e'] },
   },
 
   {
     id: 'sectors-move-together',
-    slug: 'sectors-move-together',
+    slug: { sq: 'sektoret-levizin-bashke' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     noMaths: true,
@@ -191,12 +193,17 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['nasdaq-100', 'sp-500'],
-    upNextSlugs: ['index-funds-vs-stock-picking', 'why-diversification-works'],
+    upNextSlugs: {
+      sq: [
+        'fonde-indeksore-apo-zgjedhje-aksionesh',
+        'pse-funksionon-diversifikimi',
+      ],
+    },
   },
 
   {
     id: 'what-is-a-pe-ratio',
-    slug: 'what-is-a-pe-ratio',
+    slug: { sq: 'raporti-p-e' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     title: { sq: 'Çfarë është raporti çmim/fitim (P/E)?' },
@@ -318,12 +325,14 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['how-to-value-a-company', 'reading-an-earnings-report'],
+    upNextSlugs: {
+      sq: ['si-vleresohet-nje-kompani', 'si-lexohet-raporti-i-fitimeve'],
+    },
   },
 
   {
     id: 'reading-an-earnings-report',
-    slug: 'reading-an-earnings-report',
+    slug: { sq: 'si-lexohet-raporti-i-fitimeve' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     title: { sq: 'Si të lexoni një raport fitimesh' },
@@ -423,12 +432,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Fitimi është gjykim kontabël; paraja jo. Kur të dyja shkojnë në drejtime të kundërta me vite, zakonisht e ka drejt paraja.',
       },
     },
-    upNextSlugs: ['reading-a-balance-sheet', 'how-to-value-a-company'],
+    upNextSlugs: { sq: ['si-lexohet-bilanci', 'si-vleresohet-nje-kompani'] },
   },
 
   {
     id: 'reading-a-balance-sheet',
-    slug: 'reading-a-balance-sheet',
+    slug: { sq: 'si-lexohet-bilanci' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     title: { sq: 'Bilanci në një faqe' },
@@ -510,12 +519,14 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Falimentimet ndodhin kur vjen një pagesë dhe paraja nuk është aty. Afati i borxhit shpesh ka më shumë rëndësi se madhësia e tij.',
       },
     },
-    upNextSlugs: ['how-to-value-a-company', 'reading-an-earnings-report'],
+    upNextSlugs: {
+      sq: ['si-vleresohet-nje-kompani', 'si-lexohet-raporti-i-fitimeve'],
+    },
   },
 
   {
     id: 'how-to-value-a-company',
-    slug: 'how-to-value-a-company',
+    slug: { sq: 'si-vleresohet-nje-kompani' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     title: { sq: 'Si vlerësohet një kompani' },
@@ -616,12 +627,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['growth-vs-value', 'what-moves-interest-rates'],
+    upNextSlugs: { sq: ['rritje-apo-vlere', 'si-levizin-normat-e-interesit'] },
   },
 
   {
     id: 'growth-vs-value',
-    slug: 'growth-vs-value',
+    slug: { sq: 'rritje-apo-vlere' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     noMaths: true,
@@ -699,12 +710,17 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['nasdaq-100', 'sp-500'],
-    upNextSlugs: ['what-moves-interest-rates', 'index-funds-vs-stock-picking'],
+    upNextSlugs: {
+      sq: [
+        'si-levizin-normat-e-interesit',
+        'fonde-indeksore-apo-zgjedhje-aksionesh',
+      ],
+    },
   },
 
   {
     id: 'dividends-getting-paid-to-hold',
-    slug: 'dividends-getting-paid-to-hold',
+    slug: { sq: 'dividendet' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     title: { sq: 'Dividendët: të paguhesh për të mbajtur' },
@@ -808,12 +824,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Yield-i rritet kur bie çmimi. Yield-et më të larta zakonisht tregojnë dyshim se a do të mbahet pagesa.',
       },
     },
-    upNextSlugs: ['share-buybacks', 'what-is-a-fund'],
+    upNextSlugs: { sq: ['riblerjet-e-aksioneve', 'cka-eshte-nje-fond'] },
   },
 
   {
     id: 'share-buybacks',
-    slug: 'share-buybacks',
+    slug: { sq: 'riblerjet-e-aksioneve' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     title: { sq: 'Riblerjet e aksioneve' },
@@ -889,12 +905,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Shumë riblerje vetëm i mbulojnë shpërblimet në aksione. Rëndësi ka numri neto, jo shuma e shpallur.',
       },
     },
-    upNextSlugs: ['what-is-a-stock-split', 'how-to-value-a-company'],
+    upNextSlugs: { sq: ['ndarja-e-aksioneve', 'si-vleresohet-nje-kompani'] },
   },
 
   {
     id: 'what-is-a-stock-split',
-    slug: 'what-is-a-stock-split',
+    slug: { sq: 'ndarja-e-aksioneve' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     title: { sq: 'Ndarja e aksioneve: shumë zhurmë për asgjë' },
@@ -964,12 +980,12 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Keni pesë herë më shumë aksione, secili nga një e pesta e çmimit. Pjesa juaj e kompanisë mbetet e njëjta.',
       },
     },
-    upNextSlugs: ['what-an-ipo-really-is', 'what-moves-a-share-price'],
+    upNextSlugs: { sq: ['cka-eshte-ipo', 'si-levizin-cmimet-e-aksioneve'] },
   },
 
   {
     id: 'what-an-ipo-really-is',
-    slug: 'what-an-ipo-really-is',
+    slug: { sq: 'cka-eshte-ipo' },
     topicId: 'stocks-etfs',
     level: 'intermediate',
     noMaths: true,
@@ -1045,12 +1061,17 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
           'Skadimi i bllokimit sjell në treg një ofertë të re e të madhe aksionesh, përballë së njëjtës kërkesë.',
       },
     },
-    upNextSlugs: ['index-funds-vs-stock-picking', 'how-to-value-a-company'],
+    upNextSlugs: {
+      sq: [
+        'fonde-indeksore-apo-zgjedhje-aksionesh',
+        'si-vleresohet-nje-kompani',
+      ],
+    },
   },
 
   {
     id: 'index-funds-vs-stock-picking',
-    slug: 'index-funds-vs-stock-picking',
+    slug: { sq: 'fonde-indeksore-apo-zgjedhje-aksionesh' },
     topicId: 'stocks-etfs',
     level: 'beginner',
     title: { sq: 'Fonde indeksore apo zgjedhje aksionesh?' },
@@ -1152,6 +1173,8 @@ export const STOCKS_ETFS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'nasdaq-100'],
-    upNextSlugs: ['what-is-a-fund', 'fees-that-change-everything'],
+    upNextSlugs: {
+      sq: ['cka-eshte-nje-fond', 'tarifat-qe-ndryshojne-gjithcka'],
+    },
   },
 ];

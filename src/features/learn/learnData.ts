@@ -12,26 +12,29 @@ import type {
 /**
  * The read API for Learning Center content.
  *
- * Content itself lives in `content/`, one file per topic. This module only
- * resolves it into the flat, single-locale shapes the pages consume.
+ * Content itself lives in `content/`, one file per topic. This module resolves
+ * it into the flat, single-locale shapes the pages consume — pulling each
+ * locale's own slug, title, body, etc. out of the side-by-side seed shape.
  */
 
-const findSeed = (slug: string): SeedLesson => {
-  const lesson = LESSONS.find((entry) => entry.slug === slug);
-  if (!lesson) throw new Error(`Unknown lesson slug: ${slug}`);
-  return lesson;
-};
+/**
+ * Find a lesson by its slug in a given locale. Every seed carries a slug per
+ * locale, so a URL only ever resolves against its own locale's slugs and a
+ * stale slug from another locale returns null.
+ */
+const findSeed = (locale: Locale, slug: string): SeedLesson | null =>
+  LESSONS.find((entry) => entry.slug[locale] === slug) ?? null;
 
 const resolve = (lesson: SeedLesson, locale: Locale): Lesson => {
   const topic = TOPICS.find((entry) => entry.id === lesson.topicId);
+  const slug = lesson.slug[locale];
   // Position within the topic drives the breadcrumb and the progress bar. A
-  // lesson missing from its topic's `slugs` lands at 0 and loses both, which
-  // is what used to happen to every "Start here" lesson.
-  const position = topic ? topic.slugs.indexOf(lesson.slug) + 1 : 0;
+  // lesson missing from its topic's `slugs` lands at 0 and loses both.
+  const position = topic ? topic.slugs[locale].indexOf(slug) + 1 : 0;
 
   return {
     id: lesson.id,
-    slug: lesson.slug,
+    slug,
     title: lesson.title[locale],
     summary: lesson.summary[locale],
     readingMinutes: readingMinutesFor(lesson, locale),
@@ -53,12 +56,12 @@ const resolve = (lesson: SeedLesson, locale: Locale): Lesson => {
             topicTitle: topic.title[locale],
             position,
             // Lessons a reader can actually open, not an aspirational total.
-            total: topic.slugs.length,
+            total: topic.slugs[locale].length,
           },
         }
       : {}),
     ...(lesson.relatedSymbols ? { relatedSymbols: lesson.relatedSymbols } : {}),
-    ...(lesson.upNextSlugs ? { upNextSlugs: lesson.upNextSlugs } : {}),
+    ...(lesson.upNextSlugs ? { upNextSlugs: lesson.upNextSlugs[locale] } : {}),
   };
 };
 
@@ -66,26 +69,35 @@ export const getLessons = (locale: Locale): Lesson[] =>
   LESSONS.map((lesson) => resolve(lesson, locale));
 
 export const getFeaturedLessons = (locale: Locale): Lesson[] =>
-  START_HERE.map((slug) => resolve(findSeed(slug), locale));
+  START_HERE[locale]
+    .map((slug) => findSeed(locale, slug))
+    .filter((entry): entry is SeedLesson => entry !== null)
+    .map((entry) => resolve(entry, locale));
 
 export const getLessonBySlug = (
   locale: Locale,
   slug: string,
 ): Lesson | null => {
-  const lesson = LESSONS.find((entry) => entry.slug === slug);
+  const lesson = findSeed(locale, slug);
   return lesson ? resolve(lesson, locale) : null;
 };
 
-/** Every lesson has a page, so every slug is a valid route. */
-export const getLessonSlugs = (): string[] =>
-  LESSONS.map((lesson) => lesson.slug);
+/**
+ * Every locale's own slug for every lesson — used by `generateStaticParams`
+ * (once per locale) and by the sitemap.
+ */
+export const getLessonSlugs = (locale: Locale): string[] =>
+  LESSONS.map((lesson) => lesson.slug[locale]);
 
 export const getTopics = (locale: Locale): LessonTopic[] =>
   TOPICS.map((topic) => ({
     id: topic.id,
     title: topic.title[locale],
-    lessonCount: topic.slugs.length,
-    lessons: topic.slugs.map((slug) => resolve(findSeed(slug), locale)),
+    lessonCount: topic.slugs[locale].length,
+    lessons: topic.slugs[locale]
+      .map((slug) => findSeed(locale, slug))
+      .filter((entry): entry is SeedLesson => entry !== null)
+      .map((entry) => resolve(entry, locale)),
   }));
 
 export const getGlossary = (locale: Locale): GlossaryTerm[] => GLOSSARY[locale];

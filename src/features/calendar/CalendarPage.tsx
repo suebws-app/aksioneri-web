@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/config';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
+import { CalendarLive } from './CalendarLive';
 import { DayTabs } from './components/DayTabs';
 import { EventTable } from './components/EventTable';
 import { ImpactLegend } from './components/ImpactLegend';
@@ -45,6 +46,10 @@ export function CalendarPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
+      {/* Invisible: opens the `/calendar` socket and refreshes the page when
+          the API pulses that an `actual` changed. Kept out of the header so a
+          reconnect never re-mounts through nav interactions. */}
+      <CalendarLive />
       <SiteHeader
         active="calendar"
         searchSlot={<NavSearch />}

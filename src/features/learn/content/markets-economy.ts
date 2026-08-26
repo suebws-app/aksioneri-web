@@ -10,26 +10,28 @@ import type { SeedLesson, SeedTopic } from './types';
 export const MARKETS_ECONOMY_TOPIC: SeedTopic = {
   id: 'markets-economy',
   title: { sq: 'Tregjet dhe ekonomia' },
-  slugs: [
-    'inflation-in-one-page',
-    'what-moves-interest-rates',
-    'what-central-banks-do',
-    'how-to-read-the-economic-calendar',
-    'bonds-explained',
-    'the-yield-curve',
-    'what-is-gdp',
-    'reading-the-jobs-report',
-    'why-the-dollar-matters',
-    'oil-and-the-economy',
-    'recessions-explained',
-    'why-markets-fall',
-  ],
+  slugs: {
+    sq: [
+      'inflacioni',
+      'si-levizin-normat-e-interesit',
+      'cka-bejne-bankat-qendrore',
+      'si-lexohet-kalendari-ekonomik',
+      'obligacionet',
+      'kurba-e-yield-eve',
+      'cka-eshte-pbb',
+      'raporti-i-punesimit',
+      'pse-ka-rendesi-dollari',
+      'nafta-dhe-ekonomia',
+      'recesionet',
+      'pse-bien-tregjet',
+    ],
+  },
 };
 
 export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
   {
     id: 'inflation-in-one-page',
-    slug: 'inflation-in-one-page',
+    slug: { sq: 'inflacioni' },
     topicId: 'markets-economy',
     level: 'beginner',
     title: { sq: 'Inflacioni në një faqe' },
@@ -137,12 +139,14 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['gold'],
-    upNextSlugs: ['what-moves-interest-rates', 'what-central-banks-do'],
+    upNextSlugs: {
+      sq: ['si-levizin-normat-e-interesit', 'cka-bejne-bankat-qendrore'],
+    },
   },
 
   {
     id: 'what-moves-interest-rates',
-    slug: 'what-moves-interest-rates',
+    slug: { sq: 'si-levizin-normat-e-interesit' },
     topicId: 'markets-economy',
     level: 'beginner',
     title: { sq: 'Çka i lëviz normat e interesit' },
@@ -219,12 +223,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['eur-usd', 'gold'],
-    upNextSlugs: ['what-central-banks-do', 'bonds-explained'],
+    upNextSlugs: { sq: ['cka-bejne-bankat-qendrore', 'obligacionet'] },
   },
 
   {
     id: 'what-central-banks-do',
-    slug: 'what-central-banks-do',
+    slug: { sq: 'cka-bejne-bankat-qendrore' },
     topicId: 'markets-economy',
     level: 'beginner',
     noMaths: true,
@@ -309,12 +313,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['eur-usd'],
-    upNextSlugs: ['how-to-read-the-economic-calendar', 'the-yield-curve'],
+    upNextSlugs: { sq: ['si-lexohet-kalendari-ekonomik', 'kurba-e-yield-eve'] },
   },
 
   {
     id: 'how-to-read-the-economic-calendar',
-    slug: 'how-to-read-the-economic-calendar',
+    slug: { sq: 'si-lexohet-kalendari-ekonomik' },
     topicId: 'markets-economy',
     level: 'beginner',
     title: { sq: 'Si të lexoni kalendarin ekonomik' },
@@ -407,12 +411,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
           'Niveli ishte çmuar tashmë. Informacion i ri është vetëm dallimi prej 0,1 pike përqindjeje nën pritje.',
       },
     },
-    upNextSlugs: ['reading-the-jobs-report', 'what-is-gdp'],
+    upNextSlugs: { sq: ['raporti-i-punesimit', 'cka-eshte-pbb'] },
   },
 
   {
     id: 'bonds-explained',
-    slug: 'bonds-explained',
+    slug: { sq: 'obligacionet' },
     topicId: 'markets-economy',
     level: 'intermediate',
     title: { sq: 'Obligacionet, të shpjeguara' },
@@ -507,12 +511,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
           'Sa më i gjatë maturimi, aq më e madhe kohëzgjatja. Një 30-vjeçar mund të bjerë rreth dhjetë herë më shumë se një 2-vjeçar.',
       },
     },
-    upNextSlugs: ['the-yield-curve', 'what-moves-interest-rates'],
+    upNextSlugs: { sq: ['kurba-e-yield-eve', 'si-levizin-normat-e-interesit'] },
   },
 
   {
     id: 'the-yield-curve',
-    slug: 'the-yield-curve',
+    slug: { sq: 'kurba-e-yield-eve' },
     topicId: 'markets-economy',
     level: 'advanced',
     title: { sq: 'Kurba e yield-eve dhe pse e shikojnë të gjithë' },
@@ -587,12 +591,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
           'Përmbysja shpreh pritje për ulje të normave. Nuk e cakton kohën — vonesa historike shkon nga gjashtë muaj deri në dy vjet.',
       },
     },
-    upNextSlugs: ['recessions-explained', 'bonds-explained'],
+    upNextSlugs: { sq: ['recesionet', 'obligacionet'] },
   },
 
   {
     id: 'what-is-gdp',
-    slug: 'what-is-gdp',
+    slug: { sq: 'cka-eshte-pbb' },
     topicId: 'markets-economy',
     level: 'beginner',
     title: { sq: 'PBB-ja: matësi më i përmendur dhe më i keqkuptuar' },
@@ -667,12 +671,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
           'PBB-ja reale e heq inflacionin. Nëse u prodhua e njëjta sasi, nuk luan — rritet vetëm ajo nominalja.',
       },
     },
-    upNextSlugs: ['recessions-explained', 'reading-the-jobs-report'],
+    upNextSlugs: { sq: ['recesionet', 'raporti-i-punesimit'] },
   },
 
   {
     id: 'reading-the-jobs-report',
-    slug: 'reading-the-jobs-report',
+    slug: { sq: 'raporti-i-punesimit' },
     topicId: 'markets-economy',
     level: 'intermediate',
     title: { sq: 'Raporti i punësimit: shifra që lëviz gjithçka' },
@@ -755,12 +759,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
           'Papunësia i numëron vetëm ata që kërkojnë punë aktivisht. Kur njerëzit heqin dorë, ajo bie pa u përmirësuar asgjë.',
       },
     },
-    upNextSlugs: ['recessions-explained', 'what-central-banks-do'],
+    upNextSlugs: { sq: ['recesionet', 'cka-bejne-bankat-qendrore'] },
   },
 
   {
     id: 'why-the-dollar-matters',
-    slug: 'why-the-dollar-matters',
+    slug: { sq: 'pse-ka-rendesi-dollari' },
     topicId: 'markets-economy',
     level: 'intermediate',
     noMaths: true,
@@ -832,12 +836,14 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['eur-usd', 'gold'],
-    upNextSlugs: ['oil-and-the-economy', 'what-moves-interest-rates'],
+    upNextSlugs: {
+      sq: ['nafta-dhe-ekonomia', 'si-levizin-normat-e-interesit'],
+    },
   },
 
   {
     id: 'oil-and-the-economy',
-    slug: 'oil-and-the-economy',
+    slug: { sq: 'nafta-dhe-ekonomia' },
     topicId: 'markets-economy',
     level: 'beginner',
     noMaths: true,
@@ -914,12 +920,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['gold'],
-    upNextSlugs: ['inflation-in-one-page', 'recessions-explained'],
+    upNextSlugs: { sq: ['inflacioni', 'recesionet'] },
   },
 
   {
     id: 'recessions-explained',
-    slug: 'recessions-explained',
+    slug: { sq: 'recesionet' },
     topicId: 'markets-economy',
     level: 'intermediate',
     noMaths: true,
@@ -1002,12 +1008,12 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['why-markets-fall', 'the-yield-curve'],
+    upNextSlugs: { sq: ['pse-bien-tregjet', 'kurba-e-yield-eve'] },
   },
 
   {
     id: 'why-markets-fall',
-    slug: 'why-markets-fall',
+    slug: { sq: 'pse-bien-tregjet' },
     topicId: 'markets-economy',
     level: 'beginner',
     noMaths: true,
@@ -1105,6 +1111,6 @@ export const MARKETS_ECONOMY_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'stoxx-600'],
-    upNextSlugs: ['time-in-the-market', 'risk-and-return'],
+    upNextSlugs: { sq: ['koha-ne-treg', 'rreziku-dhe-kthimi'] },
   },
 ];

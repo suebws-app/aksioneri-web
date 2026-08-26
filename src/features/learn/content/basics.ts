@@ -10,26 +10,28 @@ import type { SeedLesson, SeedTopic } from './types';
 export const BASICS_TOPIC: SeedTopic = {
   id: 'basics',
   title: { sq: 'Bazat' },
-  slugs: [
-    'what-is-a-share-really',
-    'how-does-the-stock-market-work',
-    'what-is-an-etf',
-    'risk-and-return',
-    'why-diversification-works',
-    'what-is-compounding',
-    'saving-vs-investing',
-    'how-a-brokerage-account-works',
-    'fees-that-change-everything',
-    'what-is-a-fund',
-    'time-in-the-market',
-    'your-first-hundred-euros',
-  ],
+  slugs: {
+    sq: [
+      'cka-eshte-aksioni',
+      'si-funksionon-tregu-aksioneve',
+      'cka-eshte-etf',
+      'rreziku-dhe-kthimi',
+      'pse-funksionon-diversifikimi',
+      'cka-eshte-kompozimi',
+      'kursim-apo-investim',
+      'si-funksionon-llogaria-brokerimit',
+      'tarifat-qe-ndryshojne-gjithcka',
+      'cka-eshte-nje-fond',
+      'koha-ne-treg',
+      'njeqind-eurot-e-para',
+    ],
+  },
 };
 
 export const BASICS_LESSONS: SeedLesson[] = [
   {
     id: 'what-is-a-share-really',
-    slug: 'what-is-a-share-really',
+    slug: { sq: 'cka-eshte-aksioni' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -109,12 +111,12 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['how-does-the-stock-market-work', 'what-is-an-etf'],
+    upNextSlugs: { sq: ['si-funksionon-tregu-aksioneve', 'cka-eshte-etf'] },
   },
 
   {
     id: 'how-does-the-stock-market-work',
-    slug: 'how-does-the-stock-market-work',
+    slug: { sq: 'si-funksionon-tregu-aksioneve' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -194,12 +196,12 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'nasdaq-100'],
-    upNextSlugs: ['what-is-an-etf', 'what-moves-a-share-price'],
+    upNextSlugs: { sq: ['cka-eshte-etf', 'si-levizin-cmimet-e-aksioneve'] },
   },
 
   {
     id: 'what-is-an-etf',
-    slug: 'what-is-an-etf',
+    slug: { sq: 'cka-eshte-etf' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -318,12 +320,14 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'nasdaq-100'],
-    upNextSlugs: ['what-is-a-fund', 'fees-that-change-everything'],
+    upNextSlugs: {
+      sq: ['cka-eshte-nje-fond', 'tarifat-qe-ndryshojne-gjithcka'],
+    },
   },
 
   {
     id: 'risk-and-return',
-    slug: 'risk-and-return',
+    slug: { sq: 'rreziku-dhe-kthimi' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -426,11 +430,11 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Shpërblehen vetëm rreziqet që nuk mund t’i shmangni. Rreziku i një kompanie të vetme hiqet duke mbajtur shumë sish, pa asnjë kosto.',
       },
     },
-    upNextSlugs: ['why-diversification-works', 'time-in-the-market'],
+    upNextSlugs: { sq: ['pse-funksionon-diversifikimi', 'koha-ne-treg'] },
   },
   {
     id: 'why-diversification-works',
-    slug: 'why-diversification-works',
+    slug: { sq: 'pse-funksionon-diversifikimi' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -525,12 +529,12 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500', 'stoxx-600'],
-    upNextSlugs: ['what-is-a-fund', 'what-is-compounding'],
+    upNextSlugs: { sq: ['cka-eshte-nje-fond', 'cka-eshte-kompozimi'] },
   },
 
   {
     id: 'what-is-compounding',
-    slug: 'what-is-compounding',
+    slug: { sq: 'cka-eshte-kompozimi' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -623,12 +627,12 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Çdo euro e marrë si tarifë është një euro që nuk fiton më kurrë. Kompozimi punon kundër jush me të njëjtën forcë.',
       },
     },
-    upNextSlugs: ['fees-that-change-everything', 'time-in-the-market'],
+    upNextSlugs: { sq: ['tarifat-qe-ndryshojne-gjithcka', 'koha-ne-treg'] },
   },
 
   {
     id: 'saving-vs-investing',
-    slug: 'saving-vs-investing',
+    slug: { sq: 'kursim-apo-investim' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -732,12 +736,14 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Rreziku më i madh për një investim afatgjatë është të detyroheni ta shitni herët. Rezerva e heq atë detyrim.',
       },
     },
-    upNextSlugs: ['how-a-brokerage-account-works', 'your-first-hundred-euros'],
+    upNextSlugs: {
+      sq: ['si-funksionon-llogaria-brokerimit', 'njeqind-eurot-e-para'],
+    },
   },
 
   {
     id: 'how-a-brokerage-account-works',
-    slug: 'how-a-brokerage-account-works',
+    slug: { sq: 'si-funksionon-llogaria-brokerimit' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -821,12 +827,14 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Tarifa nuk zhduket, vetëm e ndërron formën. Zakonisht kalon te spread-i ose te pagesa nga firma që e ekzekuton urdhrin tuaj.',
       },
     },
-    upNextSlugs: ['your-first-hundred-euros', 'fees-that-change-everything'],
+    upNextSlugs: {
+      sq: ['njeqind-eurot-e-para', 'tarifat-qe-ndryshojne-gjithcka'],
+    },
   },
 
   {
     id: 'fees-that-change-everything',
-    slug: 'fees-that-change-everything',
+    slug: { sq: 'tarifat-qe-ndryshojne-gjithcka' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -925,12 +933,14 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['what-is-a-fund', 'index-funds-vs-stock-picking'],
+    upNextSlugs: {
+      sq: ['cka-eshte-nje-fond', 'fonde-indeksore-apo-zgjedhje-aksionesh'],
+    },
   },
 
   {
     id: 'what-is-a-fund',
-    slug: 'what-is-a-fund',
+    slug: { sq: 'cka-eshte-nje-fond' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -1039,12 +1049,14 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Tarifa është pengesë e përhershme. Mesatarisht, menaxherët janë vetë tregu, prandaj pas tarifës mbetet një rezultat nën treg.',
       },
     },
-    upNextSlugs: ['index-funds-vs-stock-picking', 'time-in-the-market'],
+    upNextSlugs: {
+      sq: ['fonde-indeksore-apo-zgjedhje-aksionesh', 'koha-ne-treg'],
+    },
   },
 
   {
     id: 'time-in-the-market',
-    slug: 'time-in-the-market',
+    slug: { sq: 'koha-ne-treg' },
     topicId: 'basics',
     level: 'beginner',
     title: {
@@ -1139,12 +1151,12 @@ export const BASICS_LESSONS: SeedLesson[] = [
       },
     },
     relatedSymbols: ['sp-500'],
-    upNextSlugs: ['your-first-hundred-euros', 'risk-and-return'],
+    upNextSlugs: { sq: ['njeqind-eurot-e-para', 'rreziku-dhe-kthimi'] },
   },
 
   {
     id: 'your-first-hundred-euros',
-    slug: 'your-first-hundred-euros',
+    slug: { sq: 'njeqind-eurot-e-para' },
     topicId: 'basics',
     level: 'beginner',
     noMaths: true,
@@ -1245,6 +1257,6 @@ export const BASICS_LESSONS: SeedLesson[] = [
           'Shlyerja e një borxhi me 18% është kthim i garantuar prej 18%. Asnjë investim nuk ta jep atë pa rrezik.',
       },
     },
-    upNextSlugs: ['what-is-an-etf', 'saving-vs-investing'],
+    upNextSlugs: { sq: ['cka-eshte-etf', 'kursim-apo-investim'] },
   },
 ];

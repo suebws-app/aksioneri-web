@@ -55,7 +55,7 @@ const SECTIONS: SitemapPath[] = [
  */
 async function detailPaths(): Promise<SitemapPath[]> {
   const lessonSlugs = new Set([
-    ...getLessonSlugs(),
+    ...getLessonSlugs(defaultLocale),
     ...getTopics(defaultLocale).flatMap((topic) =>
       topic.lessons.map((lesson) => lesson.slug),
     ),

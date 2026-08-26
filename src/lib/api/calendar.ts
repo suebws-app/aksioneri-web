@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { decodeHtmlEntities } from '@/lib/utils/htmlEntities';
 import { ApiError, apiFetch, type RequestOptions } from './client';
 
 /**
@@ -83,8 +84,12 @@ export interface CalendarWeek {
  * 500, so the calendar page renders skeletons instead of a stack trace.
  */
 
-/** Matches the API's hourly sync cadence — shorter would only churn ISR. */
-const REVALIDATE_SECONDS = 60 * 15;
+/**
+ * Matches the API's 5-minute sync cadence, tightened to 60 s so a released
+ * `actual` reaches the page within about a minute of the sync writing it.
+ * Any shorter would just spin ISR without ever seeing new data.
+ */
+const REVALIDATE_SECONDS = 60;
 
 const NEXT_TAG = 'calendar';
 
@@ -228,7 +233,10 @@ function toEvent(raw: ApiCalendarEvent): CalendarEvent {
     // release timings are dashed rather than blanked, matching the seed.
     time: raw.time ?? '—',
     region: toRegion(raw.region),
-    title: raw.title,
+    // Decoded here so old DB rows ingested before the API added its
+    // decoder — and any future upstream that slips encoded text through —
+    // never leak `&#39;` or `&amp;` into the calendar UI.
+    title: decodeHtmlEntities(raw.title),
     impact: raw.impact,
     actual: raw.actual,
     expected: raw.expected,
@@ -261,7 +269,7 @@ function toNextUp(raw: NonNullable<ApiCalendarWeek['nextUp']>): NextUpEvent {
   );
   return {
     slug: raw.slug,
-    title: raw.title,
+    title: decodeHtmlEntities(raw.title),
     // `NextUpEvent.summary` and `whyItMatters` are editorial fields — the
     // API never populates them. Empty strings keep the type happy; the
     // component treats empties as absent.

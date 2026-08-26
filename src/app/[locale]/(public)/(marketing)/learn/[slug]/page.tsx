@@ -22,7 +22,7 @@ interface PageProps {
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
-    getLessonSlugs().map((slug) => ({ locale, slug })),
+    getLessonSlugs(locale).map((slug) => ({ locale, slug })),
   );
 }
 

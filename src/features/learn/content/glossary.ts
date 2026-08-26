@@ -44,7 +44,9 @@ const collect = (): GlossaryTerm[] => {
       bySlug.set(term.slug, {
         ...term,
         ...(aliases.length > 0 ? { aliases } : {}),
-        lessonSlug: lesson.slug,
+        // Glossary is assembled per locale (currently only `sq`), so we
+        // record that locale's slug — the lesson the reader will land on.
+        lessonSlug: lesson.slug.sq,
       });
     }
   }

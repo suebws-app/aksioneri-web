@@ -31,10 +31,14 @@ function ArticleLink({
   article,
   className,
   children,
+  tabIndex,
+  ariaHidden,
 }: {
   article: NewsArticle;
   className?: string;
   children: ReactNode;
+  tabIndex?: number;
+  ariaHidden?: boolean;
 }) {
   if (article.hasPage === false && article.sourceUrl) {
     return (
@@ -43,6 +47,8 @@ function ArticleLink({
         target="_blank"
         rel="noopener noreferrer nofollow"
         className={className}
+        tabIndex={tabIndex}
+        aria-hidden={ariaHidden}
       >
         {children}
       </a>
@@ -50,7 +56,12 @@ function ArticleLink({
   }
 
   return (
-    <Link href={`/news/${article.slug}`} className={className}>
+    <Link
+      href={`/news/${article.slug}`}
+      className={className}
+      tabIndex={tabIndex}
+      aria-hidden={ariaHidden}
+    >
       {children}
     </Link>
   );
@@ -59,6 +70,12 @@ function ArticleLink({
 /**
  * Article art with a full fallback ladder — publisher image → category pool
  * → branded placeholder. See `NewsImage` for the layer details.
+ *
+ * The image is wrapped in the same link the headline uses, so a click
+ * anywhere on the artwork opens the story. `tabIndex=-1` + `aria-hidden`
+ * keep it off the keyboard tab order and out of the screen-reader
+ * announcement — the headline anchor already carries the accessible name
+ * for the same destination, so a second reachable link would be noise.
  */
 function ArticleImage({
   article,
@@ -72,12 +89,14 @@ function ArticleImage({
   priority?: boolean;
 }) {
   return (
-    <NewsImage
-      article={article}
-      className={className}
-      sizes={sizes}
-      priority={priority}
-    />
+    <ArticleLink article={article} tabIndex={-1} ariaHidden className="block">
+      <NewsImage
+        article={article}
+        className={className}
+        sizes={sizes}
+        priority={priority}
+      />
+    </ArticleLink>
   );
 }
 

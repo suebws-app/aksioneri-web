@@ -17,19 +17,19 @@ describe('lesson registry', () => {
     // here" lessons and to bonds-explained.
     for (const lesson of LESSONS) {
       const owners = TOPICS.filter((topic) =>
-        topic.slugs.includes(lesson.slug),
+        topic.slugs.sq.includes(lesson.slug.sq),
       );
       expect(
         owners,
-        `${lesson.slug} is in ${String(owners.length)} topics`,
+        `${lesson.slug.sq} is in ${String(owners.length)} topics`,
       ).toHaveLength(1);
     }
   });
 
   it('lists no slug that has no lesson behind it', () => {
-    const known = new Set(LESSONS.map((lesson) => lesson.slug));
+    const known = new Set(LESSONS.map((lesson) => lesson.slug.sq));
     for (const topic of TOPICS) {
-      for (const slug of topic.slugs) {
+      for (const slug of topic.slugs.sq) {
         expect(known.has(slug), `${topic.id} lists unknown ${slug}`).toBe(true);
       }
     }
@@ -38,16 +38,16 @@ describe('lesson registry', () => {
   it('leaves no lesson unreachable from /learn', () => {
     // bonds-explained used to be in no topic at all: it had a page and a
     // sitemap entry, and nothing on the site linked to it.
-    const reachable = new Set(TOPICS.flatMap((topic) => topic.slugs));
-    const orphans = LESSONS.filter((lesson) => !reachable.has(lesson.slug)).map(
-      (lesson) => lesson.slug,
-    );
+    const reachable = new Set(TOPICS.flatMap((topic) => topic.slugs.sq));
+    const orphans = LESSONS.filter(
+      (lesson) => !reachable.has(lesson.slug.sq),
+    ).map((lesson) => lesson.slug.sq);
 
     expect(orphans).toEqual([]);
   });
 
   it('resolves every promoted "start here" slug', () => {
-    for (const slug of START_HERE) {
+    for (const slug of START_HERE.sq) {
       expect(getLessonBySlug('sq', slug), slug).not.toBeNull();
     }
   });
@@ -72,7 +72,7 @@ describe('lesson registry', () => {
 
 describe('lesson content', () => {
   it('resolves every upNext reference', () => {
-    const known = new Set(getLessonSlugs());
+    const known = new Set(getLessonSlugs('sq'));
     for (const lesson of getLessons('sq')) {
       for (const next of lesson.upNextSlugs ?? []) {
         expect(known.has(next), `${lesson.slug} -> ${next}`).toBe(true);
@@ -137,7 +137,7 @@ describe('glossary', () => {
   });
 
   it('points every term at a lesson that exists', () => {
-    const known = new Set(getLessonSlugs());
+    const known = new Set(getLessonSlugs('sq'));
     for (const term of getGlossary('sq')) {
       if (!term.lessonSlug) continue;
       expect(known.has(term.lessonSlug), term.slug).toBe(true);
