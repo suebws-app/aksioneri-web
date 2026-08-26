@@ -73,6 +73,21 @@ export function StaticPage({ page }: StaticPageProps) {
                 {section.paragraphs.map((paragraph, index) => (
                   <p
                     key={index}
+                    className="text-ink-secondary mb-4 text-[17px] leading-[1.7]"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+                {section.list ? (
+                  <ul className="text-ink-secondary mb-4 list-disc space-y-2 pl-6 text-[17px] leading-[1.7] marker:text-[color:var(--ink-faint)]">
+                    {section.list.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                {section.paragraphsAfterList?.map((paragraph, index) => (
+                  <p
+                    key={`after-${index}`}
                     className="text-ink-secondary mb-4 text-[17px] leading-[1.7] last:mb-0"
                   >
                     {paragraph}

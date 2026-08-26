@@ -15,7 +15,7 @@ export const CONTACT_EMAIL = clientEnv.NEXT_PUBLIC_CONTACT_EMAIL;
  * Last substantive edit to the legal text. Split per document so a change to
  * the terms does not silently bump the privacy date and vice versa.
  */
-const PRIVACY_UPDATED_AT = '2026-08-25';
+const PRIVACY_UPDATED_AT = '2026-08-27';
 const TERMS_UPDATED_AT = '2026-08-25';
 
 const ABOUT: StaticPageContent = {
@@ -88,9 +88,16 @@ const PRIVACY: StaticPageContent = {
   slug: 'privacy',
   title: 'Privatësia',
   intro:
-    'Faqja nuk ka llogari dhe nuk ju kërkon asnjë të dhënë personale. Këtu shpjegohet saktësisht çka ruhet kur e lexoni, ku ruhet dhe si mund ta fshini.',
+    'Faqja nuk kërkon regjistrim dhe nuk mban të dhëna që ju identifikojnë si person. Këtu shpjegohet saktësisht çka regjistrohet kur e lexoni, ku ruhet, si mund ta ndryshoni pëlqimin tuaj dhe si mund ta fshini.',
   updatedAt: PRIVACY_UPDATED_AT,
   sections: [
+    {
+      heading: 'Kush jemi ne',
+      paragraphs: [
+        `Kontrolluesi i të dhënave për këtë faqe është Aksioneri, i përfaqësuar te ${CONTACT_EMAIL}. Për çdo pyetje rreth privatësisë ose të drejtave tuaja, kjo është adresa te e cila duhet të shkruani.`,
+        'Baza e vetme mbi të cilën përdorim mjete matje është pëlqimi juaj. Pa pëlqimin tuaj, asnjë mjet matje nuk ngarkohet.',
+      ],
+    },
     {
       heading: 'Nuk ka llogari dhe nuk ka profile',
       paragraphs: [
@@ -112,9 +119,13 @@ const PRIVACY: StaticPageContent = {
       ],
     },
     {
-      heading: 'Cookies dhe palët e treta',
+      heading: 'Cookies dhe mjete matje',
       paragraphs: [
-        'Nuk përdorim cookie gjurmuese dhe as mjete analitike të palëve të treta si Google Analytics.',
+        'Kur hyni në faqe për herë të parë, ju pyesim nëse pranoni cookies për matje. Pëlqimi juaj ruhet vetëm në shfletuesin tuaj dhe nuk ndahet me askënd tjetër.',
+        'Nëse pranoni, ngarkohen dy mjete të palëve të treta që na ndihmojnë ta mbajmë faqen të mirë. Nëse refuzoni, asnjëra prej tyre nuk ngarkohet fare.',
+        'PostHog na tregon anonimisht sa lexues vijnë, cilat faqe hapen më shumë dhe ku ngecin njerëzit. Krijon një identifikues të rastësishëm në pajisjen tuaj për të matur ecurinë e vizitës, por nuk mban emrin, e-mailin, as ndonjë të dhënë që ju identifikon si person. Të dhënat ruhen për 12 muaj, pas së cilës agregohen dhe rrjedhat individuale fshihen.',
+        'Sentry kap gabimet teknike kur diçka thyhet në faqe. Mban vetëm detajet e nevojshme për të rindërtuar defektin (cili URL, cili shfletues, si veproi klikimi), jo çka lexoni ose shkruani. Nuk përdoret për reklama dhe nuk merr regjistrim video. Të dhënat ruhen deri në 90 ditë.',
+        'Të dy këto shërbime i përpunojnë të dhënat në serverët e tyre në Shtetet e Bashkuara (rajoni i paracaktuar). Kjo do të thotë se pranimi juaj i cookies përfshin edhe pëlqimin që një pjesë e të dhënave teknike të kalojnë jashtë kufirit. Të dy ofruesit kanë politika të pavarura të privatësisë dhe kontrata të përpunimit të të dhënave me ne.',
         'Te llogaritësit financiarë mbajmë një numërues të thjeshtë: sa herë është hapur, përdorur ose ndarë secili llogaritës në një ditë të caktuar. Nuk ruhet asnjë cookie, asnjë identifikues, asnjë adresë IP dhe — mbi të gjitha — asnjë shifër që e shkruani ju. Paga, kredia dhe kursimet tuaja nuk dalin kurrë nga shfletuesi juaj.',
         'Fotografitë e lajmeve ngarkohen drejtpërdrejt nga serverët e publikuesve, prandaj ata e shohin kërkesën e shfletuesit tuaj kur hapni një lajm. E njëjta vlen kur ndiqni një lidhje jashtë faqes.',
       ],
@@ -122,8 +133,21 @@ const PRIVACY: StaticPageContent = {
     {
       heading: 'Të drejtat tuaja',
       paragraphs: [
-        `Meqë nuk mbajmë të dhëna që ju identifikojnë, zakonisht nuk ka çka të kërkohet ose të fshihet. Nëse mendoni ndryshe, ose doni të dini më shumë, na shkruani te ${CONTACT_EMAIL} dhe përgjigjemi.`,
-        'Nëse kjo ndryshon — për shembull nëse një ditë shtohen reklamat, mjetet analitike ose llogaritë — kjo faqe përditësohet para se ndryshimi të hyjë në fuqi, dhe data lart e tregon se kur.',
+        'Për çdo të dhënë personale që ne mund të përpunojmë, keni të drejtat e mëposhtme:',
+      ],
+      list: [
+        'Të merrni një konfirmim nëse përpunojmë të dhëna që lidhen me ju, dhe një kopje të tyre.',
+        'Të kërkoni ndreqjen e çdo të dhëne të pasaktë ose të paplotë.',
+        'Të kërkoni fshirjen e të dhënave tuaja.',
+        'Të kufizoni ose të bllokoni përkohësisht përdorimin e tyre.',
+        'Të merrni të dhënat në një format të strukturuar dhe të lexueshëm nga makinat.',
+        'Të kundërshtoni përpunimin në çdo kohë.',
+        'Të tërhiqni pëlqimin tuaj po aq lehtë sa e keni dhënë — përdorni butonin „Menaxho cookies" në fund të faqes.',
+      ],
+      paragraphsAfterList: [
+        `Për të ushtruar cilëndo prej këtyre të drejtave, na shkruani te ${CONTACT_EMAIL}. Përgjigjemi brenda tridhjetë (30) ditëve.`,
+        'Nëse mendoni se të dhënat tuaja po përpunohen në mënyrë të gabuar, keni gjithashtu të drejtën të paraqisni ankesë pranë autoritetit të mbrojtjes së të dhënave në juridiksionin tuaj — përpara ose në vend të kontaktimit me ne.',
+        'Nëse ndryshojmë ndonjë praktikë — për shembull nëse një ditë shtohen reklamat ose llogaritë — kjo faqe përditësohet para se ndryshimi të hyjë në fuqi, dhe data lart e tregon se kur.',
       ],
     },
   ],

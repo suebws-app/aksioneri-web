@@ -1,7 +1,15 @@
-/** A prose section: one heading, one or more paragraphs. */
+/**
+ * A prose section: one heading, one or more paragraphs, and — for legal
+ * pages that must enumerate rights or duties — an optional bulleted list
+ * followed by a trailing prose block. The list sits between
+ * `paragraphs` and `paragraphsAfterList` so a caller can lead with prose,
+ * enumerate, and close with prose in a single semantic section.
+ */
 export interface StaticSection {
   heading: string;
   paragraphs: string[];
+  list?: string[];
+  paragraphsAfterList?: string[];
 }
 
 /**

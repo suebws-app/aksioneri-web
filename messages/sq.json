@@ -16,6 +16,14 @@
     "search": "Kërko",
     "calculators": "Kalkulatorë"
   },
+  "cookies": {
+    "title": "Cookies",
+    "body": "Përdorim cookies për të matur si funksionon faqja dhe për të zbuluar gabime. Të dhënat nuk shiten dhe nuk përdoren për reklama.",
+    "accept": "Prano",
+    "decline": "Refuzo",
+    "learnMore": "Mëso më shumë",
+    "manage": "Menaxho cookies"
+  },
   "footer": {
     "label": "Navigimi i fundfaqes",
     "groups": {
@@ -29,6 +37,7 @@
     "privacy": "Privatësia",
     "terms": "Kushtet",
     "glossary": "Fjalorthi",
+    "copyright": "© {year} {brand}. Të gjitha të drejtat e rezervuara.",
     "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen.",
     "calculators": "Kalkulatorë"
   },

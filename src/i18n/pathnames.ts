@@ -24,6 +24,38 @@ export const PATHNAMES = {
   '/learn/[slug]': { sq: '/meso/[slug]' },
   '/learn/glossary': { sq: '/meso/fjalorthi' },
   '/calculators': { sq: '/kalkulatoret' },
+  // Per-calculator SQ slugs. Static entries match exactly before the
+  // `/calculators/[slug]` fallback in `matchPathname`, so a known slug
+  // like `mortgage` becomes `/kalkulatoret/hipoteka` while an unknown
+  // one still resolves through the passthrough. `cagr` stays as-is —
+  // it is a globally-used financial acronym in Kosovar press.
+  '/calculators/compound-interest': {
+    sq: '/kalkulatoret/interesi-i-perbere',
+  },
+  '/calculators/cagr': { sq: '/kalkulatoret/cagr' },
+  '/calculators/mortgage': { sq: '/kalkulatoret/hipoteka' },
+  '/calculators/inflation-adjustment': {
+    sq: '/kalkulatoret/pershtatja-me-inflacionin',
+  },
+  '/calculators/loan-amortization': {
+    sq: '/kalkulatoret/amortizimi-i-kredis',
+  },
+  '/calculators/dividend-reinvestment': {
+    sq: '/kalkulatoret/riinvestimi-i-dividenteve',
+  },
+  '/calculators/dollar-cost-averaging': {
+    sq: '/kalkulatoret/mesatarizimi-i-kostove',
+  },
+  '/calculators/percentage-return': {
+    sq: '/kalkulatoret/kthimi-ne-perqindje',
+  },
+  '/calculators/retirement': { sq: '/kalkulatoret/pensioni' },
+  '/calculators/currency-converter': {
+    sq: '/kalkulatoret/konvertuesi-i-monedhave',
+  },
+  '/calculators/stock-profit': {
+    sq: '/kalkulatoret/fitimi-nga-aksionet',
+  },
   '/calculators/[slug]': { sq: '/kalkulatoret/[slug]' },
   '/calendar': { sq: '/kalendari' },
   '/calendar/[slug]': { sq: '/kalendari/[slug]' },

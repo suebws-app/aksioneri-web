@@ -1,7 +1,9 @@
 import { useTranslations } from 'next-intl';
 import { BrandMark } from '@/components/BrandMark';
+import { CookieRevoke } from '@/components/CookieConsent';
 import { FOOTER_GROUPS } from '@/config/nav';
 import { Link } from '@/i18n/navigation';
+import { LanguageSelector } from './LanguageSelector';
 
 export function SiteFooter() {
   const tNav = useTranslations('nav');
@@ -48,6 +50,19 @@ export function SiteFooter() {
         <p className="text-ink-inverse-faint mt-5 max-w-[76ch] text-[12.5px] leading-relaxed">
           {tFooter('disclaimer')}
         </p>
+
+        <div className="border-line-inverse mt-6 flex flex-col gap-3 border-t pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <LanguageSelector />
+            <CookieRevoke />
+          </div>
+          <p className="text-ink-inverse-faint text-[12.5px]">
+            {tFooter('copyright', {
+              year: new Date().getFullYear(),
+              brand: tNav('brand'),
+            })}
+          </p>
+        </div>
       </div>
     </footer>
   );

@@ -114,6 +114,20 @@
   --animate-drawer-in: drawer-in 220ms cubic-bezier(0.32, 0.72, 0, 1);
   --animate-scrim-in: scrim-in 220ms ease-out;
   --animate-panel-item-in: panel-item-in 260ms ease-out backwards;
+  /* Cookie consent banner. Slides up from below with a slight overshoot
+     so a reader arriving on the page notices it without being ambushed. */
+  --animate-consent-in: consent-in 320ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes consent-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes drawer-in {
@@ -152,7 +166,8 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-drawer-in,
   .animate-scrim-in,
-  .animate-panel-item-in {
+  .animate-panel-item-in,
+  .animate-consent-in {
     animation: none;
   }
 }

@@ -39,6 +39,20 @@ const clientEnvSchema = z.object({
    * browser tab.
    */
   NEXT_PUBLIC_SITE_NAME: z.string().min(1).default('Aksioneri'),
+  /**
+   * Sentry project DSN. When set, error tracking initialises after the
+   * reader accepts cookies; when unset, Sentry is fully disabled.
+   */
+  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
+  /**
+   * PostHog project API key. Same consent-gated flow as Sentry.
+   */
+  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+  /**
+   * PostHog API host. Defaults to the US cloud; set to
+   * `https://eu.i.posthog.com` for EU-region data residency.
+   */
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
 });
 
 const parsed = clientEnvSchema.safeParse({
@@ -47,6 +61,9 @@ const parsed = clientEnvSchema.safeParse({
   NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
   NEXT_PUBLIC_DISPLAY_TZ: process.env.NEXT_PUBLIC_DISPLAY_TZ,
   NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
+  NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+  NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 });
 
 if (!parsed.success) {
