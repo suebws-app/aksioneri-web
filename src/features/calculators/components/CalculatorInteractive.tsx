@@ -215,8 +215,8 @@ function CalculatorIsland({
   };
 
   const handleCopy = () => {
-    // A deliberate action, so it earns a history entry and an immediate URL
-    // write rather than waiting out the debounce.
+    // The reader is about to copy this URL, so it has to be current now
+    // rather than up to 400 ms from now.
     commit();
     reportCalculatorEvent(calculator.slug, 'share');
     void navigator.clipboard.writeText(currentUrl()).then(() => {
@@ -247,7 +247,9 @@ function CalculatorIsland({
               options={CURRENCIES.map((code) => ({ value: code, label: code }))}
               onChange={(next) => {
                 setCurrency(next as Currency);
-                // Switching currency is a decision, not a keystroke.
+                // Flush the URL immediately rather than after the debounce —
+                // but as a replace. Toggling back and forth to compare must
+                // not bury the page under Back presses.
                 commit();
               }}
             />

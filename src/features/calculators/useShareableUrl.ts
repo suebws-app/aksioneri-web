@@ -16,13 +16,17 @@ import { useCallback, useEffect, useRef } from 'react';
  * server's `searchParams` only ever seeds the first render. If something
  * later needs to react to the URL, it must read it here, not there.
  *
- * History policy:
+ * **History policy: nothing here ever pushes an entry.**
  *
- * - Typing and dragging replace the entry. Forty keystrokes must not become
- *   forty back-button presses; Back should leave the calculator.
- * - A deliberate, nameable change — switching currency, picking a scenario,
- *   pressing Share — pushes one entry, because a reader may well want to get
- *   back to it.
+ * An earlier version pushed one for "deliberate, nameable" changes — a
+ * currency switch, a share. The reasoning was that a reader might want to get
+ * back to the previous state. In use it does the opposite: flipping EUR/USD
+ * four times to compare buries the page under four Back presses, and the
+ * reader who wanted to leave is trapped stepping through states they were
+ * never trying to bookmark.
+ *
+ * Changing an input is editing a view, not navigating. Back belongs to the
+ * reader for leaving the page.
  */
 
 /** Trailing debounce. Long enough to skip mid-word, short enough that a copied URL is current. */
@@ -32,23 +36,19 @@ export function useShareableUrl(params: Record<string, string>) {
   const serialised = new URLSearchParams(params).toString();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const write = useCallback((query: string, mode: 'replace' | 'push') => {
+  const write = useCallback((query: string) => {
     const url = query
       ? `${window.location.pathname}?${query}`
       : // No query at all when every value is its default, so the shared URL
         // and the canonical URL are the same string.
         window.location.pathname;
 
-    if (mode === 'push') {
-      window.history.pushState(null, '', url);
-    } else {
-      window.history.replaceState(null, '', url);
-    }
+    window.history.replaceState(null, '', url);
   }, []);
 
   useEffect(() => {
     timer.current = setTimeout(() => {
-      write(serialised, 'replace');
+      write(serialised);
     }, WRITE_DELAY_MS);
 
     return () => {
@@ -56,10 +56,17 @@ export function useShareableUrl(params: Record<string, string>) {
     };
   }, [serialised, write]);
 
-  /** Flush immediately and add a history entry. For Share and scenario changes. */
+  /**
+   * Write the pending change immediately instead of waiting out the debounce.
+   *
+   * For the moments where the URL has to be correct *now* — the reader is
+   * about to copy it, or has just made a change they will read back from the
+   * address bar. Still a replace: flushing early is about freshness, not
+   * about creating something to navigate back to.
+   */
   const commit = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
-    write(serialised, 'push');
+    write(serialised);
   }, [serialised, write]);
 
   /** The absolute URL as it stands, for the copy-link button. */

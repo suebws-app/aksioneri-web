@@ -23,6 +23,8 @@ export const PATHNAMES = {
   '/learn': { sq: '/meso' },
   '/learn/[slug]': { sq: '/meso/[slug]' },
   '/learn/glossary': { sq: '/meso/fjalorthi' },
+  '/calculators': { sq: '/kalkulatoret' },
+  '/calculators/[slug]': { sq: '/kalkulatoret/[slug]' },
   '/calendar': { sq: '/kalendari' },
   '/calendar/[slug]': { sq: '/kalendari/[slug]' },
   '/about': { sq: '/rreth' },

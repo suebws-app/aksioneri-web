@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const SHARED_URL =
-  '/calculators/compound-interest?initial=25000&monthly=750&rate=6&years=15';
+  '/kalkulatoret/compound-interest?initial=25000&monthly=750&rate=6&years=15';
 
 test.describe('calculator pages', () => {
   test('a shared link renders its answer with JavaScript disabled', async ({
@@ -30,7 +30,7 @@ test.describe('calculator pages', () => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
 
-    await page.goto('/calculators/compound-interest');
+    await page.goto('/kalkulatoret/compound-interest');
 
     const firstAnswer = page.locator('details').first();
     await firstAnswer.locator('summary').click();
@@ -50,13 +50,13 @@ test.describe('calculator pages', () => {
 
     expect(canonical).toBeTruthy();
     expect(canonical).not.toContain('?');
-    expect(canonical).toContain('/calculators/compound-interest');
+    expect(canonical).toContain('/kalkulatoret/compound-interest');
   });
 
   test('typing updates the result without stacking history entries', async ({
     page,
   }) => {
-    await page.goto('/calculators/compound-interest');
+    await page.goto('/kalkulatoret/compound-interest');
 
     const before = await page.evaluate(() => window.history.length);
 
@@ -69,8 +69,42 @@ test.describe('calculator pages', () => {
     expect(after).toBe(before);
   });
 
+  test('toggling currency repeatedly never stacks history entries', async ({
+    page,
+  }) => {
+    // The reported bug: switching EUR/USD pushed an entry each time, so a
+    // reader comparing the two four times had to press Back four times to
+    // leave. Changing an input is editing a view, not navigating.
+    await page.goto('/kalkulatoret/compound-interest');
+
+    const before = await page.evaluate(() => window.history.length);
+
+    for (let i = 0; i < 4; i += 1) {
+      await page.getByRole('radio', { name: 'USD' }).check();
+      await page.getByRole('radio', { name: 'EUR' }).check();
+    }
+
+    expect(await page.evaluate(() => window.history.length)).toBe(before);
+
+    // And Back genuinely leaves the calculator.
+    await page.goBack();
+    await expect(page).not.toHaveURL(/compound-interest/);
+  });
+
+  test('copying the link does not add a history entry either', async ({
+    page,
+  }) => {
+    await page.goto('/kalkulatoret/compound-interest');
+    await page.getByLabel(/Norma vjetore/).fill('9');
+
+    const before = await page.evaluate(() => window.history.length);
+    await page.getByRole('button', { name: /Kopjo lidhjen/ }).click();
+
+    expect(await page.evaluate(() => window.history.length)).toBe(before);
+  });
+
   test('an unknown calculator is a 404', async ({ page }) => {
-    const response = await page.goto('/calculators/not-a-calculator');
+    const response = await page.goto('/kalkulatoret/not-a-calculator');
     expect(response?.status()).toBe(404);
   });
 
@@ -78,7 +112,7 @@ test.describe('calculator pages', () => {
     page,
   }) => {
     const response = await page.goto(
-      '/calculators/compound-interest?rate=NaN&years=abc&initial=1e999',
+      '/kalkulatoret/compound-interest?rate=NaN&years=abc&initial=1e999',
     );
 
     expect(response?.status()).toBe(200);
@@ -96,8 +130,8 @@ for (const width of VIEWPORTS) {
 
     for (const path of [
       '/',
-      '/calculators',
-      '/calculators/compound-interest?initial=1000000&monthly=9999&rate=12&years=40',
+      '/kalkulatoret',
+      '/kalkulatoret/compound-interest?initial=1000000&monthly=9999&rate=12&years=40',
     ]) {
       await page.goto(path);
 
