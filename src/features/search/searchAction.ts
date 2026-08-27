@@ -1,8 +1,7 @@
 'use server';
 
-import { getLocale } from 'next-intl/server';
 import { searchArticles } from '@/features/news';
-import type { Locale } from '@/i18n/config';
+import { defaultLocale, isLocale, type Locale } from '@/i18n/config';
 import { articleEntry } from './articleEntry';
 import { buildSearchIndex } from './buildSearchIndex';
 import { MIN_QUERY_LENGTH } from './rankResults';
@@ -36,9 +35,18 @@ const trim = (value: string | undefined): string | undefined => {
  *
  * It is also why this is not a route handler: `fetch` is confined to
  * `lib/api/client.ts` by convention, and an action needs no second call site.
+ *
+ * The locale is a parameter rather than a `getLocale()` call: next-intl
+ * resolves it from the `[locale]` root param (see `i18n/request.ts`), and root
+ * params are unavailable inside a Server Action — reading them there throws,
+ * which answered every open with a 500 and left the reader with the failure
+ * message. The caller is a client component that already knows the locale.
  */
-export async function loadSearchIndex(): Promise<SearchEntry[]> {
-  const locale = (await getLocale()) as Locale;
+export async function loadSearchIndex(
+  requested: Locale,
+): Promise<SearchEntry[]> {
+  // The argument crosses the wire, so it is checked rather than trusted.
+  const locale = isLocale(requested) ? requested : defaultLocale;
   const entries = await buildSearchIndex(locale);
 
   return entries.map((entry) => ({
@@ -58,12 +66,17 @@ export async function loadSearchIndex(): Promise<SearchEntry[]> {
  *
  * Called per query rather than once per session, so it is deliberately small:
  * a dozen results, headlines and standfirsts only.
+ *
+ * Takes the locale for the same reason `loadSearchIndex` does.
  */
-export async function searchWire(query: string): Promise<SearchEntry[]> {
+export async function searchWire(
+  requested: Locale,
+  query: string,
+): Promise<SearchEntry[]> {
   const trimmed = query.trim();
   if (trimmed.length < MIN_QUERY_LENGTH) return [];
 
-  const locale = (await getLocale()) as Locale;
+  const locale = isLocale(requested) ? requested : defaultLocale;
   const articles = await searchArticles(locale, trimmed);
 
   return articles.flatMap((article) => {

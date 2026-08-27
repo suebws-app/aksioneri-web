@@ -12,11 +12,11 @@ import type { SearchEntry } from './searchTypes';
  * Deliberately module state rather than React state: the header remounts on
  * every navigation, and the index should survive that.
  */
-export const createIndexLoader = (
-  fetchIndex: () => Promise<SearchEntry[]>,
+export const createIndexLoader = <Args extends unknown[]>(
+  fetchIndex: (...args: Args) => Promise<SearchEntry[]>,
 ): {
   /** The index, fetching it at most once per successful load. */
-  load: () => Promise<SearchEntry[]>;
+  load: (...args: Args) => Promise<SearchEntry[]>;
   /** What has already been loaded, for a fresh mount's initial state. */
   peek: () => SearchEntry[] | null;
 } => {
@@ -24,10 +24,10 @@ export const createIndexLoader = (
   let inFlight: Promise<SearchEntry[]> | null = null;
 
   return {
-    load: () => {
+    load: (...args: Args) => {
       if (cache) return Promise.resolve(cache);
 
-      inFlight ??= fetchIndex()
+      inFlight ??= fetchIndex(...args)
         .then((entries) => {
           cache = entries;
           return entries;

@@ -91,7 +91,7 @@ export function NavSearch({
     setLoading(true);
     setFailed(false);
     index
-      .load()
+      .load(locale)
       .then(setEntries)
       .catch(() => setFailed(true))
       .finally(() => setLoading(false));
@@ -137,7 +137,7 @@ export function NavSearch({
     // cancelled, so the guard is to ignore whatever a superseded call returns.
     let stale = false;
     const timer = setTimeout(() => {
-      void searchWire(query)
+      void searchWire(locale, query)
         .then((found) => {
           if (!stale) setWire(found);
         })
@@ -150,7 +150,7 @@ export function NavSearch({
       stale = true;
       clearTimeout(timer);
     };
-  }, [open, query, searching]);
+  }, [locale, open, query, searching]);
 
   const results = useMemo(() => {
     // The index already carries the newest stories; the archive answer repeats
