@@ -50,7 +50,7 @@ export function NewsPage({
       />
       <MarketTicker />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <div className="page-container pt-10">
           <div className="mb-5.5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>

@@ -8,8 +8,13 @@ import { locales, type Locale } from '@/i18n/config';
 import { routing } from '@/i18n/routing';
 import { Providers } from '@/components/Providers';
 import { SITE_NAME } from '@/lib/seo/metadata';
-import { organizationSchema, webSiteSchema } from '@/lib/seo/schemas';
+import {
+  organizationSchema,
+  safeJsonLd,
+  webSiteSchema,
+} from '@/lib/seo/schemas';
 import { appUrl } from '@/lib/seo/urls';
+import '../globals.css';
 
 // 'latin-ext' is required for Albanian — ë and ç live outside the latin subset
 // and would otherwise fall back to a system face mid-word.
@@ -76,9 +81,12 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
 
-  // Required for static rendering — without it every page opts into dynamic.
+  // Static rendering needs no `setRequestLocale`: this is the root layout, so
+  // `[locale]` is a root param and `src/i18n/request.ts` reads it through
+  // `next/root-params` instead of the dynamic request headers.
 
   const typedLocale = locale as Locale;
+  const t = await getTranslations({ locale, namespace: 'nav' });
 
   return (
     <html
@@ -86,11 +94,18 @@ export default async function LocaleLayout({
       className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* First tabbable element on every page — WCAG 2.4.1 bypass block. */}
+        <a
+          href="#main-content"
+          className="focus:bg-paper focus:text-ink focus:border-line sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2"
+        >
+          {t('skipToMain')}
+        </a>
         <script
           type="application/ld+json"
           // Built from constants in lib/seo/schemas.ts — never user input.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
+            __html: safeJsonLd([
               organizationSchema(),
               webSiteSchema(typedLocale),
             ]),

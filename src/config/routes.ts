@@ -5,15 +5,19 @@
  *
  * `PRIVATE_PATHS` is the crawler-facing list (blocked in `robots.ts`).
  * `PROTECTED_PREFIXES` is the auth-facing list (redirected in `proxy.ts`).
- * They usually overlap but not always — the search results page is
- * disallowed for crawlers (thin, near-duplicate) but not gated by auth.
  */
 
 /**
- * Paths that must not be indexed. Emitted under every locale prefix by
+ * Paths that must not be crawled at all. Emitted under every locale prefix by
  * `robots.ts`; a sitemap entry for any of these is a crawl error.
+ *
+ * Deliberately NOT here: the search page (`/kerko`). Its result lists are
+ * thin near-duplicates, so the page sets `noIndex: true` via `buildMetadata`
+ * — but it stays crawlable, because a robots disallow would hide that very
+ * `noindex` directive from crawlers, leaving any already-indexed search URL
+ * stuck in the index ("indexed, though blocked by robots.txt").
  */
-export const PRIVATE_PATHS = ['/api/', '/search'] as const;
+export const PRIVATE_PATHS = ['/api/'] as const;
 
 /**
  * Path prefixes that require a signed-in session. Empty for now — the site

@@ -14,7 +14,8 @@
     "learn": "Mëso",
     "calendar": "Kalendari",
     "search": "Kërko",
-    "calculators": "Kalkulatorë"
+    "calculators": "Kalkulatorë",
+    "skipToMain": "Kalo te përmbajtja"
   },
   "cookies": {
     "title": "Cookies",
@@ -162,7 +163,8 @@
     },
     "chart": {
       "loading": "Po ngarkohet…",
-      "empty": "S’ka të dhëna për këtë interval."
+      "empty": "S’ka të dhëna për këtë interval.",
+      "rangeLabel": "Periudha e grafikut"
     },
     "categories": {
       "indices": "Indekse",
@@ -442,7 +444,9 @@
       "rateRange": "Norma del jashtë kufijve që mund të llogariten.",
       "yearsRange": "Afati duhet të jetë mes 1 dhe {max} vjetësh.",
       "ageRange": "Mosha duhet të jetë realiste.",
-      "retireAfterNow": "Mosha e pensionit duhet të jetë pas moshës së tanishme."
+      "retireAfterNow": "Mosha e pensionit duhet të jetë pas moshës së tanishme.",
+      "date": "Zgjidh një datë të vlefshme.",
+      "saleBeforePurchase": "Data e shitjes nuk mund të jetë para datës së blerjes."
     },
     "refusals": {
       "heading": "Nuk del rezultat",
@@ -1305,5 +1309,52 @@
         }
       ]
     }
+  },
+  "auth": {
+    "fields": {
+      "fullName": "Emri i plotë",
+      "email": "Email",
+      "password": "Fjalëkalimi"
+    },
+    "signIn": {
+      "metaTitle": "Kyçu",
+      "metaDescription": "Kyçu në llogarinë tënde Aksioneri për të ndjekur tregjet, kalendarin ekonomik dhe lajmet financiare në Kosovë.",
+      "heading": "Kyçu",
+      "submit": "Kyçu",
+      "submitting": "Duke u kyçur…",
+      "noAccount": "S'ke llogari?",
+      "createAccount": "Krijo llogari"
+    },
+    "signUp": {
+      "metaTitle": "Krijo llogari",
+      "metaDescription": "Hap një llogari të re Aksioneri për tregjet, kalendarin ekonomik dhe lajmet financiare të përditësuara në gjuhën shqipe.",
+      "heading": "Krijo llogari",
+      "submit": "Krijo llogari",
+      "submitting": "Duke e krijuar…",
+      "haveAccount": "Ke llogari?",
+      "signIn": "Kyçu"
+    },
+    "errors": {
+      "fullName": "Shkruaj emrin e plotë.",
+      "email": "Shkruaj një email të vlefshëm.",
+      "passwordRequired": "Shkruaj fjalëkalimin.",
+      "passwordLength": "Fjalëkalimi duhet të ketë së paku {min} karaktere.",
+      "invalidCredentials": "Email-i ose fjalëkalimi nuk është i saktë.",
+      "signUpFailed": "Llogaria nuk u krijua. Provo prapë."
+    }
+  },
+  "notFound": {
+    "metaTitle": "Faqja nuk u gjet",
+    "metaDescription": "Faqja që kërkove nuk ekziston ose mund të jetë zhvendosur. Kthehu në ballinë për lajmet më të reja, tregjet dhe kalkulatorët financiarë.",
+    "heading": "Faqja nuk u gjet",
+    "body": "Kjo faqe nuk ekziston ose është zhvendosur. Kontrollo adresën ose kthehu në ballinë.",
+    "backHome": "Kthehu në ballinë"
+  },
+  "errorBoundary": {
+    "heading": "Diçka shkoi keq",
+    "body": "Nuk mundëm ta hapim këtë faqe tani. Provo prapë për një moment, ose kthehu në ballinë për lajmet dhe tregjet.",
+    "retry": "Provo përsëri",
+    "backHome": "Kthehu në ballinë",
+    "digest": "Kodi i gabimit: {digest}"
   }
 }

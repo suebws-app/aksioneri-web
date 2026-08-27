@@ -43,4 +43,10 @@ export const articleFeedQuery = (
     // The server already rendered page one; without this the browser would
     // re-fetch it on mount and the first paint would flash.
     initialData: { pages: [initialPage], pageParams: [undefined] },
+    // Without a staleTime, tabbing away and back refetched page one and
+    // prepended the same stories the reader was already looking at. Five
+    // minutes matches how often the wire meaningfully changes; a full
+    // reload still fetches fresh.
+    staleTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
   });

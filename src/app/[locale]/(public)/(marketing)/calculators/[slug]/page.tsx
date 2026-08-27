@@ -12,6 +12,7 @@ import { getFxLatest, getPolicyRate } from '@/lib/api/rates';
 import {
   breadcrumbSchema,
   faqPageSchema,
+  safeJsonLd,
   webApplicationSchema,
 } from '@/lib/seo/schemas';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -32,7 +33,11 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const calculator = getCalculator(slug);
-  if (!calculator) return {};
+  // Thrown here rather than only in the page body: `generateMetadata`
+  // resolves before streaming starts, so the response is a real 404 status.
+  // Once the body streams (this segment has a loading.tsx), a late
+  // `notFound()` can only swap the UI under an already-sent 200.
+  if (!calculator) notFound();
 
   const content = await getCalculatorContent(calculator, locale);
 
@@ -125,7 +130,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLd(
             webApplicationSchema(locale, {
               name: content.metaTitle,
               description: content.metaDescription,
@@ -140,13 +145,13 @@ export default async function Page({ params, searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqPageSchema(content.faq)),
+          __html: safeJsonLd(faqPageSchema(content.faq)),
         }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLd(
             breadcrumbSchema(locale, [
               { name: t('breadcrumbRoot'), path: '/calculators' },
               { name: content.heading, path: `/calculators/${slug}` },

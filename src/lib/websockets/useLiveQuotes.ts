@@ -3,6 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import type { Quote, SupportedSymbol } from '@/lib/api/markets';
+import { formatQuotePrice, quotePrecisionOf } from '@/lib/format/quotePrice';
 import { marketsKeys } from '@/lib/query/marketsQueries';
 import {
   marketsSocket,
@@ -16,8 +17,9 @@ import {
  *
  * Nothing in the render tree needs to change: components that already do
  * `useQuery(quotesQuery(initial))` see live values arrive without any
- * additional wiring. The 15 s poll on `quotesQuery` stays as a belt-and-
- * braces safety net for the case where the WS handshake fails.
+ * additional wiring. `quotesQuery` is sockets-only — no poll and no focus
+ * refetch stands behind this hook, so what it writes into the cache is
+ * what stays on screen until the next tick.
  *
  * The refcount inside `marketsSocket` deduplicates: mounting this hook
  * twice for the same symbol opens exactly one upstream subscription.
@@ -60,37 +62,25 @@ export function useLiveQuotes(symbols: readonly SupportedSymbol[]): {
 
 /**
  * Applies one live tick over an existing DTO. The strip's `price` is a
- * formatted string ("6,421.20"), so the tick's numeric price is left to
- * the caller to format via its own precision rules — the merged row keeps
- * the previous formatted string when the tick lacks a price. Everything
- * else that the tick carries overrides.
+ * formatted string ("6,421.20"); the tick's raw number is reformatted to
+ * the exact shape of that SSR string — same fraction digits, same
+ * grouping, same convention as the API's own `formatPrice` — so a tick
+ * updates the digits without visibly rewriting the number. There is no
+ * correcting REST refresh behind this (`quotesQuery` is sockets-only),
+ * so the reformat has to be exact; `lib/format/quotePrice` documents how
+ * it mirrors the API. The merged row keeps the previous formatted string
+ * when the tick lacks a price. Everything else the tick carries overrides.
  */
 function mergeQuote(prev: Quote, tick: LiveQuote): Quote {
   return {
     ...prev,
     price:
-      tick.price !== null ? formatFallback(tick.price, prev.price) : prev.price,
+      tick.price !== null
+        ? formatQuotePrice(tick.price, quotePrecisionOf(prev.price))
+        : prev.price,
     changePercent: tick.changePercent ?? prev.changePercent,
     marketStatus: tick.marketStatus ?? prev.marketStatus,
     quotedAt: tick.quotedAt ?? prev.quotedAt,
     dataSource: tick.dataSource,
   };
-}
-
-/**
- * The WS ticks arrive faster than the API's per-instrument precision
- * rules can be re-derived here. Fall back to a lossy but readable
- * formatting that preserves the previous string's decimal count when we
- * can guess it, otherwise 2 decimals. Not perfect for currency pairs
- * (`EUR/USD` at 4 dp), but survives the round trip until the next REST
- * refresh replaces it with the properly-formatted value.
- */
-function formatFallback(next: number, previousFormatted: string): string {
-  const dotIndex = previousFormatted.indexOf('.');
-  const digits = dotIndex >= 0 ? previousFormatted.length - dotIndex - 1 : 2;
-  return new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-    useGrouping: previousFormatted.includes(','),
-  }).format(next);
 }

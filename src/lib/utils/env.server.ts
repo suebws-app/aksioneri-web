@@ -13,8 +13,12 @@ import { z } from 'zod';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const serverEnvSchema = z.object({
+  // 'staging' matches aksioneri-api's enum, so both halves of one deploy can
+  // share environment naming. Note staging still builds with
+  // NODE_ENV=production under Next — 'staging' is for self-hosted setups
+  // that set it explicitly.
   NODE_ENV: z
-    .enum(['development', 'test', 'production'])
+    .enum(['development', 'test', 'staging', 'production'])
     .default('development'),
 
   // Public origin of this app. Used by better-auth and by every canonical URL.
@@ -26,7 +30,24 @@ const serverEnvSchema = z.object({
 
   // Must be byte-identical to aksioneri-api's AUTH_COOKIE_SECRET — better-auth
   // signs the session cookie here and the API verifies that signature.
-  AUTH_COOKIE_SECRET: z.string().min(32),
+  // Placeholder values from `.env.example` must never reach production.
+  AUTH_COOKIE_SECRET: z
+    .string()
+    .min(32)
+    .refine(
+      (value) =>
+        !isProduction ||
+        (!value.startsWith('replace-me') && !value.includes('changeme')),
+      'AUTH_COOKIE_SECRET still holds a placeholder value; generate a real secret before deploying',
+    ),
+
+  /**
+   * When true, `robots.ts` answers with a disallow-all ruleset and
+   * `buildMetadata` stamps `noindex` on every page. Set NOINDEX=true on any
+   * staging or preview domain so a crawler that finds it cannot index a
+   * duplicate of the production site. Leave unset (false) in production.
+   */
+  NOINDEX: z.stringbool().default(false),
 
   REQUIRE_EMAIL_VERIFICATION: z
     .enum(['true', 'false'])
@@ -57,6 +78,17 @@ const serverEnvSchema = z.object({
    * single source of truth so `authSchema.ts` cannot drift below it.
    */
   MIN_PASSWORD_LENGTH: z.coerce.number().int().positive().default(8),
+
+  /**
+   * Brevo transactional email (password reset, verification). All optional so
+   * existing deploys keep working: when BREVO_API_KEY or EMAIL_FROM is unset,
+   * `lib/email/brevo.ts` logs a structured warning and skips the send instead
+   * of failing. Set both (plus REQUIRE_EMAIL_VERIFICATION=true if wanted)
+   * before routing auth in production.
+   */
+  BREVO_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.email().optional(),
+  EMAIL_FROM_NAME: z.string().default('Aksioneri'),
 });
 
 const parsed = serverEnvSchema.safeParse(process.env);

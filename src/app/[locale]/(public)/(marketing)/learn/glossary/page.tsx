@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { getGlossary, GlossaryPage } from '@/features/learn';
 import type { Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { definedTermSetSchema } from '@/lib/seo/schemas';
+import { definedTermSetSchema, safeJsonLd } from '@/lib/seo/schemas';
 
 export async function generateMetadata({
   params,
@@ -36,7 +36,7 @@ export default async function Page({
         type="application/ld+json"
         // Built from our own glossary, never user input.
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(definedTermSetSchema(locale, terms)),
+          __html: safeJsonLd(definedTermSetSchema(locale, terms)),
         }}
       />
       <GlossaryPage terms={terms} />

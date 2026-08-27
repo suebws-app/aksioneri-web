@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useLocale } from 'next-intl';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ChangeValue } from '@/components/ChangeValue';
 import { Link } from '@/i18n/navigation';
 import {
@@ -10,9 +10,11 @@ import {
   type AssetDetail,
   type SupportedSymbol,
 } from '@/lib/api/markets';
+import { formatQuotePrice, quotePrecisionOf } from '@/lib/format/quotePrice';
 import { assetQuery } from '@/lib/query/marketsQueries';
 import { cn } from '@/lib/utils/cn';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
+import { usePriceFlash } from '../usePriceFlash';
 import { InteractiveSparkline } from './InteractiveSparkline';
 import { tooltipFormatterFor } from './AssetChartLive';
 
@@ -48,20 +50,24 @@ export function MarketMiniChartLive({
   // Pin the display precision from the initial (server-formatted) price
   // — each tick reformats with the same digits + grouping so "7,681.78"
   // stays "7,681.79" on the next tick instead of jumping to a raw
-  // "7681.7822". `initial.price` is stable across renders, so plain
-  // consts are enough; a ref would trip the react-hooks/refs rule.
-  const digits = decimalsIn(initial.price);
-  const grouping = initial.price.includes(',');
+  // "7681.7822". Memoised on `initial.price` so the subscription effect
+  // keeps a stable dependency. See `lib/format/quotePrice` for why the
+  // formatter mirrors the API's convention rather than the site locale.
+  const precision = useMemo(
+    () => quotePrecisionOf(initial.price),
+    [initial.price],
+  );
+  const { digits } = precision;
 
   useEffect(() => {
     const dispose = marketsSocket.subscribe([symbol], (tick: LiveQuote) => {
       if (tick.price !== null) {
-        setLivePrice(formatWithPrecision(tick.price, digits, grouping, locale));
+        setLivePrice(formatQuotePrice(tick.price, precision));
       }
       if (tick.changePercent !== null) setLiveChangePercent(tick.changePercent);
     });
     return dispose;
-  }, [symbol, locale, digits, grouping]);
+  }, [symbol, precision]);
 
   // Weekly view: 168 one-hour bars covers 7 days. Matches the `1W`
   // interval/limit `AssetChartLive` picks so both charts read from the
@@ -163,51 +169,4 @@ function weeklyAxisLabels(times: number[], locale: string): string[] {
   return Array.from({ length: target }, (_, i) =>
     format.format(new Date(times[Math.round(i * step)] as number)),
   );
-}
-
-/**
- * TradingView-style flash. Green when the last render's price was
- * lower than this one, red when it was higher, nothing when unchanged.
- * Duplicated from `MarketTickerLive` / `AssetPriceLive` on purpose —
- * three consumers is exactly where a shared hook starts to earn its
- * keep; promote if a fourth appears.
- */
-function usePriceFlash(price: string): 'up' | 'down' | null {
-  const prevRef = useRef<string>(price);
-  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
-
-  useEffect(() => {
-    const prev = prevRef.current;
-    prevRef.current = price;
-    if (prev === price) return;
-
-    const prevNum = Number(prev.replace(/,/g, ''));
-    const currNum = Number(price.replace(/,/g, ''));
-    if (!Number.isFinite(prevNum) || !Number.isFinite(currNum)) return;
-    if (prevNum === currNum) return;
-
-    setFlash(currNum > prevNum ? 'up' : 'down');
-    const timer = setTimeout(() => setFlash(null), 600);
-    return () => clearTimeout(timer);
-  }, [price]);
-
-  return flash;
-}
-
-function decimalsIn(formatted: string): number {
-  const dot = formatted.indexOf('.');
-  return dot === -1 ? 0 : formatted.length - dot - 1;
-}
-
-function formatWithPrecision(
-  value: number,
-  digits: number,
-  grouping: boolean,
-  locale: string,
-): string {
-  return new Intl.NumberFormat(locale, {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-    useGrouping: grouping,
-  }).format(value);
 }

@@ -50,6 +50,16 @@ class CalendarSocketClient {
         for (const listener of this.listeners) listener(payload);
       },
     );
+
+    // Mirrors `marketsSocket`: a dropped connection means every pulse in
+    // between was missed, so when Socket.io re-establishes the link the
+    // subscribers are notified as if an update had arrived. Their job is
+    // "refetch the calendar", which is exactly the right response to an
+    // outage of unknown length — an empty changed-slugs list because the
+    // wire does not know what changed while it was down.
+    this.socket.io.on('reconnect', () => {
+      for (const listener of this.listeners) listener({ changedSlugs: [] });
+    });
   }
 
   private disconnect(): void {

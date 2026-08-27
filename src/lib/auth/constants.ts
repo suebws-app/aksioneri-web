@@ -18,6 +18,14 @@ export const AUTH_COOKIE_PREFIX = 'aksioneri';
 export const CSRF_HEADER_NAME = 'X-CSRF-Token';
 
 /**
+ * The readable (non-httpOnly) cookie that mirrors the `csrf_token` column of
+ * the session row. better-auth sets it in the `session.create` database hook
+ * so `readCsrfToken` in `lib/api/client.ts` — which derives the same name from
+ * `AUTH_COOKIE_PREFIX` — can send it as `X-CSRF-Token` on every write.
+ */
+export const CSRF_COOKIE_NAME = `${AUTH_COOKIE_PREFIX}.csrf_token`;
+
+/**
  * Where a successful sign-in or sign-up lands. Home for now — the site has no
  * authenticated surface yet (see `proxy.ts`), so a `/dashboard` redirect would
  * 404. Kept as a single source of truth so the destination moves in one place

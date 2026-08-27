@@ -13,6 +13,7 @@ import {
   SUPPORTED_SYMBOLS,
 } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
+import { breadcrumbSchema, safeJsonLd } from '@/lib/seo/schemas';
 
 interface PageProps {
   params: Promise<{ locale: Locale; symbol: string }>;
@@ -44,15 +45,13 @@ export async function generateMetadata({
 
   const asset = await getAssetDetail(symbol);
 
-  if (!asset) {
-    return buildMetadata({
-      title: t('assetNotFoundTitle'),
-      description: t('metaDescription'),
-      path: `/markets/${symbol}`,
-      locale,
-      noIndex: true,
-    });
-  }
+  // Thrown here rather than only in the page body: `generateMetadata`
+  // blocks the response because no loading boundary wraps this segment (the
+  // index's skeleton lives in its own `(index)` group), so
+  // the response carries a real 404 status instead of a 200 whose body
+  // later swaps to the not-found UI. `getAssetDetail` is `cache()`d, so the
+  // page body's identical call costs no second round trip.
+  if (!asset) notFound();
 
   return buildMetadata({
     title: asset.name,
@@ -81,13 +80,31 @@ export default async function Page({ params }: PageProps) {
     await getArticles(locale),
   );
 
+  // Mirrors the visible trail `AssetPage` renders: Markets root → category →
+  // asset. Category and asset crumbs are labels, not links, so they carry no
+  // URL here either.
+  const t = await getTranslations({ locale, namespace: 'markets' });
+  const breadcrumb = breadcrumbSchema(locale, [
+    { name: t('breadcrumbRoot'), path: '/' },
+    { name: t(`categories.${asset.category}`) },
+    { name: asset.name },
+  ]);
+
   return (
-    <AssetPage
-      asset={asset}
-      otherQuotes={quotes.filter((q) => q.symbol !== asset.symbol).slice(0, 5)}
-      events={everyEvent.slice(0, 3)}
-      lessons={everyLesson.slice(0, 3)}
-      articles={relatedArticles}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }}
+      />
+      <AssetPage
+        asset={asset}
+        otherQuotes={quotes
+          .filter((q) => q.symbol !== asset.symbol)
+          .slice(0, 5)}
+        events={everyEvent.slice(0, 3)}
+        lessons={everyLesson.slice(0, 3)}
+        articles={relatedArticles}
+      />
+    </>
   );
 }

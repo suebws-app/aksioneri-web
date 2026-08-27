@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { DayPicker } from 'react-day-picker';
 import { SQ_MONTH_LONG, SQ_WEEKDAY_SHORT } from '@/lib/format/albanianDates';
@@ -133,9 +133,11 @@ export function DatePicker({
 
   const selected = parse(value);
 
-  // Read once per render rather than at module load, so a long-lived tab does
-  // not cap the range at the year it was opened.
-  const latestYear = new Date().getFullYear() + YEARS_AHEAD;
+  // Read once per mount rather than at module load, so a long-lived tab does
+  // not cap the range at the year its first page was opened — and memoised
+  // so the `Date` is not re-created on every keystroke-driven render. A
+  // fifteen-year headroom makes the mount-vs-render distinction moot.
+  const latestYear = useMemo(() => new Date().getFullYear() + YEARS_AHEAD, []);
 
   const [cursor, setCursor] = useState(() => {
     const from = selected ?? new Date();

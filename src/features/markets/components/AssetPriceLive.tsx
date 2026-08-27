@@ -1,9 +1,14 @@
 'use client';
 
-import { useLocale } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import {
+  formatQuotePrice,
+  quotePrecisionOf,
+  type QuotePrecision,
+} from '@/lib/format/quotePrice';
 import { cn } from '@/lib/utils/cn';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
+import { usePriceFlash } from '../usePriceFlash';
 
 /**
  * Big price + change display on the asset page, live-updated over the
@@ -28,46 +33,32 @@ export function AssetPriceLive({
   initialChangePercent,
   initialChangeAbsolute,
 }: AssetPriceLiveProps) {
-  const locale = useLocale();
   const [price, setPrice] = useState(initialPrice);
   const [changePercent, setChangePercent] = useState(initialChangePercent);
   const [changeAbsolute, setChangeAbsolute] = useState(initialChangeAbsolute);
 
   // Precision is inferred from the SSR'd string once and pinned — the
-  // socket tick carries a raw number and we reformat to match the
-  // instrument's convention (2 dp for indices, 0 for BTC, 4 for FX)
-  // without needing a separate per-symbol table on the client.
-  const precisionRef = useRef({
-    digits: decimalPlaces(initialPrice),
-    grouping: initialPrice.includes(','),
-  });
+  // socket tick carries a raw number and we reformat to the exact shape
+  // of the server-rendered string (2 dp for indices, 0 for BTC, 4 for FX)
+  // without needing a separate per-symbol table on the client. See
+  // `lib/format/quotePrice` for why this mirrors the API's formatter
+  // rather than the site locale.
+  const precisionRef = useRef(quotePrecisionOf(initialPrice));
 
   useEffect(() => {
     const dispose = marketsSocket.subscribe([symbol], (tick: LiveQuote) => {
       if (tick.price !== null) {
-        setPrice(
-          formatWithPrecision(
-            tick.price,
-            precisionRef.current.digits,
-            precisionRef.current.grouping,
-            locale,
-          ),
-        );
+        setPrice(formatQuotePrice(tick.price, precisionRef.current));
       }
       if (tick.changePercent !== null) setChangePercent(tick.changePercent);
       if (tick.changeAbsolute !== null) {
         setChangeAbsolute(
-          formatSignedWithPrecision(
-            tick.changeAbsolute,
-            precisionRef.current.digits,
-            precisionRef.current.grouping,
-            locale,
-          ),
+          formatSignedQuotePrice(tick.changeAbsolute, precisionRef.current),
         );
       }
     });
     return dispose;
-  }, [symbol, locale]);
+  }, [symbol]);
 
   const flash = usePriceFlash(price);
   const isNegative = changePercent < 0;
@@ -101,57 +92,14 @@ export function AssetPriceLive({
 }
 
 /**
- * TradingView-style flash. Duplicated from `MarketTickerLive` on purpose:
- * moving it to a shared file adds an indirection for one small hook, and
- * the file boundaries between the strip and the asset page make its
- * ownership ambiguous. If a third consumer needs it, promote then.
+ * Signed variant for the absolute change. True minus (U+2212) rather
+ * than a hyphen, the same choice `ChangeValue.tsx` makes — in Plex Mono
+ * the true minus has the width of a digit, so the column stays aligned.
  */
-function usePriceFlash(price: string): 'up' | 'down' | null {
-  const prevRef = useRef<string>(price);
-  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
-
-  useEffect(() => {
-    const prev = prevRef.current;
-    prevRef.current = price;
-    if (prev === price) return;
-
-    const prevNum = Number(prev.replace(/,/g, ''));
-    const currNum = Number(price.replace(/,/g, ''));
-    if (!Number.isFinite(prevNum) || !Number.isFinite(currNum)) return;
-    if (prevNum === currNum) return;
-
-    setFlash(currNum > prevNum ? 'up' : 'down');
-    const timer = setTimeout(() => setFlash(null), 600);
-    return () => clearTimeout(timer);
-  }, [price]);
-
-  return flash;
-}
-
-function decimalPlaces(formatted: string): number {
-  const dot = formatted.indexOf('.');
-  return dot === -1 ? 0 : formatted.length - dot - 1;
-}
-
-function formatWithPrecision(
+function formatSignedQuotePrice(
   value: number,
-  digits: number,
-  grouping: boolean,
-  locale: string,
-): string {
-  return new Intl.NumberFormat(locale, {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-    useGrouping: grouping,
-  }).format(value);
-}
-
-function formatSignedWithPrecision(
-  value: number,
-  digits: number,
-  grouping: boolean,
-  locale: string,
+  precision: QuotePrecision,
 ): string {
   const sign = value >= 0 ? '+' : '−';
-  return `${sign}${formatWithPrecision(Math.abs(value), digits, grouping, locale)}`;
+  return `${sign}${formatQuotePrice(Math.abs(value), precision)}`;
 }

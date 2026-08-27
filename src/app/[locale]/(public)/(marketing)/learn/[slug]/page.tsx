@@ -14,7 +14,11 @@ import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { learningResourceSchema } from '@/lib/seo/schemas';
+import {
+  breadcrumbSchema,
+  learningResourceSchema,
+  safeJsonLd,
+} from '@/lib/seo/schemas';
 
 interface PageProps {
   params: Promise<{ locale: Locale; slug: string }>;
@@ -31,17 +35,13 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const lesson = getLessonBySlug(locale, slug);
-  const t = await getTranslations({ locale, namespace: 'learn' });
 
-  if (!lesson) {
-    return buildMetadata({
-      title: t('notFoundTitle'),
-      description: t('metaDescription'),
-      path: `/learn/${slug}`,
-      locale,
-      noIndex: true,
-    });
-  }
+  // Thrown here rather than only in the page body: `generateMetadata`
+  // blocks the response because no loading boundary wraps this segment (the
+  // index's skeleton lives in its own `(index)` group), so
+  // the response carries a real 404 status instead of a 200 whose body
+  // later swaps to the not-found UI.
+  if (!lesson) notFound();
 
   return buildMetadata({
     title: lesson.title,
@@ -92,12 +92,30 @@ export default async function Page({ params }: PageProps) {
     ...(lesson.track ? { topic: lesson.track.topicTitle } : {}),
   });
 
+  // Mirrors the visible trail `LessonPage` renders: Learn → topic → lesson
+  // number. The topic and lesson crumbs are labels, not links, so they carry
+  // no URL here either.
+  const t = await getTranslations({ locale, namespace: 'learn' });
+  const breadcrumb = breadcrumbSchema(locale, [
+    { name: t('heading'), path: '/learn' },
+    ...(lesson.track
+      ? [
+          { name: lesson.track.topicTitle },
+          { name: t('lessonNumber', { number: lesson.track.position }) },
+        ]
+      : []),
+  ]);
+
   return (
     <>
       <script
         type="application/ld+json"
         // Built from constants and our own content, never user input.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }}
       />
       <LessonPage
         lesson={lesson}

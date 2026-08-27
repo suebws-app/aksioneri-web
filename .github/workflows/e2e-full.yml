@@ -1,0 +1,153 @@
+name: E2E Full
+
+# The regular CI job runs Playwright WITHOUT the API, so the news/markets
+# specs self-skip on an empty wire. This workflow boots the real API against
+# a seeded database and runs the FULL suite. Manual trigger + nightly.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 03:40 UTC nightly — after the API's nightly work, before EU mornings.
+    - cron: '40 3 * * *'
+
+env:
+  # TODO: set to the real API repository (owner/name). If the repo is private,
+  # also create a repo secret API_REPO_TOKEN holding a fine-grained PAT with
+  # read access to it, and it will be used by the checkout step below.
+  API_REPO: your-org/aksioneri-api
+
+jobs:
+  e2e-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: aksioneri
+          POSTGRES_PASSWORD: aksioneri
+          POSTGRES_DB: aksioneri
+        ports: ['5433:5432']
+        options: >-
+          --health-cmd "pg_isready -U aksioneri -d aksioneri"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+
+    steps:
+      - name: Checkout aksioneri-web
+        uses: actions/checkout@v4
+        with:
+          path: web
+
+      - name: Checkout aksioneri-api (sibling)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.API_REPO }}
+          # Falls back to the default GITHUB_TOKEN when API_REPO_TOKEN is not
+          # set (fine when the API repo is public or same-org readable).
+          token: ${{ secrets.API_REPO_TOKEN || github.token }}
+          path: api
+
+      - uses: pnpm/action-setup@v4
+        with:
+          # Both repos pin the same pnpm via "packageManager"; the checkout
+          # lives in a subdirectory, so point the action at one of them.
+          package_json_file: web/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: |
+            web/pnpm-lock.yaml
+            api/pnpm-lock.yaml
+
+      # ----- API: install, migrate, seed, boot -----------------------------
+      - name: Install API dependencies
+        working-directory: api
+        run: pnpm install --frozen-lockfile
+
+      - name: Migrate and seed the API database
+        working-directory: api
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://aksioneri:aksioneri@localhost:5433/aksioneri
+          AUTH_COOKIE_SECRET: ci-secret-value-at-least-32-characters-long
+        run: |
+          pnpm db:migrate
+          pnpm seed-data
+
+      - name: Build and boot the API in the background
+        working-directory: api
+        # Same CI-safe env pattern as the API repo's own ci.yml: every flag
+        # that reaches an outside network stays off. The specs run against
+        # seeded data, not live feeds.
+        env:
+          NODE_ENV: test
+          PORT: 4000
+          WEB_ORIGIN: http://localhost:3000
+          DATABASE_URL: postgresql://aksioneri:aksioneri@localhost:5433/aksioneri
+          AUTH_COOKIE_SECRET: ci-secret-value-at-least-32-characters-long
+          NEWS_INGEST_ENABLED: 'false'
+          NEWS_SCRAPE_ENABLED: 'false'
+          NEWS_TRANSLATE_ENABLED: 'false'
+          CALENDAR_SYNC_ENABLED: 'false'
+          CALENDAR_EXPLAIN_ENABLED: 'false'
+          MARKETS_SOCKET_ENABLED: 'false'
+          CALENDAR_SOCKET_ENABLED: 'false'
+          RATES_FX_SYNC_ENABLED: 'false'
+          RATES_INFLATION_SYNC_ENABLED: 'false'
+          RATES_POLICY_SYNC_ENABLED: 'false'
+        run: |
+          pnpm build
+          nohup node dist/main > api.log 2>&1 &
+          echo $! > api.pid
+
+      - name: Wait for API readiness
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:4000/api/ready > /dev/null 2>&1; then
+              echo "API ready after ${i} attempts"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::API never became ready"
+          tail -n 200 api/api.log
+          exit 1
+
+      # ----- Web: install, build, full Playwright suite ---------------------
+      - name: Install web dependencies
+        working-directory: web
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web app
+        working-directory: web
+        env:
+          APP_URL: http://localhost:3000
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          NEXT_PUBLIC_API_URL: http://localhost:4000/api
+          DATABASE_URL: postgres://aksioneri:aksioneri@localhost:5433/aksioneri
+          AUTH_COOKIE_SECRET: ci-secret-value-at-least-32-characters-long
+          REQUIRE_EMAIL_VERIFICATION: 'false'
+        run: pnpm build
+
+      - name: Install Playwright browsers
+        working-directory: web
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run full e2e suite against the live API
+        working-directory: web
+        env:
+          APP_URL: http://localhost:3000
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          NEXT_PUBLIC_API_URL: http://localhost:4000/api
+          DATABASE_URL: postgres://aksioneri:aksioneri@localhost:5433/aksioneri
+          AUTH_COOKIE_SECRET: ci-secret-value-at-least-32-characters-long
+          REQUIRE_EMAIL_VERIFICATION: 'false'
+        # Playwright's webServer starts the built app (`pnpm start`) itself.
+        run: pnpm test:e2e
+
+      - name: Dump API log on failure
+        if: failure()
+        run: tail -n 300 api/api.log || true

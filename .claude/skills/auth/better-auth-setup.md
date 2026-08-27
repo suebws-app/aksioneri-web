@@ -37,6 +37,11 @@ Consequences:
 - The `session.create` database hook generates `csrf_token`. The column is
   `NOT NULL` and the API compares it against the `X-CSRF-Token` header on every
   write, so removing that hook breaks sign-in and all mutations.
+- The same hook's `after` step mirrors that token into the readable
+  `aksioneri.csrf_token` cookie (`CSRF_COOKIE_NAME`) via `ctx.setCookie`, which
+  `readCsrfToken` in `lib/api/client.ts` reads on client-side writes. A
+  `hooks.after` middleware expires it on `/sign-out`. Removing either half
+  makes every client-side mutation fail with `403 Missing CSRF token`.
 
 ## Core Principles
 
@@ -88,6 +93,24 @@ Three edits, one commit:
 1. `PROTECTED_PREFIXES` in `src/proxy.ts`
 2. A real `getCurrentUser()` check in the page or layout
 3. `PRIVATE_PATHS` in `src/app/robots.ts`, plus `noIndex: true` in its metadata
+
+## Re-enabling auth (checklist)
+
+Auth is parked — complete and unrouted (see `src/features/auth/README.md` for
+the four routing steps). State of the prerequisites:
+
+- **CSRF cookie: done.** The session-create hook mirrors `csrf_token` into the
+  readable `aksioneri.csrf_token` cookie and sign-out clears it. No wiring
+  needed when routes come back.
+- **Email: wired.** `sendResetPassword` and `emailVerification.sendVerificationEmail`
+  go through Brevo (`src/lib/email/`). In production set `BREVO_API_KEY`,
+  `EMAIL_FROM` (optionally `EMAIL_FROM_NAME`) and `REQUIRE_EMAIL_VERIFICATION=true`;
+  unset, the email module logs a warning and skips sends (dev-safe no-op).
+- **Rate limiting: on outside dev/test** (including staging and previews), not
+  just production.
+- **`callbackUrl` validation and account-enumeration fixes: already applied**
+  in `src/features/auth` — do not reintroduce open redirects or per-field
+  credential errors when rebuilding the pages.
 
 ## Debugging
 

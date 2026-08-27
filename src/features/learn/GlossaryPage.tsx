@@ -29,7 +29,7 @@ export function GlossaryPage({ terms }: GlossaryPageProps) {
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="border-line bg-surface-muted border-b">
           <div className="page-container py-11">
             <nav aria-label={t('heading')} className="mb-4">

@@ -4,10 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Button } from '@/components/Button';
+import { Field } from '@/components/Field';
 import { Link, useRouter } from '@/i18n/navigation';
 import { POST_SIGN_IN_ROUTE } from '@/lib/auth/constants';
 import { signUp } from '@/lib/auth/client';
 import { signUpSchema, type SignUpValues } from './authSchema';
+
+const INPUT_CLASS =
+  'border-line-strong bg-surface text-ink placeholder:text-ink-ghost focus:border-accent min-h-11 w-full rounded-sm border px-3.5 py-2.5 text-[15px] outline-none';
 
 export function SignUpPage() {
   const t = useTranslations('auth');
@@ -31,11 +36,11 @@ export function SignUpPage() {
     });
 
     if (error) {
-      setFormError(
-        error.status === 422
-          ? t('errors.emailTaken')
-          : t('errors.signUpFailed'),
-      );
+      // One generic message for every failure, including "email already
+      // registered" — a distinct message would let anyone probe which
+      // addresses have accounts (the same enumeration leak the sign-in
+      // form avoids).
+      setFormError(t('errors.signUpFailed'));
       return;
     }
 
@@ -50,66 +55,68 @@ export function SignUpPage() {
     >
       <h1 className="text-2xl font-semibold">{t('signUp.heading')}</h1>
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">{t('fields.fullName')}</span>
-        <input
-          {...register('fullName')}
-          autoComplete="name"
-          aria-invalid={Boolean(errors.fullName)}
-          className="border-foreground/20 rounded-md border px-3 py-2"
-        />
-        {errors.fullName ? (
-          <span role="alert" className="text-sm text-red-600">
-            {errors.fullName.message}
-          </span>
-        ) : null}
-      </label>
+      <Field
+        name="fullName"
+        label={t('fields.fullName')}
+        error={errors.fullName?.message}
+      >
+        {({ id, describedBy, invalid }) => (
+          <input
+            {...register('fullName')}
+            id={id}
+            autoComplete="name"
+            aria-invalid={invalid}
+            aria-describedby={describedBy}
+            className={INPUT_CLASS}
+          />
+        )}
+      </Field>
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">{t('fields.email')}</span>
-        <input
-          {...register('email')}
-          type="email"
-          autoComplete="email"
-          aria-invalid={Boolean(errors.email)}
-          className="border-foreground/20 rounded-md border px-3 py-2"
-        />
-        {errors.email ? (
-          <span role="alert" className="text-sm text-red-600">
-            {errors.email.message}
-          </span>
-        ) : null}
-      </label>
+      <Field
+        name="email"
+        label={t('fields.email')}
+        error={errors.email?.message}
+      >
+        {({ id, describedBy, invalid }) => (
+          <input
+            {...register('email')}
+            id={id}
+            type="email"
+            autoComplete="email"
+            aria-invalid={invalid}
+            aria-describedby={describedBy}
+            className={INPUT_CLASS}
+          />
+        )}
+      </Field>
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">{t('fields.password')}</span>
-        <input
-          {...register('password')}
-          type="password"
-          autoComplete="new-password"
-          aria-invalid={Boolean(errors.password)}
-          className="border-foreground/20 rounded-md border px-3 py-2"
-        />
-        {errors.password ? (
-          <span role="alert" className="text-sm text-red-600">
-            {errors.password.message}
-          </span>
-        ) : null}
-      </label>
+      <Field
+        name="password"
+        label={t('fields.password')}
+        error={errors.password?.message}
+      >
+        {({ id, describedBy, invalid }) => (
+          <input
+            {...register('password')}
+            id={id}
+            type="password"
+            autoComplete="new-password"
+            aria-invalid={invalid}
+            aria-describedby={describedBy}
+            className={INPUT_CLASS}
+          />
+        )}
+      </Field>
 
       {formError ? (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-negative text-sm">
           {formError}
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-foreground text-background rounded-md px-4 py-2 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={isSubmitting} block>
         {isSubmitting ? t('signUp.submitting') : t('signUp.submit')}
-      </button>
+      </Button>
 
       <p className="text-sm">
         {t('signUp.haveAccount')}{' '}

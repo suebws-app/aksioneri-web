@@ -13,6 +13,14 @@ import { z } from 'zod';
 // `NODE_ENV` is set by Next itself; safe to read at module load.
 const isProduction = process.env.NODE_ENV === 'production';
 
+/**
+ * Whether this build runs with `NODE_ENV=production`. Exported so modules
+ * that are safe to import anywhere (`proxy.ts`, client code) share one
+ * source instead of reading `process.env` — which is only allowed in the
+ * two env files.
+ */
+export const IS_PRODUCTION = isProduction;
+
 const optionalUrl = (fallback: string) =>
   isProduction ? z.url() : z.url().default(fallback);
 
@@ -53,6 +61,17 @@ const clientEnvSchema = z.object({
    * `https://eu.i.posthog.com` for EU-region data residency.
    */
   NEXT_PUBLIC_POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
+  /**
+   * Minimum password length the sign-up form enforces. Must match the
+   * server's MIN_PASSWORD_LENGTH (better-auth's `minPasswordLength`) — a
+   * client that accepts a shorter password than the server produces a
+   * confusing rejection after submit.
+   */
+  NEXT_PUBLIC_MIN_PASSWORD_LENGTH: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(8),
 });
 
 const parsed = clientEnvSchema.safeParse({
@@ -64,6 +83,7 @@ const parsed = clientEnvSchema.safeParse({
   NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
   NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+  NEXT_PUBLIC_MIN_PASSWORD_LENGTH: process.env.NEXT_PUBLIC_MIN_PASSWORD_LENGTH,
 });
 
 if (!parsed.success) {

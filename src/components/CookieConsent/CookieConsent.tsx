@@ -16,10 +16,13 @@ import { useConsent } from '@/lib/consent/consentContext';
  *   - `animate-consent-in` slides it up from below on first paint;
  *     `prefers-reduced-motion` disables the movement.
  *
- * `role="dialog"` + `aria-labelledby`/`aria-describedby` gives screen
- * readers a titled description of what they are being asked. Focus is
- * deliberately NOT trapped: the banner is optional at the bottom of the
- * page and blocking navigation would be worse UX than blocking analytics.
+ * `role="region"` + `aria-labelledby`/`aria-describedby` gives screen
+ * readers a titled, findable landmark for what they are being asked.
+ * Deliberately not `role="dialog"`: the banner is non-modal — focus is
+ * not trapped and nothing is blocked — and a dialog role promises modal
+ * semantics the banner does not deliver. The banner stays optional at
+ * the bottom of the page; blocking navigation would be worse UX than
+ * blocking analytics.
  */
 export function CookieConsent() {
   const { status, accept, decline } = useConsent();
@@ -29,7 +32,7 @@ export function CookieConsent() {
 
   return (
     <div
-      role="dialog"
+      role="region"
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-body"
       className="border-ink-inverse-muted bg-surface-inverse text-ink-inverse animate-consent-in fixed inset-x-0 bottom-0 z-50 border-t shadow-2xl"

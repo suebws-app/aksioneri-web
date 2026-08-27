@@ -42,7 +42,7 @@ export function MarketsIndexPage({ groups }: MarketsIndexPageProps) {
       />
       <MarketTicker />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <div className="page-container pt-10">
           <div className="mb-8">
             <h1 className="text-ink mb-2 font-serif text-[38px] font-medium tracking-[-0.02em]">

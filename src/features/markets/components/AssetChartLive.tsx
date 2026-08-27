@@ -118,27 +118,32 @@ export function AssetChartLive({
     <section className="border-line bg-surface mb-8 rounded-sm border p-6.5 sm:px-7">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         {/* Range abbreviations (1D/1W/…) are universal in finance so
-            they stay untranslated in every locale. */}
-        <ul className="flex flex-wrap gap-1.5 text-[13px]" role="tablist">
+            they stay untranslated in every locale. A labelled group of
+            toggle buttons, not tabs: there is no tabpanel to control and
+            no roving focus — each button is independently tabbable and
+            announces its pressed state. */}
+        <div
+          className="flex flex-wrap gap-1.5 text-[13px]"
+          role="group"
+          aria-label={t('rangeLabel')}
+        >
           {RANGES.map((r) => (
-            <li key={r}>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={r === range}
-                onClick={() => setRange(r)}
-                className={cn(
-                  'rounded-[3px] px-3.5 py-2 transition-colors',
-                  r === range
-                    ? 'bg-ink text-paper'
-                    : 'border-line-strong text-ink-muted hover:text-ink border',
-                )}
-              >
-                {r}
-              </button>
-            </li>
+            <button
+              key={r}
+              type="button"
+              aria-pressed={r === range}
+              onClick={() => setRange(r)}
+              className={cn(
+                'rounded-[3px] px-3.5 py-2 transition-colors',
+                r === range
+                  ? 'bg-ink text-paper'
+                  : 'border-line-strong text-ink-muted hover:text-ink border',
+              )}
+            >
+              {r}
+            </button>
           ))}
-        </ul>
+        </div>
       </div>
 
       {values.length >= 2 ? (

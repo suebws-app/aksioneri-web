@@ -81,7 +81,7 @@ export async function CalculatorsIndexPage({
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <header className="page-container pt-10">
           <div className="pb-5">
             <h1 className="text-ink mb-3.5 font-serif text-[46px] leading-[1.05] font-medium tracking-[-0.022em] text-balance">

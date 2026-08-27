@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useConsent } from '@/lib/consent/consentContext';
 import { clientEnv } from '@/lib/utils/env.client';
 
 /**
@@ -11,6 +12,11 @@ import { clientEnv } from '@/lib/utils/env.client';
  * "compute" happens. It is also fire-and-forget by design: nothing here is
  * awaited, nothing blocks a render, and a failure is silently dropped — a
  * counter is not worth a single visible error.
+ *
+ * **Consent-gated.** The site promises a working "Menaxho cookies" control,
+ * so no analytics event fires until the reader has explicitly granted
+ * consent. Necessary cookies (session, CSRF, learn progress) are exempt and
+ * remain outside this gate; a calculator counter is not necessary.
  *
  * What is sent is a slug and an event name. Nothing else. The reader's
  * inputs — their salary, their mortgage, their pension — never leave the
@@ -35,23 +41,39 @@ function send(slug: string, event: CalculatorEvent): void {
   }
 }
 
-/** Count one page view, once per mount. */
+/** Count one page view, once per mount — only after consent. */
 export function useCalculatorView(slug: string): void {
+  const { status } = useConsent();
   // A ref rather than an empty dependency array alone: React's dev-mode
   // double-invoke would otherwise count every view twice.
   const sent = useRef(false);
 
   useEffect(() => {
+    if (status !== 'granted') return;
     if (sent.current) return;
     sent.current = true;
     send(slug, 'view');
-  }, [slug]);
+  }, [slug, status]);
 }
 
-/** Report a deliberate action — a share, or the first calculation. */
-export function reportCalculatorEvent(
+/**
+ * Returns a reporter for deliberate actions — a share, or the first
+ * calculation. The returned function is a stable callback that silently
+ * no-ops when consent has not been granted.
+ *
+ * Replaces the previous standalone `reportCalculatorEvent` export, which
+ * fired regardless of consent and quietly broke the cookie-banner promise.
+ */
+export function useCalculatorReporter(): (
   slug: string,
   event: CalculatorEvent,
-): void {
-  send(slug, event);
+) => void {
+  const { status } = useConsent();
+  return useCallback(
+    (slug: string, event: CalculatorEvent) => {
+      if (status !== 'granted') return;
+      send(slug, event);
+    },
+    [status],
+  );
 }

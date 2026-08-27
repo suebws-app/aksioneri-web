@@ -61,27 +61,49 @@ const fields: readonly FieldSpec<ReturnInput>[] = [
   },
 ];
 
+/**
+ * `YYYY-MM-DD`, and actually a calendar day: the format check catches a
+ * mangled string, the parse catches `2023-02-31`, which matches the regex
+ * but is not a date. Parsed at UTC midnight, the same discipline the
+ * engine's `daysBetween` applies.
+ */
+const isoDate = (t: Translate) =>
+  z
+    .string({ message: t('errors.date') })
+    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: t('errors.date') })
+    .refine((value) => !Number.isNaN(Date.parse(`${value}T00:00:00Z`)), {
+      message: t('errors.date'),
+    });
+
 const schema = (t: Translate) =>
-  z.object({
-    invested: z
-      .number({ message: t('errors.number') })
-      .min(0, { message: t('errors.notNegative') }),
-    currentValue: z
-      .number({ message: t('errors.number') })
-      .min(0, { message: t('errors.notNegative') }),
-    dividends: z
-      .number({ message: t('errors.number') })
-      .min(0, { message: t('errors.notNegative') }),
-    fees: z
-      .number({ message: t('errors.number') })
-      .min(0, { message: t('errors.notNegative') }),
-    purchaseDate: z.string(),
-    saleDate: z.string(),
-    inflationPercent: z
-      .number({ message: t('errors.number') })
-      .min(0, { message: t('errors.notNegative') })
-      .max(100, { message: t('errors.rateRange') }),
-  }) satisfies z.ZodType<ReturnInput>;
+  z
+    .object({
+      invested: z
+        .number({ message: t('errors.number') })
+        .min(0, { message: t('errors.notNegative') }),
+      currentValue: z
+        .number({ message: t('errors.number') })
+        .min(0, { message: t('errors.notNegative') }),
+      dividends: z
+        .number({ message: t('errors.number') })
+        .min(0, { message: t('errors.notNegative') }),
+      fees: z
+        .number({ message: t('errors.number') })
+        .min(0, { message: t('errors.notNegative') }),
+      purchaseDate: isoDate(t),
+      saleDate: isoDate(t),
+      inflationPercent: z
+        .number({ message: t('errors.number') })
+        .min(0, { message: t('errors.notNegative') })
+        .max(100, { message: t('errors.rateRange') }),
+    })
+    // Attached to `saleDate` — the field the reader is likeliest to fix.
+    // String comparison is date comparison for ISO dates. Only runs when
+    // both fields already parse, so it never masks a format error.
+    .refine((values) => values.saleDate >= values.purchaseDate, {
+      message: t('errors.saleBeforePurchase'),
+      path: ['saleDate'],
+    }) satisfies z.ZodType<ReturnInput>;
 
 export const investmentReturn: CalculatorDefinition<ReturnInput, ReturnResult> =
   {

@@ -22,8 +22,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'search' });
 
   // Search result pages are never worth indexing: they are unbounded (one URL
-  // per query), thin, and duplicate the pages they link to. Listed in
-  // `robots.ts` as well — noIndex alone still spends crawl budget.
+  // per query), thin, and duplicate the pages they link to. Deliberately NOT
+  // disallowed in `robots.ts` — crawlers must stay able to fetch the page to
+  // see this `noindex`; see PRIVATE_PATHS in `@/config/routes`.
   return buildMetadata({
     title: t('metaTitle'),
     description: t('metaDescription'),

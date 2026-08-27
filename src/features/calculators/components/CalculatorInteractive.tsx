@@ -9,7 +9,7 @@ import type { ComputeContext, Outcome } from '../engine';
 import { getCalculator } from '../registry';
 import type { AnyCalculator, ChartSpec, FieldSpec, ResultSpec } from '../types';
 import {
-  reportCalculatorEvent,
+  useCalculatorReporter,
   useCalculatorView,
 } from '../useCalculatorEvent';
 import { useShareableUrl } from '../useShareableUrl';
@@ -192,6 +192,7 @@ function CalculatorIsland({
   // Anonymous counters: a slug and an event name, nothing else. See
   // `useCalculatorEvent.ts` for what is deliberately not sent.
   useCalculatorView(calculator.slug);
+  const reportEvent = useCalculatorReporter();
 
   // "Used" means the reader changed something, not that the page loaded with
   // its defaults — otherwise every view would also count as a calculation and
@@ -203,7 +204,7 @@ function CalculatorIsland({
 
     if (!countedCompute.current) {
       countedCompute.current = true;
-      reportCalculatorEvent(calculator.slug, 'compute');
+      reportEvent(calculator.slug, 'compute');
     }
   };
 

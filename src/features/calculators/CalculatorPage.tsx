@@ -54,7 +54,7 @@ export async function CalculatorPage({
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Breadcrumb
           label={t('breadcrumbLabel')}
           items={[

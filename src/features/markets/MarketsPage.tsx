@@ -53,7 +53,7 @@ export function MarketsPage({
       />
       <MarketTicker />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <div className="page-container pt-11 pb-10">
           <SectionHeading title={t('todayHeading')} size="lg" rule="strong" />
 

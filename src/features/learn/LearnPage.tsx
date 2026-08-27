@@ -55,7 +55,7 @@ export function LearnPage({
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="border-line bg-surface-muted border-b">
           <div className="page-container flex flex-col gap-12 py-13 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[620px]">

@@ -70,6 +70,70 @@ describe('computeAmortization', () => {
     expect(value(computeAmortization(loan)).schedule).toHaveLength(360);
   });
 
+  it('reports the nominal effective-annual equivalent when there are no fees', () => {
+    // With no fees the IRR of the cash flows is the nominal monthly rate,
+    // so the annualised figure is (1 + 0.04/12)^12 − 1 = 4.0742% — checked
+    // two independent ways (bisection over the cent-exact schedule, and
+    // Newton on the closed-form annuity), both landing on 4.07 at 2 dp.
+    expect(value(computeAmortization(loan)).effectiveRatePercent).toBeCloseTo(
+      4.07,
+      2,
+    );
+  });
+
+  it('reports a zero effective rate for a free loan', () => {
+    const result = value(
+      computeAmortization({
+        ...loan,
+        principal: 12_000,
+        ratePercent: 0,
+        years: 2,
+        fees: 0,
+      }),
+    );
+    expect(result.effectiveRatePercent).toBe(0);
+  });
+
+  it('prices upfront fees into the effective rate', () => {
+    // 2,000 in fees on a 200,000 advance: the borrower receives 198,000
+    // and pays the same 954.83 × 360 schedule. Solving
+    // 198,000 = Σ 954.83 / (1+r)^i gives r ≈ 0.0034029 monthly, i.e.
+    // (1.0034029)^12 − 1 = 4.1607% — hand-checked via Newton on the
+    // closed-form annuity as well as bisection.
+    const withFees = value(computeAmortization({ ...loan, fees: 2_000 }));
+    expect(withFees.effectiveRatePercent).toBeCloseTo(4.16, 2);
+  });
+
+  it('prices fees on an otherwise free loan as a positive rate', () => {
+    // 120 upfront on a 12,000 zero-interest 24-month loan: 11,880 received,
+    // 500 × 24 repaid. IRR ≈ 0.0806% monthly → 0.97% annual.
+    const result = value(
+      computeAmortization({
+        ...loan,
+        principal: 12_000,
+        ratePercent: 0,
+        years: 2,
+        fees: 120,
+      }),
+    );
+    expect(result.effectiveRatePercent).toBeCloseTo(0.97, 2);
+    expect(result.effectiveRatePercent).toBeGreaterThan(0);
+  });
+
+  it('refuses fees that consume the whole advance', () => {
+    // A "loan" whose upfront fees equal or exceed the principal hands the
+    // borrower nothing — there is no rate to state.
+    expect(
+      reason(
+        computeAmortization({
+          ...loan,
+          principal: 1_000,
+          fees: 1_000,
+        }),
+      ),
+    ).toBe('rateOutOfRange');
+  });
+
   it('repays straight-line at a zero rate', () => {
     const result = value(
       computeAmortization({
@@ -131,6 +195,9 @@ describe('computeAmortization', () => {
     expect(withFees.totalRepaid).toBeCloseTo(without.totalRepaid + 2_000, 2);
     expect(withFees.costOfBorrowingPercent).toBeGreaterThan(
       without.costOfBorrowingPercent,
+    );
+    expect(withFees.effectiveRatePercent).toBeGreaterThan(
+      without.effectiveRatePercent,
     );
   });
 

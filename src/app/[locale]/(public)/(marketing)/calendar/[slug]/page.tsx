@@ -14,6 +14,7 @@ import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
+import { breadcrumbSchema, safeJsonLd } from '@/lib/seo/schemas';
 
 interface PageProps {
   params: Promise<{ locale: Locale; slug: string }>;
@@ -46,22 +47,26 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'calendar' });
 
-  const row = await getEventDetail(locale, slug);
+  // Same resolution chain as the page body — by-slug endpoint first, then
+  // the week list — so metadata and page agree on what exists. Both calls
+  // are `cache()`d, so the body's identical calls cost no second round trip.
+  const row =
+    (await getEventDetail(locale, slug)) ??
+    (await getCalendarWeek(locale)).days
+      .flatMap((day) => day.events)
+      .find((event) => event.slug === slug);
 
-  if (!row) {
-    return buildMetadata({
-      title: t('event.notFoundTitle'),
-      description: t('metaDescription'),
-      path: `/calendar/${slug}`,
-      locale,
-      noIndex: true,
-    });
-  }
+  // Thrown here rather than only in the page body: `generateMetadata`
+  // blocks the response because no loading boundary wraps this segment (the
+  // index's skeleton lives in its own `(index)` group), so
+  // the response carries a real 404 status instead of a 200 whose body
+  // later swaps to the not-found UI.
+  if (!row) notFound();
 
   return buildMetadata({
     title: row.title,
     description:
-      row.explanation?.summary ||
+      ('explanation' in row ? row.explanation?.summary : undefined) ||
       t('event.fallbackDescription', { title: row.title }),
     path: `/calendar/${slug}`,
     locale,
@@ -116,23 +121,38 @@ export default async function Page({ params }: PageProps) {
 
   const reactingSymbols = new Set(detail.reactingSymbols ?? []);
 
+  // Mirrors the visible trail `EventPage` renders: Calendar → region →
+  // release. Region and release crumbs are labels, not links, so they carry
+  // no URL here either.
+  const breadcrumb = breadcrumbSchema(locale, [
+    { name: t('heading'), path: '/calendar' },
+    { name: detail.regionName },
+    { name: detail.shortName },
+  ]);
+
   return (
-    <EventPage
-      event={detail}
-      alsoThisWeek={everyEvent
-        .filter((event) => event.slug !== slug)
-        .slice(0, 3)}
-      reactingQuotes={quotes.filter((quote) =>
-        reactingSymbols.has(quote.symbol),
-      )}
-      lessons={(detail.lessonSlugs ?? [])
-        .map(
-          (lessonSlug) =>
-            getLessonBySlug(locale, lessonSlug) ??
-            everyLesson.find((lesson) => lesson.slug === lessonSlug),
-        )
-        .filter((lesson) => lesson !== undefined)}
-      articles={relatedArticles}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }}
+      />
+      <EventPage
+        event={detail}
+        alsoThisWeek={everyEvent
+          .filter((event) => event.slug !== slug)
+          .slice(0, 3)}
+        reactingQuotes={quotes.filter((quote) =>
+          reactingSymbols.has(quote.symbol),
+        )}
+        lessons={(detail.lessonSlugs ?? [])
+          .map(
+            (lessonSlug) =>
+              getLessonBySlug(locale, lessonSlug) ??
+              everyLesson.find((lesson) => lesson.slug === lessonSlug),
+          )
+          .filter((lesson) => lesson !== undefined)}
+        articles={relatedArticles}
+      />
+    </>
   );
 }

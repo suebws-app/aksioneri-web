@@ -7,6 +7,26 @@ import { getQuotes } from '@/lib/api/markets';
 import { defaultLocale } from '@/i18n/config';
 import { localizedAbsoluteUrl } from '@/lib/seo/urls';
 
+/**
+ * Regenerate the sitemap at most once an hour. Without this Next re-runs every
+ * fetch on each request (the wire polls minute-by-minute, the calendar week
+ * shifts on its own), which turns every crawl visit into a stampede against
+ * the API. One hour is fine for search: Googlebot re-reads a sitemap when it
+ * feels like it, not when we tell it to.
+ */
+export const revalidate = 3600;
+
+/**
+ * TODO (P1) — Two follow-ups the audit called out that need coordination:
+ *   1. Filter articles where `hasPage === false`. The publisher-blocked stories
+ *      are thin near-redirects; listing them wastes crawl budget and produces
+ *      "duplicate without canonical" errors. Requires the API's `/news/slugs`
+ *      endpoint to include `hasPage` in `SlugEntry` (`src/lib/api/news.ts`).
+ *   2. Shard via `generateSitemaps()` into `sitemap-news.xml`,
+ *      `sitemap-calendar.xml`, and `sitemap-static.xml` before article count
+ *      approaches Google's 50k-URL / 50MB cap.
+ */
+
 type ChangeFrequency = MetadataRoute.Sitemap[number]['changeFrequency'];
 
 interface SitemapPath {
@@ -16,8 +36,9 @@ interface SitemapPath {
   changeFrequency: ChangeFrequency;
   /**
    * When the content itself last changed. Stories carry a real publication
-   * date; the seeded sections have no per-entity timestamp, so they fall back
-   * to request time.
+   * date; entries with no per-entity timestamp omit the field entirely — a
+   * `lastModified` that always says "now" teaches crawlers the field is
+   * noise, which devalues the honest dates on the stories.
    */
   lastModified?: Date;
 }
@@ -112,7 +133,6 @@ async function detailPaths(): Promise<SitemapPath[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
   const details = await detailPaths();
 
   // One entry per page. There used to be one per locale, cross-referenced with
@@ -120,7 +140,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [...SECTIONS, ...details].map(
     ({ path, priority, changeFrequency, lastModified }) => ({
       url: localizedAbsoluteUrl(defaultLocale, path),
-      lastModified: lastModified ?? now,
+      ...(lastModified ? { lastModified } : {}),
       changeFrequency,
       priority,
     }),

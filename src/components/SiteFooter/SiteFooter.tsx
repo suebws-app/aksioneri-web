@@ -24,7 +24,7 @@ export function SiteFooter() {
 
           <nav
             aria-label={tFooter('label')}
-            className="grid flex-1 gap-8 sm:grid-cols-2 md:max-w-2xl md:grid-cols-4"
+            className="grid flex-1 grid-cols-2 gap-8 md:max-w-2xl md:grid-cols-4"
           >
             {FOOTER_GROUPS.map((group) => (
               <div key={group.headingKey}>

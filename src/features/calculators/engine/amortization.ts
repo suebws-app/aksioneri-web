@@ -42,7 +42,12 @@ export interface AmortizationResult {
   readonly totalRepaid: number;
   /** Total cost as a percentage of the amount borrowed. */
   readonly costOfBorrowingPercent: number;
-  /** The rate that would produce the same total once fees are included. */
+  /**
+   * The true annual cost of the loan, fees included: the annualised
+   * internal rate of return of the cash-flow stream. This is the number
+   * that makes two offers comparable. With no fees it lands on the
+   * nominal rate's effective annual equivalent.
+   */
   readonly effectiveRatePercent: number;
   readonly schedule: readonly AmortizationRow[];
 }
@@ -93,6 +98,8 @@ export function computeAmortization(
   if (!Number.isFinite(paymentCents)) return refuse('overflow');
 
   const schedule: AmortizationRow[] = [];
+  /** Every payment as it is actually made, in cents — the IRR's cash flows. */
+  const paymentsCents: number[] = [];
 
   let balanceCents = principalCents;
   let interestTotalCents = 0;
@@ -111,6 +118,7 @@ export function computeAmortization(
 
     balanceCents -= principalPortion;
     interestTotalCents += interestCents;
+    paymentsCents.push(actualPayment);
 
     schedule.push({
       period,
@@ -127,17 +135,90 @@ export function computeAmortization(
   const totalRepaid = roundMoney(principal + totalInterest + fees);
   const totalCost = totalInterest + fees;
 
+  // Upfront fees consuming the whole advance leave no cash-flow stream to
+  // state a rate over — the "loan" hands the borrower nothing. Refused for
+  // the same reason a −100% rate is: the figure past this point has no
+  // meaning, and the engine never approximates one.
+  const feesCents = toCents(fees);
+  if (feesCents >= principalCents) return refuse('rateOutOfRange');
+
   return ok({
     payment: fromCents(paymentCents),
     totalInterest: roundMoney(totalInterest),
     totalFees: roundMoney(fees),
     totalRepaid,
     costOfBorrowingPercent: roundMoney((totalCost / principal) * 100),
-    // What the rate would have to be, with no fees, to cost the same over the
-    // same term. This is the number that makes two offers comparable.
-    effectiveRatePercent: roundMoney((totalCost / principal / years) * 100),
+    effectiveRatePercent: roundMoney(
+      effectiveAnnualRatePercent(
+        principalCents - feesCents,
+        paymentsCents,
+        perYear,
+      ),
+    ),
     schedule,
   });
+}
+
+/**
+ * The annualised internal rate of return of the loan's cash flows: the
+ * borrower receives `principal − fees` at t0 and pays the schedule's
+ * payments, one per period. The per-period rate that sets the stream's
+ * net present value to zero is found by bisection — the NPV of the
+ * payments is strictly decreasing in the rate, so the root is unique and
+ * bisection cannot fail to converge on it — then annualised by
+ * compounding over the payment frequency: `(1 + r)^perYear − 1`.
+ *
+ * With zero fees and no rounding noise this reproduces the nominal
+ * rate's effective annual equivalent, which is the sanity check the
+ * tests pin. The old `totalCost / principal / years` figure it replaces
+ * was simple interest wearing an effective rate's label — for a 30-year
+ * mortgage it reported roughly half the true annual rate.
+ *
+ * Inputs in integer cents to match the schedule; the discounting itself
+ * runs in doubles, which is fine — rates are not sums (see `guards.ts`).
+ */
+function effectiveAnnualRatePercent(
+  netAdvanceCents: number,
+  paymentsCents: readonly number[],
+  perYear: number,
+): number {
+  /** PV of the payments at per-period rate `rate`, minus the advance. */
+  const npv = (rate: number): number => {
+    let discount = 1;
+    let total = 0;
+    for (const payment of paymentsCents) {
+      discount /= 1 + rate;
+      total += payment * discount;
+    }
+    return total - netAdvanceCents;
+  };
+
+  // A zero-rate, zero-fee loan: the payments sum exactly to the advance,
+  // the root is 0, and the loop below would only bisect its way to the
+  // same answer the long way round.
+  if (npv(0) <= 0) return 0;
+
+  // The caller guards `netAdvanceCents > 0`, so the NPV goes negative for
+  // a large enough rate; double `hi` until it has (rates above 100% per
+  // period only occur at extreme annual-frequency inputs).
+  let lo = 0;
+  let hi = 1;
+  while (npv(hi) > 0) hi *= 2;
+
+  // ~60 halvings takes the bracket to ~1e-18 from a unit start; the 1e-9
+  // epsilon usually stops it around 30. Either bound is far below the
+  // two decimals the result is rounded to.
+  for (let i = 0; i < 100 && hi - lo > 1e-9; i += 1) {
+    const mid = (lo + hi) / 2;
+    if (npv(mid) > 0) {
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+
+  const periodRate = (lo + hi) / 2;
+  return ((1 + periodRate) ** perYear - 1) * 100;
 }
 
 export interface MortgageInput extends AmortizationInput {

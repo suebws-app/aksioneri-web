@@ -117,12 +117,15 @@ export function NavSearch({
 
     inputRef.current?.focus();
 
-    const onPointerDown = (event: MouseEvent) => {
+    // `pointerdown` rather than `mousedown` so touch and pen dismiss the
+    // dropdown the same way a mouse does, without waiting for the
+    // synthesised mouse event.
+    const onPointerDown = (event: PointerEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
     };
 
-    document.addEventListener('mousedown', onPointerDown);
-    return () => document.removeEventListener('mousedown', onPointerDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open]);
 
   const searching = query.trim().length >= MIN_QUERY_LENGTH;

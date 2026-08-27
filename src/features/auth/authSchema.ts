@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { clientEnv } from '@/lib/utils/env.client';
 
 /**
  * Schemas take a translator so validation messages are localised. Never
@@ -25,9 +26,14 @@ export const signUpSchema = (t: Translate) =>
     email: z.email({ message: t('errors.email') }),
     password: z
       .string()
-      // Must match better-auth's minPasswordLength, or the server rejects a
-      // password the client accepted.
-      .min(8, { message: t('errors.passwordLength', { min: 8 }) }),
+      // Must match the server's MIN_PASSWORD_LENGTH (better-auth's
+      // `minPasswordLength`), or the server rejects a password the client
+      // accepted. One env var, set identically on both sides.
+      .min(clientEnv.NEXT_PUBLIC_MIN_PASSWORD_LENGTH, {
+        message: t('errors.passwordLength', {
+          min: clientEnv.NEXT_PUBLIC_MIN_PASSWORD_LENGTH,
+        }),
+      }),
   });
 
 export type SignInValues = z.infer<ReturnType<typeof signInSchema>>;

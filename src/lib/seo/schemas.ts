@@ -8,13 +8,29 @@ import { absoluteUrl, localizedAbsoluteUrl } from './urls';
  * search box, breadcrumb trails, organisation panels.
  *
  * Every builder returns a plain object; render it with
- * `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />`.
- * Only ever pass objects built here — never user input.
+ * `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />`.
+ * Only ever pass objects built here — never raw user input outside the object.
  */
+
+/**
+ * Serialises a schema for `dangerouslySetInnerHTML`. `JSON.stringify` escapes
+ * quotes but not `<`, so a value containing `</script>` would close the tag
+ * and turn the rest of the payload into markup — the classic JSON-in-HTML
+ * injection. Escaping `<` as the JSON unicode escape `\u003c` is
+ * invisible to JSON parsers and to search engines but inert in HTML. Every `application/ld+json` block in the
+ * app must go through this, with the CSP still allowing inline scripts
+ * (see `lib/utils/csp.ts` for why nonces are off the table).
+ */
+export const safeJsonLd = (value: unknown): string =>
+  JSON.stringify(value).replace(/</g, '\\u003c');
+
+/** Stable `@id` other schemas use to reference the publisher. */
+const ORGANIZATION_ID = `${absoluteUrl('/')}#organization`;
 
 export const organizationSchema = () => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': ORGANIZATION_ID,
   name: SITE_NAME,
   url: absoluteUrl('/'),
   logo: absoluteUrl('/icon.svg'),
@@ -26,10 +42,11 @@ export const organizationSchema = () => ({
 });
 
 /**
- * No `potentialAction`. It used to advertise a `SearchAction` at `/search` —
- * a route that has never existed, so Google was being told about a page that
- * 404s. The glossary has its own client-side search, but a sitelinks search
- * box has to point at a real URL that accepts a query, and none does yet.
+ * No `potentialAction`. A `SearchAction` would advertise the search page for
+ * a sitelinks search box — and that page exists (`/search`, served as
+ * `/kerko`) — but it is deliberately `noindex` (thin, near-duplicate result
+ * lists), and advertising a page we ask crawlers not to index is
+ * contradictory. Revisit if the search page ever becomes indexable.
  */
 export const webSiteSchema = (locale: Locale) => ({
   '@context': 'https://schema.org',
@@ -40,8 +57,14 @@ export const webSiteSchema = (locale: Locale) => ({
 
 export interface BreadcrumbItem {
   name: string;
-  /** Unlocalised path; the locale prefix is applied here. */
-  path: string;
+  /**
+   * Unlocalised path; the locale prefix is applied here. Optional because
+   * the visible breadcrumb ends in (and may pass through) crumbs that are
+   * labels rather than links — a news category, a lesson's topic. Schema.org
+   * allows a `ListItem` without `item`; emitting no URL is honest, inventing
+   * one is not. The JSON-LD must mirror the on-page trail exactly.
+   */
+  path?: string;
 }
 
 export const breadcrumbSchema = (locale: Locale, items: BreadcrumbItem[]) => ({
@@ -51,7 +74,7 @@ export const breadcrumbSchema = (locale: Locale, items: BreadcrumbItem[]) => ({
     '@type': 'ListItem',
     position: index + 1,
     name: item.name,
-    item: localizedAbsoluteUrl(locale, item.path),
+    ...(item.path ? { item: localizedAbsoluteUrl(locale, item.path) } : {}),
   })),
 });
 
@@ -207,6 +230,49 @@ export interface ItemListEntry {
  * Ordered, because the order on the page is editorial rather than incidental:
  * the list leads with what readers use most.
  */
+export interface NewsArticleSchemaInput {
+  slug: string;
+  title: string;
+  summary: string;
+  /** ISO instant of publication. */
+  publishedAt: string;
+  /** ISO instant of the last edit, when the wire supplies one. */
+  modifiedAt?: string | null;
+  /** Lead image URL, when the publisher supplied one. */
+  imageUrl?: string | null;
+}
+
+/**
+ * A story, as `NewsArticle` — the type Google's Top Stories carousel and
+ * article rich results read.
+ *
+ * Only claims what the wire actually holds: `dateModified` and `image` are
+ * emitted solely when present (an RSS item usually has neither), and there is
+ * no `author` — bylines are frequently absent and a fabricated one is a spam
+ * signal. `publisher` references the `Organization` node the locale layout
+ * emits on every page, via its stable `@id`.
+ */
+export const newsArticleSchema = (
+  locale: Locale,
+  article: NewsArticleSchemaInput,
+) => {
+  const canonical = localizedAbsoluteUrl(locale, `/news/${article.slug}`);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.summary,
+    datePublished: article.publishedAt,
+    ...(article.modifiedAt ? { dateModified: article.modifiedAt } : {}),
+    ...(article.imageUrl ? { image: [article.imageUrl] } : {}),
+    inLanguage: locale,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    url: canonical,
+    publisher: { '@id': ORGANIZATION_ID },
+  };
+};
+
 export const itemListSchema = (locale: Locale, items: ItemListEntry[]) => ({
   '@context': 'https://schema.org',
   '@type': 'ItemList',

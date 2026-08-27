@@ -40,6 +40,14 @@
   --positive: #157f4a; /* actual came in below expectation */
   --negative: #b3372c; /* actual came in above expectation */
 
+  /* UI status tones. Distinct from market direction on purpose: `DataStatusPill`
+   * warns that a socket is reconnecting or a quote is stale, and reading that
+   * as "the number went up" would be worse than saying nothing. Amber for
+   * "attention", muted vermilion for "failing" — both clear WCAG AA on paper
+   * (4.79:1 and 7.5:1 respectively). */
+  --warning: #a25c14;
+  --danger: #a02617;
+
   /* Impact bars */
   --impact-on: #14385e;
   --impact-off: #dfdcd3;
@@ -88,6 +96,8 @@
   --color-accent: var(--accent);
   --color-positive: var(--positive);
   --color-negative: var(--negative);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
 
   --color-impact-on: var(--impact-on);
   --color-impact-off: var(--impact-off);

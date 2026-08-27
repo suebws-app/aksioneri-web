@@ -26,7 +26,7 @@ export function SearchPage({ query, children }: SearchPageProps) {
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="border-line bg-surface-muted border-b">
           <div className="page-container py-11">
             <h1 className="text-ink mb-3 font-serif text-[44px] leading-[1.1] font-medium tracking-[-0.022em]">

@@ -7,7 +7,7 @@ import {
   readCategory,
 } from '@/features/calculators';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { itemListSchema } from '@/lib/seo/schemas';
+import { itemListSchema, safeJsonLd } from '@/lib/seo/schemas';
 
 interface PageProps {
   params: Promise<{ locale: Locale }>;
@@ -46,7 +46,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(itemListSchema(locale, items)),
+          __html: safeJsonLd(itemListSchema(locale, items)),
         }}
       />
       <CalculatorsIndexPage locale={locale} category={readCategory(query)} />
