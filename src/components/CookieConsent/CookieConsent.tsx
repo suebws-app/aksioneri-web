@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
@@ -27,8 +28,14 @@ import { useConsent } from '@/lib/consent/consentContext';
 export function CookieConsent() {
   const { status, accept, decline } = useConsent();
   const t = useTranslations('cookies');
+  const [delayed, setDelayed] = useState(false);
 
-  if (status !== 'unset') return null;
+  useEffect(() => {
+    const id = setTimeout(() => setDelayed(true), 2000);
+    return () => clearTimeout(id);
+  }, []);
+
+  if (status !== 'unset' || !delayed) return null;
 
   return (
     <div

@@ -336,17 +336,31 @@ export const getArticleBySlug = cache(
 );
 
 /**
- * Every published slug with its publication date.
+ * Every published slug with its publication date, in the given locale.
  *
  * Feeds `generateStaticParams` and the sitemap, so it must never throw: a
  * failure here would fail `next build` outright, and an unreachable API at
  * build time is not a reason to have no site.
+ *
+ * The `locale` matters. The API narrows the `sq` set to stories with a fully
+ * translated body — an entry the reader would 404 on has no place in a
+ * sitemap. `en` returns every servable slug.
  */
-export const getArticleIndex = cache(async (): Promise<SlugEntry[]> =>
-  safely(() => apiFetch<SlugEntry[]>('news/slugs', cacheOptions), []),
+export const getArticleIndex = cache(
+  async (locale: Locale): Promise<SlugEntry[]> =>
+    safely(
+      () =>
+        apiFetch<SlugEntry[]>('news/slugs', {
+          searchParams: { locale },
+          ...cacheOptions,
+        }),
+      [],
+    ),
 );
 
-export const getArticleSlugs = cache(async (): Promise<string[]> => {
-  const index = await getArticleIndex();
-  return index.map((entry) => entry.slug);
-});
+export const getArticleSlugs = cache(
+  async (locale: Locale): Promise<string[]> => {
+    const index = await getArticleIndex(locale);
+    return index.map((entry) => entry.slug);
+  },
+);

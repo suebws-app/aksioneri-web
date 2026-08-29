@@ -35,10 +35,22 @@ export const dynamicParams = true;
 /** Matches the API's poll interval — see `lib/api/news.ts`. */
 export const revalidate = 60;
 
-/** Pre-renders every story in every locale rather than on first request. */
+/**
+ * Pre-renders every story in every locale rather than on first request.
+ *
+ * The slug set is fetched per locale: `en` returns every servable story,
+ * `sq` returns only stories with a fully translated body. Pre-rendering an
+ * `sq` URL that has no Albanian translation would just build a page that
+ * 404s on the API — a waste of build minutes and a broken preview.
+ */
 export async function generateStaticParams() {
-  const slugs = await getArticleSlugs();
-  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  const perLocale = await Promise.all(
+    locales.map(async (locale) => {
+      const slugs = await getArticleSlugs(locale);
+      return slugs.map((slug) => ({ locale, slug }));
+    }),
+  );
+  return perLocale.flat();
 }
 
 export async function generateMetadata({

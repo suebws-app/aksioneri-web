@@ -85,7 +85,7 @@ async function detailPaths(): Promise<SitemapPath[]> {
   // Market symbols come from the live API so a new instrument on the backend
   // shows up in the sitemap without a code deploy on the web.
   const [articles, quotes] = await Promise.all([
-    getArticleIndex(),
+    getArticleIndex(defaultLocale),
     getQuotes(),
   ]);
 

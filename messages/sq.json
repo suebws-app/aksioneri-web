@@ -185,8 +185,9 @@
       "open": "Hapur",
       "closed": "Mbyllur",
       "unknown": "I panjohur",
-      "live": "drejtpërdrejt",
-      "delayed": "me vonesë 15 min"
+      "stale": "Vjetër",
+      "live": "Live",
+      "delayed": "Vonuar"
     },
     "comingUp": {
       "heading": "Në vijim",
