@@ -7,9 +7,6 @@ import {
   formatPercentChange,
 } from '../money';
 
-// Written as escapes, not literals: a non-breaking space and a true minus are
-// indistinguishable from a space and a hyphen in a diff, and an assertion
-// nobody can read is an assertion nobody can trust.
 const NBSP = '\u00A0';
 const MINUS = '\u2212';
 
@@ -20,8 +17,6 @@ describe('formatMoney', () => {
   });
 
   it('groups a leading partial group correctly', () => {
-    // The off-by-one every hand-rolled grouper gets wrong: 4 digits and 7
-    // digits both start with a group shorter than three.
     expect(formatMoney(1000, 'EUR', { decimals: 0 })).toBe(`1.000${NBSP}€`);
     expect(formatMoney(1000000, 'EUR', { decimals: 0 })).toBe(
       `1.000.000${NBSP}€`,
@@ -82,11 +77,8 @@ describe('formatCompactMoney', () => {
 
 describe('rate precision', () => {
   it('keeps four decimals, so a sub-1 rate is not rounded to 1', () => {
-    // The bug this guards: a USD/GBP rate of 0.7336 rendered with zero
-    // decimals came out as "1" — not imprecise, wrong.
     expect(formatNumber(0.733579, 4)).toBe('0,7336');
     expect(formatNumber(1.36318, 4)).toBe('1,3632');
-    // EUR/HUF, where two decimals would be useless.
     expect(formatNumber(391.4523, 4)).toBe('391,4523');
   });
 });
@@ -103,16 +95,6 @@ describe('hydration safety', () => {
     vi.restoreAllMocks();
   });
 
-  /**
-   * The whole reason this module exists.
-   *
-   * Node's full ICU and Chromium's subset disagree about `sq`, so a figure
-   * formatted through `Intl` on the server and again during hydration can
-   * differ — and every calculator renders its result on both sides.
-   * `formatDate.ts` hit this with month names and hardcoded its tables; this
-   * is the same defence for digits, and this test is what keeps it true after
-   * someone "simplifies" the grouping code.
-   */
   it('never constructs an Intl.NumberFormat', () => {
     const spy = vi.spyOn(Intl, 'NumberFormat');
 
@@ -127,8 +109,6 @@ describe('hydration safety', () => {
   });
 
   it('produces the same string regardless of the ambient locale', () => {
-    // A cheap proxy for the server/client split: if the implementation ever
-    // reaches for a locale-aware API, one of these will drift.
     const first = formatMoney(1234.56, 'EUR');
     const originalToLocaleString = Number.prototype.toLocaleString;
 

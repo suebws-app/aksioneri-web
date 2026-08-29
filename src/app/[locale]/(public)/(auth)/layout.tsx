@@ -3,12 +3,6 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
 
-/**
- * Shared shell for `/sign-in` and `/sign-up` — same header and footer as the
- * marketing pages, with the auth form centred in the reading column. Kept in
- * a `(auth)` route group so a future `/reset-password` or `/verify` page can
- * inherit it without touching every screen.
- */
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="bg-paper flex min-h-screen flex-col">

@@ -72,6 +72,10 @@ knowledge produces code that fails lint or silently breaks i18n and SEO.
 8. **Server components by default.** `'use client'` goes on the interactive leaf,
    not the page.
 9. **Shared components never import features** — enforced by ESLint.
+10. **No comments.** Do not add `//`, `/* */`, JSX `{/* */}`, or JSDoc/TSDoc to
+    source files. Well-named identifiers and clear code are the documentation;
+    the git history carries the "why". This applies to new files and to any
+    file you edit — don't reintroduce comments a previous pass removed.
 
 ## Next.js 16 breaking changes
 

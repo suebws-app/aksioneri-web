@@ -8,7 +8,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    // Playwright specs live in e2e/ and must not be picked up by Vitest.
     include: ['src/**/*.test.{ts,tsx}'],
   },
   resolve: {

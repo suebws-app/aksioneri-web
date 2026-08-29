@@ -18,17 +18,6 @@ import { usePriceFlash } from '../usePriceFlash';
 import { InteractiveSparkline } from './InteractiveSparkline';
 import { tooltipFormatterFor } from './AssetChartLive';
 
-/**
- * Client-side weekly sparkline for a single instrument — the sidebar
- * variant on the markets homepage.
- *
- * The header (name, last, change) streams from the markets WebSocket via
- * `marketsSocket.subscribe`, with a green/red text flash on each tick.
- * The line itself is a rolling week of hourly closes fetched from the
- * `/markets/asset/:symbol/candles` endpoint (same shape the asset page
- * uses for its `1W` range). Hovering the line reveals the price + time
- * at the cursor via `InteractiveSparkline`.
- */
 export function MarketMiniChartLive({
   symbol,
   initial,
@@ -47,12 +36,6 @@ export function MarketMiniChartLive({
     asset.changePercent,
   );
 
-  // Pin the display precision from the initial (server-formatted) price
-  // — each tick reformats with the same digits + grouping so "7,681.78"
-  // stays "7,681.79" on the next tick instead of jumping to a raw
-  // "7681.7822". Memoised on `initial.price` so the subscription effect
-  // keeps a stable dependency. See `lib/format/quotePrice` for why the
-  // formatter mirrors the API's convention rather than the site locale.
   const precision = useMemo(
     () => quotePrecisionOf(initial.price),
     [initial.price],
@@ -69,9 +52,6 @@ export function MarketMiniChartLive({
     return dispose;
   }, [symbol, precision]);
 
-  // Weekly view: 168 one-hour bars covers 7 days. Matches the `1W`
-  // interval/limit `AssetChartLive` picks so both charts read from the
-  // same slice of the candles cache when both are visible.
   const candlesQuery = useQuery({
     queryKey: ['markets', 'candles', symbol, '1W'] as const,
     queryFn: () => fetchCandles(symbol, '1h', 168),
@@ -82,10 +62,6 @@ export function MarketMiniChartLive({
   const { values, times, axisLabels } = useMemo(() => {
     const bars = candlesQuery.data?.bars ?? [];
     if (bars.length === 0) {
-      // Falls back to the SSR intraday series so the sidebar is never
-      // blank while the weekly candles fetch is in flight. `times` stays
-      // undefined so the hover shows only the price, not a misaligned
-      // intraday timestamp.
       return {
         values: asset.series,
         times: undefined as number[] | undefined,
@@ -154,10 +130,6 @@ export function MarketMiniChartLive({
   );
 }
 
-/**
- * A handful of x-axis labels spread evenly across the weekly series.
- * Four ticks fit the sidebar column without crowding.
- */
 function weeklyAxisLabels(times: number[], locale: string): string[] {
   if (times.length === 0) return [];
   const target = Math.min(4, times.length);

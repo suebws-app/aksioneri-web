@@ -90,8 +90,6 @@ describe('rankResults', () => {
   });
 
   it('never matches display-only context', () => {
-    // A lesson's topic labels a dozen lessons; matching it buried the two
-    // lessons actually about the thing searched for.
     const entries = [
       entry('Bilanci në një faqe', { context: 'Aksione dhe ETF' }),
       entry('Çfarë është një ETF?', { context: 'Bazat' }),
@@ -103,8 +101,6 @@ describe('rankResults', () => {
   });
 
   it('finds a word when the query carries an Albanian suffix', () => {
-    // `includes` only ever matched a query shorter than the word, so the
-    // definite and plural forms readers actually type missed the entry.
     const entries = [
       entry('Obligacion', { keywords: ['obligacione'] }),
       entry('Inflacioni në një faqe'),
@@ -140,8 +136,6 @@ describe('rankResults', () => {
   });
 
   it('falls back to partial matches rather than returning nothing', () => {
-    // Two content words, no entry has both: better to offer the entry that
-    // matched one than an empty dropdown.
     const entries = [entry('Inflacioni në një faqe'), entry('Fond aktiv')];
 
     expect(titles(rankResults(entries, 'inflacion kriptomonedha'))).toEqual([

@@ -15,24 +15,6 @@ import type {
   CalculatorSlug,
 } from './types';
 
-/**
- * Every calculator the site publishes.
- *
- * This is the only place a calculator is registered. The route, the sitemap,
- * the landing page, the "related calculators" rail and the article matcher
- * all read from here, so adding one is a line in this object — and forgetting
- * to add it anywhere else is not possible.
- *
- * Definitions are stored with their generics erased. No consumer knows a
- * calculator's input shape: the page reads `fields`, calls `compute` through
- * the definition, and formats what `toResultSpec` describes. Recovering the
- * types would buy nothing and would leak into every component signature.
- *
- * `Partial<Record<…>>` rather than `Record<…>` on purpose: `CalculatorSlug`
- * names all ten calculators the suite will have, and they arrive over several
- * milestones. A total record would refuse to compile until the last one
- * landed.
- */
 const REGISTRY: Partial<Record<CalculatorSlug, AnyCalculator>> = {
   'compound-interest': compoundInterest as unknown as AnyCalculator,
   cagr: investmentReturn as unknown as AnyCalculator,
@@ -47,19 +29,12 @@ const REGISTRY: Partial<Record<CalculatorSlug, AnyCalculator>> = {
   'stock-profit': stockProfit as unknown as AnyCalculator,
 };
 
-/** Published calculators, in editorial order. */
 export const getCalculators = (): AnyCalculator[] =>
   Object.values(REGISTRY).sort((a, b) => a.order - b.order);
 
 export const getCalculatorSlugs = (): CalculatorSlug[] =>
   getCalculators().map((calculator) => calculator.slug);
 
-/**
- * A calculator by slug, or `null`.
- *
- * Returns null rather than throwing so the route can call `notFound()` — a
- * bad slug is a 404, not a 500.
- */
 export const getCalculator = (slug: string): AnyCalculator | null =>
   REGISTRY[slug as CalculatorSlug] ?? null;
 
@@ -68,7 +43,6 @@ export const getCalculatorsByCategory = (
 ): AnyCalculator[] =>
   getCalculators().filter((calculator) => calculator.category === category);
 
-/** Resolves `relatedSlugs`, dropping any calculator that has not shipped yet. */
 export const getRelatedCalculators = (
   calculator: AnyCalculator,
 ): AnyCalculator[] =>

@@ -2,17 +2,8 @@ import { defaultLocale, type Locale } from '@/i18n/config';
 import { localizePathname } from '@/i18n/pathnames';
 import { clientEnv } from '@/lib/utils/env.client';
 
-/**
- * The single source of truth for every absolute URL the app emits — canonicals,
- * Open Graph, sitemap entries. Nothing else may hardcode a domain: one wrong
- * literal here is a sitewide SEO defect.
- */
 export const appUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, '');
 
-/**
- * Adds the locale prefix, matching `localePrefix: 'as-needed'` — the default
- * locale is served unprefixed.
- */
 export const localizePath = (locale: Locale, path: string): string => {
   if (locale === defaultLocale) return path;
   return path === '/' ? `/${locale}` : `/${locale}${path}`;
@@ -21,10 +12,5 @@ export const localizePath = (locale: Locale, path: string): string => {
 export const absoluteUrl = (path: string): string =>
   path === '/' ? appUrl : `${appUrl}${path}`;
 
-/**
- * Emits the reader's localised URL for canonicals, OG tags and sitemap
- * entries. Callers pass the canonical (English) path — `/news/abc-123` —
- * and this returns the reader's localised form (`/lajme/abc-123` for `sq`).
- */
 export const localizedAbsoluteUrl = (locale: Locale, path: string): string =>
   absoluteUrl(localizePath(locale, localizePathname(locale, path)));

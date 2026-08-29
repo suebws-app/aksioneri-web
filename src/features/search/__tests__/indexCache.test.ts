@@ -26,9 +26,6 @@ describe('createIndexLoader', () => {
   });
 
   it('retries after a failure instead of caching the rejection', async () => {
-    // The bug this exists to prevent: one offline open left a rejected promise
-    // in the slot, and every later open got it back — search stayed dead for
-    // the life of the tab.
     const fetchIndex = vi
       .fn()
       .mockRejectedValueOnce(new Error('offline'))

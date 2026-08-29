@@ -1,16 +1,5 @@
 import { cn } from '@/lib/utils/cn';
 
-/**
- * An intraday price line with a soft fill beneath it.
- *
- * Takes raw values and maps them into the viewBox, so a real series can be
- * dropped in without touching the markup. `preserveAspectRatio="none"` lets the
- * line stretch to the container width; `vector-effect="non-scaling-stroke"`
- * stops that stretch from thickening the stroke.
- *
- * Decorative: the figure and its change are stated in text beside it, so the
- * chart adds nothing for a screen reader.
- */
 interface SparklineProps {
   values: number[];
   className?: string;
@@ -18,7 +7,6 @@ interface SparklineProps {
 
 const VIEW_WIDTH = 720;
 const VIEW_HEIGHT = 200;
-/** Keeps the extremes off the edge, where the stroke would be clipped. */
 const PADDING = 8;
 
 export function Sparkline({ values, className }: SparklineProps) {
@@ -26,7 +14,6 @@ export function Sparkline({ values, className }: SparklineProps) {
 
   const min = Math.min(...values);
   const max = Math.max(...values);
-  // A flat series would divide by zero; render it down the middle instead.
   const span = max - min || 1;
 
   const points = values.map((value, index) => {

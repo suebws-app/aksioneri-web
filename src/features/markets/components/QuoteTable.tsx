@@ -3,10 +3,6 @@ import { ChangeValue } from '@/components/ChangeValue';
 import { Link } from '@/i18n/navigation';
 import type { Quote } from '@/lib/api/markets';
 
-/**
- * "Markets today" — a real table, so a screen reader announces each figure with
- * its column name rather than reading a bare row of numbers.
- */
 export function QuoteTable({ quotes }: { quotes: Quote[] }) {
   const t = useTranslations('markets');
 

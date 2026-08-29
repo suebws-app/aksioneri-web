@@ -115,9 +115,6 @@ export const loan: CalculatorDefinition<AmortizationInput, AmortizationResult> =
       ],
       table: {
         columnKeys: ['period', 'payment', 'interest', 'principal', 'balance'],
-        // Every period, not a yearly summary: the point of an amortisation
-        // table is watching the interest share fall, and a yearly roll-up hides
-        // exactly that.
         rows: result.schedule.map((row) => [
           { labelKey: 'period', value: row.period, format: 'plain' as const },
           { labelKey: 'payment', value: row.payment, format: 'money' as const },
@@ -161,12 +158,6 @@ export const loan: CalculatorDefinition<AmortizationInput, AmortizationResult> =
     category: 'borrowing',
     messageKey: 'loan',
     disclaimer: 'loan',
-    // Albanian **and** English. The wire arrives in English and is only
-    // translated when the OpenAI-backed worker is enabled, so an
-    // Albanian-only vocabulary matches nothing on an untranslated story —
-    // the exact failure `features/learn/matchNews.ts` documents, where
-    // matching a lesson's Albanian terms against the wire "found nothing
-    // at all".
     newsPhrases: [
       'kredi',
       'norma e interesit',

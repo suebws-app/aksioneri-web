@@ -8,7 +8,6 @@ import type { Locale } from '@/i18n/config';
 import { FEATURED_SYMBOLS, getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
-/** Matches the API's poll interval — see `lib/api/news.ts`. */
 export const revalidate = 60;
 
 export async function generateMetadata({
@@ -41,12 +40,8 @@ export default async function HomePage({
   ]);
   const week = await getCalendarWeek(locale);
 
-  // The lead story appears once, at the top; the sidebar and the news list take
-  // the rest so no headline is printed twice on the page.
   const rest = articles.filter((article) => article.id !== featured?.id);
 
-  // Homepage "Tregjet sot" mirrors the ticker: same six symbols, same order.
-  // The full instrument list lives behind the "view all" link at /tregjet.
   const bySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
   const featuredQuotes = FEATURED_SYMBOLS.map((symbol) =>
     bySymbol.get(symbol),

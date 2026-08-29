@@ -1,24 +1,7 @@
 import { z } from 'zod';
 
-/**
- * Values safe to ship to the browser. Every key must start with `NEXT_PUBLIC_`
- * and must be referenced as a full literal (`process.env.NEXT_PUBLIC_API_URL`,
- * never `process.env[key]`) — Next.js inlines these at build time by static
- * text replacement, so a computed lookup resolves to `undefined` in the bundle.
- *
- * In production the URL and email are required — a missing value should fail
- * the build loudly rather than silently coerce to localhost. In development
- * the defaults keep `pnpm dev` working with no `.env` file.
- */
-// `NODE_ENV` is set by Next itself; safe to read at module load.
 const isProduction = process.env.NODE_ENV === 'production';
 
-/**
- * Whether this build runs with `NODE_ENV=production`. Exported so modules
- * that are safe to import anywhere (`proxy.ts`, client code) share one
- * source instead of reading `process.env` — which is only allowed in the
- * two env files.
- */
 export const IS_PRODUCTION = isProduction;
 
 const optionalUrl = (fallback: string) =>
@@ -27,46 +10,14 @@ const optionalUrl = (fallback: string) =>
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_API_URL: optionalUrl('http://localhost:4000/api'),
   NEXT_PUBLIC_APP_URL: optionalUrl('http://localhost:3000'),
-  /**
-   * The address readers write to. Shown on the contact page and interpolated
-   * into the privacy and terms bodies. Required in production so the "replace
-   * before launch" placeholder cannot ship by accident.
-   */
   NEXT_PUBLIC_CONTACT_EMAIL: isProduction
     ? z.email()
     : z.email().default('kontakt@aksioneri.com'),
-  /**
-   * Timezone the calendar renders release times in. Kosovo audience default
-   * (`Europe/Belgrade`); a user-preference picker will override this per
-   * viewer once the account area lands.
-   */
   NEXT_PUBLIC_DISPLAY_TZ: z.string().min(1).default('Europe/Belgrade'),
-  /**
-   * Human-facing brand name. Almost always `Aksioneri`; overridden on staging
-   * so the environment marker (e.g. "Aksioneri (Staging)") appears in the
-   * browser tab.
-   */
   NEXT_PUBLIC_SITE_NAME: z.string().min(1).default('Aksioneri'),
-  /**
-   * Sentry project DSN. When set, error tracking initialises after the
-   * reader accepts cookies; when unset, Sentry is fully disabled.
-   */
   NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-  /**
-   * PostHog project API key. Same consent-gated flow as Sentry.
-   */
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
-  /**
-   * PostHog API host. Defaults to the US cloud; set to
-   * `https://eu.i.posthog.com` for EU-region data residency.
-   */
   NEXT_PUBLIC_POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
-  /**
-   * Minimum password length the sign-up form enforces. Must match the
-   * server's MIN_PASSWORD_LENGTH (better-auth's `minPasswordLength`) — a
-   * client that accepts a shorter password than the server produces a
-   * confusing rejection after submit.
-   */
   NEXT_PUBLIC_MIN_PASSWORD_LENGTH: z.coerce
     .number()
     .int()

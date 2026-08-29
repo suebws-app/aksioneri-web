@@ -1,19 +1,5 @@
 import type { Locale } from './config';
 
-/**
- * URL translation map — a canonical (English) path pattern on the left,
- * the localised URL segment(s) on the right.
- *
- * The **file-system routes stay English** (`src/app/.../news/[slug]/page.tsx`);
- * next-intl's middleware rewrites incoming localised URLs (`/lajme/abc-123`)
- * back to canonical for the router. Outward-facing URLs (canonical tags,
- * OG, sitemap, in-app Links) are translated via the wrappers in
- * `navigation.ts` and `@/lib/seo/urls`.
- *
- * Adding a new locale later: bring in `en` entries next to each `sq`.
- * The shape allows a string value (same URL in every locale) or a
- * per-locale record.
- */
 export const PATHNAMES = {
   '/': '/',
   '/markets': { sq: '/tregjet' },
@@ -24,11 +10,6 @@ export const PATHNAMES = {
   '/learn/[slug]': { sq: '/meso/[slug]' },
   '/learn/glossary': { sq: '/meso/fjalorthi' },
   '/calculators': { sq: '/kalkulatoret' },
-  // Per-calculator SQ slugs. Static entries match exactly before the
-  // `/calculators/[slug]` fallback in `matchPathname`, so a known slug
-  // like `mortgage` becomes `/kalkulatoret/hipoteka` while an unknown
-  // one still resolves through the passthrough. `cagr` stays as-is —
-  // it is a globally-used financial acronym in Kosovar press.
   '/calculators/compound-interest': {
     sq: '/kalkulatoret/interesi-i-perbere',
   },
@@ -71,18 +52,10 @@ export const PATHNAMES = {
 export type CanonicalPathname = keyof typeof PATHNAMES;
 
 export interface MatchedPathname {
-  /** The pattern in `PATHNAMES` that matched. */
   pattern: CanonicalPathname;
-  /** Parameter values extracted from the concrete path. */
   params: Record<string, string>;
 }
 
-/**
- * Parses a concrete path like `/news/abc-123` against the pathnames map
- * and returns the pattern + params. Falls back to `null` when nothing
- * matches — the caller should treat the input as an already-canonical
- * URL and pass it through untranslated.
- */
 export function matchPathname(canonical: string): MatchedPathname | null {
   if (canonical in PATHNAMES) {
     return { pattern: canonical as CanonicalPathname, params: {} };
@@ -112,11 +85,6 @@ export function matchPathname(canonical: string): MatchedPathname | null {
   return null;
 }
 
-/**
- * Rewrites a canonical path (`/news/abc-123`) into its localised form
- * (`/lajme/abc-123` for `sq`). Used by `localizedAbsoluteUrl` for
- * canonical + OG + sitemap URLs.
- */
 export function localizePathname(locale: Locale, canonical: string): string {
   const matched = matchPathname(canonical);
   if (!matched) return canonical;

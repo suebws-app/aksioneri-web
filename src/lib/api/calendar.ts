@@ -2,28 +2,12 @@ import { cache } from 'react';
 import { decodeHtmlEntities } from '@/lib/utils/htmlEntities';
 import { ApiError, apiFetch, type RequestOptions } from './client';
 
-/**
- * The shapes the calendar surface exposes to the rest of the app.
- *
- * Lives here (in `lib/api`, not `features/calendar`) because the API-layer
- * is not allowed to depend on `features` — the boundaries rule catches it.
- * `features/calendar/calendarTypes.ts` re-exports these so downstream
- * imports keep working.
- */
-
-/** ISO 3166-1 alpha-2, or `EU` for the euro area as a bloc. */
 export type EventRegion = 'US' | 'EU' | 'DE' | 'UK' | 'JP';
 
 export type EventImpact = 'low' | 'medium' | 'high';
 
 export type SurpriseDirection = 'below' | 'above' | 'inline';
 
-/**
- * Machine-generated Kosovar-Albanian explainer attached to the by-slug
- * event response. `null` when the API's explainer worker is disabled or
- * when the OpenAI call is still in flight for a cold series — the page
- * renders the release panel either way.
- */
 export interface CalendarExplanation {
   title: string;
   summary: string;
@@ -35,7 +19,6 @@ export interface CalendarExplanation {
 export interface CalendarEvent {
   id: string;
   slug: string;
-  /** Local time of the release, `HH:mm` in the reader's market timezone. */
   time: string;
   region: EventRegion;
   title: string;
@@ -45,7 +28,6 @@ export interface CalendarEvent {
   previous: string | null;
   surprise: SurpriseDirection;
   isNextUp?: boolean;
-  /** Present on the by-slug endpoint only. */
   explanation?: CalendarExplanation | null;
 }
 
@@ -73,22 +55,6 @@ export interface CalendarWeek {
   nextUp: NextUpEvent | null;
 }
 
-/**
- * The live economic calendar, served by aksioneri-api's `/calendar/*`
- * endpoints (BiQuote-backed, mirrored into `calendar_events` and refreshed
- * hourly by the API's cron).
- *
- * Every function is `cache()`-wrapped so a single render — where multiple
- * pages / metadata generators call the same function — only fans out once.
- * Nothing throws on an empty wire: a cold API returns an empty week, not a
- * 500, so the calendar page renders skeletons instead of a stack trace.
- */
-
-/**
- * Matches the API's 5-minute sync cadence, tightened to 60 s so a released
- * `actual` reaches the page within about a minute of the sync writing it.
- * Any shorter would just spin ISR without ever seeing new data.
- */
 const REVALIDATE_SECONDS = 60;
 
 const NEXT_TAG = 'calendar';
@@ -97,12 +63,6 @@ const cacheOptions: RequestOptions = {
   next: { revalidate: REVALIDATE_SECONDS, tags: [NEXT_TAG] },
 };
 
-/**
- * API-shape event. Almost identical to the web `CalendarEvent`, but arrives
- * with `region: string` (the API validates it against a wider set of
- * codes than the web's five region tabs) and carries new provenance fields
- * the seed never had.
- */
 interface ApiCalendarEvent {
   id: string;
   slug: string;
@@ -119,8 +79,6 @@ interface ApiCalendarEvent {
   dataSource?: 'biquote';
   sourceCredit?: string;
   sourceUrl?: string | null;
-  // Attached on the by-slug endpoint only; the week endpoint keeps the
-  // list small and omits it.
   explanation?: CalendarExplanation | null;
 }
 
@@ -146,11 +104,6 @@ const EMPTY_WEEK: CalendarWeek = {
   nextUp: null,
 };
 
-/**
- * `apiFetch` throws `ApiError` on any non-2xx and rejects on network
- * failure. For the calendar, both cases should degrade to an empty week
- * rather than break the page — the sync job will refill on the next tick.
- */
 async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await work();
@@ -161,12 +114,6 @@ async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
   }
 }
 
-/**
- * The rolling week for the calendar page and the "upcoming" strip. When the
- * caller passes a `date`, the API returns the week that contains it — the
- * page keeps the reader on their selected day without needing to slice the
- * response client-side.
- */
 export const getCalendarWeek = cache(
   async (
     _locale: string,
@@ -183,10 +130,6 @@ export const getCalendarWeek = cache(
     }, EMPTY_WEEK),
 );
 
-/**
- * One event by slug. `null` when the API has never seen it — either the
- * slug is stale, or the sync has not yet ingested that release.
- */
 export const getEventDetail = cache(
   async (_locale: string, slug: string): Promise<CalendarEvent | null> =>
     safely(
@@ -203,23 +146,10 @@ interface SlugEntry {
   releasesAt: string;
 }
 
-/**
- * Every slug in the rolling window, for `generateStaticParams` and the
- * sitemap. Never throws — a failure at build time must not fail `next
- * build` outright.
- */
 export const getCalendarSlugs = cache(async (): Promise<SlugEntry[]> =>
   safely(() => apiFetch<SlugEntry[]>('calendar/slugs', cacheOptions), []),
 );
 
-// ────────── mapping ──────────
-
-/**
- * The web renders only five region tabs; the API may return any country
- * the sync mapped. Anything not in the tab set falls to `US` — a
- * best-effort default so the row still shows up rather than being dropped
- * entirely.
- */
 function toRegion(value: string): EventRegion {
   const known: EventRegion[] = ['US', 'EU', 'DE', 'UK', 'JP'];
   return (known as string[]).includes(value) ? (value as EventRegion) : 'US';
@@ -229,13 +159,8 @@ function toEvent(raw: ApiCalendarEvent): CalendarEvent {
   return {
     id: raw.id,
     slug: raw.slug,
-    // The web's `CalendarEvent.time` type is `string` (no null). Non-exact
-    // release timings are dashed rather than blanked, matching the seed.
     time: raw.time ?? '—',
     region: toRegion(raw.region),
-    // Decoded here so old DB rows ingested before the API added its
-    // decoder — and any future upstream that slips encoded text through —
-    // never leak `&#39;` or `&amp;` into the calendar UI.
     title: decodeHtmlEntities(raw.title),
     impact: raw.impact,
     actual: raw.actual,
@@ -243,8 +168,6 @@ function toEvent(raw: ApiCalendarEvent): CalendarEvent {
     previous: raw.previous,
     surprise: raw.surprise,
     ...(raw.isNextUp ? { isNextUp: true } : {}),
-    // Passthrough — present on the by-slug endpoint, absent on the week
-    // endpoint. The page handles both.
     ...(raw.explanation ? { explanation: raw.explanation } : {}),
   };
 }
@@ -270,9 +193,6 @@ function toNextUp(raw: NonNullable<ApiCalendarWeek['nextUp']>): NextUpEvent {
   return {
     slug: raw.slug,
     title: decodeHtmlEntities(raw.title),
-    // `NextUpEvent.summary` and `whyItMatters` are editorial fields — the
-    // API never populates them. Empty strings keep the type happy; the
-    // component treats empties as absent.
     summary: '',
     time: raw.time ?? '—',
     expected: raw.expected ?? '—',

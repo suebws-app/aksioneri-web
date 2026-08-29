@@ -8,13 +8,6 @@ export interface StaticPageProps {
   page: StaticPageContent;
 }
 
-/**
- * The standing pages — about, contact, privacy, terms.
- *
- * One renderer for all four: they are the same shape, and four near-identical
- * page components would drift apart the first time one of them was edited.
- * The measure matches an article's, because these are read the same way.
- */
 export function StaticPage({ page }: StaticPageProps) {
   const t = useTranslations('pages');
   const format = useFormatter();

@@ -34,7 +34,6 @@ describe('computeStock', () => {
 
     expect(result.priceProfit).toBe(6_000);
     expect(result.dividendIncome).toBe(250);
-    // 21,000 + 250 − 15,020
     expect(result.totalProfit).toBe(6_230);
   });
 
@@ -47,7 +46,6 @@ describe('computeStock', () => {
   });
 
   it('computes a break-even price below the purchase price once dividends are counted', () => {
-    // (15,020 − 250) / 100
     const result = value(computeStock(base));
 
     expect(result.breakEvenPrice).toBe(147.7);
@@ -55,7 +53,6 @@ describe('computeStock', () => {
   });
 
   it('puts break-even above the purchase price when there are no dividends', () => {
-    // Fees alone push it up: (15,020) / 100.
     const result = value(computeStock({ ...base, dividendPerShare: 0 }));
 
     expect(result.breakEvenPrice).toBe(150.2);
@@ -66,7 +63,6 @@ describe('computeStock', () => {
     const result = value(computeStock(base));
 
     expect(result.totalReturnPercent).toBeCloseTo(41.48, 1);
-    // Three years, so well below the total.
     expect(result.annualisedPercent).toBeGreaterThan(10);
     expect(result.annualisedPercent).toBeLessThan(14);
   });

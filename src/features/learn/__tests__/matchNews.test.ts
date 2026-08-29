@@ -56,8 +56,6 @@ const article = (
 
 describe('findArticleForLesson', () => {
   it('matches an English headline against an Albanian lesson', () => {
-    // The whole reason the glossary is passed in: the wire is English and the
-    // lesson's own key terms are Albanian.
     const found = findArticleForLesson(
       lesson('inflation-in-one-page', ['inflation']),
       [article('a', 'US inflation cools to 2.4% in August')],
@@ -91,7 +89,6 @@ describe('findArticleForLesson', () => {
   });
 
   it('returns null on an empty wire rather than throwing', () => {
-    // A cold API is a normal state, not an error.
     expect(
       findArticleForLesson(lesson('l', ['inflation']), [], GLOSSARY),
     ).toBeNull();
@@ -130,7 +127,6 @@ describe('findLessonForArticle', () => {
 
 describe('findArticlesMentioning', () => {
   it('matches on whole words only', () => {
-    // "S&P 500" must not match inside an unrelated token.
     const found = findArticlesMentioning(
       ['Gold'],
       [

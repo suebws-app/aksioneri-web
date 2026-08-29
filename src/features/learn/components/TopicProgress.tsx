@@ -4,12 +4,6 @@ import { useTranslations } from 'next-intl';
 import { ProgressBar } from '@/components/ProgressBar';
 import { useHasHydrated, useLearnProgress } from '../useLearnProgress';
 
-/**
- * How many lessons of one topic the reader has finished.
- *
- * Distinct from the bar on a lesson page, which shows position within the
- * topic rather than anything the reader did.
- */
 export function TopicProgress({
   slugs,
   title,
@@ -25,7 +19,6 @@ export function TopicProgress({
     ? slugs.filter((slug) => Boolean(completed[slug])).length
     : 0;
 
-  // Nothing to report before the reader has started.
   if (done === 0) return null;
 
   return (

@@ -1,12 +1,5 @@
 import type { SeedLesson, SeedTopic } from './types';
 
-/**
- * Tregjet dhe ekonomia — the figures the calendar publishes, and why a share
- * price in Frankfurt moves when a number is released in Washington.
- *
- * Ordered so that inflation comes before interest rates, and interest rates
- * before everything they drive.
- */
 export const MARKETS_ECONOMY_TOPIC: SeedTopic = {
   id: 'markets-economy',
   title: { sq: 'Tregjet dhe ekonomia' },

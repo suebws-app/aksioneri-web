@@ -21,7 +21,6 @@ export type ContributionFrequency = keyof typeof CONTRIBUTION_FREQUENCIES;
 
 export interface DcaInput {
   readonly initial: number;
-  /** Paid every period, at the end of it. */
   readonly contribution: number;
   readonly frequency: ContributionFrequency;
   readonly ratePercent: number;
@@ -41,21 +40,10 @@ export interface DcaResult {
   readonly finalValue: number;
   readonly gain: number;
   readonly realValue: number;
-  /** The annualised rate the plan actually achieved on money paid in. */
   readonly annualisedReturnPercent: number;
   readonly schedule: readonly DcaYear[];
 }
 
-/**
- * Investing a fixed amount at a fixed interval.
- *
- * The figure worth showing is the last one. A plan can return "7% a year" and
- * still turn €120,000 of contributions into far less than a 7% lump-sum
- * projection suggests, because most of the money was only invested for part
- * of the term. The money-weighted annualised return says what the plan
- * really earned; the assumed rate says what the market did. Readers conflate
- * them constantly.
- */
 export function computeDca(input: DcaInput): Outcome<DcaResult> {
   const {
     initial,
@@ -82,8 +70,6 @@ export function computeDca(input: DcaInput): Outcome<DcaResult> {
   const perYear = CONTRIBUTION_FREQUENCIES[frequency];
   const monthsBetween = 12 / perYear;
 
-  // Compounded monthly so that quarterly and annual plans are valued on the
-  // same clock; the contribution simply lands on some of those months.
   const factor = monthlyGrowthFactor(ratePercent, 12);
   const months = Math.round(years * 12);
 
@@ -116,8 +102,6 @@ export function computeDca(input: DcaInput): Outcome<DcaResult> {
   const totalContributions = fromCents(contributedCents);
   const finalValue = roundMoney(value);
 
-  // Money-weighted: the rate that turns what was actually paid in, on the
-  // schedule it was paid, into the final value.
   const annualisedReturnPercent =
     totalContributions <= 0 || finalValue <= 0
       ? 0

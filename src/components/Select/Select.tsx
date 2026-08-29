@@ -3,20 +3,6 @@
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils/cn';
 
-/**
- * A native `<select>`.
- *
- * Native rather than a custom listbox: the platform control already has
- * keyboard support, type-ahead, screen-reader semantics and a phone picker
- * that a hand-built menu spends a thousand lines approximating badly. The
- * repo has no Radix and no headless-UI dependency, and a compounding-frequency
- * dropdown is not the reason to add one.
- *
- * Only the chevron is drawn — `appearance-none` removes the platform arrow so
- * the control matches the inputs beside it, and the replacement is
- * `aria-hidden` because the select already announces itself as a combobox.
- */
-
 export interface SelectOption {
   value: string;
   label: string;

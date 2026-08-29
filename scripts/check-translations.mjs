@@ -1,13 +1,4 @@
 #!/usr/bin/env node
-/**
- * Fails when locale catalogues drift apart.
- *
- * A key present in sq but missing from en renders the Albanian string to an
- * English reader — silently, because the fallback merge in i18n/request.ts
- * hides it. This script is what surfaces it, so it runs in CI.
- *
- * Usage: node scripts/check-translations.mjs messages
- */
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 

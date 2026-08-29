@@ -29,12 +29,6 @@ const schema = (t: Translate) =>
     to: z.number({ message: t('errors.number') }),
   }) satisfies z.ZodType<SimpleChangeInput>;
 
-/**
- * The smallest calculator in the suite, and the one that prevents the most
- * misreporting: percentage change and percentage points are different
- * quantities, and a rate moving 2% → 3% is both "one point" and "fifty
- * percent". Both are shown, labelled apart.
- */
 export const percentageReturn: CalculatorDefinition<
   SimpleChangeInput,
   ChangeResult
@@ -62,12 +56,6 @@ export const percentageReturn: CalculatorDefinition<
   category: 'markets',
   messageKey: 'percentageReturn',
   disclaimer: 'general',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'ndryshim në përqindje',
     'pikë përqindjeje',

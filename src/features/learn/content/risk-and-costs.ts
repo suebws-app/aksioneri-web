@@ -1,13 +1,5 @@
 import type { SeedLesson, SeedTopic } from './types';
 
-/**
- * Rreziku dhe kostot — the fourth topic, and the one that decides most
- * outcomes.
- *
- * Everything here is about what you keep rather than what you earn: taxes,
- * currency, leverage, behaviour and fraud. None of it is exciting, and all of
- * it moves the number more than picking the right share does.
- */
 export const RISK_COSTS_TOPIC: SeedTopic = {
   id: 'risk-and-costs',
   title: { sq: 'Rreziku dhe kostot' },

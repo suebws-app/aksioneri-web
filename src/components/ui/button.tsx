@@ -2,11 +2,6 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils/cn';
 
-/**
- * shadcn/ui Button — variants map to the site's design tokens. `asChild`
- * support (which needs `@radix-ui/react-slot`) is intentionally omitted;
- * add it if a caller needs `<Button asChild><Link /></Button>`.
- */
 const buttonVariants = cva(
   'inline-flex items-center  cursor-pointer justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 disabled:pointer-events-none disabled:opacity-50',
   {

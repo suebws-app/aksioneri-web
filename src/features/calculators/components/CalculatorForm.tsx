@@ -9,21 +9,6 @@ import { SegmentedControl } from '@/components/SegmentedControl';
 import type { Currency } from '@/lib/format/money';
 import type { AnyCalculator, FieldSpec } from '../types';
 
-/**
- * Renders whatever fields a calculator declares.
- *
- * This is the file that makes the eleventh calculator free. A definition lists
- * its fields with their kinds and bounds; this walks that list. No calculator
- * has, or needs, a form component of its own.
- *
- * Values are held as **strings**, not numbers. A reader typing `1.` or
- * clearing a field to retype it is mid-edit, not in error, and coercing on
- * every keystroke makes the field fight back — the cursor jumps, a leading
- * zero vanishes, an emptied field refills with `0`. The string is the truth
- * while editing; the parent parses it and the engine refuses anything that
- * does not survive parsing.
- */
-
 export type FormValues = Record<string, string>;
 
 interface CalculatorFormProps {
@@ -32,19 +17,9 @@ interface CalculatorFormProps {
   errors: Partial<Record<string, string>>;
   currency: Currency;
   onChange: (name: string, value: string) => void;
-  /** Advanced fields are hidden until the reader opens them. */
   showAdvanced: boolean;
 }
 
-/**
- * Affix for a currency field.
- *
- * A field may declare that its denomination lives in another field
- * (`currencyFrom`), which is how the converter's amount follows the "Prej"
- * select. Otherwise it takes the page's currency. Anything without a familiar
- * glyph falls back to its ISO code rather than a symbol readers would
- * misread.
- */
 const CURRENCY_SYMBOL: Record<string, string> = {
   EUR: '€',
   USD: '$',

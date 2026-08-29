@@ -18,14 +18,11 @@ import type {
 } from './newsTypes';
 
 export interface NewsPageProps {
-  /** Null while the wire is empty — a cold API, or a first ingest still running. */
   lead: NewsArticle | null;
-  /** Page one of the wire; the feed appends the rest in place. */
   feed: ArticleFeedPage;
   mostRead: MostReadEntry[];
   upcomingEvents: CalendarEvent[];
   category: CategoryFilter;
-  /** Mirrors the design's sc-if props. */
   showWhyItMatters?: boolean;
   showComingUp?: boolean;
 }

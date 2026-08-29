@@ -4,19 +4,6 @@ import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/config';
 import { getCalculator } from '../registry';
 
-/**
- * The calculator card that appears inside an article.
- *
- * A link into the full calculator rather than the working widget inline, and
- * that is the point rather than a shortcut. An article is being read; a
- * calculator is being used. Dropping a live form with eight fields into
- * paragraph four interrupts the reading without serving the calculating, and
- * it would ship the whole engine to every article page whether or not anyone
- * touched it.
- *
- * A server component: no state, no hydration, and it costs an article page
- * nothing in JavaScript.
- */
 export async function CalculatorEmbed({
   slug,
   locale,

@@ -11,10 +11,6 @@ import {
 
 describe('lesson registry', () => {
   it('places every lesson in exactly one topic', () => {
-    // The bug this pins: a lesson missing from its topic's `slugs` still gets
-    // a page, but `resolve()` finds no position and silently drops its
-    // breadcrumb and progress bar. It used to happen to all three "Start
-    // here" lessons and to bonds-explained.
     for (const lesson of LESSONS) {
       const owners = TOPICS.filter((topic) =>
         topic.slugs.sq.includes(lesson.slug.sq),
@@ -36,8 +32,6 @@ describe('lesson registry', () => {
   });
 
   it('leaves no lesson unreachable from /learn', () => {
-    // bonds-explained used to be in no topic at all: it had a page and a
-    // sitemap entry, and nothing on the site linked to it.
     const reachable = new Set(TOPICS.flatMap((topic) => topic.slugs.sq));
     const orphans = LESSONS.filter(
       (lesson) => !reachable.has(lesson.slug.sq),
@@ -60,8 +54,6 @@ describe('lesson registry', () => {
   });
 
   it('counts a track total that a reader can actually reach', () => {
-    // `track.total` used to read the authored `lessonCount` — 12 against four
-    // reachable lessons, so a lesson announced "Lesson 1 of 12".
     for (const topic of getTopics('sq')) {
       for (const lesson of topic.lessons) {
         expect(lesson.track?.total).toBe(topic.lessons.length);
@@ -92,8 +84,6 @@ describe('lesson content', () => {
   });
 
   it('keeps comparison tables aligned with their columns', () => {
-    // The fees lesson shipped with its headers shifted one cell left, so
-    // "Annual fee" sat above fund names in both locales.
     for (const lesson of getLessons('sq')) {
       if (!lesson.comparison) continue;
       expect(lesson.comparison.columns, lesson.slug).toHaveLength(3);
@@ -102,8 +92,6 @@ describe('lesson content', () => {
   });
 
   it('writes enough prose to justify the reading time it claims', () => {
-    // Reading time is counted rather than authored, so this cannot drift —
-    // but it can still catch a lesson that was left as a stub.
     for (const lesson of getLessons('sq')) {
       const words = (lesson.body ?? [])
         .flatMap((section) => section.paragraphs)
@@ -120,8 +108,6 @@ describe('lesson content', () => {
 
 describe('getLearnStats', () => {
   it('reports the real counts, not authored ones', () => {
-    // These three were the literals 48 / 5 / 120 against 16 lessons and four
-    // glossary terms.
     const stats = getLearnStats();
 
     expect(stats.lessonCount).toBe(LESSONS.length);

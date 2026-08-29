@@ -4,20 +4,11 @@ import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
-/**
- * Search across lessons.
- *
- * Deliberately fed a trimmed index rather than the lessons themselves: at 48
- * full-length lessons the bodies run to tens of thousands of words, and
- * shipping them to every visitor to support a search box would be a poor
- * trade. Title, summary, topic and key terms are enough to find a lesson.
- */
 export interface LessonSearchEntry {
   slug: string;
   title: string;
   summary: string;
   topic: string;
-  /** Key term names, so searching "yield" finds the bonds lesson. */
   terms: string[];
 }
 
@@ -83,7 +74,6 @@ export function LessonSearch({ entries }: { entries: LessonSearchEntry[] }) {
   );
 }
 
-/** Diacritic-insensitive, so "perqindje" finds "përqindje". */
 const normalise = (value: string): string =>
   value
     .toLowerCase()

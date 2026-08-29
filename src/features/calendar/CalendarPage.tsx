@@ -20,10 +20,6 @@ import {
 export interface CalendarPageProps {
   week: CalendarWeek;
   region: RegionFilterValue;
-  /**
-   * Both flags mirror the design's `sc-if` props. They default to true, so the
-   * page renders complete unless a caller deliberately hides a block.
-   */
   showNextUp?: boolean;
   showPrimer?: boolean;
 }
@@ -46,9 +42,6 @@ export function CalendarPage({
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
-      {/* Invisible: opens the `/calendar` socket and refreshes the page when
-          the API pulses that an `actual` changed. Kept out of the header so a
-          reconnect never re-mounts through nav interactions. */}
       <CalendarLive />
       <SiteHeader
         active="calendar"
@@ -82,10 +75,6 @@ export function CalendarPage({
           </div>
         </div>
 
-        {/* Only the currently-selected day's events render below. Later
-            days used to be shown inline as extra sections; the tabs are
-            now the sole way to switch dates, which reads cleaner and
-            keeps the page short on a busy week. */}
         <div className="page-container pt-5">
           {selectedEvents.length > 0 ? (
             <EventTable

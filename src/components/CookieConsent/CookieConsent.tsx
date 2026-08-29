@@ -6,25 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { useConsent } from '@/lib/consent/consentContext';
 
-/**
- * Cookie consent banner. Shows only when the reader has never chosen —
- * accepting or declining hides it forever (until they clear the store).
- *
- * Visual design:
- *   - Inverted surface so it lifts off the paper page underneath.
- *   - Accent-coloured top rule as the attention cue rather than a full
- *     coloured background, which would read as an ad.
- *   - `animate-consent-in` slides it up from below on first paint;
- *     `prefers-reduced-motion` disables the movement.
- *
- * `role="region"` + `aria-labelledby`/`aria-describedby` gives screen
- * readers a titled, findable landmark for what they are being asked.
- * Deliberately not `role="dialog"`: the banner is non-modal — focus is
- * not trapped and nothing is blocked — and a dialog role promises modal
- * semantics the banner does not deliver. The banner stays optional at
- * the bottom of the page; blocking navigation would be worse UX than
- * blocking analytics.
- */
 export function CookieConsent() {
   const { status, accept, decline } = useConsent();
   const t = useTranslations('cookies');

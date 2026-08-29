@@ -12,15 +12,6 @@ import {
 import { locales, type Locale } from '@/i18n/config';
 import { usePathname, useRouter } from '@/i18n/navigation';
 
-/**
- * Human-facing name + flag for every locale the design might ever ship.
- * The list of *available* locales lives in `@/i18n/config`; anything
- * declared here that isn't in `locales` renders as a disabled option
- * with a "së shpejti" hint.
- *
- * Flag choice: the Kosovo flag for `sq` (audience-matched), the UK flag
- * for `en` (language marker rather than country).
- */
 const LOCALE_META: Record<string, { label: string; flag: string }> = {
   sq: { label: 'Shqip', flag: '🇦🇱' },
   en: { label: 'English', flag: '🇬🇧' },

@@ -11,32 +11,6 @@ import { getCalculators } from './registry';
 import { ALL_CATEGORIES, CATEGORY_PARAM } from './indexParams';
 import type { CalculatorCategory } from './types';
 
-/**
- * The calculators landing page.
- *
- * Filtering happens on the server, from the query string, and the filter
- * controls are plain links rather than buttons. That makes every filtered view
- * a real URL a reader can bookmark or an editor can link to from an article —
- * "see our borrowing calculators" — and it works with JavaScript off.
- *
- * There is no text search. Every calculator fits on one screen, so a search
- * box asked the reader to type more than it saved them — and the site-wide
- * search in the header already covers the case of arriving without knowing
- * where to look.
- *
- * Three sections the spec asks for are deliberately absent: "popular",
- * "trending with our readers", and "calculators related to today's news".
- *
- * The first two need usage counts that do not exist until analytics ships,
- * and the third needs the article matcher. A rail headed "most used" that is
- * really "whatever we listed first" is a claim the page cannot support — and
- * because the same cards then appear again in the full list directly below,
- * it also reads as duplicate calculators rather than as a recommendation.
- *
- * The `order` field still ranks the single grid, so the editorial judgement
- * about what matters most is preserved without asserting it is data.
- */
-
 interface CalculatorsIndexPageProps {
   locale: Locale;
   category: CalculatorCategory | null;
@@ -64,8 +38,6 @@ export async function CalculatorsIndexPage({
     ? all.filter((calculator) => calculator.category === category)
     : all;
 
-  // Only the categories that actually have a calculator: a filter that leads
-  // to an empty page is a dead end a reader has to back out of.
   const populated = ALL_CATEGORIES.filter((candidate) =>
     all.some((calculator) => calculator.category === candidate),
   );

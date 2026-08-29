@@ -5,10 +5,6 @@ import type { Locale } from '@/i18n/config';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
-/**
- * Which instruments belong to which group. Symbols not listed here fall into
- * `other`, so adding an instrument never drops it off this page silently.
- */
 const GROUPS: { key: string; symbols: string[] }[] = [
   {
     key: 'indices',
@@ -60,7 +56,6 @@ export default async function Page() {
     quotes: quotes.filter((quote) => group.symbols.includes(quote.symbol)),
   })).filter((group) => group.quotes.length > 0);
 
-  // Anything the map above does not claim still has to appear somewhere.
   const claimed = new Set(GROUPS.flatMap((group) => group.symbols));
   const rest = quotes.filter((quote) => !claimed.has(quote.symbol));
   const groups =

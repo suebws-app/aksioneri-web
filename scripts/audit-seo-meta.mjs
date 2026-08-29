@@ -1,13 +1,4 @@
 #!/usr/bin/env node
-/**
- * Audits SEO strings in the message catalogues.
- *
- * Search engines truncate long titles and descriptions, and a missing one means
- * the engine invents its own. Both are silent failures in the browser, so they
- * are checked here instead.
- *
- * Usage: node scripts/audit-seo-meta.mjs messages
- */
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -52,7 +43,6 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     }
   }
 
-  // Every namespace that has a metaTitle must have a metaDescription too.
   const keys = new Set(entries.map(([key]) => key));
   for (const key of keys) {
     if (key.endsWith('.metaTitle') && !keys.has(key.replace(/metaTitle$/, 'metaDescription'))) {

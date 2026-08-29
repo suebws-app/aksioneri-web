@@ -12,7 +12,7 @@ const FREQUENCIES = ['monthly', 'quarterly', 'annually'] as const;
 const defaults: MortgageInput = {
   propertyPrice: 150_000,
   downPayment: 30_000,
-  principal: 0, // derived from price − deposit
+  principal: 0,
   ratePercent: 4.5,
   years: 25,
   frequency: 'monthly',
@@ -142,8 +142,6 @@ export const mortgage: CalculatorDefinition<MortgageInput, MortgageResult> = {
   compute: (input) => computeMortgage(input),
 
   toResultSpec: (result) => ({
-    // The household figure leads, not the bank's. The gap between the two is
-    // where budgets break, so the larger and truer number is the headline.
     primary: {
       labelKey: 'monthlyTotal',
       value: result.monthlyTotal,
@@ -217,12 +215,6 @@ export const mortgage: CalculatorDefinition<MortgageInput, MortgageResult> = {
   category: 'borrowing',
   messageKey: 'mortgage',
   disclaimer: 'loan',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'hipotekë',
     'kredi banesore',

@@ -10,17 +10,10 @@ const FILLED_BARS: Record<EventImpact, number> = {
 
 interface ImpactBarsProps {
   impact: EventImpact;
-  /** Slightly taller bars inside the Next-up card. */
   size?: 'sm' | 'md';
   className?: string;
 }
 
-/**
- * Three bars, filled to match the impact level.
- *
- * Purely decorative to a screen reader — the level is announced by the label
- * instead, since "three small rectangles" carries nothing.
- */
 export function ImpactBars({
   impact,
   size = 'sm',

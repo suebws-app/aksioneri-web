@@ -34,7 +34,6 @@ export default async function Page({
     <>
       <script
         type="application/ld+json"
-        // Built from our own glossary, never user input.
         dangerouslySetInnerHTML={{
           __html: safeJsonLd(definedTermSetSchema(locale, terms)),
         }}

@@ -31,15 +31,10 @@ export function SignUpPage() {
     const { error } = await signUp.email({
       email: values.email,
       password: values.password,
-      // better-auth's `name` maps to the users.full_name column.
       name: values.fullName,
     });
 
     if (error) {
-      // One generic message for every failure, including "email already
-      // registered" — a distinct message would let anyone probe which
-      // addresses have accounts (the same enumeration leak the sign-in
-      // form avoids).
       setFormError(t('errors.signUpFailed'));
       return;
     }

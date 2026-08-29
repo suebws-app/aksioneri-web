@@ -1,36 +1,17 @@
 import 'server-only';
 import { z } from 'zod';
 
-/**
- * Server-only configuration. The `server-only` import makes referencing this
- * from a client component a build error, so a secret cannot reach the browser
- * bundle by accident.
- *
- * URLs default to localhost in development so `pnpm dev` needs no `.env`; in
- * production they are required so a missing value fails the build rather than
- * silently pinning CORS and canonical URLs to localhost.
- */
 const isProduction = process.env.NODE_ENV === 'production';
 
 const serverEnvSchema = z.object({
-  // 'staging' matches aksioneri-api's enum, so both halves of one deploy can
-  // share environment naming. Note staging still builds with
-  // NODE_ENV=production under Next — 'staging' is for self-hosted setups
-  // that set it explicitly.
   NODE_ENV: z
     .enum(['development', 'test', 'staging', 'production'])
     .default('development'),
 
-  // Public origin of this app. Used by better-auth and by every canonical URL.
   APP_URL: isProduction ? z.url() : z.url().default('http://localhost:3000'),
 
-  // The same PostgreSQL database aksioneri-api uses. better-auth writes its
-  // tables here; the API reads them.
   DATABASE_URL: z.url(),
 
-  // Must be byte-identical to aksioneri-api's AUTH_COOKIE_SECRET — better-auth
-  // signs the session cookie here and the API verifies that signature.
-  // Placeholder values from `.env.example` must never reach production.
   AUTH_COOKIE_SECRET: z
     .string()
     .min(32)
@@ -41,12 +22,6 @@ const serverEnvSchema = z.object({
       'AUTH_COOKIE_SECRET still holds a placeholder value; generate a real secret before deploying',
     ),
 
-  /**
-   * When true, `robots.ts` answers with a disallow-all ruleset and
-   * `buildMetadata` stamps `noindex` on every page. Set NOINDEX=true on any
-   * staging or preview domain so a crawler that finds it cannot index a
-   * duplicate of the production site. Leave unset (false) in production.
-   */
   NOINDEX: z.stringbool().default(false),
 
   REQUIRE_EMAIL_VERIFICATION: z
@@ -54,38 +29,18 @@ const serverEnvSchema = z.object({
     .default('false')
     .transform((value) => value === 'true'),
 
-  /**
-   * Session lifetime in seconds. Default 30 days matches better-auth's
-   * out-of-the-box behaviour; tuneable per environment (shorter for
-   * staging drills, longer for a native shell that dislikes re-auth).
-   */
   SESSION_TTL_SECONDS: z.coerce
     .number()
     .int()
     .positive()
     .default(60 * 60 * 24 * 30),
-  /**
-   * How often better-auth rotates the session token while a viewer is
-   * active. Default 7 days.
-   */
   SESSION_UPDATE_AGE_SECONDS: z.coerce
     .number()
     .int()
     .positive()
     .default(60 * 60 * 24 * 7),
-  /**
-   * Minimum password length better-auth enforces on sign-up. Kept as a
-   * single source of truth so `authSchema.ts` cannot drift below it.
-   */
   MIN_PASSWORD_LENGTH: z.coerce.number().int().positive().default(8),
 
-  /**
-   * Brevo transactional email (password reset, verification). All optional so
-   * existing deploys keep working: when BREVO_API_KEY or EMAIL_FROM is unset,
-   * `lib/email/brevo.ts` logs a structured warning and skips the send instead
-   * of failing. Set both (plus REQUIRE_EMAIL_VERIFICATION=true if wanted)
-   * before routing auth in production.
-   */
   BREVO_API_KEY: z.string().optional(),
   EMAIL_FROM: z.email().optional(),
   EMAIL_FROM_NAME: z.string().default('Aksioneri'),

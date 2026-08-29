@@ -15,20 +15,6 @@ import {
   type Point,
 } from './geometry';
 
-/**
- * The drawing itself. Server-rendered, no state, no refs, no effects.
- *
- * `aria-hidden`, deliberately: the accessible version of this chart is the
- * summary sentence and the data table beside it, both of which say more than
- * a screen reader could ever get from a path element.
- *
- * **Colour never carries meaning alone.** Each series gets a distinct dash
- * pattern as well as a distinct token, and the legend beside the chart repeats
- * both — the rule `ChangeValue.tsx` sets for the rest of the site. A reader
- * who cannot separate the two blues still has the dashes and the labels.
- */
-
-/** Series colours, in order. Defined in `globals.css`, ≥3:1 against the surface. */
 export const SERIES_COLOR = [
   'var(--chart-1)',
   'var(--chart-2)',
@@ -36,7 +22,6 @@ export const SERIES_COLOR = [
   'var(--chart-4)',
 ] as const;
 
-/** Solid, then increasingly open dashes, so order is legible without colour. */
 export const SERIES_DASH = ['', '6 3', '2 3', '9 3 2 3'] as const;
 
 export const seriesColor = (index: number): string =>
@@ -53,7 +38,6 @@ export function PlotSvg({
 }: {
   spec: ChartSpec;
   formatX: (value: number) => string;
-  /** Compact money, for the value scale down the left edge. */
   formatY: (value: number) => string;
   className?: string;
 }) {
@@ -73,26 +57,16 @@ export function PlotSvg({
 
   const stacked = spec.kind === 'stackedArea' ? stack(spec.series) : null;
 
-  // A stacked chart is scaled by the total, a line chart by the tallest
-  // series: stacking by the tallest series would push the top band off the
-  // plot.
   const dataMax = stacked
     ? maxOf(stacked)
     : maxOf(spec.series.map((series) => series.values));
 
-  // Scale to the top gridline, not to the data. Otherwise the peak sits on
-  // the frame with no label next to it and cannot be read off the axis.
   const { ticks: valueTicks, axisMax: max } = niceTicks(dataMax);
 
   const labels = axisLabels(spec.x);
 
-  // Denser axis, smaller type. At 40 labels there are ~16 units between them,
-  // which only works at 9.
   const xFontSize = labels.length > 30 ? 9 : labels.length > 20 ? 9.5 : 11;
 
-  // Markers stay on every period for as long as they are distinguishable —
-  // the axis collapsing into ranges must not thin the data. At 80 points they
-  // sit ~8 units apart, which is the floor for a 2.6-radius dot with a gap.
   const showMarkers = count <= 80;
 
   return (
@@ -102,9 +76,6 @@ export function PlotSvg({
       aria-hidden
       className={cn('h-[260px] w-full', className)}
     >
-      {/* The value scale. Hairline rules rather than a heavy grid: enough to
-          carry the eye across to a label, faint enough that the shape of the
-          data still reads first. */}
       {valueTicks.map((value) => {
         const y = yAt(value, 0, max);
         const isBase = value === 0;
@@ -208,7 +179,6 @@ export function PlotSvg({
           key={label.index}
           x={xAt(label.index, count)}
           y={VIEWBOX.height - 8}
-          // The first and last labels would otherwise hang off the plot.
           textAnchor={
             label.index === 0
               ? 'start'

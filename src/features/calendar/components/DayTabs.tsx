@@ -13,13 +13,6 @@ interface DayTabsProps {
   todayDate: string;
 }
 
-/**
- * The week strip.
- *
- * Each tab is a real link carrying `?date=`, so a specific day is shareable and
- * the back button works. Scrolls horizontally on narrow screens rather than
- * wrapping, which would push the region filter off the row.
- */
 export function DayTabs({ days, selectedDate, todayDate }: DayTabsProps) {
   const t = useTranslations('calendar');
   const locale = useLocale() as Locale;

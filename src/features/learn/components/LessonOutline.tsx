@@ -8,25 +8,8 @@ export interface OutlineEntry {
   label: string;
 }
 
-/**
- * How far below the viewport top a heading has to travel before its section
- * counts as the one being read. Matches the `scroll-mt-6` the sections carry
- * plus the room a jumped-to heading leaves above itself.
- */
 const ACTIVE_OFFSET = 96;
 
-/**
- * Which outline entry is current, given where each section sits relative to
- * the viewport top.
- *
- * Pure so the rule can be tested without a scroll container: the DOM reading
- * happens in the effect below, the decision happens here.
- *
- * The last section is a special case. A short final section can end while its
- * heading is still below the offset, so it would never become current without
- * the `atBottom` branch — the reader would watch the rail stall on the
- * second-to-last entry with nothing left to scroll.
- */
 export const activeOutlineId = (
   positions: { id: string; top: number }[],
   { offset, atBottom }: { offset: number; atBottom: boolean },
@@ -35,9 +18,6 @@ export const activeOutlineId = (
   if (!first) return null;
   if (atBottom) return positions[positions.length - 1]?.id ?? first.id;
 
-  // Sections are read top-down, so the last one to have crossed the offset is
-  // the one on screen. Falls back to the first, which is what the reader is
-  // looking at before anything has scrolled past.
   let current = first.id;
   for (const position of positions) {
     if (position.top <= offset) current = position.id;
@@ -45,21 +25,11 @@ export const activeOutlineId = (
   return current;
 };
 
-/**
- * The "on this page" rail, with the entry for the section being read marked.
- *
- * Reads scroll position rather than using an IntersectionObserver: the rail
- * has to name exactly one section at every scroll position, including inside
- * a section long enough that no heading is on screen at all. Observers report
- * visibility, which leaves that case ambiguous.
- */
 export function LessonOutline({ entries }: { entries: OutlineEntry[] }) {
   const [activeId, setActiveId] = useState<string | null>(
     entries[0]?.id ?? null,
   );
 
-  // The array arrives fresh from the server component on every render; the ids
-  // are what the effect actually depends on.
   const ids = useMemo(() => entries.map((entry) => entry.id), [entries]);
   const idKey = ids.join('|');
 
@@ -99,8 +69,6 @@ export function LessonOutline({ entries }: { entries: OutlineEntry[] }) {
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
     };
-    // `ids` is rebuilt per render; `idKey` is the value that actually changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idKey]);
 
   return (

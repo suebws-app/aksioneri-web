@@ -1,7 +1,6 @@
 import { AUTH_COOKIE_PREFIX, CSRF_HEADER_NAME } from '@/lib/auth/constants';
 import { clientEnv } from '@/lib/utils/env.client';
 
-/** Mirrors the error envelope `GlobalExceptionFilter` produces in aksioneri-api. */
 export interface ApiErrorBody {
   error: {
     code: string;
@@ -31,13 +30,7 @@ export interface PaginatedResponse<T> {
 
 export interface RequestOptions extends Omit<RequestInit, 'body'> {
   body?: unknown;
-  /** Query parameters; `undefined` values are dropped. */
   searchParams?: Record<string, string | number | boolean | undefined>;
-  /**
-   * Next.js caching directives for server-side calls. `RequestInit` has no
-   * `next` key, so it has to be declared here — it already reaches `fetch`
-   * through the spread below, it just would not type-check without this.
-   */
   next?: { revalidate?: number | false; tags?: string[] };
 }
 
@@ -59,14 +52,6 @@ const buildUrl = (
   return url.toString();
 };
 
-/**
- * The one place `fetch` is called. Components and hooks go through
- * `lib/api/<resource>.ts`, which goes through here.
- *
- * `credentials: 'include'` sends the better-auth session cookie cross-origin
- * (the web app is :3000, the API is :4000), which is why the API must pin CORS
- * to an exact origin — a wildcard cannot carry credentials.
- */
 export async function apiFetch<T>(
   path: string,
   { body, searchParams, headers, ...init }: RequestOptions = {},
@@ -111,11 +96,6 @@ export const apiFetchPaginated = <T>(
 ): Promise<PaginatedResponse<T>> =>
   apiFetch<PaginatedResponse<T>>(path, options);
 
-/**
- * The CSRF token the API expects on writes. better-auth stores it on the
- * session row and exposes it through the session; it is mirrored into a
- * readable cookie so client-side mutations can send it.
- */
 function readCsrfToken(): string {
   if (typeof document === 'undefined') return '';
   const cookiePrefix = `${AUTH_COOKIE_PREFIX}.csrf_token=`;

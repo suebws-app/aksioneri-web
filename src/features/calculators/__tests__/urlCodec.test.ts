@@ -2,12 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { getCalculators } from '../registry';
 import type { AnyCalculator } from '../types';
 
-/**
- * The codec is the contract with every link anyone has ever shared. These
- * tests run over the whole registry rather than one calculator, so a new
- * definition inherits the coverage instead of needing its own copy.
- */
-
 const calculators = getCalculators();
 
 const defaultsOf = (calculator: AnyCalculator): Record<string, unknown> =>
@@ -21,7 +15,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     it('round-trips a non-default input unchanged', () => {
       const modified: Record<string, unknown> = { ...defaults };
 
-      // Nudge every field off its default so encode has something to write.
       for (const field of calculator.fields) {
         const name = String(field.name);
         if (field.kind === 'select' || field.kind === 'segmented') {
@@ -47,8 +40,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     });
 
     it('writes nothing when every value is its default', () => {
-      // Otherwise every visit rewrites the address bar with parameters the
-      // reader never set, and the canonical URL stops matching the shared one.
       const params = calculator.urlCodec.encode(
         defaults as never,
         defaults as never,
@@ -72,7 +63,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
 
       const decoded = calculator.urlCodec.decode(hostile, defaults as never);
 
-      // Every field falls back rather than producing NaN or throwing.
       expect(decoded).toEqual(defaults);
     });
 
@@ -106,10 +96,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     });
 
     it('falls back rather than clamping when a value overflows to Infinity', () => {
-      // `1e999` is short enough to reach the parser and becomes Infinity.
-      // Clamping it to the field maximum would silently invent a number the
-      // reader never asked for; the default is the honest fallback, and the
-      // field is the only thing affected.
       for (const field of calculator.fields) {
         if (
           field.kind !== 'currency' &&
@@ -143,14 +129,12 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
         const name = String(field.name);
         const key = field.param ?? name;
 
-        // NaN
         expect(
           calculator.urlCodec.decode({ [key]: 'NaN' }, defaults as never)[
             name as never
           ],
         ).toBe(defaults[name]);
 
-        // A ten-kilobyte value never reaches the parser.
         expect(
           calculator.urlCodec.decode(
             { [key]: '9'.repeat(10_000) },
@@ -158,7 +142,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
           )[name as never],
         ).toBe(defaults[name]);
 
-        // ?x=1&x=2 arrives as an array; the first wins.
         const repeated = calculator.urlCodec.decode(
           { [key]: [String(field.min), String(field.max)] },
           defaults as never,

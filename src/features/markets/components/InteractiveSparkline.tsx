@@ -3,31 +3,10 @@
 import { useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils/cn';
 
-/**
- * The same visual sparkline used elsewhere on the site, plus a hover
- * overlay that reads the value at the cursor and shows a small tooltip
- * with the price (and time, when the caller passes per-point timestamps).
- *
- * Kept separate from the decorative `<Sparkline>` so the mini charts and
- * the strip do not carry the mousemove listener / tooltip DOM they never
- * use.
- *
- * `times` is optional. When present, each entry is the Unix-ms timestamp
- * of the corresponding `values` point and the tooltip labels the cursor
- * with a `HH:mm` in the reader's timezone. Without it, only the price is
- * shown.
- */
 export interface InteractiveSparklineProps {
   values: number[];
   times?: number[];
-  /** How to format the y-axis value for the tooltip. */
   formatValue?: (value: number) => string;
-  /**
-   * How to format a `times[i]` timestamp for the tooltip. Defaults to
-   * `dd MMM HH:mm` in the caller's locale — which reads as "Aug 25" on a
-   * long-range chart, ambiguous by year. `AssetChartLive` overrides
-   * this per range so weekly / monthly bars show `MMM yyyy` instead.
-   */
   formatTime?: (unixMs: number) => string;
   className?: string;
 }
@@ -69,7 +48,6 @@ export function InteractiveSparkline({
       ? {
           index: hoverIndex,
           value: values[hoverIndex] as number,
-          // Same geometry as the polyline so the marker sits exactly on it.
           x: (hoverIndex / (values.length - 1)) * VIEW_WIDTH,
           y:
             PADDING +
@@ -83,9 +61,6 @@ export function InteractiveSparkline({
     if (!el) return;
     const rect = el.getBoundingClientRect();
     if (rect.width === 0) return;
-    // Snap the cursor to the nearest point index — reads cleaner than
-    // interpolating between two samples, and matches the point the
-    // marker draws on.
     const ratio = Math.min(
       Math.max((event.clientX - rect.left) / rect.width, 0),
       1,
@@ -96,8 +71,6 @@ export function InteractiveSparkline({
 
   const onLeave = () => setHoverIndex(null);
 
-  // Tooltip's horizontal side flips at the halfway mark so it never
-  // slides off the container's right edge on the last few samples.
   const tooltipOnRight = hover ? hover.x / VIEW_WIDTH < 0.5 : true;
 
   return (
@@ -106,8 +79,6 @@ export function InteractiveSparkline({
       onPointerMove={onMove}
       onPointerLeave={onLeave}
       className={cn('relative', className)}
-      // Touch move without this fires page-scroll under the finger and
-      // never reaches `onPointerMove`.
       style={{ touchAction: 'none' }}
     >
       <svg
@@ -180,10 +151,6 @@ function defaultFormat(value: number): string {
 }
 
 function defaultFormatTime(unixMs: number): string {
-  // Fallback used only when the caller does not pass its own formatter.
-  // `AssetChartLive` always passes a tier-aware formatter that adds the
-  // year on ranges longer than ~3 months, because "Aug 25" on a 5-year
-  // chart is ambiguous.
   return new Intl.DateTimeFormat(undefined, {
     hour: '2-digit',
     minute: '2-digit',

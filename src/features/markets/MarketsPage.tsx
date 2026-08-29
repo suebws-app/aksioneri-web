@@ -19,13 +19,11 @@ import { LEAD_INDEX, type Quote } from '@/lib/api/markets';
 
 export interface MarketsPageProps {
   quotes: Quote[];
-  /** Null while the wire is empty — a cold API, or a first ingest still running. */
   featured: NewsArticle | null;
   sidebarStories: NewsArticle[];
   latestNews: NewsArticle[];
   upcomingEvents: CalendarEvent[];
   lessons: Lesson[];
-  /** Mirrors the design's three sc-if props. */
   showWhyItMatters?: boolean;
   showMovers?: boolean;
   showComingUp?: boolean;

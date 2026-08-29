@@ -2,12 +2,6 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import type { CalendarEvent } from '@/features/calendar';
 
-/**
- * The next releases, in the homepage sidebar.
- *
- * Reads the same calendar events the /calendar page does, so the two never
- * disagree about what is coming next.
- */
 interface ComingUpProps {
   events: CalendarEvent[];
 }

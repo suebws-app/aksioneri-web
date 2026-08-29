@@ -1,41 +1,16 @@
 import type { ReactNode } from 'react';
 
-/**
- * The accessibility contract for one form control, written once.
- *
- * A calculator is a form with a dozen inputs, and every one of them needs the
- * same four things wired correctly: a label tied to the control, an optional
- * hint tied through `aria-describedby`, an error that announces itself, and
- * `aria-invalid` on the control. Getting that right per-input by hand is how
- * half the inputs end up with an unlabelled control.
- *
- * So `Field` owns the ids and hands them back through a render prop. The
- * control it wraps stays whatever the caller needs — a native input, a select,
- * a segmented control — and cannot forget the wiring, because the ids only
- * exist inside the callback.
- *
- * Server component: it generates no ids of its own, the caller passes one.
- * Ids come from the field name rather than `useId()` deliberately — a
- * calculator's field names are already unique within the form, and a stable id
- * survives into the shareable URL's `#` anchors and into Playwright selectors.
- */
-
 export interface FieldRenderProps {
   id: string;
-  /** Pass to the control. Undefined when there is neither hint nor error. */
   describedBy: string | undefined;
   invalid: boolean;
 }
 
 export interface FieldProps {
-  /** Unique within the form. Becomes the control's `id`. */
   name: string;
   label: string;
-  /** Explains the unit or the assumption. Announced with the control. */
   hint?: string;
-  /** Already translated. Its presence is what makes the field invalid. */
   error?: string;
-  /** Rendered after the label, for a unit toggle or a "why" link. */
   action?: ReactNode;
   children: (props: FieldRenderProps) => ReactNode;
 }
@@ -54,8 +29,6 @@ export function Field({
 
   const invalid = Boolean(error);
 
-  // Both are named when both exist: a screen reader should read the unit and
-  // then what went wrong, not one at the expense of the other.
   const describedBy =
     [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ') ||
     undefined;

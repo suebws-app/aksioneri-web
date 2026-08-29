@@ -8,10 +8,6 @@ import { Link } from '@/i18n/navigation';
 import type { IndexSymbol, Mover, Movers } from '@/lib/api/markets';
 import { moversQuery } from '@/lib/query/marketsQueries';
 
-/**
- * Client-polling movers panel. Hydrates from `initial` (fetched server-side
- * so the first paint carries the real numbers), then refreshes every 30 s.
- */
 export function MarketMoversLive({
   index,
   initial,
@@ -51,11 +47,6 @@ export function MarketMoversLive({
   );
 }
 
-/**
- * One column of the movers panel. Each row links to `/markets/:symbol` so a
- * click opens the constituent's own asset page — the API accepts raw
- * tickers and 404s on anything it cannot resolve.
- */
 function MoverColumn({
   label,
   movers,

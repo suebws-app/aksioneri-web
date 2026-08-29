@@ -4,23 +4,6 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { marketsSocket } from '@/lib/websockets/marketsSocket';
 
-/**
- * Small badge next to a price that says one of:
- *
- *   - nothing         → healthy (connected + fresh ticks)
- *   - "connecting…"   → WebSocket is opening
- *   - "reconnecting…" → dropped, backing off
- *   - "offline"       → gave up
- *   - "delayed"       → connected but no tick for this symbol in >30 s
- *
- * The audit's Step 15 asked explicitly for this — silently showing a
- * stale price as live is worse than admitting the wire is quiet.
- *
- * Renders nothing on the happy path so the strip is visually clean when
- * everything is normal. Every state has its own translation key in the
- * `markets.status` namespace; falling through to English is safer than
- * showing the key.
- */
 export function DataStatusPill({ symbol }: { symbol: string }) {
   const t = useTranslations('markets.status');
   const [connectionState, setConnectionState] = useState<

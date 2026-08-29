@@ -1,69 +1,38 @@
 @import 'tailwindcss';
 
-/**
- * Design tokens for the Aksioneri editorial system.
- *
- * The palette is warm-paper rather than pure white: #FBFAF7 ground, #15181C
- * ink, and a single navy accent (#14385E) that carries every interactive and
- * emphasis state. Market direction has its own pair — green for a reading that
- * came in below expectation, red for above — kept distinct from the accent so
- * "this is a link" never reads as "this number went up".
- */
 :root {
-  /* Surfaces */
-  --paper: #ffffff; /* page ground */
-  --surface: #ffffff; /* rows, cards */
-  --surface-tint: #f2f5f9; /* highlighted row, "why it matters" panel */
-  --surface-muted: #fbfaf7; /* primer block */
-  --surface-inverse: #15181c; /* footer */
+  --paper: #ffffff;
+  --surface: #ffffff;
+  --surface-tint: #f2f5f9;
+  --surface-muted: #fbfaf7;
+  --surface-inverse: #15181c;
 
-  /* Text */
   --ink: #15181c;
   --ink-secondary: #2e343c;
   --ink-body: #4a5058;
   --ink-muted: #5a6068;
   --ink-subtle: #6e7683;
-  --ink-faint: #6c7280; /* 4.7:1 on --paper — WCAG AA for normal text */
-  --ink-ghost: #a8a49b; /* table labels, empty values */
+  --ink-faint: #6c7280;
+  --ink-ghost: #a8a49b;
   --ink-inverse: #fbfaf7;
   --ink-inverse-muted: #a7adb6;
   --ink-inverse-faint: #767d87;
 
-  /* Lines */
   --line: #e7e3da;
   --line-strong: #e0dcd2;
   --line-soft: #efebe2;
   --line-inverse: #2c3138;
 
-  /* Accent and market direction */
   --accent: #14385e;
-  --positive: #157f4a; /* actual came in below expectation */
-  --negative: #b3372c; /* actual came in above expectation */
+  --positive: #157f4a;
+  --negative: #b3372c;
 
-  /* UI status tones. Distinct from market direction on purpose: `DataStatusPill`
-   * warns that a socket is reconnecting or a quote is stale, and reading that
-   * as "the number went up" would be worse than saying nothing. Amber for
-   * "attention", muted vermilion for "failing" — both clear WCAG AA on paper
-   * (4.79:1 and 7.5:1 respectively). */
   --warning: #a25c14;
   --danger: #a02617;
 
-  /* Impact bars */
   --impact-on: #14385e;
   --impact-off: #dfdcd3;
 
-  /* Calculator chart series.
-   *
-   * Three steps down the accent navy plus one ochre, rather than a generic
-   * categorical palette: a projection chart sits beside the same headlines as
-   * everything else and should read as the same publication. The ochre breaks
-   * the ramp so a four-series chart never asks a reader to rank two adjacent
-   * blues by lightness alone.
-   *
-   * Every value clears 3:1 against --surface, the WCAG 1.4.11 floor for
-   * non-text graphics: 11.0, 5.4, 3.1, 4.9. Colour is still never the only
-   * signal — the chart kit pairs each series with a dash pattern and an
-   * end-of-line label. */
   --chart-1: #14385e;
   --chart-2: #3d6e96;
   --chart-3: #6e97b8;
@@ -107,25 +76,16 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
 
-  /* Newsreader carries headlines, Plex Sans the interface, Plex Mono every
-     figure — aligned columns of numbers depend on tabular glyph widths. */
   --font-serif: var(--font-newsreader), Georgia, serif;
   --font-sans: var(--font-plex-sans), system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
-  /* Ticker strip scroll. The rail renders its cells twice back-to-back and
-     translates -50%, so after one cycle the second copy sits where the first
-     started and the jump back to 0% is invisible. 80 s is slow enough to
-     read a label but fast enough that the strip does not feel frozen. */
   --animate-marquee: marquee 80s linear infinite;
-  /* The phone nav drawer: slides in from the right, with the scrim fading
-     under it. Long enough to read as a panel arriving, short enough not to
-     delay a tap. */
+
   --animate-drawer-in: drawer-in 220ms cubic-bezier(0.32, 0.72, 0, 1);
   --animate-scrim-in: scrim-in 220ms ease-out;
   --animate-panel-item-in: panel-item-in 260ms ease-out backwards;
-  /* Cookie consent banner. Slides up from below with a slight overshoot
-     so a reader arriving on the page notices it without being ambushed. */
+
   --animate-consent-in: consent-in 320ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
@@ -158,8 +118,6 @@
   }
 }
 
-/* Rows arrive just after the drawer, staggered by an inline delay, so the list
-   reads top-down instead of appearing all at once. */
 @keyframes panel-item-in {
   from {
     opacity: 0;
@@ -171,8 +129,6 @@
   }
 }
 
-/* Motion is decoration here: anyone who has asked the system to reduce it gets
-   the panel with no movement at all. */
 @media (prefers-reduced-motion: reduce) {
   .animate-drawer-in,
   .animate-scrim-in,
@@ -197,36 +153,21 @@ body {
   font-family: var(--font-sans);
 }
 
-/**
- * The one column every full-width page section sits inside.
- *
- * 1280 px max, centred, with the 24 px / 44 px gutters the design uses.
- * Extend it on the call site for vertical padding, flex/grid layout,
- * `overflow-hidden`, etc. — this class is only the horizontal frame, so
- * that section-specific spacing stays local to the section.
- */
 .page-container {
   margin-left: auto;
   margin-right: auto;
   max-width: 1280px;
-  padding-left: 1.5rem; /* 24px */
+  padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
 
 @media (min-width: 640px) {
   .page-container {
-    padding-left: 2.75rem; /* 44px */
+    padding-left: 2.75rem;
     padding-right: 2.75rem;
   }
 }
 
-/* The glossary entry a reader was sent to.
-   Words in articles and lessons link to `/learn/glossary#slug`, which used to
-   scroll the page and then leave the reader to work out which of two hundred
-   definitions they had been sent to. The attribute is set from the URL
-   fragment in `GlossarySearch`: `:target` looks like the obvious answer but
-   never fires here, because the router pushes the URL rather than navigating
-   to the fragment. */
 .glossary-entry[data-targeted] {
   border-left: 2px solid var(--accent);
   margin-left: -0.875rem;
@@ -237,8 +178,6 @@ body {
   color: var(--accent);
 }
 
-/* The tint fades; the rule above stays, so the entry is still identifiable
-   after the animation has finished. */
 .glossary-entry[data-targeted] {
   animation: glossary-target 2.4s ease-out;
 }
@@ -258,9 +197,6 @@ body {
   }
 }
 
-/* Chrome draws its own clear button inside `input[type="search"]`, in its own
-   grey. Masking a plain cross in `currentColor` keeps it the same ink as the
-   text it clears, at a size that matches the field rather than the browser. */
 input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
@@ -275,7 +211,3 @@ input[type='search']::-webkit-search-cancel-button {
 :root {
   --clear-cross: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1 1L11 11M11 1L1 11' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
 }
-
-/* The design is a light editorial surface throughout. It is not a
-   theme-switching system, so no dark-mode override is declared: inheriting the
-   browser default would invert the paper ground and break the palette. */

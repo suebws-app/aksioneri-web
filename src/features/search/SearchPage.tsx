@@ -6,13 +6,7 @@ import { NavSearch } from '@/features/search';
 import { SearchField } from './components/SearchField';
 
 interface SearchPageProps {
-  /** What the reader typed, already trimmed. Empty before a first search. */
   query: string;
-  /**
-   * The results block. Kept as a slot so `page.tsx` can wrap it in a
-   * `<Suspense>` — only the results shimmer while a new query fetches,
-   * the hero and the search field stay put.
-   */
   children: ReactNode;
 }
 

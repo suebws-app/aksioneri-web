@@ -6,13 +6,6 @@ import { continueTarget } from '../continueTarget';
 import { useHasHydrated, useLearnProgress } from '../useLearnProgress';
 import type { Lesson } from '../learnTypes';
 
-/**
- * "Continue where you left off".
- *
- * Takes the whole lesson list as props rather than looking anything up: this
- * is a client component, and shipping the resolver to the browser to find one
- * title would be a poor trade.
- */
 export function ContinueReading({ lessons }: { lessons: Lesson[] }) {
   const t = useTranslations('learn');
   const hydrated = useHasHydrated();
@@ -53,7 +46,6 @@ export function ContinueReading({ lessons }: { lessons: Lesson[] }) {
       )}
 
       {anyProgress ? (
-        // Data the site keeps about a reader needs a way to delete it.
         <button
           type="button"
           onClick={clearAll}

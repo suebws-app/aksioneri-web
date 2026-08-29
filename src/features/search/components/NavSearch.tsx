@@ -11,59 +11,20 @@ import { loadSearchIndex, searchWire } from '../searchAction';
 import { QUERY_PARAM } from '../searchParams';
 import type { SearchEntry } from '../searchTypes';
 
-/** Results the dropdown shows before the reader is better off narrowing. */
 const VISIBLE_RESULTS = 7;
 
-/**
- * How long typing has to pause before the archive is queried.
- *
- * The local index answers instantly and covers most queries; this is the extra
- * round trip that finds older stories, so it waits for the reader to stop
- * rather than firing on every keystroke.
- */
 const WIRE_DEBOUNCE_MS = 280;
 
-/**
- * Height of the header the phone sheet hangs from. Hardcoded because the sheet
- * is `fixed`, and measuring the header to place it would cost a layout effect
- * to save nothing — the header's padding is fixed too.
- */
 const HEADER_HEIGHT = '71px';
 
-/**
- * `trigger` is the desktop nav: a label that swaps for a field when tapped,
- * with results in a dropdown over the page.
- *
- * `mobile` is the phone header: an icon beside the menu button that drops a
- * full-width sheet under the header. Search sits outside the nav drawer
- * because it is the one thing a reader reaches for directly, and burying it
- * behind the menu costs a tap every time.
- */
 export type NavSearchVariant = 'trigger' | 'mobile';
 
-/**
- * The index, kept for the life of the tab.
- *
- * Module scope rather than component state: the header remounts on every
- * navigation, and re-fetching a few hundred entries each time the reader
- * reopens search would undo the point of loading it lazily.
- */
 const index = createIndexLoader(loadSearchIndex);
 
-/**
- * Search in the nav bar itself.
- *
- * Opens in place instead of navigating: the reader stays on the page they were
- * reading, and results appear as they type. The `/search` page still exists
- * and this still renders a real GET form pointed at it, which is what runs
- * before hydration and when JavaScript is off — with JavaScript, submitting
- * opens the top result rather than leaving the page.
- */
 export function NavSearch({
   variant = 'trigger',
 }: { variant?: NavSearchVariant } = {}) {
   const t = useTranslations('search');
-  // The trigger reuses the nav's existing label rather than duplicating it.
   const tNav = useTranslations('nav');
   const locale = useLocale() as Locale;
   const router = useRouter();
@@ -71,14 +32,12 @@ export function NavSearch({
   const onPhone = variant === 'mobile';
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  // A previous mount on another page may already have loaded it.
   const [entries, setEntries] = useState<SearchEntry[]>(
     () => index.peek() ?? [],
   );
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [highlight, setHighlight] = useState(0);
-  // Stories from the archive, which the client-side index does not hold.
   const [wire, setWire] = useState<SearchEntry[]>([]);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,10 +56,6 @@ export function NavSearch({
       .finally(() => setLoading(false));
   };
 
-  /**
-   * Opening is what pays for the index — loading it on the interaction that
-   * asked for it keeps the cost off every other page view.
-   */
   const openSearch = () => {
     setOpen(true);
     loadIndex();
@@ -117,9 +72,6 @@ export function NavSearch({
 
     inputRef.current?.focus();
 
-    // `pointerdown` rather than `mousedown` so touch and pen dismiss the
-    // dropdown the same way a mouse does, without waiting for the
-    // synthesised mouse event.
     const onPointerDown = (event: PointerEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
     };
@@ -133,17 +85,13 @@ export function NavSearch({
   useEffect(() => {
     if (!open || !searching) return;
 
-    // `stale` rather than an AbortController: a server action cannot be
-    // cancelled, so the guard is to ignore whatever a superseded call returns.
     let stale = false;
     const timer = setTimeout(() => {
       void searchWire(locale, query)
         .then((found) => {
           if (!stale) setWire(found);
         })
-        .catch(() => {
-          // An unreachable wire costs the archive results, nothing else.
-        });
+        .catch(() => {});
     }, WIRE_DEBOUNCE_MS);
 
     return () => {
@@ -153,8 +101,6 @@ export function NavSearch({
   }, [locale, open, query, searching]);
 
   const results = useMemo(() => {
-    // The index already carries the newest stories; the archive answer repeats
-    // them, so dedupe before ranking the two together.
     const known = new Set(entries.map((entry) => entry.href));
     const extra = wire.filter((entry) => !known.has(entry.href));
 
@@ -189,8 +135,6 @@ export function NavSearch({
 
   const field = (
     <form
-      // Without JavaScript this is an ordinary GET form and `/search`
-      // renders the same results as a page.
       action={getPathname({ href: '/search', locale })}
       role="search"
       onSubmit={(event) => {
@@ -208,7 +152,6 @@ export function NavSearch({
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
-            // New query, new list — the old highlight means nothing.
             setHighlight(0);
           }}
           placeholder={onPhone ? t('placeholderShort') : t('placeholder')}
@@ -221,9 +164,7 @@ export function NavSearch({
             'text-ink placeholder:text-ink-ghost w-full bg-transparent outline-none',
             onPhone
               ? 'border-line-strong focus:border-accent rounded-sm border px-3.5 py-2.5 text-[16px]'
-              : // Desktop nav variant: no box, just a bottom rule that
-                // tightens on focus. Sits flush with the wordmark row.
-                'border-line-strong focus:border-accent border-b px-1 py-1.5 text-[14px] sm:w-72',
+              : 'border-line-strong focus:border-accent border-b px-1 py-1.5 text-[14px] sm:w-72',
           )}
         />
       </label>
@@ -279,16 +220,8 @@ export function NavSearch({
   return (
     <div ref={containerRef} className="relative">
       {!onPhone ? (
-        // Desktop nav: the slot is button-sized when closed and grows to
-        // the field's width when open, so sibling nav items sit next to
-        // "Kërko" until the reader opens search. Button and field both
-        // stay in the DOM (positioned absolutely) so opacity can
-        // cross-fade — a conditional render would just pop out.
         <div
           className={cn(
-            // h-9 (not h-8) so the input's py-1.5 + 14px text + border-b
-            // fit inside `overflow-hidden` — otherwise the bottom rule
-            // sits at ~34px and gets clipped by a 32px slot.
             'relative h-9 overflow-hidden transition-[width] duration-200 ease-out',
             open ? 'w-72' : 'w-24',
           )}
@@ -308,24 +241,16 @@ export function NavSearch({
           </button>
           <div
             className={cn(
-              // Small delay so the field arrives once the slot has room
-              // for it rather than clipping mid-transition.
               'absolute inset-0 transition-opacity duration-200 ease-out',
               open ? 'opacity-100 delay-100' : 'pointer-events-none opacity-0',
             )}
             aria-hidden={!open}
-            // Match `aria-hidden` — otherwise the input inside stays keyboard-
-            // reachable while invisible, which Lighthouse flags and screen-
-            // reader users experience as an unreachable focus stop.
             inert={!open || undefined}
           >
             {field}
           </div>
         </div>
       ) : (
-        // Stays put and turns into a cross while the sheet is open: without
-        // it the field appeared with no visible way back, and tapping outside
-        // is not a control anyone can see.
         <button
           type="button"
           onClick={open ? close : openSearch}
@@ -339,10 +264,6 @@ export function NavSearch({
       )}
 
       {open && onPhone ? (
-        // A sheet under the sticky header rather than a field inside it: the
-        // header row has no width to spare once the wordmark and the two
-        // buttons are in place. `dvh` so the sheet ends above the browser
-        // chrome on a phone rather than behind it.
         <div
           className="border-line bg-paper animate-panel-item-in fixed inset-x-0 z-40 overflow-y-auto border-b px-6 pt-3 pb-10 shadow-sm"
           style={{
@@ -360,11 +281,6 @@ export function NavSearch({
   );
 }
 
-/**
- * 15px beside the desktop label, 21px as the phone's icon-only button — where
- * it has to carry the same weight as the menu icon next to it rather than sit
- * quietly in front of a word.
- */
 function CloseIcon() {
   return (
     <svg

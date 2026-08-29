@@ -11,14 +11,10 @@ import { ok, refuse, type Outcome } from './types';
 export interface DividendInput {
   readonly investment: number;
   readonly sharePrice: number;
-  /** Annual dividend paid per share, in currency. */
   readonly dividendPerShare: number;
-  /** How fast the dividend itself grows, per year. */
   readonly growthPercent: number;
   readonly years: number;
-  /** Reinvest payouts into more shares, or take them as cash. */
   readonly reinvest: 'yes' | 'no';
-  /** Assumed annual share-price growth, used only when reinvesting. */
   readonly priceGrowthPercent: number;
 }
 
@@ -34,7 +30,6 @@ export interface DividendResult {
   readonly annualIncome: number;
   readonly monthlyIncome: number;
   readonly currentYieldPercent: number;
-  /** Income in the final year against what was originally paid. */
   readonly yieldOnCostPercent: number;
   readonly futureAnnualIncome: number;
   readonly totalDividends: number;
@@ -42,18 +37,6 @@ export interface DividendResult {
   readonly schedule: readonly DividendYear[];
 }
 
-/**
- * Dividend income, with or without reinvestment.
- *
- * Two compounding effects are at work and readers usually see only one: the
- * dividend per share grows, and — if payouts are reinvested — the number of
- * shares grows too. Yield on cost is what shows the combination: a 4% yield
- * bought today can be 11% against the original price twenty years later, and
- * that is the number income investors actually care about.
- *
- * Fractional shares are assumed, which most brokers now support. Whole-share
- * rounding would understate the result and vary by broker.
- */
 export function computeDividend(input: DividendInput): Outcome<DividendResult> {
   const {
     investment,
@@ -87,7 +70,6 @@ export function computeDividend(input: DividendInput): Outcome<DividendResult> {
     return refuse('rateOutOfRange');
   }
   if (!isValidYears(years)) return refuse('termOutOfRange');
-  // Shares at zero price would be infinite shares.
   if (sharePrice === 0) return refuse('divideByZero');
   if (!isRepresentableMoney(investment)) return refuse('overflow');
 
@@ -106,8 +88,6 @@ export function computeDividend(input: DividendInput): Outcome<DividendResult> {
     cumulative += income;
 
     if (reinvest === 'yes') {
-      // Bought at the end-of-year price: buying at the start would credit a
-      // year of growth the payout had not yet earned.
       price *= priceGrowth;
       shares += income / price;
     } else {
@@ -146,13 +126,6 @@ export function computeDividend(input: DividendInput): Outcome<DividendResult> {
   });
 }
 
-/**
- * The reverse question: what does an income target cost to buy?
- *
- * "How much do I need invested for €1,000 a month?" is the question readers
- * actually arrive with, and it is one division — but doing it in their head
- * is where the decimal point goes missing.
- */
 export function requiredInvestment(
   monthlyTarget: number,
   yieldPercent: number,

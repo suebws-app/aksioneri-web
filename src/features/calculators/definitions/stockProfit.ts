@@ -95,17 +95,6 @@ const schema = (t: Translate) =>
       .max(100, { message: t('errors.rateRange') }),
   }) satisfies z.ZodType<StockInput>;
 
-/**
- * `marketData: none`, deliberately.
- *
- * The spec allows optionally pulling a live price for a ticker, and the API
- * can now do it (`/markets/search`, `/markets/asset/:symbol`). But the
- * calculation must not depend on it: a reader working out a past sale needs
- * historical prices they already know, and a calculator that refuses to work
- * without a live quote would be useless exactly when someone is doing their
- * tax return. Prices are typed; a lookup can prefill them later without
- * changing anything here.
- */
 export const stockProfit: CalculatorDefinition<StockInput, StockResult> = {
   slug: 'stock-profit',
   schema,
@@ -151,8 +140,6 @@ export const stockProfit: CalculatorDefinition<StockInput, StockResult> = {
         value: result.dividendIncome,
         format: 'moneyWhole',
       },
-      // The number that answers "am I actually up?", which no other
-      // calculator in the suite reports.
       { labelKey: 'breakEven', value: result.breakEvenPrice, format: 'money' },
       { labelKey: 'cost', value: result.cost, format: 'moneyWhole' },
     ],
@@ -162,12 +149,6 @@ export const stockProfit: CalculatorDefinition<StockInput, StockResult> = {
   category: 'markets',
   messageKey: 'stockProfit',
   disclaimer: 'investment',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'aksione',
     'fitim nga aksionet',

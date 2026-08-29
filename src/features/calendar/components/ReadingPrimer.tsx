@@ -3,11 +3,6 @@ import { Link } from '@/i18n/navigation';
 
 const STEPS = ['surprise', 'impact', 'rates'] as const;
 
-/**
- * The closing explainer block: three ideas that turn the table from a
- * spreadsheet into something readable. Gated by the `showPrimer` prop on the
- * page, matching the design's `sc-if`.
- */
 export function ReadingPrimer() {
   const t = useTranslations('calendar.primer');
 

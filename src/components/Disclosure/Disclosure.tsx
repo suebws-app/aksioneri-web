@@ -1,24 +1,9 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils/cn';
 
-/**
- * An expandable block: a FAQ answer, "how this was calculated", a chart's data
- * table.
- *
- * Native `<details>`/`<summary>` rather than a state-driven panel, and that is
- * a correctness decision rather than a convenience one. The FAQ content on a
- * calculator page is also the content its `FAQPage` structured data claims is
- * there — if the answers only existed after a click handler ran, the markup
- * would be describing a page that does not exist for a crawler, and the
- * expandable would be broken for anyone whose JavaScript failed to load.
- *
- * `<details>` needs no JavaScript, so the answers are in the HTML, and the
- * structured data is honest.
- */
 export interface DisclosureProps {
   summary: string;
   children: ReactNode;
-  /** Open on first render. Use for the first FAQ entry, not for all of them. */
   defaultOpen?: boolean;
   className?: string;
 }
@@ -42,8 +27,6 @@ export function Disclosure({
         )}
       >
         <span className="text-pretty">{summary}</span>
-        {/* Rotates rather than swapping glyphs, so the control never reflows.
-            aria-hidden: <summary> already announces its expanded state. */}
         <svg
           aria-hidden
           viewBox="0 0 12 8"

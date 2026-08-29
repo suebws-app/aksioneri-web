@@ -7,17 +7,12 @@ test.describe('calculator pages', () => {
   test('a shared link renders its answer with JavaScript disabled', async ({
     browser,
   }) => {
-    // The load-bearing property of the whole feature: the result is computed
-    // on the server, so a shared link works before (and without) hydration,
-    // and a crawler sees a real answer rather than an empty container.
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
 
     await page.goto(SHARED_URL);
 
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    // €25,000 + €750/mo at 6% for 15 years. The figure itself is asserted in
-    // the unit tests; here the point is only that a figure is present.
     await expect(page.locator('body')).toContainText('€');
     await expect(page.getByText(/\d{2,3}\.\d{3}\s?€/).first()).toBeVisible();
 
@@ -25,8 +20,6 @@ test.describe('calculator pages', () => {
   });
 
   test('FAQ answers are readable without JavaScript', async ({ browser }) => {
-    // <details> rather than a click handler, which is what makes the FAQPage
-    // structured data on this route an honest claim.
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
 
@@ -40,8 +33,6 @@ test.describe('calculator pages', () => {
   });
 
   test('the canonical URL carries no query string', async ({ page }) => {
-    // Inputs live in the query string, so the parameter space is infinite.
-    // The canonical is what collapses it onto one indexable URL.
     await page.goto(SHARED_URL);
 
     const canonical = await page
@@ -62,9 +53,7 @@ test.describe('calculator pages', () => {
 
     await page.getByLabel(/Norma vjetore/).fill('9');
 
-    // The URL follows the input…
     await expect(page).toHaveURL(/rate=9/);
-    // …but Back must leave the calculator, not step through keystrokes.
     const after = await page.evaluate(() => window.history.length);
     expect(after).toBe(before);
   });
@@ -72,9 +61,6 @@ test.describe('calculator pages', () => {
   test('toggling currency repeatedly never stacks history entries', async ({
     page,
   }) => {
-    // The reported bug: switching EUR/USD pushed an entry each time, so a
-    // reader comparing the two four times had to press Back four times to
-    // leave. Changing an input is editing a view, not navigating.
     await page.goto('/kalkulatoret/compound-interest');
 
     const before = await page.evaluate(() => window.history.length);
@@ -86,7 +72,6 @@ test.describe('calculator pages', () => {
 
     expect(await page.evaluate(() => window.history.length)).toBe(before);
 
-    // And Back genuinely leaves the calculator.
     await page.goBack();
     await expect(page).not.toHaveURL(/compound-interest/);
   });
@@ -108,8 +93,6 @@ test.describe('calculator pages', () => {
   });
 });
 
-// The nav gained a fifth link, and the desktop breakpoint moved from `sm` to
-// `md` to fit it. This is what keeps that decision honest.
 const VIEWPORTS = [375, 390, 640, 768, 1024, 1280];
 
 for (const width of VIEWPORTS) {

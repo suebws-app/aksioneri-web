@@ -7,15 +7,6 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
 import { Link } from '@/i18n/navigation';
 
-/**
- * Segment error boundary for the marketing tree. Any error thrown while
- * rendering a page under `(marketing)` bubbles here rather than to
- * `global-error.tsx`, so the parent layout — fonts, providers, cookie consent
- * — stays mounted. A transient API blip becomes a retry, not a whiteout.
- *
- * Client component by contract: Next.js only renders `error.tsx` on the
- * client, and only client-side hooks can call `reset()`.
- */
 export default function MarketingError({
   error,
   reset,
@@ -25,18 +16,12 @@ export default function MarketingError({
 }) {
   const t = useTranslations('errorBoundary');
 
-  // Best-effort forward to Sentry when it has been initialised by the consent
-  // flow. Sentry is dynamically imported behind cookie consent, so it may or
-  // may not be present here — guard against both.
   useEffect(() => {
     void (async () => {
       try {
         const Sentry = await import('@sentry/browser');
         Sentry.captureException(error);
-      } catch {
-        // Sentry not loaded (no consent, no DSN, or blocked by CSP) — the
-        // point is telemetry, not resilience. Silent fallthrough.
-      }
+      } catch {}
     })();
   }, [error]);
 
@@ -73,10 +58,6 @@ export default function MarketingError({
             </Link>
           </div>
 
-          {/* The digest is the only safe identifier to show — it is a hash
-              Next.js generates for server errors, so a reader can quote it
-              when reporting the incident, without exposing anything from
-              `error.message`. */}
           {error.digest ? (
             <p className="text-ink-faint mt-6 font-mono text-xs">
               {t('digest', { digest: error.digest })}

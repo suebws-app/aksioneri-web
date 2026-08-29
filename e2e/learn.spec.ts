@@ -1,20 +1,11 @@
 import { expect, test } from '@playwright/test';
 
-/**
- * The Learning Center.
- *
- * Every test here pins something that shipped broken: counts that were
- * invented, a quiz that could not be answered, a glossary page that did not
- * exist, and progress that was never stored.
- */
 test.describe('learning center', () => {
   test('every count on the page matches what is listed under it', async ({
     page,
   }) => {
     await page.goto('/learn');
 
-    // The hero claimed 48 lessons against 16, and each topic claimed a total
-    // larger than the rows beneath it.
     const claimed = Number(await page.locator('dl dd').first().textContent());
     const lessonLinks = await page.locator('a[href^="/learn/"]').count();
 
@@ -35,7 +26,6 @@ test.describe('learning center', () => {
 
     await options.first().click();
 
-    // A verdict, an explanation, and every option locked afterwards.
     await expect(page.locator('[role="status"]')).toBeVisible();
     await expect(options.first()).toBeDisabled();
   });
@@ -64,7 +54,6 @@ test.describe('learning center', () => {
     await page.getByRole('searchbox').fill('inflacion');
     await expect.poll(() => terms.count()).toBeLessThan(total);
 
-    // The anchor the article auto-linker sends readers to must exist.
     await page.goto('/learn/glossary#basis-point');
     await expect(page.locator('#basis-point')).toBeVisible();
   });
@@ -103,7 +92,6 @@ test.describe('learning center', () => {
       'this story happens to contain no glossary vocabulary',
     );
 
-    // Never more than the cap, or the story reads as a list of links.
     expect(await links.count()).toBeLessThanOrEqual(6);
     await expect(links.first()).toHaveAttribute('title', /.+/);
   });

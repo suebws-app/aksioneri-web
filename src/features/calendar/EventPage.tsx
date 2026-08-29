@@ -21,12 +21,10 @@ import { formatTimestamp } from './formatDate';
 
 export interface EventPageProps {
   event: EventDetail;
-  /** Other releases in the same week, for the sidebar. */
   alsoThisWeek: CalendarEvent[];
   reactingQuotes: Quote[];
   lessons: Lesson[];
   articles: NewsArticle[];
-  /** Mirrors the design's sc-if props. */
   showGoodBad?: boolean;
   showHowToRead?: boolean;
 }
@@ -153,8 +151,6 @@ export function EventPage({
               <p className="text-ink-faint mb-1.5 text-[13px]">
                 {t('event.releasesAt')}
               </p>
-              {/* A live countdown would force the page to render dynamically on
-                  every request; the release time is stated instead. */}
               <p className="text-ink mb-1.5 font-mono text-[32px]">
                 {event.time}
               </p>
@@ -273,9 +269,6 @@ export function EventPage({
                   {event.history.note}
                 </p>
 
-                {/* Bars are sized from the values, so a new reading needs no
-                    markup change. Decorative — the table below states each
-                    figure. */}
                 <div
                   aria-hidden
                   className="border-line bg-surface mb-5.5 flex h-55 items-end gap-3 rounded-sm border p-6.5"

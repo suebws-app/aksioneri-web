@@ -136,7 +136,6 @@ const schema = (t: Translate) =>
         .number({ message: t('errors.number') })
         .min(0, { message: t('errors.notNegative') }),
     })
-    // Cross-field, so the message lands on the field a reader can fix.
     .refine((v) => v.retirementAge > v.currentAge, {
       message: t('errors.retireAfterNow'),
       path: ['retirementAge'],
@@ -154,8 +153,6 @@ export const retirement: CalculatorDefinition<
   compute: (input) => computeRetirement(input),
 
   toResultSpec: (result) => ({
-    // The gap leads, not the pot: a six-figure pot means nothing until it is
-    // set against what the reader said they need.
     primary: {
       labelKey: 'gap',
       value: result.gap,
@@ -200,10 +197,6 @@ export const retirement: CalculatorDefinition<
       },
     ],
     table: {
-      // No scenario-name column: a table cell carries a number, not a label,
-      // so a "conservative / base / optimistic" column cannot be rendered
-      // through this contract. The rate identifies each row unambiguously —
-      // it is the reader's own rate, minus three, and plus three.
       columnKeys: ['rate', 'projectedPot', 'realPot', 'sustainableIncome'],
       rows: result.scenarios.map((scenario) => [
         {
@@ -248,12 +241,6 @@ export const retirement: CalculatorDefinition<
   category: 'retirement',
   messageKey: 'retirement',
   disclaimer: 'investment',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'pension',
     'dalje në pension',

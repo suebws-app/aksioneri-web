@@ -3,11 +3,6 @@ import { Link } from '@/i18n/navigation';
 import { LessonTick } from './LessonTick';
 import type { Lesson } from '../learnTypes';
 
-/**
- * A Learning Center card. The numeral is positional within the list it appears
- * in, so it is passed rather than stored — the same lesson is "01" on the
- * homepage and something else in the full index.
- */
 interface LessonCardProps {
   lesson: Lesson;
   index: number;

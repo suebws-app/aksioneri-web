@@ -24,11 +24,9 @@ const CATEGORIES: NewsCategory[] = [
 const isCategory = (value: string): value is NewsCategory =>
   (CATEGORIES as string[]).includes(value);
 
-/** A repeated query parameter arrives as an array; take the first value. */
 const first = (value: string | string[] | undefined): string | undefined =>
   Array.isArray(value) ? value[0] : value;
 
-/** Matches the API's poll interval — see `lib/api/news.ts`. */
 export const revalidate = 60;
 
 export async function generateMetadata({
@@ -59,13 +57,8 @@ export default async function Page({
   const query = await searchParams;
   const raw = first(query.category);
   const category: CategoryFilter = raw && isCategory(raw) ? raw : 'all';
-  // Filtering happens in the API. Filtering a page that has already been
-  // truncated to twenty would leave a thin desk showing two stories when it
-  // has fifty. Paging is client-side from here — see `ArticleFeed`.
   const [feed, lead, mostRead] = await Promise.all([
     getArticlePage(locale, category === 'all' ? {} : { category }),
-    // `lead` tracks the filter — clicking a desk pill swaps both the
-    // feed below and the featured card above.
     getFeaturedArticle(locale, category === 'all' ? undefined : category),
     getMostRead(locale),
   ]);

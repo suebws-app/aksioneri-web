@@ -3,16 +3,8 @@ import { formatMinutesAgo } from '@/lib/format/relativeTime';
 import { cn } from '@/lib/utils/cn';
 import type { NewsArticle } from '../newsTypes';
 
-/**
- * The dot-separated meta line: age, reading time and an optional ticker.
- *
- * Ages are relative and pre-computed in the data ("32 minutes ago"), so the
- * page stays statically renderable. A live clock would force it dynamic for a
- * detail no reader checks to the minute.
- */
 interface ArticleMetaProps {
   article: NewsArticle;
-  /** `full` adds the category label ahead of the age. */
   variant?: 'full' | 'compact';
   className?: string;
 }

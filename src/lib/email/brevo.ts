@@ -1,17 +1,6 @@
 import 'server-only';
 import { serverEnv as env } from '@/lib/utils/env.server';
 
-/**
- * Minimal Brevo v3 transactional email client.
- *
- * NOTE on the "fetch is called in exactly one place" rule: that rule scopes to
- * the app's own data layer — `lib/api/client.ts` talks to aksioneri-api and
- * carries session cookies and CSRF headers. Brevo is an external provider with
- * its own auth (an api-key header, no cookies), so routing it through
- * `apiFetch` would be wrong. This file is the deliberate second fetch site,
- * for outbound provider calls only.
- */
-
 const BREVO_SMTP_EMAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
 export interface TransactionalEmail {
@@ -21,15 +10,6 @@ export interface TransactionalEmail {
   text: string;
 }
 
-/**
- * Sends one transactional email through Brevo.
- *
- * Dev-safe: when `BREVO_API_KEY` or `EMAIL_FROM` is unset the send is skipped
- * with a structured warning instead of failing, so local sign-up and password
- * reset flows work without a Brevo account. When Brevo is configured but the
- * request fails, this throws — better-auth surfaces the failure rather than
- * pretending the email went out.
- */
 export async function sendTransactionalEmail({
   to,
   subject,

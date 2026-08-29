@@ -17,9 +17,6 @@ export async function generateMetadata({
     description: t('metaDescription'),
     path: '/sign-in',
     locale,
-    // Sign-in has no place in an index. The equivalent page in `robots.ts`'s
-    // PRIVATE_PATHS wires the disallow rule; `noIndex` here removes it from
-    // any list a crawler might otherwise render a preview for.
     noIndex: true,
   });
 }

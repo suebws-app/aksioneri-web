@@ -5,14 +5,6 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils/cn';
 import { useHasHydrated, useLearnProgress } from '../useLearnProgress';
 
-/**
- * The "mark as read" control at the foot of a lesson, and the place that
- * records which lesson was opened last.
- *
- * Renders as un-read until the persisted store has rehydrated — see the note
- * in `useLearnProgress`. Without that guard the button would flicker from
- * un-ticked to ticked on every page load.
- */
 export function MarkAsRead({ slug }: { slug: string }) {
   const t = useTranslations('learn');
   const hydrated = useHasHydrated();
@@ -21,7 +13,6 @@ export function MarkAsRead({ slug }: { slug: string }) {
   const markIncomplete = useLearnProgress((state) => state.markIncomplete);
   const setLastVisited = useLearnProgress((state) => state.setLastVisited);
 
-  // Opening a lesson is what "continue where you left off" points at.
   useEffect(() => {
     setLastVisited(slug);
   }, [slug, setLastVisited]);

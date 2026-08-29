@@ -6,14 +6,6 @@ import { Link } from '@/i18n/navigation';
 import type { GlossaryTerm } from './learnTypes';
 import { GlossarySearch } from './components/GlossarySearch';
 
-/**
- * The full glossary.
- *
- * Every term carries `id={slug}`, which is what makes
- * `/learn/glossary#basis-point` land on the right definition — and what the
- * article auto-linker points at. Those fragments are a public contract once
- * published, so slugs must not be renamed casually.
- */
 export interface GlossaryPageProps {
   terms: GlossaryTerm[];
 }

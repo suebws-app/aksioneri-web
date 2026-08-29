@@ -1,12 +1,5 @@
 import type { SeedLesson, SeedTopic } from './types';
 
-/**
- * The basics — what the things are before what to do about them.
- *
- * Read in order. Each lesson assumes the one before it and nothing else, so a
- * reader who starts at the top and works down never meets a word that has not
- * already been defined.
- */
 export const BASICS_TOPIC: SeedTopic = {
   id: 'basics',
   title: { sq: 'Bazat' },

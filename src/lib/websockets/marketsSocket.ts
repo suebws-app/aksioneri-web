@@ -2,12 +2,6 @@ import { io, type Socket } from 'socket.io-client';
 import { clientEnv } from '@/lib/utils/env.client';
 import type { DataSource, MarketStatus } from '@/lib/api/markets';
 
-/**
- * One live tick as the `/markets` gateway emits it. Field names match
- * `NormalizedQuote` in the API — the socket is a passthrough of the
- * upstream shape with the browser's original symbol alias echoed back
- * so callers can look up by the same identifier they subscribed with.
- */
 export interface LiveQuote {
   symbol: string;
   providerSymbol: string;
@@ -29,39 +23,20 @@ interface ConnectionEvent {
   state: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
 }
 
-/**
- * Singleton browser-side client for the markets Socket.io namespace.
- *
- * Every component that wants a live quote calls `subscribe(symbol, cb)` and
- * gets a `dispose()` back for cleanup. Multiple subscribers of the same
- * symbol share one server-side subscription — the refcount lives here so
- * unmounting a strip that mounts the same symbol twice does not release
- * the upstream slot early.
- *
- * The connection is lazy: opened the first time anyone subscribes,
- * disposed when the last subscriber leaves. That keeps the socket count
- * zero on server-rendered pages and on tabs the reader never interacts
- * with.
- */
 class MarketsSocketClient {
   private socket: Socket | null = null;
 
-  /** symbol → count of live subscribers (per browser). */
   private readonly refcounts = new Map<string, number>();
 
-  /** symbol → set of callbacks to invoke on each tick. */
   private readonly listeners = new Map<
     string,
     Set<(quote: LiveQuote) => void>
   >();
 
-  /** Cache of the last tick per symbol, for cold subscribers. */
   private readonly latest = new Map<string, LiveQuote>();
 
-  /** symbol → is-stale flag from the server's stale-detection. */
   private readonly staleFlags = new Map<string, boolean>();
 
-  /** symbol → set of callbacks that want to know when the flag flips. */
   private readonly staleListeners = new Map<
     string,
     Set<(isStale: boolean) => void>
@@ -88,15 +63,9 @@ class MarketsSocketClient {
       const next = (this.refcounts.get(symbol) ?? 0) + 1;
       this.refcounts.set(symbol, next);
       if (next === 1) {
-        // First subscriber on this tab — ask the server to add it. Server
-        // maintains its own refcount, so this call is safe to make on
-        // every 0→1 transition.
         socket.emit('subscribe', { symbols: [symbol] });
       }
 
-      // Replay the last-known tick to the fresh listener so it does not
-      // wait up to 15 s (or 60 s at the edge of a session) for the next
-      // upstream update to render.
       const cached = this.latest.get(symbol);
       if (cached) onTick(cached);
     }
@@ -106,24 +75,12 @@ class MarketsSocketClient {
 
   onStateChange(listener: (state: ConnectionState) => void): () => void {
     this.stateListeners.add(listener);
-    // Prime the listener with the current state so it does not need to
-    // wait for the first flip to render a status indicator.
     listener(this.state);
     return () => {
       this.stateListeners.delete(listener);
     };
   }
 
-  /**
-   * Subscribe to the stale-flag for one symbol. Emits `true` when the
-   * server flags it stale (no upstream tick for >30 s) and `false` when
-   * a fresh tick clears it. Primed with the current flag so a
-   * late-mounting component does not flash "live" before the next flip.
-   *
-   * Does not touch the tick refcount — a component that only wants the
-   * stale badge should still call `subscribe` if it also renders the
-   * price.
-   */
   onStaleChange(
     symbol: string,
     listener: (isStale: boolean) => void,
@@ -163,8 +120,6 @@ class MarketsSocketClient {
       }
     }
 
-    // Nothing subscribed and no state listeners → close the socket. Keeps
-    // idle tabs from holding an open connection for no reason.
     if (this.refcounts.size === 0 && this.stateListeners.size === 0) {
       this.disconnect();
     }
@@ -173,9 +128,6 @@ class MarketsSocketClient {
   private ensureConnected(): void {
     if (this.socket) return;
 
-    // `NEXT_PUBLIC_API_URL` carries the `/api` REST prefix (e.g.
-    // `http://localhost:4000/api`). Socket.io wants the origin plus the
-    // namespace, so strip `/api` off before joining.
     const origin = clientEnv.NEXT_PUBLIC_API_URL.replace(/\/api\/?$/, '');
     const url = `${origin}/markets`;
 
@@ -190,9 +142,6 @@ class MarketsSocketClient {
     this.socket.io.on('reconnect_attempt', () => this.setState('reconnecting'));
     this.socket.io.on('reconnect', () => {
       this.setState('connected');
-      // Rehydrate every current subscription so a reconnect resumes
-      // coverage without waiting for every component to unmount and
-      // remount.
       const symbols = Array.from(this.refcounts.keys());
       if (symbols.length > 0) {
         this.socket?.emit('subscribe', { symbols });
@@ -216,13 +165,7 @@ class MarketsSocketClient {
       },
     );
 
-    // Upstream (BiQuote → API) state changes propagate here so the UI
-    // can label a fallback flip or a full outage. Distinct from this
-    // socket's own state — an API instance can be up while its BiQuote
-    // socket is reconnecting.
     this.socket.on('connection-state', (event: ConnectionEvent) => {
-      // Reserved for a future "Powered by …" / provider-status pane;
-      // for now this is a hook point, not a rendered signal.
       void event;
     });
   }
@@ -240,8 +183,4 @@ class MarketsSocketClient {
   }
 }
 
-/**
- * Module-level singleton. All hooks share this instance so subscription
- * refcounting works across the whole app.
- */
 export const marketsSocket = new MarketsSocketClient();

@@ -10,10 +10,6 @@ interface RegionFilterProps {
   selectedDate: string;
 }
 
-/**
- * Region pills. Links rather than buttons, for the same reason as the day tabs:
- * a filtered view should survive a reload and be shareable.
- */
 export function RegionFilter({ selected, selectedDate }: RegionFilterProps) {
   const t = useTranslations('calendar.regions');
   const pathname = usePathname();

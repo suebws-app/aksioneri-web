@@ -11,9 +11,6 @@ test.describe('SEO surface', () => {
       /localhost:3000$/,
     );
 
-    // hreflang describes a choice between language versions of a page. The
-    // English locale was removed, so emitting any would advertise a page that
-    // does not exist.
     await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(
       0,
     );
@@ -23,7 +20,6 @@ test.describe('SEO surface', () => {
     const body = await (await request.get('/robots.txt')).text();
 
     expect(body).toContain('Disallow: /dashboard');
-    // Non-default locales carry a prefix, so the prefixed form must be blocked too.
     expect(body).toContain('Disallow: /*/dashboard');
     expect(body).toContain('sitemap.xml');
   });
@@ -34,14 +30,11 @@ test.describe('SEO surface', () => {
     const body = await (await request.get('/sitemap.xml')).text();
 
     expect(body).toContain('<loc>http://localhost:3000</loc>');
-    // One entry per page, not one per locale.
     expect(body).not.toContain('/en/');
     expect(body).not.toContain('/dashboard');
   });
 
   test('old English URLs redirect rather than 404', async ({ request }) => {
-    // These are in Google's index and in every sitemap already submitted.
-    // Without the redirect, removing the locale turns them all into 404s.
     for (const path of ['/en', '/en/news', '/en/learn']) {
       const response = await request.get(path, { maxRedirects: 0 });
       expect(response.status(), path).toBe(308);
@@ -63,8 +56,6 @@ test.describe('economic calendar', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/calendar');
 
-    // The table is wider than the viewport by design and scrolls inside its own
-    // container; the document itself must not.
     const { scrollWidth, clientWidth } = await page.evaluate(() => ({
       scrollWidth: document.documentElement.scrollWidth,
       clientWidth: document.documentElement.clientWidth,
@@ -88,7 +79,6 @@ test.describe('economic calendar', () => {
     await expect(
       page.getByRole('link', { name: /Initial jobless claims/ }),
     ).toBeVisible();
-    // A German release must disappear under the US filter.
     await expect(
       page.getByRole('link', { name: /Producer price index/ }),
     ).toHaveCount(0);

@@ -6,13 +6,6 @@ interface MarketMiniChartProps {
   className?: string;
 }
 
-/**
- * Lead index with its intraday line, in the homepage sidebar.
- *
- * Renders the initial snapshot server-side; the client child polls for
- * updates and refreshes the sparkline. Nothing draws if the backend is cold
- * and returns no series — an empty box would be worse than the absence.
- */
 export async function MarketMiniChart({
   symbol,
   className,

@@ -36,7 +36,6 @@ describe('date maths', () => {
   });
 
   it('counts the leap day in a leap year', () => {
-    // 2024 is a leap year: 366 days.
     expect(daysBetween('2024-01-01', '2025-01-01')).toBe(366);
     expect(daysBetween('2025-01-01', '2026-01-01')).toBe(365);
   });
@@ -46,8 +45,6 @@ describe('date maths', () => {
   });
 
   it('is unaffected by daylight saving', () => {
-    // Parsed at UTC midnight — a local-midnight parse loses an hour here and
-    // rounds a holding period to the wrong day.
     expect(daysBetween('2026-03-28', '2026-03-30')).toBe(2);
     expect(daysBetween('2026-10-24', '2026-10-26')).toBe(2);
   });
@@ -71,7 +68,6 @@ describe('computeReturn', () => {
   });
 
   it('computes CAGR for a doubling over ten years', () => {
-    // 2^(1/10) − 1 = 7.1773%
     expect(value(computeReturn(base)).cagrPercent).toBeCloseTo(7.18, 1);
   });
 
@@ -89,7 +85,6 @@ describe('computeReturn', () => {
     const result = value(computeReturn({ ...base, inflationPercent: 3 }));
 
     expect(result.realCagrPercent).toBeLessThan(result.cagrPercent);
-    // (1.0718 / 1.03) − 1 ≈ 4.05%
     expect(result.realCagrPercent).toBeCloseTo(4.05, 1);
   });
 
@@ -129,8 +124,6 @@ describe('computeReturn', () => {
 
 describe('computeChange', () => {
   it('keeps percentage and percentage points distinct', () => {
-    // A rate moving 2% → 3% rose by one point and by fifty percent. Reporting
-    // either as "the change" is the classic misleading result.
     const result = value(computeChange({ from: 2, to: 3 }));
 
     expect(result.changePoints).toBe(1);
@@ -144,7 +137,6 @@ describe('computeChange', () => {
   });
 
   it('handles a negative starting value without flipping the sign', () => {
-    // Dividing by a negative base would invert the direction of the change.
     expect(value(computeChange({ from: -100, to: -50 })).changePercent).toBe(
       50,
     );

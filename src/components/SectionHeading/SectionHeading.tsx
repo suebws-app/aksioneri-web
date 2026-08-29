@@ -2,17 +2,8 @@ import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 
-/**
- * The recurring section header: a serif title with an optional action or note
- * on the right, above a rule.
- *
- * The design uses two rule weights — 2px under the lead section of a page and
- * 1px under everything below it — which is what establishes the hierarchy
- * between "the main thing" and "more things".
- */
 interface SectionHeadingProps {
   title: string;
-  /** Renders as a link when `href` is set, otherwise as muted text. */
   action?: { label: string; href?: string };
   size?: 'lg' | 'md';
   rule?: 'strong' | 'normal';

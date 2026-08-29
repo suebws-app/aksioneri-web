@@ -7,20 +7,6 @@ import type { Currency } from '@/lib/format/money';
 import { formatFigure } from '../formatFigure';
 import type { AnyCalculator, ResultSpec } from '../types';
 
-/**
- * The answer, given the visual weight of an answer.
- *
- * One number is the point of the page and everything else supports it, so the
- * hierarchy is deliberate rather than a grid of equal tiles: the primary
- * figure is set large in the serif the paper uses for headlines, the
- * supporting figures are a mono list beneath it.
- *
- * Figures marked `projected` carry a small flag. The spec asks that a
- * calculated result be distinguishable from a market assumption, and on this
- * page the distinction is real: contributions are arithmetic on what the
- * reader typed, while the balance depends on a return nobody can promise.
- */
-
 interface ResultCardProps {
   calculator: AnyCalculator;
   spec: ResultSpec;
@@ -43,8 +29,6 @@ export function ResultCard({ calculator, spec, currency }: ResultCardProps) {
         {formatFigure(
           spec.primary.value,
           spec.primary.format,
-          // A figure may be denominated in something other than the page's
-          // currency — the converter's result is in its target currency.
           spec.primary.currency ?? currency,
           yearsUnit,
         )}

@@ -7,26 +7,7 @@ import { QuoteTableLive } from './components/QuoteTableLive';
 import { MarketTicker } from './components/MarketTicker';
 import type { Quote } from '@/lib/api/markets';
 
-/**
- * The full instrument list.
- *
- * The homepage is the markets *overview* — a lead index, movers, news — and
- * shows only the top handful of quotes. This is the plain index behind its
- * "view all" link, which pointed at a route that did not exist.
- *
- * Every group's table is rendered by `QuoteTableLive`, which subscribes to
- * the markets WebSocket for its symbols and patches the shared TanStack
- * cache on every tick — so the whole page auto-updates, no timestamp
- * needed. Adding a new instrument means:
- *   1. Add its symbol to `SUPPORTED_SYMBOLS` in the API
- *      (`markets.symbols.ts`) with a `SYMBOL_META` entry (precision,
- *      session, provider mapping).
- *   2. Mirror it in `SUPPORTED_SYMBOLS` in `lib/api/markets.ts`.
- *   3. Add it to the right `GROUPS` bucket in `markets/page.tsx`.
- * No changes here — the table renders whatever quotes it receives.
- */
 export interface MarketsIndexPageProps {
-  /** Every instrument, grouped for display. */
   groups: { key: string; quotes: Quote[] }[];
 }
 

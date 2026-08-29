@@ -1,39 +1,9 @@
 import type { GlossaryTerm } from './learnTypes';
 
-/**
- * Links glossary terms found in article prose to their definitions.
- *
- * This is what connects the two halves of the site: the wire publishes real
- * financial copy every minute, the glossary defines the jargon in it, and
- * without this they never meet.
- *
- * Returns plain data — strings and matched terms — which the caller renders.
- * Never HTML: the input is scraped third-party article text, so
- * `dangerouslySetInnerHTML` is not an option. A publisher who changes their
- * markup must not be able to inject anything into these pages.
- *
- * ## The rules, and why each exists
- *
- * - **Longest match first.** "basis point" has to beat "point", or the
- *   specific term loses to the generic one that happens to be a prefix.
- * - **Word boundaries only.** "yield" must not match inside "yielded".
- * - **Case-insensitive, original casing preserved.** A term at the start of a
- *   sentence is the same term.
- * - **First occurrence per article.** Linking every "ETF" in a story turns it
- *   blue and unreadable.
- * - **Capped.** A jargon-dense piece would otherwise become hyperlink soup.
- *
- * The caller creates one `GlossaryLinker` per article and feeds it paragraphs
- * in order, so "first occurrence" and the cap span the whole story rather
- * than resetting on every paragraph.
- */
-
-/** Above this, a story stops reading like prose and starts reading like a menu. */
 const DEFAULT_MAX_LINKS = 6;
 
 interface Match {
   term: GlossaryTerm;
-  /** The exact text as it appeared, so original casing survives. */
   text: string;
   start: number;
   end: number;
@@ -48,7 +18,6 @@ export class GlossaryLinker {
     terms: GlossaryTerm[],
     private readonly maxLinks: number = DEFAULT_MAX_LINKS,
   ) {
-    // Sorted longest-first so "basis point" is tried before "point".
     this.patterns = terms
       .flatMap((term) =>
         [term.term, ...(term.aliases ?? [])].map((phrase) => ({
@@ -66,12 +35,6 @@ export class GlossaryLinker {
       }));
   }
 
-  /**
-   * Splits one paragraph into plain strings and linkable terms.
-   *
-   * Returns `null` when nothing matched, so the caller can render the original
-   * string and skip the array entirely — the common case for most paragraphs.
-   */
   linkParagraph(
     text: string,
   ): (string | { term: GlossaryTerm; text: string })[] | null {
@@ -90,7 +53,6 @@ export class GlossaryLinker {
       const start = found.index;
       const end = start + found[0].length;
 
-      // A longer term already covers this span; do not link inside it.
       if (claimed.some(([from, to]) => start < to && end > from)) continue;
 
       claimed.push([start, end]);
@@ -117,6 +79,5 @@ export class GlossaryLinker {
   }
 }
 
-/** Escapes a phrase for safe use inside a RegExp. */
 const escape = (value: string): string =>
   value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

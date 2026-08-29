@@ -1,10 +1,5 @@
 import { Skeleton } from '@/components/Skeleton';
 
-/**
- * Fallback for the `<Suspense>` around `<SearchResults>` on `/search`.
- * Mirrors the count line + grouped list rendered by real results so the
- * page never reflows when the shimmer swaps for content.
- */
 export function SearchResultsSkeleton() {
   return (
     <>

@@ -1,29 +1,15 @@
 import type { SearchEntry } from './searchTypes';
 
-/**
- * Below this, a query matches too much to be worth showing. Two characters is
- * the same floor `LessonSearch` uses.
- */
 export const MIN_QUERY_LENGTH = 2;
 
-/** Results a page shows before the reader is better served by narrowing. */
 export const DEFAULT_LIMIT = 40;
 
-/**
- * Diacritic-insensitive, in both directions: a reader typing `cmimi` on a
- * phone keyboard finds `çmimi`, and typing `çmimi` still finds it.
- */
 const normalise = (value: string): string =>
   value
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-/**
- * Albanian grammar words. They carry no search intent, and requiring them
- * turned ordinary phrases into dead ends — "inflacion i lartë" returned
- * nothing because every entry had to contain "i".
- */
 const FUNCTION_WORDS = new Set([
   'i',
   'e',
@@ -48,35 +34,15 @@ const FUNCTION_WORDS = new Set([
   'kur',
 ]);
 
-/** Shortest word a suffixed query is allowed to have been built from. */
 const MIN_STEM_LENGTH = 4;
 
-/**
- * Longest ending a query may add to a word and still count as the same word.
- *
- * Albanian's definite, plural and case endings are short — `-i`, `-it`, `-et`,
- * `-ve`, `-ëve`, `-eve`. Four characters covers them and nothing else: without
- * the cap, `fondamentale` matched `fond`.
- */
 const MAX_SUFFIX_LENGTH = 4;
 
-/** `&` survives so `s&p` stays one word; everything else splits. */
 const wordsOf = (value: string): string[] =>
   value.split(/[^a-z0-9&]+/).filter(Boolean);
 
 type Relation = 'exact' | 'prefix' | 'stem' | null;
 
-/**
- * How a query word relates to a word in the text.
- *
- * `stem` is the case Albanian needs: readers type the definite or plural form
- * (`obligacionet`, `inflacionit`, `dividendët`) of a word the site stores bare
- * (`Obligacion`, `Inflacioni`, `Dividend`). A plain `includes` only ever
- * matched the opposite direction, so those queries came back nearly empty.
- *
- * The two limits are what stop it degenerating: the word must be long enough
- * to be a real stem, and the query may only add a short ending to it.
- */
 const relate = (word: string, token: string): Relation => {
   if (word === token) return 'exact';
   if (word.startsWith(token) && token.length >= 3) return 'prefix';
@@ -99,13 +65,6 @@ const bestRelation = (words: string[], token: string): Relation => {
   return best;
 };
 
-/**
- * What a hit is worth, by field and by how closely the words line up.
- *
- * The gaps are wide on purpose. A title hit must outrank any number of
- * subtitle hits, or a lesson that merely mentions "obligacione" in its summary
- * outranks the lesson actually called "Obligacionet, të shpjeguara".
- */
 const SCORE = {
   titleWord: { exact: 70, prefix: 55, stem: 50 },
   titleLoose: 40,
@@ -113,9 +72,7 @@ const SCORE = {
   keywordLoose: 20,
   subtitleWord: { exact: 12, prefix: 10, stem: 10 },
   subtitleLoose: 10,
-  /** The whole query is the whole title. */
   wholeTitle: 100,
-  /** The title opens with the word, rather than mentioning it in passing. */
   leading: 10,
 } as const;
 
@@ -128,7 +85,6 @@ interface Fields {
   keywordWords: string[];
 }
 
-/** The best a single query word can score against one entry. */
 const scoreToken = (token: string, fields: Fields): number => {
   const inTitle = bestRelation(fields.titleWords, token);
   if (inTitle) {
@@ -165,21 +121,6 @@ const fieldsOf = (entry: SearchEntry): Fields => {
   };
 };
 
-/**
- * Order a search index against a query.
- *
- * Pure, and the only place the ranking rules live: the page reads
- * `searchParams`, builds the index and hands both to this.
- *
- * Content words are ANDed — with a few hundred entries covering five
- * sections, an OR search returns most of the site for any two-word query.
- * Grammar words are excluded from that requirement, and if nothing satisfies
- * the AND the search falls back to the best partial matches rather than
- * showing the reader an empty box.
- *
- * Ties keep their index order, so the caller controls what wins between two
- * equally good matches by ordering the sections it concatenates.
- */
 export const rankResults = (
   entries: SearchEntry[],
   query: string,
@@ -192,7 +133,6 @@ export const rankResults = (
   const content = tokens.filter(
     (token) => token.length > 2 && !FUNCTION_WORDS.has(token),
   );
-  // A query made only of grammar words still has to search for something.
   const required = content.length > 0 ? content : tokens;
 
   const prepared = entries.map((entry, order) => ({
@@ -219,7 +159,6 @@ export const rankResults = (
         : matchedRequired > 0;
       if (!enough) continue;
 
-      // The whole query landing on the title beats the same words scattered.
       if (fields.title === needle) score += SCORE.wholeTitle;
       else if (tokens.length > 1 && fields.title.includes(needle))
         score += SCORE.titleLoose;

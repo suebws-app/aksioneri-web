@@ -21,16 +21,10 @@ export interface AssetPageProps {
   events: CalendarEvent[];
   lessons: Lesson[];
   articles: NewsArticle[];
-  /** Mirrors the design's sc-if props. */
   showExplainer?: boolean;
   showComposition?: boolean;
 }
 
-/**
- * Number of decimals in a formatted price string ("7,689.62" → 2). Used
- * to hand `AssetChartLive` the same precision the header shows without
- * hard-coding a per-instrument table on the frontend.
- */
 function decimalsIn(formatted: string): number {
   const dot = formatted.indexOf('.');
   return dot === -1 ? 0 : formatted.length - dot - 1;
@@ -49,9 +43,6 @@ export function AssetPage({
   const tNews = useTranslations('news');
   const tLearn = useTranslations('learn');
   const tCal = useTranslations('calendar');
-  // The API sends stable keys for these fields (audit Step 5); the web
-  // translates on render so a locale swap does not require a redeploy
-  // of the API.
   const tCategories = useTranslations('markets.categories');
   const tStats = useTranslations('markets.stats');
 
@@ -100,10 +91,6 @@ export function AssetPage({
                 initialChangeAbsolute={asset.changeAbsolute}
               />
             </div>
-
-            {/* Range buttons moved into `AssetChartLive` — they now
-                drive the chart's series, so ownership lives next to the
-                consumer instead of being a decorative sibling. */}
           </div>
         </header>
 
@@ -196,8 +183,6 @@ export function AssetPage({
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Index, not name: an index can hold two share classes
-                          of the same company under one name. */}
                       {asset.holdings.map((holding, index) => (
                         <tr
                           key={index}
@@ -205,7 +190,6 @@ export function AssetPage({
                         >
                           <td className="text-ink py-3.5">{holding.name}</td>
                           <td className="w-24 py-3.5">
-                            {/* Decorative: the percentage is in the next cell. */}
                             <span
                               aria-hidden
                               className="bg-line block h-1.5 overflow-hidden rounded-full"

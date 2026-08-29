@@ -49,7 +49,6 @@ describe('matchCalculatorForArticle', () => {
   });
 
   it('returns nothing when a story merely brushes past a term', () => {
-    // One passing mention must not interrupt an article with a widget.
     const slug = matchCalculatorForArticle(
       article({
         title: 'Papunësia bie në tremujorin e dytë',
@@ -64,7 +63,6 @@ describe('matchCalculatorForArticle', () => {
   });
 
   it('respects the category gate', () => {
-    // The same words on a desk the calculator does not serve produce nothing.
     const words = {
       title: 'Kredi, kredi, kredi',
       summary: 'Norma e interesit dhe kredi.',
@@ -120,7 +118,6 @@ describe('matchCalculatorForArticle', () => {
   });
 
   it('does not match a phrase inside a longer word', () => {
-    // "euro" must not fire on "Europa", or every EU story gets a converter.
     const slug = matchCalculatorForArticle(
       article({
         title: 'Europa dhe Europianët',

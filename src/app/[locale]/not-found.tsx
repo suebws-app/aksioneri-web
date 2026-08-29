@@ -4,11 +4,6 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
 import { Link } from '@/i18n/navigation';
 
-/**
- * Localized 404, rendered inside the locale shell (header, fonts, consent)
- * whenever `notFound()` fires — including the `[...rest]` catch-all that
- * absorbs every URL the router cannot match.
- */
 export default function NotFound() {
   const t = useTranslations('notFound');
 

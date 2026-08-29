@@ -45,8 +45,6 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        {/* Required disclaimer: the site publishes market data and explainers,
-            not advice. It stays visible on every page that shows figures. */}
         <p className="text-ink-inverse-faint mt-5 max-w-[76ch] text-[12.5px] leading-relaxed">
           {tFooter('disclaimer')}
         </p>

@@ -3,7 +3,6 @@ import { Link } from '@/i18n/navigation';
 import { formatMinutesAgo } from '@/lib/format/relativeTime';
 import type { MostReadEntry } from '../newsTypes';
 
-/** The numbered popularity rail in the news sidebar. */
 export function MostRead({ entries }: { entries: MostReadEntry[] }) {
   const t = useTranslations('news');
 

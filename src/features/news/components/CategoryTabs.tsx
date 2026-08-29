@@ -17,10 +17,6 @@ const CATEGORIES: CategoryFilter[] = [
   'macro',
 ];
 
-/**
- * Desk filter. Links carrying `?category=`, so a filtered view is shareable and
- * survives a reload — same reasoning as the calendar's day and region controls.
- */
 export function CategoryTabs({ selected }: { selected: CategoryFilter }) {
   const t = useTranslations('news');
   const pathname = usePathname();

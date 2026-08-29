@@ -61,12 +61,6 @@ const fields: readonly FieldSpec<ReturnInput>[] = [
   },
 ];
 
-/**
- * `YYYY-MM-DD`, and actually a calendar day: the format check catches a
- * mangled string, the parse catches `2023-02-31`, which matches the regex
- * but is not a date. Parsed at UTC midnight, the same discipline the
- * engine's `daysBetween` applies.
- */
 const isoDate = (t: Translate) =>
   z
     .string({ message: t('errors.date') })
@@ -97,9 +91,6 @@ const schema = (t: Translate) =>
         .min(0, { message: t('errors.notNegative') })
         .max(100, { message: t('errors.rateRange') }),
     })
-    // Attached to `saleDate` — the field the reader is likeliest to fix.
-    // String comparison is date comparison for ISO dates. Only runs when
-    // both fields already parse, so it never masks a format error.
     .refine((values) => values.saleDate >= values.purchaseDate, {
       message: t('errors.saleBeforePurchase'),
       path: ['saleDate'],
@@ -154,12 +145,6 @@ export const investmentReturn: CalculatorDefinition<ReturnInput, ReturnResult> =
     category: 'investing',
     messageKey: 'investmentReturn',
     disclaimer: 'investment',
-    // Albanian **and** English. The wire arrives in English and is only
-    // translated when the OpenAI-backed worker is enabled, so an
-    // Albanian-only vocabulary matches nothing on an untranslated story —
-    // the exact failure `features/learn/matchNews.ts` documents, where
-    // matching a lesson's Albanian terms against the wire "found nothing
-    // at all".
     newsPhrases: [
       'kthimi i investimit',
       'fitim kapital',

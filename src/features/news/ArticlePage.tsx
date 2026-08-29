@@ -27,21 +27,11 @@ export interface ArticlePageProps {
   mentioned: Quote[];
   nextRelease: CalendarEvent | null;
   relatedLesson: Lesson | null;
-  /** Terms to link inside the body. Empty disables linking entirely. */
   glossary: GlossaryTerm[];
-  /** Mirrors the design's sc-if props. */
   showWhyItMatters?: boolean;
   showInNumbers?: boolean;
   showTerms?: boolean;
-  /**
-   * The calculator this story should offer, matched at render time.
-   *
-   * A prop rather than something this component works out, so the choice can
-   * later come from a stored column instead of the matcher without touching
-   * the article page at all.
-   */
   calculatorEmbed?: string | null;
-  /** Escape hatch, mirroring the flags above. */
   showCalculatorEmbed?: boolean;
 }
 
@@ -62,8 +52,6 @@ export function ArticlePage({
   const t = useTranslations('news');
   const locale = useLocale() as Locale;
 
-  // One linker for the whole article: "first occurrence" and the cap are
-  // per-story, not per-paragraph, so it must not be recreated in the loops.
   const linker = new GlossaryLinker(glossary);
 
   return (
@@ -115,10 +103,6 @@ export function ArticlePage({
               </div>
             ) : null}
 
-            {/* Wire art is decorative here: the headline above already
-                carries the meaning, and the feed supplies no caption to
-                build honest alt text from. NewsImage cascades through
-                imageUrl → category pool → branded placeholder. */}
             <NewsImage
               article={article}
               className="mb-3 h-[400px] w-full"
@@ -166,15 +150,10 @@ export function ArticlePage({
                   </p>
                 ))}
 
-                {/* The calculator sits after the first section too, below
-                    the figures strip: far enough in that the reader has the
-                    context to want it, not so far that they never reach it. */}
                 {index === 0 && showCalculatorEmbed && calculatorEmbed ? (
                   <CalculatorEmbed slug={calculatorEmbed} locale={locale} />
                 ) : null}
 
-                {/* The figures strip sits after the first section, where the
-                    design places it. */}
                 {index === 0 && showInNumbers && article.inNumbers ? (
                   <section className="border-line bg-surface my-7.5 rounded-sm border p-6.5 sm:px-7">
                     <h3 className="text-ink-faint mb-5 text-[11px] font-semibold tracking-[0.12em] uppercase">

@@ -4,7 +4,6 @@ import { ImpactBars } from './ImpactBars';
 
 const LEVELS: EventImpact[] = ['high', 'medium', 'low'];
 
-/** Explains the bar notation once, beside the page title. */
 export function ImpactLegend() {
   const t = useTranslations('calendar.impact');
 

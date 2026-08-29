@@ -1,14 +1,3 @@
-/**
- * Decodes numeric (`&#39;`), hex (`&#x27;`) and named (`&amp;`) HTML entities
- * in a single linear pass. Malformed or unknown entities are left alone —
- * an event name that legitimately contains `&custom;` should render as-is.
- *
- * Used at the API-mapping boundary for text that arrives from upstreams
- * (calendar names, article headlines) which may pass entity-encoded strings
- * through even when their content-type promises plain text. Cheaper than
- * pulling in a full HTML parser and safer than trusting the upstream.
- */
-
 const NAMED_ENTITIES: Record<string, string> = {
   amp: '&',
   lt: '<',

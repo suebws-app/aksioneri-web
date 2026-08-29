@@ -1,16 +1,6 @@
 import 'server-only';
 import { sendTransactionalEmail } from './brevo';
 
-/**
- * Transactional auth emails, wired into better-auth in
- * `src/lib/auth/better-auth.ts` (`sendResetPassword` /
- * `sendVerificationEmail`).
- *
- * Copy lives here, not in the i18n catalogues: emails render server-side at
- * send time, outside the next-intl provider tree, and ship in the product's
- * primary language (Kosovo Albanian) regardless of the viewer's UI locale.
- */
-
 interface AuthEmailInput {
   to: string;
   url: string;
@@ -23,7 +13,6 @@ const escapeHtml = (value: string): string =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-/** One heading, one line of context, one button, one fallback link. */
 const renderHtml = ({
   heading,
   body,

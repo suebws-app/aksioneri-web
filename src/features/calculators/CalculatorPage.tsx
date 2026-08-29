@@ -14,23 +14,9 @@ import { CalculatorInteractive } from './components/CalculatorInteractive';
 import { Disclaimer } from './components/Disclaimer';
 import { RelatedCalculators } from './components/RelatedCalculators';
 
-/**
- * One calculator's page, for every calculator.
- *
- * The order of the page is the order a reader needs it in: the tool first,
- * because that is what they came for, then the explanation, then the worked
- * example, then the questions, then the caveat. Explanation before the tool
- * would be a textbook; caveat before the tool would be a legal notice.
- *
- * Everything here is a server component except the island. That is what makes
- * a shared URL work with JavaScript off and gives a crawler real prose rather
- * than an empty container — the whole reason these pages can rank at all.
- */
-
 interface CalculatorPageProps {
   calculator: AnyCalculator;
   locale: Locale;
-  /** Decoded from the query string on the server. */
   initialInput: Record<string, unknown>;
   ctx: ComputeContext;
 }
@@ -75,8 +61,6 @@ export async function CalculatorPage({
         </header>
 
         <div className="page-container pt-9">
-          {/* Only serialisable props cross this boundary — the definition
-              itself holds functions, so the island resolves it by slug. */}
           <CalculatorInteractive
             slug={calculator.slug}
             initialInput={initialInput}
@@ -107,9 +91,6 @@ export async function CalculatorPage({
 
             <section className="mt-10">
               <SectionHeading title={t('ui.faqHeading')} size="md" />
-              {/* Native <details>, so every answer is in the HTML whether or
-                  not JavaScript ran — which is what makes the FAQPage
-                  structured data on this route an honest claim. */}
               {content.faq.map((entry, index) => (
                 <Disclosure
                   key={entry.question}

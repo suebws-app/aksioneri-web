@@ -23,7 +23,6 @@ describe('xAt', () => {
   });
 
   it('pins a single point to the left edge instead of dividing by zero', () => {
-    // A one-year projection is a legitimate input.
     expect(xAt(0, 1)).toBe(PADDING.left);
     expect(Number.isFinite(xAt(0, 1))).toBe(true);
   });
@@ -40,7 +39,6 @@ describe('yAt', () => {
   });
 
   it('draws a flat series along the bottom rather than producing NaN', () => {
-    // An all-zero or constant series has no range; the guard keeps it finite.
     const y = yAt(5, 5, 5);
     expect(Number.isFinite(y)).toBe(true);
     expect(y).toBeCloseTo(PADDING.top + PLOT.height, 6);
@@ -56,8 +54,6 @@ describe('stack', () => {
   });
 
   it('makes the top band equal the sum of every series', () => {
-    // If this drifts, the chart shows a total that disagrees with the result
-    // card printed beside it.
     const series = [
       { values: [3, 5] },
       { values: [7, 11] },
@@ -122,8 +118,6 @@ describe('paths', () => {
     const path = bandPath(upper, lower);
 
     expect(path.endsWith('Z')).toBe(true);
-    // Reversed: the return leg must reach x=10 before x=0, or the fill
-    // renders as a bowtie.
     expect(path.indexOf('L10.00 10.00')).toBeLessThan(
       path.indexOf('L0.00 10.00'),
     );
@@ -154,8 +148,6 @@ describe('axisLabels', () => {
   });
 
   it('always labels the final period', () => {
-    // Stepping forwards from year one would label 1, 3, 5 … 29 on a
-    // thirty-year chart — leaving nothing under the year the reader came for.
     for (const n of [20, 21, 30, 47, 70, 100, 360]) {
       expect(shown(n).at(-1)).toBe(n);
     }
@@ -168,10 +160,6 @@ describe('axisLabels', () => {
   });
 
   it('leaves enough room between labels that they cannot overlap', () => {
-    // The real constraint, checked rather than assumed: label spacing in
-    // viewBox units against the widest label the series can produce, at the
-    // font size the chart uses for that density. Monospace, so width is
-    // simply characters × advance.
     const MONO_ADVANCE = 0.6;
 
     for (const n of [20, 21, 30, 50, 70, 100, 360]) {
@@ -201,8 +189,6 @@ describe('axisLabels', () => {
 
 describe('niceTicks', () => {
   it('rounds the scale to figures a person would say', () => {
-    // The peak of the default compound projection. An axis labelled 50.170
-    // reads as an artefact; 50.000 reads as a scale.
     const { ticks } = niceTicks(300_851);
 
     expect(ticks).toContain(0);
@@ -212,8 +198,6 @@ describe('niceTicks', () => {
   });
 
   it('does not waste the top of the plot on empty headroom', () => {
-    // The regression: 300,851 produced an axis to 400,000, leaving a third
-    // of the chart blank, because the step ladder jumped 5× → 10×.
     for (const max of [300_851, 63_000, 87_654, 222_400, 1_200]) {
       const { axisMax } = niceTicks(max);
       expect(axisMax / max).toBeLessThanOrEqual(1.25);
@@ -236,7 +220,6 @@ describe('niceTicks', () => {
   });
 
   it('produces exact labels, not floating-point noise', () => {
-    // A 2.5e4 step accumulates error if simply added in a loop.
     const { ticks } = niceTicks(120_000);
     for (const tick of ticks) {
       expect(Number.isInteger(tick)).toBe(true);

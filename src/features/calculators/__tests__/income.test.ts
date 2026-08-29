@@ -33,7 +33,6 @@ describe('computeDividend', () => {
   it('computes the first-year income and yield', () => {
     const result = value(computeDividend({ ...dividend, reinvest: 'no' }));
 
-    // 1,000 shares × €2
     expect(result.annualIncome).toBe(2_000);
     expect(result.monthlyIncome).toBeCloseTo(166.67, 2);
     expect(result.currentYieldPercent).toBe(4);
@@ -50,8 +49,6 @@ describe('computeDividend', () => {
   });
 
   it('grows yield on cost well past the starting yield', () => {
-    // The point of the calculator: 4% today becomes far more against the
-    // original price after twenty years of dividend growth.
     const result = value(computeDividend(dividend));
 
     expect(result.yieldOnCostPercent).toBeGreaterThan(
@@ -83,7 +80,6 @@ describe('computeDividend', () => {
   });
 
   it('answers the reverse question', () => {
-    // €1,000 a month at a 4% yield.
     expect(value(requiredInvestment(1_000, 4))).toBe(300_000);
   });
 
@@ -115,9 +111,6 @@ describe('computeDca', () => {
   });
 
   it('reports a money-weighted return well below the assumed market rate', () => {
-    // The finding readers most often get wrong: a plan assuming 7% does not
-    // return 7% on the money paid in, because most of it was invested for
-    // only part of the term.
     const result = value(computeDca(dca));
 
     expect(result.annualisedReturnPercent).toBeLessThan(7);
@@ -130,7 +123,6 @@ describe('computeDca', () => {
       computeDca({ ...dca, frequency: 'quarterly', contribution: 1_500 }),
     );
 
-    // Same money per year, invested earlier.
     expect(monthly.totalContributions).toBe(quarterly.totalContributions);
     expect(monthly.finalValue).toBeGreaterThan(quarterly.finalValue);
   });
@@ -217,7 +209,6 @@ describe('computeRetirement', () => {
   });
 
   it('closes the gap when the required contribution is applied', () => {
-    // The number is only useful if acting on it actually works.
     const poor = value(
       computeRetirement({
         ...retirement,

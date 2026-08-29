@@ -43,8 +43,6 @@ describe('activeOutlineId', () => {
   });
 
   it('marks the final entry once the page is scrolled to the bottom', () => {
-    // The last section is short enough that its heading never reaches the
-    // offset — without the bottom case it could never become current.
     const positions = [
       { id: 'one', top: -900 },
       { id: 'two', top: -300 },

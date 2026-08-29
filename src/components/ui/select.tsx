@@ -1,16 +1,5 @@
 'use client';
 
-/**
- * shadcn/ui Select — thin wrapper around Radix's Select primitive with
- * project styling. Same API as upstream shadcn (`Select`, `SelectTrigger`,
- * `SelectContent`, `SelectItem`, …), so anything from shadcn's docs works
- * unchanged.
- *
- * Copied by hand (not via `npx shadcn add`) because the CLI expects a
- * `components.json` and a specific Tailwind config shape this repo does
- * not use — v4's `@theme` in `globals.css` instead of a config file.
- */
-
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 import * as React from 'react';

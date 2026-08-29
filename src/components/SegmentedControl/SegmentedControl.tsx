@@ -2,33 +2,14 @@
 
 import { cn } from '@/lib/utils/cn';
 
-/**
- * A row of mutually exclusive choices: EUR/USD, conservative/base/optimistic,
- * monthly/quarterly/annual.
- *
- * Built on **native radio inputs**, not `role="radiogroup"` on a row of
- * buttons. The repo has both patterns already — `LessonQuiz` hand-rolls
- * `role="radio"`, `AssetChartLive` uses `role="tablist"` — and the hand-rolled
- * version is missing arrow-key navigation, which is the behaviour a radio
- * group is expected to have. Native inputs bring roving focus, arrow keys,
- * form participation and screen-reader semantics for free; the segments are
- * just a label styled off `peer-checked`.
- *
- * Deliberately not `tablist`: tabs switch between panels of the same content.
- * These change an input to the calculation, which is a radio group.
- */
-
 export interface SegmentedOption {
   value: string;
   label: string;
-  /** Read instead of `label` when the visible text is an abbreviation. */
   srLabel?: string;
 }
 
 export interface SegmentedControlProps {
-  /** Groups the radios. Unique within the page. */
   name: string;
-  /** Labels the group itself — required, and rendered visually hidden. */
   legend: string;
   value: string;
   options: readonly SegmentedOption[];
@@ -73,11 +54,7 @@ export function SegmentedControl({
               htmlFor={id}
               className={cn(
                 'text-ink-muted flex min-h-10 cursor-pointer items-center rounded-[2px] px-3.5 font-sans text-[14px] whitespace-nowrap',
-                // The focus ring has to come from the input, which is
-                // visually hidden — so it is projected onto the label.
                 'peer-focus-visible:outline-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1',
-                // Checked state carries weight and a surface change, not
-                // colour alone.
                 'peer-checked:bg-surface peer-checked:text-ink peer-checked:font-medium peer-checked:shadow-[0_1px_2px_rgba(21,24,28,0.08)]',
               )}
             >

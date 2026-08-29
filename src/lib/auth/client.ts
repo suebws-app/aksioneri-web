@@ -3,10 +3,6 @@
 import { createAuthClient } from 'better-auth/react';
 import { clientEnv } from '@/lib/utils/env.client';
 
-/**
- * Browser-side auth. `baseURL` is this app, not the API — better-auth's routes
- * are served from `/api/auth/*` here.
- */
 export const authClient = createAuthClient({
   baseURL: clientEnv.NEXT_PUBLIC_APP_URL,
 });

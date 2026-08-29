@@ -1,20 +1,8 @@
 import { clientEnv } from '@/lib/utils/env.client';
 import type { StaticPageContent } from '../siteTypes';
 
-/**
- * The address readers write to.
- *
- * One constant rather than a string repeated across three pages: it appears in
- * the contact page, in the privacy page's data-request section and in the
- * terms. Sourced from `NEXT_PUBLIC_CONTACT_EMAIL`, which is REQUIRED in
- * production so the local `kontakt@aksioneri.com` default cannot ship live.
- */
 export const CONTACT_EMAIL = clientEnv.NEXT_PUBLIC_CONTACT_EMAIL;
 
-/**
- * Last substantive edit to the legal text. Split per document so a change to
- * the terms does not silently bump the privacy date and vice versa.
- */
 const PRIVACY_UPDATED_AT = '2026-08-27';
 const TERMS_UPDATED_AT = '2026-08-25';
 
@@ -198,11 +186,6 @@ const TERMS: StaticPageContent = {
   ],
 };
 
-/**
- * Every standing page, keyed by slug so a route can ask for its own.
- *
- * Ordered as the footer lists them.
- */
 export const STATIC_PAGES: Record<
   StaticPageContent['slug'],
   StaticPageContent

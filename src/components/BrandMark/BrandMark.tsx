@@ -1,15 +1,5 @@
-/**
- * The site wordmark, extracted so the header and footer render one
- * source of truth. The dot on the "i" is the same up-tick marker the
- * site prints beside every rising number — the entire brand mark in
- * one glyph.
- *
- * Sized via the parent's font-size (all inner dimensions are `em`).
- */
 interface BrandMarkProps {
-  /** Preset caller sizes for the two current placements. */
   size?: 'header' | 'footer';
-  /** Passed straight through — screen readers read the wordmark as one label. */
   ariaLabel: string;
   className?: string;
 }

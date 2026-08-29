@@ -12,14 +12,6 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import type { GlossaryTerm } from '../learnTypes';
 
-/**
- * The searchable, A–Z glossary body.
- *
- * Filtering happens in the browser over the terms already rendered on the
- * page. At this size — a few hundred one-line definitions — that is far
- * cheaper than a round trip, and it keeps the whole list in the HTML for
- * crawlers and for anyone with JavaScript off.
- */
 export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
   const t = useTranslations('learn');
   const [query, setQuery] = useState('');
@@ -27,9 +19,6 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
   const targetSlug = useTargetSlug();
   const targetRef = useRef<HTMLDivElement>(null);
 
-  // The router changes the URL with the History API, which neither scrolls to
-  // the fragment nor re-evaluates `:target` — so arriving from a linked word
-  // in an article left the reader at the top of two hundred definitions.
   useEffect(() => {
     if (!targetSlug) return;
 
@@ -38,10 +27,6 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
       if (!cancelled) targetRef.current?.scrollIntoView({ block: 'start' });
     };
 
-    // Twice, deliberately. The first pass puts the reader roughly there; the
-    // serif face then swaps in, every definition above the target changes
-    // height, and the entry drifts hundreds of pixels off. Re-aligning once
-    // the fonts have settled is what actually lands on it.
     const frame = requestAnimationFrame(align);
     void document.fonts?.ready.then(align);
 
@@ -66,8 +51,6 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
       if (letter && firstLetter(term.term) !== letter) return false;
       if (!needle) return true;
 
-      // Aliases are matched too: a reader who types the plural or the English
-      // loanword should still find the entry.
       return [term.term, term.definition, ...(term.aliases ?? [])].some(
         (text) => normalise(text).includes(needle),
       );
@@ -147,11 +130,6 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
             </h2>
             <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
               {entries.map((term) => (
-                // `glossary-entry` is what the `:target` rule in globals.css
-                // hooks on to: a reader arriving from a linked word in an
-                // article needs to see which definition they were sent to.
-                // The scroll offset clears the header, which is sticky on
-                // phones and would otherwise cover the term just scrolled to.
                 <div
                   key={term.slug}
                   id={term.slug}
@@ -186,10 +164,6 @@ export function GlossarySearch({ terms }: { terms: GlossaryTerm[] }) {
   );
 }
 
-/**
- * Strips diacritics and lowercases, so "përqindje" matches a search for
- * "perqindje" — which is how people type when they are in a hurry.
- */
 const normalise = (value: string): string =>
   value
     .toLowerCase()
@@ -199,15 +173,6 @@ const normalise = (value: string): string =>
 const firstLetter = (term: string): string =>
   term.charAt(0).toLocaleUpperCase('sq');
 
-/**
- * The slug in the URL fragment, or null.
- *
- * `useSyncExternalStore` rather than an effect that writes state: the server
- * renders with no fragment, and this is the primitive that says so explicitly
- * — the third argument is the server snapshot. It also subscribes to
- * `hashchange`, which fires when a reader clicks a second linked word while
- * already on this page.
- */
 const subscribeToHash = (onChange: () => void): (() => void) => {
   window.addEventListener('hashchange', onChange);
   return () => window.removeEventListener('hashchange', onChange);

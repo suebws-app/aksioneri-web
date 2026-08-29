@@ -22,11 +22,8 @@ import type {
 export interface LearnPageProps {
   stats: LearnStats;
   startHere: Lesson[];
-  /** Every lesson, so "continue where you left off" can resolve a title. */
   allLessons: Lesson[];
-  /** Trimmed index for the search box — titles and terms, never bodies. */
   searchIndex: LessonSearchEntry[];
-  /** First topic renders as a detailed list; the rest as compact columns. */
   topics: LessonTopic[];
   glossary: GlossaryTerm[];
 }
@@ -138,11 +135,6 @@ export function LearnPage({
               {primaryTopic.lessons.map((lesson) => (
                 <li
                   key={lesson.id}
-                  // The whole row is the hit target: the title alone is a
-                  // thin thing to aim at, and the summary beside it looked
-                  // clickable without being so. `after:inset-0` on the link
-                  // stretches it over the row while the accessible name stays
-                  // the title, rather than title plus level plus minutes.
                   className="border-line hover:bg-accent/10 group relative -mx-3 grid grid-cols-[1fr_auto_auto] items-center gap-x-8 border-t px-3 py-4 transition-colors last:border-b"
                 >
                   <div>

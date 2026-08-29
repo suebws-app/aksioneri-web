@@ -8,8 +8,6 @@ describe('matchesRegionFilter', () => {
   });
 
   it('groups Germany under the euro area', () => {
-    // The filter pills are groups, not regions: a German release belongs to
-    // the euro area even though its own code is DE.
     expect(matchesRegionFilter('DE', 'EU')).toBe(true);
     expect(matchesRegionFilter('EU', 'EU')).toBe(true);
     expect(matchesRegionFilter('DE', 'US')).toBe(false);
@@ -25,7 +23,6 @@ describe('isRegionFilterValue', () => {
   it('accepts known filters and rejects anything else', () => {
     expect(isRegionFilterValue('EU')).toBe(true);
     expect(isRegionFilterValue('ALL')).toBe(true);
-    // A hand-edited query string must fall back rather than filter to nothing.
     expect(isRegionFilterValue('eu')).toBe(false);
     expect(isRegionFilterValue('MARS')).toBe(false);
   });

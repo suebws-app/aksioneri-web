@@ -29,7 +29,6 @@ const reason = (o: { ok: boolean; reason?: string }): string => {
 
 describe('computeAmortization', () => {
   it('matches the standard payment formula', () => {
-    // PMT(0.04/12, 360, -200000) → 954.83
     expect(value(computeAmortization(loan)).payment).toBeCloseTo(954.83, 2);
   });
 
@@ -41,8 +40,6 @@ describe('computeAmortization', () => {
   });
 
   it('sums the principal column to the principal EXACTLY, in cents', () => {
-    // The property a reader can check with a calculator, and the reason the
-    // whole schedule runs in integer cents.
     const result = value(computeAmortization(loan));
 
     const sum = result.schedule.reduce(
@@ -71,10 +68,6 @@ describe('computeAmortization', () => {
   });
 
   it('reports the nominal effective-annual equivalent when there are no fees', () => {
-    // With no fees the IRR of the cash flows is the nominal monthly rate,
-    // so the annualised figure is (1 + 0.04/12)^12 − 1 = 4.0742% — checked
-    // two independent ways (bisection over the cent-exact schedule, and
-    // Newton on the closed-form annuity), both landing on 4.07 at 2 dp.
     expect(value(computeAmortization(loan)).effectiveRatePercent).toBeCloseTo(
       4.07,
       2,
@@ -95,18 +88,11 @@ describe('computeAmortization', () => {
   });
 
   it('prices upfront fees into the effective rate', () => {
-    // 2,000 in fees on a 200,000 advance: the borrower receives 198,000
-    // and pays the same 954.83 × 360 schedule. Solving
-    // 198,000 = Σ 954.83 / (1+r)^i gives r ≈ 0.0034029 monthly, i.e.
-    // (1.0034029)^12 − 1 = 4.1607% — hand-checked via Newton on the
-    // closed-form annuity as well as bisection.
     const withFees = value(computeAmortization({ ...loan, fees: 2_000 }));
     expect(withFees.effectiveRatePercent).toBeCloseTo(4.16, 2);
   });
 
   it('prices fees on an otherwise free loan as a positive rate', () => {
-    // 120 upfront on a 12,000 zero-interest 24-month loan: 11,880 received,
-    // 500 × 24 repaid. IRR ≈ 0.0806% monthly → 0.97% annual.
     const result = value(
       computeAmortization({
         ...loan,
@@ -121,8 +107,6 @@ describe('computeAmortization', () => {
   });
 
   it('refuses fees that consume the whole advance', () => {
-    // A "loan" whose upfront fees equal or exceed the principal hands the
-    // borrower nothing — there is no rate to state.
     expect(
       reason(
         computeAmortization({
@@ -150,8 +134,6 @@ describe('computeAmortization', () => {
   });
 
   it('holds the cent-exact property across many random loans', () => {
-    // A seeded generator, so a failure is reproducible — Math.random would
-    // make this test lie differently every run.
     let seed = 42;
     const next = () => {
       seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648;
@@ -190,7 +172,6 @@ describe('computeAmortization', () => {
     const withFees = value(computeAmortization({ ...loan, fees: 2_000 }));
     const without = value(computeAmortization(loan));
 
-    // Fees must not attract interest.
     expect(withFees.totalInterest).toBeCloseTo(without.totalInterest, 2);
     expect(withFees.totalRepaid).toBeCloseTo(without.totalRepaid + 2_000, 2);
     expect(withFees.costOfBorrowingPercent).toBeGreaterThan(
@@ -230,7 +211,7 @@ describe('computeAmortization', () => {
 
 const mortgage: MortgageInput = {
   ...loan,
-  principal: 0, // replaced by propertyPrice − downPayment
+  principal: 0,
   propertyPrice: 250_000,
   downPayment: 50_000,
   propertyTax: 1_200,
@@ -249,7 +230,6 @@ describe('computeMortgage', () => {
   it('reports the true monthly outgoing, not just the bank payment', () => {
     const result = value(computeMortgage(mortgage));
 
-    // 954.83 + 100 tax + 50 insurance + 50 other
     expect(result.monthlyTotal).toBeCloseTo(1_154.83, 2);
     expect(result.monthlyTotal).toBeGreaterThan(
       result.monthlyPrincipalInterest,

@@ -8,7 +8,6 @@ interface NextUpCardProps {
   event: NextUpEvent;
 }
 
-/** One figure and its value, shown in the card's footer strip. */
 function Figure({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
@@ -20,12 +19,6 @@ function Figure({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-/**
- * The lead card: the next release, with an explainer panel beside it.
- *
- * Stacks below `lg`, where the 380px side panel would squeeze the headline
- * into three words a line.
- */
 export function NextUpCard({ event }: NextUpCardProps) {
   const t = useTranslations('calendar.nextUp');
 
@@ -40,8 +33,6 @@ export function NextUpCard({ event }: NextUpCardProps) {
             {t('label')}
           </span>
           <span aria-hidden className="size-[3px] rounded-full bg-[#c8c3b8]" />
-          {/* A live countdown would force the page to render dynamically; the
-              relative label is rendered once and refreshed on navigation. */}
           <span className="text-ink-faint text-[13px]">
             {t('countdown', { hours, minutes })}
           </span>

@@ -10,7 +10,6 @@ import {
 import type { Locale } from '@/i18n/config';
 import { buildMetadata } from '@/lib/seo/metadata';
 
-/** Matches the wire's poll interval — the index includes recent stories. */
 export const revalidate = 60;
 
 export async function generateMetadata({
@@ -21,10 +20,6 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'search' });
 
-  // Search result pages are never worth indexing: they are unbounded (one URL
-  // per query), thin, and duplicate the pages they link to. Deliberately NOT
-  // disallowed in `robots.ts` — crawlers must stay able to fetch the page to
-  // see this `noindex`; see PRIVATE_PATHS in `@/config/routes`.
   return buildMetadata({
     title: t('metaTitle'),
     description: t('metaDescription'),
@@ -45,10 +40,6 @@ export default async function Page({
 
   const query = readQuery(await searchParams);
 
-  // The shell (heading, intro, search field) renders synchronously so
-  // typing a new query never blanks the page. `key={query}` remounts the
-  // suspense boundary on each search, so the skeleton reappears for the
-  // results block alone.
   return (
     <SearchPage query={query}>
       <Suspense key={query} fallback={<SearchResultsSkeleton />}>

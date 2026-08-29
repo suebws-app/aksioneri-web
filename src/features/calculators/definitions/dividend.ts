@@ -203,12 +203,6 @@ export const dividend: CalculatorDefinition<DividendInput, DividendResult> = {
   category: 'investing',
   messageKey: 'dividend',
   disclaimer: 'investment',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'dividend',
     'yield',

@@ -23,17 +23,12 @@ describe('articleEntry', () => {
   });
 
   it('treats a story with no `hasPage` flag as one of ours', () => {
-    // The field is optional on the wire DTO; absence must not be read as
-    // "no page", or every result would leave the site.
     expect(articleEntry(article())?.href).toBe(
       '/news/stocks-close-higher-4873313',
     );
   });
 
   it('drops a story the site does not hold, publisher link or not', () => {
-    // The regression: `hasPage: false` means no `/news/[slug]` exists, and
-    // linking to one returned a 404 from search results. Search covers this
-    // site's own pages, so it is dropped rather than pointed off-site.
     expect(
       articleEntry(
         article({

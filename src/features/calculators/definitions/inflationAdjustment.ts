@@ -61,13 +61,6 @@ const schema = (t: Translate) =>
       .max(MAX_YEARS, { message: t('errors.yearsRange', { max: MAX_YEARS }) }),
   }) satisfies z.ZodType<InflationInput>;
 
-/**
- * Rate-based for now. The index-based form — real HICP and Kosovo CPI series
- * from the rates module — replaces the rate field with a pair of years once
- * that data exists; until then the rate is presented as the reader's own
- * assumption, which the page states plainly rather than implying it is
- * measured data.
- */
 export const inflationAdjustment: CalculatorDefinition<
   InflationInput,
   InflationResult
@@ -112,12 +105,6 @@ export const inflationAdjustment: CalculatorDefinition<
   category: 'economy',
   messageKey: 'inflationAdjustment',
   disclaimer: 'general',
-  // Albanian **and** English. The wire arrives in English and is only
-  // translated when the OpenAI-backed worker is enabled, so an
-  // Albanian-only vocabulary matches nothing on an untranslated story —
-  // the exact failure `features/learn/matchNews.ts` documents, where
-  // matching a lesson's Albanian terms against the wire "found nothing
-  // at all".
   newsPhrases: [
     'inflacion',
     'çmimet',

@@ -5,34 +5,15 @@ import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 
 export interface MobileNavItem {
-  /** Unlocalised path; `@/i18n/navigation` adds the locale prefix. */
   href: string;
   label: string;
   current: boolean;
 }
 
-/**
- * The narrow-screen half of the site nav.
- *
- * Five section links, a wordmark and a search box do not fit across 375px —
- * the header used to push the page 110px wider than the viewport, so every
- * page on a phone scrolled sideways. Below `md` the links collapse behind this
- * button and open as a drawer from the right. The breakpoint moved from `sm`
- * when the calculators section made it five links: at 640px the desktop row
- * wants about 560px and the column gives about 552px.
- *
- * The drawer sits *under* the header — the header is sticky on phones and
- * keeps its own stacking context above it — so the wordmark and the close
- * button stay put while the panel slides across the page beneath them.
- */
 export function MobileNav({ items }: { items: MobileNavItem[] }) {
   const t = useTranslations('nav');
   const pathname = usePathname();
 
-  // Which page the panel was opened on, rather than a plain boolean: the
-  // header survives navigation, so the panel has to close when the route
-  // changes. Deriving it from the pathname closes it on link taps and on the
-  // back button alike, without an effect that writes state on every render.
   const [openedOn, setOpenedOn] = useState<string | null>(null);
   const open = openedOn === pathname;
 
@@ -43,8 +24,6 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
       if (event.key === 'Escape') setOpenedOn(null);
     };
 
-    // The panel covers the viewport, so the page behind it must not scroll
-    // under the reader's finger.
     const { overflow } = document.body.style;
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKeyDown);
@@ -57,7 +36,6 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
 
   return (
     <div className="md:hidden">
-      {/* Above the panel, so the same button closes what it opened. */}
       <button
         type="button"
         onClick={() => setOpenedOn(open ? null : pathname)}
@@ -93,8 +71,6 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
 
       {open ? (
         <>
-          {/* Dimming the page underneath does the work a full-screen panel
-              used to: nothing behind the drawer invites a tap. */}
           <button
             type="button"
             tabIndex={-1}
@@ -113,8 +89,6 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
                 <li
                   key={item.href}
                   className="border-line-soft animate-panel-item-in border-b"
-                  // Each row follows the one above it, so the list reads
-                  // top-down instead of landing all at once.
                   style={{ animationDelay: `${String(90 + index * 35)}ms` }}
                 >
                   <Link

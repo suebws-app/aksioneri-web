@@ -27,7 +27,6 @@ describe('continueTarget', () => {
   });
 
   it('keeps showing the last lesson once it is marked read', () => {
-    // It used to return nothing here, so finishing a lesson blanked the card.
     const target = continueTarget(LESSONS, 'what-is-an-etf', {
       'what-is-an-etf': '2026-08-25T10:00:00.000Z',
     });

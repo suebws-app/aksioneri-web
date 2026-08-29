@@ -21,7 +21,6 @@ const TERMS = [
   term('bond', 'Obligacion', ['obligacione']),
 ];
 
-/** Flattens a linked paragraph back to the term slugs it produced. */
 const linkedSlugs = (
   parts: ReturnType<GlossaryLinker['linkParagraph']>,
 ): string[] =>
@@ -42,7 +41,6 @@ describe('GlossaryLinker', () => {
   });
 
   it('prefers the longest match', () => {
-    // "Pikë bazë" must win over "Pikë", which is a prefix of it.
     const parts = new GlossaryLinker(TERMS).linkParagraph(
       'Banka e uli normën me 25 pikë bazë.',
     );
@@ -51,7 +49,6 @@ describe('GlossaryLinker', () => {
   });
 
   it('matches only whole words', () => {
-    // "yield" appears inside "yielded"; linking it would corrupt the word.
     const parts = new GlossaryLinker(TERMS).linkParagraph(
       'The bond yielded less than expected.',
     );
@@ -69,7 +66,6 @@ describe('GlossaryLinker', () => {
   });
 
   it('links a term once per article, not once per paragraph', () => {
-    // One linker spans the whole story, so the second mention stays plain.
     const linker = new GlossaryLinker(TERMS);
 
     expect(linkedSlugs(linker.linkParagraph('Inflacioni u rrit.'))).toEqual([
@@ -79,7 +75,6 @@ describe('GlossaryLinker', () => {
   });
 
   it('stops once the cap is reached', () => {
-    // A jargon-dense story must not turn into a list of links.
     const linker = new GlossaryLinker(TERMS, 2);
     const parts = linker.linkParagraph(
       'Inflacioni, yield-i, obligacione dhe pikë bazë njëherësh.',
@@ -98,10 +93,6 @@ describe('GlossaryLinker', () => {
   });
 
   it('does not link a term that only looks financial out of context', () => {
-    // Found in production: "Compounding" was linked inside "compounding the
-    // problem" in a story about a chief executive resigning. Aliases that are
-    // ordinary English words before they are financial ones were removed, and
-    // this pins that decision.
     const linker = new GlossaryLinker([
       term('compounding', 'Kompozim', ['compound interest']),
       term('duration', 'Kohëzgjatje'),

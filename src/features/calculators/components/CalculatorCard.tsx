@@ -1,14 +1,5 @@
 import { Link } from '@/i18n/navigation';
 
-/**
- * One calculator, as a tile on the landing page.
- *
- * The whole card is the link rather than a "Calculate" button inside it: a
- * card with one destination should have one target, and a 300px-wide tap
- * target beats a 90px one on a phone. The call to action is still drawn,
- * because the design asks for it and it tells a reader what happens — it just
- * is not a second, competing link.
- */
 export function CalculatorCard({
   slug,
   heading,

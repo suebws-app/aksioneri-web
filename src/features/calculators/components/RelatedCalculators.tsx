@@ -4,14 +4,6 @@ import type { Locale } from '@/i18n/config';
 import { SectionHeading } from '@/components/SectionHeading';
 import type { AnyCalculator } from '../types';
 
-/**
- * The other calculators worth a reader's time from here.
- *
- * The list comes from `relatedSlugs` on the definition and is resolved
- * through the registry, so a calculator that has not shipped yet is simply
- * absent rather than a dead link — the mistake `matchNews.ts` documents,
- * where nine lessons pointed at articles that never existed.
- */
 export async function RelatedCalculators({
   calculators,
   locale,

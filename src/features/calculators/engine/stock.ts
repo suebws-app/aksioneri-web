@@ -12,9 +12,7 @@ export interface StockInput {
   readonly shares: number;
   readonly purchasePrice: number;
   readonly currentPrice: number;
-  /** Total dividends received across the whole holding, per share. */
   readonly dividendPerShare: number;
-  /** Commission on the way in and out, in total. */
   readonly fees: number;
   readonly purchaseDate: string;
   readonly saleDate: string;
@@ -34,21 +32,6 @@ export interface StockResult {
   readonly years: number;
 }
 
-/**
- * Profit on a shareholding.
- *
- * Deliberately separate from the general investment-return calculator even
- * though the arithmetic overlaps, because the inputs a shareholder actually
- * has are different: they know a share count and two prices, not a total
- * invested. Making them multiply it out themselves is where the mistakes
- * happen.
- *
- * Two figures here exist nowhere else in the suite. The **break-even price**
- * is the price the share must reach to cover the purchase and the fees net of
- * dividends — the number that answers "am I actually up?". And the split
- * between price profit and dividend income shows how much of a total return
- * came from the price moving versus being paid to hold.
- */
 export function computeStock(input: StockInput): Outcome<StockResult> {
   const {
     shares,
@@ -78,7 +61,6 @@ export function computeStock(input: StockInput): Outcome<StockResult> {
   if (!isValidRatePercent(inflationPercent)) return refuse('rateOutOfRange');
 
   const cost = shares * purchasePrice + fees;
-  // No position, or a free one, means there is no return to express.
   if (shares === 0 || cost === 0) return refuse('divideByZero');
   if (!isRepresentableMoney(cost)) return refuse('overflow');
 
@@ -103,8 +85,6 @@ export function computeStock(input: StockInput): Outcome<StockResult> {
   const realAnnualisedPercent =
     realGrowth <= 0 ? -100 : (realGrowth ** (1 / years) - 1) * 100;
 
-  // What the price must reach for the position to be whole again, once fees
-  // are paid and dividends are counted.
   const breakEvenPrice = (cost - dividendIncome) / shares;
 
   return ok({

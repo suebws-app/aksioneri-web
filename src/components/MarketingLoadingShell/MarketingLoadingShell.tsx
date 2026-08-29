@@ -5,25 +5,10 @@ import { Skeleton } from '@/components/Skeleton';
 
 interface MarketingLoadingShellProps {
   active?: SiteSection;
-  /**
-   * Renders a placeholder for the `<MarketTicker />` strip that sits
-   * under the header on the pages that actually mount it — the home
-   * daily briefing, the news index and the markets index. Off elsewhere
-   * so we do not paint a ticker on pages that never had one.
-   */
   ticker?: boolean;
   children: ReactNode;
 }
 
-/**
- * The marketing pages own their outer chrome (SiteHeader, optional
- * MarketTicker, SiteFooter) rather than sharing a route-group layout, so a
- * `loading.tsx` that only returned skeleton bands would flash to a chromeless
- * page during navigation. This wrapper keeps the same shell the real page
- * renders — a real SiteHeader and SiteFooter (both static, no data), plus a
- * placeholder ticker strip only where the real page mounts one, so we do not
- * re-fetch quotes just to throw them away.
- */
 export function MarketingLoadingShell({
   active,
   ticker = false,
@@ -41,11 +26,6 @@ export function MarketingLoadingShell({
   );
 }
 
-/**
- * Six 212px cells with the same padding, label and price row as
- * `MarketTickerLive` — keeps the strip's height identical so the header
- * does not jump when the real ticker mounts.
- */
 function TickerSkeleton() {
   return (
     <div className="border-line bg-surface border-b">

@@ -5,7 +5,6 @@ import type { ComputeContext } from '../engine';
 const ctx: ComputeContext = {
   today: '2026-08-26',
   currency: 'EUR',
-  // Units per one euro, exactly as the ECB publishes.
   rates: { USD: 1.1662, GBP: 0.8555, JPY: 171.2 },
   dataDate: '2026-08-25',
   dataSource: 'ecb',
@@ -46,7 +45,6 @@ describe('computeFx', () => {
       computeFx({ amount: 1_000, from: 'USD', to: 'GBP' }, ctx),
     );
 
-    // 0.8555 / 1.1662
     expect(result.rate).toBeCloseTo(0.733579, 5);
   });
 
@@ -91,7 +89,6 @@ describe('computeFx', () => {
   });
 
   it('refuses when no rates were supplied at all', () => {
-    // Drives the page's "data unavailable, enter it yourself" state.
     expect(
       reason(
         computeFx(

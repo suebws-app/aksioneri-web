@@ -23,8 +23,6 @@ export async function generateMetadata({
   return buildMetadata({
     title: t('metaTitle'),
     description: t('metaDescription'),
-    // Bare path: the category and search filters are views of this page, not
-    // pages of their own, so they canonicalise back here.
     path: '/calculators',
     locale,
   });

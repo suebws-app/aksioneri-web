@@ -1,13 +1,5 @@
 import type { SeedLesson, SeedTopic } from './types';
 
-/**
- * Aksione dhe ETF — how to look at a single company once you know what a
- * share is.
- *
- * Ordered from "why does this number move" through the three statements a
- * company publishes, and ending on the question of whether to pick companies
- * at all.
- */
 export const STOCKS_ETFS_TOPIC: SeedTopic = {
   id: 'stocks-etfs',
   title: { sq: 'Aksione dhe ETF' },

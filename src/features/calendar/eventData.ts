@@ -4,16 +4,6 @@ import type {
   EventDetail,
 } from './calendarTypes';
 
-/**
- * Builds an `EventDetail` from a live calendar row. When the API attached
- * a Kosovar-Albanian `explanation` (generated on first visit by the
- * explainer worker) it overlays the localised title / summary and fills
- * the explainer / howToRead / reactingSymbols panels.
- *
- * `sectionLabels` supplies the section headings ("Pse ka rëndësi",
- * "Si të lexohet") in the reader's locale; they live in the message
- * catalogue rather than being hard-coded here.
- */
 export function detailFromEvent(
   event: CalendarEvent,
   regionName: string,

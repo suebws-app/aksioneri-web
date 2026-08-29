@@ -7,73 +7,31 @@ import { getQuotes } from '@/lib/api/markets';
 import { defaultLocale } from '@/i18n/config';
 import { localizedAbsoluteUrl } from '@/lib/seo/urls';
 
-/**
- * Regenerate the sitemap at most once an hour. Without this Next re-runs every
- * fetch on each request (the wire polls minute-by-minute, the calendar week
- * shifts on its own), which turns every crawl visit into a stampede against
- * the API. One hour is fine for search: Googlebot re-reads a sitemap when it
- * feels like it, not when we tell it to.
- */
 export const revalidate = 3600;
-
-/**
- * TODO (P1) — Two follow-ups the audit called out that need coordination:
- *   1. Filter articles where `hasPage === false`. The publisher-blocked stories
- *      are thin near-redirects; listing them wastes crawl budget and produces
- *      "duplicate without canonical" errors. Requires the API's `/news/slugs`
- *      endpoint to include `hasPage` in `SlugEntry` (`src/lib/api/news.ts`).
- *   2. Shard via `generateSitemaps()` into `sitemap-news.xml`,
- *      `sitemap-calendar.xml`, and `sitemap-static.xml` before article count
- *      approaches Google's 50k-URL / 50MB cap.
- */
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]['changeFrequency'];
 
 interface SitemapPath {
   path: string;
   priority: number;
-  /** How often this URL changes — hints crawler re-fetch cadence. */
   changeFrequency: ChangeFrequency;
-  /**
-   * When the content itself last changed. Stories carry a real publication
-   * date; entries with no per-entity timestamp omit the field entirely — a
-   * `lastModified` that always says "now" teaches crawlers the field is
-   * noise, which devalues the honest dates on the stories.
-   */
   lastModified?: Date;
 }
 
-/**
- * Public routes only. Anything listed in `@/config/routes` under PRIVATE_PATHS
- * must never appear here — a sitemap entry for a disallowed URL is a crawl
- * error.
- */
 const SECTIONS: SitemapPath[] = [
   { path: '/', priority: 1, changeFrequency: 'daily' },
   { path: '/news', priority: 0.9, changeFrequency: 'hourly' },
   { path: '/calendar', priority: 0.9, changeFrequency: 'daily' },
   { path: '/markets', priority: 0.8, changeFrequency: 'daily' },
   { path: '/learn', priority: 0.8, changeFrequency: 'monthly' },
-  // The index itself only gains a card when a calculator ships, but the
-  // cards carry live blurbs and the section is a crawl entry point for
-  // pages that do change daily — weekly is the honest middle.
   { path: '/calculators', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/learn/glossary', priority: 0.7, changeFrequency: 'monthly' },
-  // Standing pages: rarely edited, but a site with no about or privacy page
-  // in its sitemap looks abandoned to a crawler.
   { path: '/about', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/contact', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/terms', priority: 0.3, changeFrequency: 'yearly' },
 ];
 
-/**
- * Detail pages, collected from the same sources the routes render from, so a
- * new story or lesson appears in the sitemap without a second edit.
- *
- * Lesson slugs come from both the top-level list and the topic lists, since
- * `/learn/[slug]` resolves against both.
- */
 async function detailPaths(): Promise<SitemapPath[]> {
   const lessonSlugs = new Set([
     ...getLessonSlugs(defaultLocale),
@@ -82,22 +40,12 @@ async function detailPaths(): Promise<SitemapPath[]> {
     ),
   ]);
 
-  // Market symbols come from the live API so a new instrument on the backend
-  // shows up in the sitemap without a code deploy on the web.
   const [articles, quotes] = await Promise.all([
     getArticleIndex(defaultLocale),
     getQuotes(),
   ]);
 
   return [
-    // Calculators are listed at their bare path. Their inputs live in the
-    // query string, and the parameterised variants all canonicalise back to
-    // this URL, so there is exactly one entry each.
-    // A calculator's cadence follows its data, not its code. The compound
-    // interest page renders the same figures until someone edits its copy;
-    // the currency converter renders a new rate every business day, because
-    // the ECB fixes one. Deriving it from the calculator's own declared
-    // market-data need keeps the hint honest as calculators are added.
     ...getCalculators().map((calculator) => ({
       path: `/calculators/${calculator.slug}`,
       priority: 0.7,
@@ -135,8 +83,6 @@ async function detailPaths(): Promise<SitemapPath[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const details = await detailPaths();
 
-  // One entry per page. There used to be one per locale, cross-referenced with
-  // hreflang; with a single language there is nothing to alternate between.
   return [...SECTIONS, ...details].map(
     ({ path, priority, changeFrequency, lastModified }) => ({
       url: localizedAbsoluteUrl(defaultLocale, path),

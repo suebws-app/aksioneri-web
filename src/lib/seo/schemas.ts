@@ -3,28 +3,9 @@ import { clientEnv } from '@/lib/utils/env.client';
 import { SITE_NAME } from './metadata';
 import { absoluteUrl, localizedAbsoluteUrl } from './urls';
 
-/**
- * JSON-LD builders. Structured data is what earns rich results — a sitelinks
- * search box, breadcrumb trails, organisation panels.
- *
- * Every builder returns a plain object; render it with
- * `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />`.
- * Only ever pass objects built here — never raw user input outside the object.
- */
-
-/**
- * Serialises a schema for `dangerouslySetInnerHTML`. `JSON.stringify` escapes
- * quotes but not `<`, so a value containing `</script>` would close the tag
- * and turn the rest of the payload into markup — the classic JSON-in-HTML
- * injection. Escaping `<` as the JSON unicode escape `\u003c` is
- * invisible to JSON parsers and to search engines but inert in HTML. Every `application/ld+json` block in the
- * app must go through this, with the CSP still allowing inline scripts
- * (see `lib/utils/csp.ts` for why nonces are off the table).
- */
 export const safeJsonLd = (value: unknown): string =>
   JSON.stringify(value).replace(/</g, '\\u003c');
 
-/** Stable `@id` other schemas use to reference the publisher. */
 const ORGANIZATION_ID = `${absoluteUrl('/')}#organization`;
 
 export const organizationSchema = () => ({
@@ -41,13 +22,6 @@ export const organizationSchema = () => ({
   },
 });
 
-/**
- * No `potentialAction`. A `SearchAction` would advertise the search page for
- * a sitelinks search box — and that page exists (`/search`, served as
- * `/kerko`) — but it is deliberately `noindex` (thin, near-duplicate result
- * lists), and advertising a page we ask crawlers not to index is
- * contradictory. Revisit if the search page ever becomes indexable.
- */
 export const webSiteSchema = (locale: Locale) => ({
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -57,13 +31,6 @@ export const webSiteSchema = (locale: Locale) => ({
 
 export interface BreadcrumbItem {
   name: string;
-  /**
-   * Unlocalised path; the locale prefix is applied here. Optional because
-   * the visible breadcrumb ends in (and may pass through) crumbs that are
-   * labels rather than links — a news category, a lesson's topic. Schema.org
-   * allows a `ListItem` without `item`; emitting no URL is honest, inventing
-   * one is not. The JSON-LD must mirror the on-page trail exactly.
-   */
   path?: string;
 }
 
@@ -87,14 +54,6 @@ export interface LearningResourceInput {
   topic?: string;
 }
 
-/**
- * A lesson, as `LearningResource`.
- *
- * The first content-type builder in this file — until now only Organization,
- * WebSite and BreadcrumbList existed, so nothing on the site described what it
- * actually was. `timeRequired` uses ISO 8601 duration, which is what the
- * schema expects and what search engines read for the "N min" badge.
- */
 export const learningResourceSchema = (
   locale: Locale,
   lesson: LearningResourceInput,
@@ -119,13 +78,6 @@ export interface DefinedTermInput {
   definition: string;
 }
 
-/**
- * The glossary, as `DefinedTermSet`.
- *
- * Each entry gets `@id` pointing at its own fragment, which is the same anchor
- * the article auto-linker sends readers to — so the structured data and the
- * internal links describe the same target.
- */
 export const definedTermSetSchema = (
   locale: Locale,
   terms: DefinedTermInput[],
@@ -154,16 +106,6 @@ export interface FaqItem {
   answer: string;
 }
 
-/**
- * A page's frequently-asked questions, as `FAQPage`.
- *
- * One rule governs whether this may be emitted: **every question and answer
- * passed here must be present in the rendered HTML**. Google treats FAQ markup
- * describing content a reader cannot find as a spam signal, and it would also
- * simply be false. The `Disclosure` component is built on `<details>` for
- * exactly this reason — the answers are in the document whether or not
- * JavaScript ran, so this schema is always honest.
- */
 export const faqPageSchema = (items: FaqItem[]) => ({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -177,28 +119,10 @@ export const faqPageSchema = (items: FaqItem[]) => ({
 export interface WebApplicationInput {
   name: string;
   description: string;
-  /** Unlocalised path, e.g. `/calculators/compound-interest`. */
   path: string;
-  /** Schema.org application category, e.g. `FinanceApplication`. */
   category: string;
 }
 
-/**
- * A calculator, as `WebApplication`.
- *
- * `WebApplication` rather than the broader `SoftwareApplication`: it is the
- * more specific type for something that runs in the browser, and it is
- * eligible for the same treatment.
- *
- * `browserRequirements` says JavaScript is required, which deserves a note
- * because the page is built so that it is not — a shared URL renders its
- * result server-side and the explanation is static HTML. But *recalculating as
- * you type* is the application, and that does need scripting. The honest
- * claim is the one about the interactive product, not the static fallback.
- *
- * Note what is not here: `HowTo`. Google retired HowTo rich results in 2023,
- * so the markup would be pure maintenance for no result.
- */
 export const webApplicationSchema = (
   locale: Locale,
   app: WebApplicationInput,
@@ -219,39 +143,18 @@ export const webApplicationSchema = (
 
 export interface ItemListEntry {
   name: string;
-  /** Unlocalised path. */
   path: string;
 }
 
-/**
- * An index page's contents, as `ItemList` — what the calculators landing page
- * offers and in what order.
- *
- * Ordered, because the order on the page is editorial rather than incidental:
- * the list leads with what readers use most.
- */
 export interface NewsArticleSchemaInput {
   slug: string;
   title: string;
   summary: string;
-  /** ISO instant of publication. */
   publishedAt: string;
-  /** ISO instant of the last edit, when the wire supplies one. */
   modifiedAt?: string | null;
-  /** Lead image URL, when the publisher supplied one. */
   imageUrl?: string | null;
 }
 
-/**
- * A story, as `NewsArticle` — the type Google's Top Stories carousel and
- * article rich results read.
- *
- * Only claims what the wire actually holds: `dateModified` and `image` are
- * emitted solely when present (an RSS item usually has neither), and there is
- * no `author` — bylines are frequently absent and a fabricated one is a spam
- * signal. `publisher` references the `Organization` node the locale layout
- * emits on every page, via its stable `@id`.
- */
 export const newsArticleSchema = (
   locale: Locale,
   article: NewsArticleSchemaInput,

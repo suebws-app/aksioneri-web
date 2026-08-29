@@ -36,8 +36,6 @@ export default async function Page({
 
   const topics = getTopics(locale);
 
-  // Built here rather than in the component: this is the only place that can
-  // see the lesson bodies, and the whole point is not to ship them.
   const searchIndex = topics.flatMap((topic) =>
     topic.lessons.map((lesson) => ({
       slug: lesson.slug,

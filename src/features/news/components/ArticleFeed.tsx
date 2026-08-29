@@ -10,24 +10,9 @@ import type {
 } from '../newsTypes';
 import { ArticleCard } from './ArticleCard';
 
-/**
- * The story list, with a "load more" that actually loads more.
- *
- * This was a link to `?cursor=…` for a while, which paged correctly but threw
- * the reader four thousand pixels up the page on every click: the button sits
- * at the bottom, and a navigation cannot leave you where you were. Appending
- * in place is what the label promises and the only version that does not move
- * the viewport at all.
- *
- * Page one is rendered on the server and handed in as `initialPage`, so the
- * markup a crawler sees is the full first page rather than an empty list
- * waiting on JavaScript.
- */
 export interface ArticleFeedProps {
   initialPage: ArticleFeedPage;
-  /** Undefined means "every desk". */
   category?: NewsCategory;
-  /** Excluded from the list because it is printed in full above. */
   excludeId?: string;
 }
 

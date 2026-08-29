@@ -15,16 +15,11 @@ import type { Lesson } from './learnTypes';
 
 export interface LessonPageProps {
   lesson: Lesson;
-  /** Lessons offered in the sidebar and as the "next" card. */
   upNext: Lesson[];
   relatedQuotes: Quote[];
   relatedArticle: NewsArticle | null;
 }
 
-/**
- * A heading turned into an anchor. Strips diacritics so Albanian headings
- * produce a usable fragment rather than a string of percent-escapes.
- */
 const sectionId = (heading: string): string =>
   heading
     .toLowerCase()
@@ -48,9 +43,6 @@ export function LessonPage({
   const t = useTranslations('learn');
   const tNews = useTranslations('news');
 
-  // Section headings drive the "on this page" rail, so the two can never
-  // drift. Each carries the id its section renders with, so the rail links
-  // somewhere — it used to be a list of plain <li> over headings with no ids.
   const outline: OutlineEntry[] = [
     ...(lesson.inOneSentence
       ? [{ id: 'in-one-sentence', label: t('inOneSentence') }]
@@ -102,9 +94,6 @@ export function LessonPage({
               aria-label={t('onThisPage')}
               className="lg:sticky lg:top-7 lg:h-fit lg:w-61 lg:shrink-0"
             >
-              {/* Hidden on phones: as a stacked block it pushed the article a
-                  full screen down, and a jump list is worth little when the
-                  whole lesson is a two-minute scroll. */}
               <div className="hidden lg:block">
                 <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
                   {t('onThisPage')}

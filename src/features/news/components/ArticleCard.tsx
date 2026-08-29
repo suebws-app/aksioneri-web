@@ -5,28 +5,11 @@ import type { NewsArticle } from '../newsTypes';
 import { ArticleMeta } from './ArticleMeta';
 import { NewsImage } from './NewsImage';
 
-/**
- * A story in a listing. Three shapes, all the same data:
- *
- * - `lead`     large headline over a wide image (homepage hero)
- * - `sidebar`  headline beside a square thumb (homepage right column)
- * - `row`      thumb, headline, standfirst and meta (homepage news list)
- * - `list`     larger image and headline (news index)
- */
 interface ArticleCardProps {
   article: NewsArticle;
   variant: 'lead' | 'sidebar' | 'row' | 'list';
 }
 
-/**
- * Links to our own page when we hold the article text, and straight to the
- * publisher when we do not.
- *
- * Not every story on the wire can have a page here: some publishers serve
- * their RSS feed to anyone but refuse the article page to robots. Rather than
- * drop those stories or give them an empty page of their own, the card sends
- * the reader to the original — which is also what the credit requires.
- */
 function ArticleLink({
   article,
   className,
@@ -67,16 +50,6 @@ function ArticleLink({
   );
 }
 
-/**
- * Article art with a full fallback ladder — publisher image → category pool
- * → branded placeholder. See `NewsImage` for the layer details.
- *
- * The image is wrapped in the same link the headline uses, so a click
- * anywhere on the artwork opens the story. `tabIndex=-1` + `aria-hidden`
- * keep it off the keyboard tab order and out of the screen-reader
- * announcement — the headline anchor already carries the accessible name
- * for the same destination, so a second reachable link would be noise.
- */
 function ArticleImage({
   article,
   className,
@@ -110,10 +83,6 @@ export function ArticleCard({ article, variant }: ArticleCardProps) {
           article={article}
           className="mb-5.5 h-[300px] w-full"
           sizes="(max-width: 1024px) 100vw, 760px"
-          // This is the homepage hero — the LCP element. Priority makes
-          // next/image drop `loading=lazy`, add `fetchpriority=high`, and
-          // emit a preload link so the browser starts the download during
-          // the initial HTML parse.
           priority
         />
         <ArticleMeta article={article} variant="full" className="mb-3.5" />

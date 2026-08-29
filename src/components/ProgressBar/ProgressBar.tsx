@@ -1,17 +1,8 @@
 import { cn } from '@/lib/utils/cn';
 
-/**
- * An accessible progress bar.
- *
- * Extracted from the lesson page, which had the only correct implementation in
- * the codebase. Two different things use it now — position within a topic, and
- * how many lessons a reader has finished — so it takes a label rather than
- * assuming either.
- */
 interface ProgressBarProps {
   value: number;
   max: number;
-  /** Describes what is being measured, for screen readers. */
   label: string;
   className?: string;
 }

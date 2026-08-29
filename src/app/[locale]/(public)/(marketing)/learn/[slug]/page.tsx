@@ -36,11 +36,6 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const lesson = getLessonBySlug(locale, slug);
 
-  // Thrown here rather than only in the page body: `generateMetadata`
-  // blocks the response because no loading boundary wraps this segment (the
-  // index's skeleton lives in its own `(index)` group), so
-  // the response carries a real 404 status instead of a 200 whose body
-  // later swaps to the not-found UI.
   if (!lesson) notFound();
 
   return buildMetadata({
@@ -57,8 +52,6 @@ export default async function Page({ params }: PageProps) {
   const lesson = getLessonBySlug(locale, slug);
   if (!lesson) notFound();
 
-  // Lessons named in `upNextSlugs` may live in a topic rather than the top-level
-  // list, so both sources are searched.
   const everyLesson = [
     ...getLessons(locale),
     ...getTopics(locale).flatMap((topic) => topic.lessons),
@@ -68,9 +61,6 @@ export default async function Page({ params }: PageProps) {
     .map((next) => everyLesson.find((entry) => entry.slug === next))
     .filter((entry) => entry !== undefined);
 
-  // Matched against the live wire rather than looked up by a stored slug.
-  // Article slugs are generated per feed item and rotate hourly, so the nine
-  // slugs the lessons used to carry never resolved even once.
   const [articles, quotes] = await Promise.all([
     getArticles(locale),
     getQuotes(),
@@ -92,9 +82,6 @@ export default async function Page({ params }: PageProps) {
     ...(lesson.track ? { topic: lesson.track.topicTitle } : {}),
   });
 
-  // Mirrors the visible trail `LessonPage` renders: Learn → topic → lesson
-  // number. The topic and lesson crumbs are labels, not links, so they carry
-  // no URL here either.
   const t = await getTranslations({ locale, namespace: 'learn' });
   const breadcrumb = breadcrumbSchema(locale, [
     { name: t('heading'), path: '/learn' },
@@ -110,7 +97,6 @@ export default async function Page({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        // Built from constants and our own content, never user input.
         dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
       <script

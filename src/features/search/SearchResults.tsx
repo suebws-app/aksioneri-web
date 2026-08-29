@@ -7,14 +7,6 @@ import { buildSearchIndex } from './buildSearchIndex';
 import { rankResults } from './rankResults';
 import type { SearchKind } from './searchTypes';
 
-/**
- * The order groups appear in, regardless of how well anything scored.
- *
- * Ranking decides what is best *within* a section; this decides which section
- * a reader meets first. Teaching material comes before the wire because a
- * search for "inflacion" is far more often "explain this" than "what happened
- * today" — and today's story is one tab away on `/news`.
- */
 const GROUPS: SearchKind[] = [
   'page',
   'lesson',
@@ -29,14 +21,6 @@ interface SearchResultsProps {
   query: string;
 }
 
-/**
- * The results block for `/search`.
- *
- * Kept separate from `SearchPage` so `page.tsx` can drop it inside a
- * `<Suspense>` boundary keyed on `query`. Typing a new search shimmers
- * only the results list — the title, intro and search field never
- * disappear.
- */
 export async function SearchResults({ locale, query }: SearchResultsProps) {
   const t = await getTranslations({ locale, namespace: 'search' });
 
@@ -44,10 +28,6 @@ export async function SearchResults({ locale, query }: SearchResultsProps) {
     return <p className="text-ink-faint text-[15px]">{t('prompt')}</p>;
   }
 
-  // Two sources, one ranking. The index holds the site's own content plus the
-  // newest stories; the API search reaches the rest of the archive, which is
-  // the only way an older story can be found at all. Merging them before
-  // ranking keeps one order rather than two lists glued together.
   const [index, wire] = await Promise.all([
     buildSearchIndex(locale),
     searchArticles(locale, query),

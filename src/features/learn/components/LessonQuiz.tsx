@@ -5,17 +5,6 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils/cn';
 import type { LessonQuiz as Quiz } from '../learnTypes';
 
-/**
- * The end-of-lesson self-check.
- *
- * This block used to render its options as static `<li>`s with no click
- * handler, no correct answer, and a comment admitting there was nowhere in the
- * data model to put one. Answering now marks the choice, reveals the right
- * option and explains why.
- *
- * State is deliberately local `useState`: this is one component's UI state,
- * neither server data nor anything another component needs.
- */
 export function LessonQuiz({ quiz }: { quiz: Quiz }) {
   const t = useTranslations('learn');
   const [chosen, setChosen] = useState<number | null>(null);
@@ -43,8 +32,6 @@ export function LessonQuiz({ quiz }: { quiz: Quiz }) {
         {quiz.options.map((option, index) => {
           const isChosen = chosen === index;
           const isAnswer = index === quiz.answer;
-          // After answering, the right option is always marked — including
-          // when the reader picked a different one.
           const reveal = answered && isAnswer;
           const wrong = answered && isChosen && !isAnswer;
 
@@ -66,7 +53,6 @@ export function LessonQuiz({ quiz }: { quiz: Quiz }) {
                   answered && !reveal && !wrong && 'text-ink-faint',
                 )}
               >
-                {/* A mark as well as a colour: colour alone is not a signal. */}
                 <span aria-hidden className="pt-0.5 font-mono text-[13px]">
                   {reveal ? '✓' : wrong ? '✕' : '·'}
                 </span>

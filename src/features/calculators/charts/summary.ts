@@ -1,25 +1,10 @@
 import type { ChartSpec } from '../types';
 
-/**
- * A chart, said out loud.
- *
- * Every chart carries one of these in an `sr-only` paragraph referenced by
- * `aria-describedby`. A screen-reader user should get the finding — "growth
- * overtakes contributions around year twelve; by year twenty the balance is
- * three hundred thousand" — not an announcement that an image exists.
- *
- * Pure, and therefore tested: this text is the only version of the chart some
- * readers get, so it cannot be left to drift.
- */
-
 export interface SummaryStrings {
-  /** e.g. "Grafik: {heading}." */
   intro: string;
   seriesLabel: (id: string) => string;
   formatValue: (value: number) => string;
-  /** Axis unit, e.g. "viti". */
   xLabel: string;
-  /** Joins the closing figures: "në fund". */
   endLabel: string;
 }
 

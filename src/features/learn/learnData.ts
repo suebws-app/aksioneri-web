@@ -9,27 +9,12 @@ import type {
   LessonTopic,
 } from './learnTypes';
 
-/**
- * The read API for Learning Center content.
- *
- * Content itself lives in `content/`, one file per topic. This module resolves
- * it into the flat, single-locale shapes the pages consume — pulling each
- * locale's own slug, title, body, etc. out of the side-by-side seed shape.
- */
-
-/**
- * Find a lesson by its slug in a given locale. Every seed carries a slug per
- * locale, so a URL only ever resolves against its own locale's slugs and a
- * stale slug from another locale returns null.
- */
 const findSeed = (locale: Locale, slug: string): SeedLesson | null =>
   LESSONS.find((entry) => entry.slug[locale] === slug) ?? null;
 
 const resolve = (lesson: SeedLesson, locale: Locale): Lesson => {
   const topic = TOPICS.find((entry) => entry.id === lesson.topicId);
   const slug = lesson.slug[locale];
-  // Position within the topic drives the breadcrumb and the progress bar. A
-  // lesson missing from its topic's `slugs` lands at 0 and loses both.
   const position = topic ? topic.slugs[locale].indexOf(slug) + 1 : 0;
 
   return {
@@ -55,7 +40,6 @@ const resolve = (lesson: SeedLesson, locale: Locale): Lesson => {
           track: {
             topicTitle: topic.title[locale],
             position,
-            // Lessons a reader can actually open, not an aspirational total.
             total: topic.slugs[locale].length,
           },
         }
@@ -82,10 +66,6 @@ export const getLessonBySlug = (
   return lesson ? resolve(lesson, locale) : null;
 };
 
-/**
- * Every locale's own slug for every lesson — used by `generateStaticParams`
- * (once per locale) and by the sitemap.
- */
 export const getLessonSlugs = (locale: Locale): string[] =>
   LESSONS.map((lesson) => lesson.slug[locale]);
 
@@ -102,11 +82,6 @@ export const getTopics = (locale: Locale): LessonTopic[] =>
 
 export const getGlossary = (locale: Locale): GlossaryTerm[] => GLOSSARY[locale];
 
-/**
- * Computed, never authored. These three numbers are the page's headline claim,
- * and they used to be the literals 48 / 5 / 120 against 16 lessons and four
- * glossary terms.
- */
 export const getLearnStats = (): LearnStats => ({
   lessonCount: LESSONS.length,
   averageMinutes: Math.round(

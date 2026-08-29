@@ -1,10 +1,5 @@
 import { useTranslations } from 'next-intl';
 
-/**
- * The blue-ruled explainer note that turns a headline into something a
- * non-specialist can act on. Optional per story, and gated on the homepage by
- * the design's `showWhyItMatters` prop.
- */
 export function WhyItMatters({ children }: { children: string }) {
   const t = useTranslations('news');
 

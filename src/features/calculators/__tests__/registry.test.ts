@@ -9,30 +9,10 @@ import {
 } from '../registry';
 import type { AnyCalculator } from '../types';
 
-/**
- * The meta-test — what makes adding calculator #11 safe.
- *
- * Two gaps make this necessary rather than nice to have.
- *
- * `pnpm i18n:check` compares locales against a reference, and with one locale
- * shipped it compares `sq` to itself: it passes unconditionally and cannot
- * notice a key nobody wrote. A missing label would reach production as the
- * literal string `calculators.foo.fields.bar.label` on the page.
- *
- * And a definition can be internally wrong in ways the type system permits: a
- * default outside its own field's bounds, a `relatedSlugs` entry pointing at a
- * calculator that was renamed, a `faqCount` that no longer matches the
- * catalogue.
- *
- * So this walks the whole registry and asserts both. It runs in `pnpm test`,
- * which CI already gates on.
- */
-
 type Catalogue = Record<string, unknown>;
 
 const catalogue = messages as unknown as Catalogue;
 
-/** Follows a dotted path, returning undefined rather than throwing. */
 function lookup(path: string): unknown {
   return path.split('.').reduce<unknown>((node, key) => {
     if (typeof node !== 'object' || node === null) return undefined;
@@ -48,17 +28,6 @@ const expectString = (path: string) => {
 
 const calculators = getCalculators();
 
-/**
- * A context carrying whatever a calculator declared it needs.
- *
- * The assertion is "defaults compute **given the data this calculator says it
- * requires**". Handing every calculator an empty context would fail the ones
- * that correctly refuse without market data — which is the behaviour we want,
- * not a bug to design around.
- *
- * Fixture values, deliberately: this suite must not touch the network, and a
- * fixed table makes the arithmetic assertions stable.
- */
 function contextFor(calculator: AnyCalculator): ComputeContext {
   const base = { today: '2026-01-01', currency: 'EUR' as const };
 
@@ -78,15 +47,6 @@ function contextFor(calculator: AnyCalculator): ComputeContext {
   }
 }
 
-/**
- * The real translator, not a stub returning the key.
- *
- * An identity function would happily "format" `"Afati duhet të jetë mes 1 dhe
- * {max} vjetësh."` without ever substituting `{max}` — which is exactly how a
- * missing ICU argument reached a reader as a thrown FORMATTING_ERROR while
- * this suite stayed green. Running the actual formatter means any schema that
- * forgets an argument fails here instead.
- */
 const realTranslate = createTranslator({
   locale: 'sq',
   messages,
@@ -181,9 +141,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
       const faq = lookup(`${base}.faq`);
       expect(Array.isArray(faq), `${base}.faq must be an array`).toBe(true);
 
-      // faqCount is what the definition claims; the catalogue is what ships.
-      // If they drift, the FAQPage structured data would describe questions
-      // that are not on the page.
       expect((faq as unknown[]).length).toBe(calculator.faqCount);
 
       for (const [index, entry] of (
@@ -204,8 +161,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     });
 
     it('computes successfully from its own defaults', () => {
-      // A calculator whose defaults refuse would render its error state to
-      // every first-time visitor.
       const outcome = calculator.compute(
         calculator.defaults,
         contextFor(calculator),
@@ -215,9 +170,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     });
 
     it('refuses cleanly when the market data it declares is absent', () => {
-      // The other half of the contract: a calculator that needs data must say
-      // so rather than computing with a hole in it. This is what drives the
-      // page's "no data, type it yourself" state.
       if (calculator.marketData.kind === 'none') return;
 
       const outcome = calculator.compute(calculator.defaults, {
@@ -238,13 +190,8 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
     });
 
     it('formats every validation message it can produce', () => {
-      // Building the schema runs every `t(...)` call in it, including the
-      // ones with ICU arguments. A message missing an argument throws here
-      // rather than in front of a reader who typed a bad number.
       expect(() => calculator.schema(realTranslate as never)).not.toThrow();
 
-      // And exercise the failure branches: some messages are only built when
-      // a rule actually fails.
       const schema = calculator.schema(realTranslate as never);
       const hostile = Object.fromEntries(
         calculator.fields.map((field) => [
@@ -304,8 +251,6 @@ describe.each(calculators.map((c) => [c.slug, c] as const))(
         expect(related).not.toBe(calculator.slug);
       }
 
-      // Unshipped slugs are dropped rather than rendered as dead links —
-      // the failure `matchNews.ts` documents. Resolution must not throw.
       expect(() => getRelatedCalculators(calculator)).not.toThrow();
     });
 
@@ -361,8 +306,6 @@ describe('registry invariants', () => {
   });
 
   it('has a sentence for every refusal the engine can return', () => {
-    // If the engine gains a reason and the catalogue does not, the reader
-    // sees a raw key at exactly the moment something went wrong.
     for (const reason of [
       'nonFinite',
       'negativeAmount',

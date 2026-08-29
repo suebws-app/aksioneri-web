@@ -10,16 +10,6 @@ import { cn } from '@/lib/utils/cn';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
 import { usePriceFlash } from '../usePriceFlash';
 
-/**
- * Big price + change display on the asset page, live-updated over the
- * markets WebSocket. Server-rendered `initial*` props paint the first
- * frame; the socket takes over from tick 1 and applies the same
- * TradingView-style green/red text flash as the top strip.
- *
- * Extracted as a client island so `AssetPage` can stay a server
- * component (SSR + SEO), with only the two spans that need live data
- * paying the client-side cost.
- */
 export interface AssetPriceLiveProps {
   symbol: string;
   initialPrice: string;
@@ -37,12 +27,6 @@ export function AssetPriceLive({
   const [changePercent, setChangePercent] = useState(initialChangePercent);
   const [changeAbsolute, setChangeAbsolute] = useState(initialChangeAbsolute);
 
-  // Precision is inferred from the SSR'd string once and pinned — the
-  // socket tick carries a raw number and we reformat to the exact shape
-  // of the server-rendered string (2 dp for indices, 0 for BTC, 4 for FX)
-  // without needing a separate per-symbol table on the client. See
-  // `lib/format/quotePrice` for why this mirrors the API's formatter
-  // rather than the site locale.
   const precisionRef = useRef(quotePrecisionOf(initialPrice));
 
   useEffect(() => {
@@ -91,11 +75,6 @@ export function AssetPriceLive({
   );
 }
 
-/**
- * Signed variant for the absolute change. True minus (U+2212) rather
- * than a hyphen, the same choice `ChangeValue.tsx` makes — in Plex Mono
- * the true minus has the width of a digit, so the column stays aligned.
- */
 function formatSignedQuotePrice(
   value: number,
   precision: QuotePrecision,
