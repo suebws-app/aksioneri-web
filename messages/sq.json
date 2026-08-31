@@ -44,9 +44,9 @@
   },
   "calendar": {
     "metaTitle": "Kalendari ekonomik",
-    "metaDescription": "Shifrat që lëvizin tregjet, me kohën e publikimit, pritshmëritë dhe shpjegimin se çfarë tregon secila prej tyre.",
+    "metaDescription": "Shifrat që lëvizin tregjet, me kohën e publikimit, pritshmëritë dhe shpjegimin se çka do të thotë secila në të vërtetë.",
     "heading": "Kalendari ekonomik",
-    "subheading": "Shifrat që lëvizin tregjet — dhe çfarë tregon secila prej tyre në të vërtetë.",
+    "subheading": "Shifrat që lëvizin tregjet — dhe çka tregon secila në të vërtetë.",
     "daysLabel": "Zgjidh ditën",
     "todayTab": "{day} · Sot",
     "tableCaption": "Ngjarjet ekonomike për {date}",
@@ -139,7 +139,7 @@
     "metaTitle": "Tregjet dhe lajmet financiare",
     "metaDescription": "Çmimet e drejtpërdrejta, lajmet që lëvizin tregjet dhe kalendari ekonomik — të gjitha të shpjeguara në gjuhë të thjeshtë.",
     "tickerAriaLabel": "Shirit i tregjeve",
-    "todayHeading": "Çfarë ka rëndësi sot",
+    "todayHeading": "Çka ka rëndësi sot",
     "quotesHeading": "Tregjet sot",
     "quotesCaption": "Çmimet e sotme të tregut",
     "viewAllMarkets": "Shiko të gjitha tregjet →",
@@ -192,7 +192,7 @@
       "open": "Hapur",
       "closed": "Mbyllur",
       "unknown": "I panjohur",
-      "stale": "Vjetër",
+      "stale": "Vjetruar",
       "live": "Live",
       "delayed": "Vonuar"
     },
@@ -218,16 +218,16 @@
       "label": "Duke ngarkuar tickerin…"
     },
     "assetError": {
-      "heading": "Nuk arritëm me e ngarku ket ticker",
-      "body": "Diçka shkoi keq tu marrë çmimin dhe detajet. Provo prapë pas pak, ose kthehu te tregjet.",
+      "heading": "Nuk mundëm ta ngarkojmë këtë ticker",
+      "body": "Diçka shkoi keq gjatë ngarkimit të çmimit dhe detajeve. Provo prapë pas pak, ose kthehu te tregjet.",
       "retry": "Provo prapë",
       "backToMarkets": "Kthehu te tregjet",
       "digest": "Referenca: {digest}"
     },
     "assetNotFound": {
       "heading": "Tickeri nuk u gjet",
-      "body": "Nuk e gjetëm ket ticker. Kontrollo shkrimin, ose kërko për ndonjë kompani apo asset ma poshtë.",
-      "featuredHeading": "Ticker popullorë",
+      "body": "Nuk e gjetëm këtë ticker. Kontrollo shkrimin, ose kërko një kompani a një aktiv më poshtë.",
+      "featuredHeading": "Tickerat më të njohur",
       "backToMarkets": "Kthehu te tregjet"
     },
     "assetDescription": "Çmimi i drejtpërdrejtë, lëvizja e ditës dhe lajmet për {name}, të shpjeguara në gjuhë të thjeshtë.",
@@ -300,10 +300,10 @@
       "subtitle": "Thesari amerikan · sot"
     },
     "bonds": {
-      "year13w": "13 javë",
-      "year5": "5 vjeçar",
-      "year10": "10 vjeçar",
-      "year30": "30 vjeçar"
+      "year13w": "13-javor",
+      "year5": "5-vjeçar",
+      "year10": "10-vjeçar",
+      "year30": "30-vjeçar"
     }
   },
   "company": {
@@ -333,7 +333,7 @@
         "label": "Perspektiva",
         "positive": "Pozitive",
         "neutral": "Neutrale",
-        "cautious": "Kujdes"
+        "cautious": "E rezervuar"
       },
       "confidence": {
         "label": "Besueshmëria",
@@ -347,10 +347,10 @@
         "watchNext": "Për të ndjekur më pas"
       },
       "detail": {
-        "whatHappened": "Çfarë ndodhi",
+        "whatHappened": "Çka ndodhi",
         "whyMoving": "Pse po lëviz aksioni",
         "howToRead": "Si të lexohet ky vlerësim",
-        "changingView": "Çfarë do ta ndryshonte këtë pamje",
+        "changingView": "Çka do ta ndryshonte këtë pamje",
         "showMore": "Lexo analizën e plotë",
         "showLess": "Trego më pak"
       },
@@ -363,8 +363,8 @@
       "metaDescription": "Të ardhurat, bilanci dhe fluksi i parasë për {name}, të normalizuara nga SEC EDGAR.",
       "heading": "Financat",
       "subheading": "Të dhëna të normalizuara nga raportet zyrtare 10-K dhe 10-Q në SEC EDGAR.",
-      "inlineNote": "Shifrat në USD · si janë raportu",
-      "inlineFootnote": "Shifrat negative shfaqen me kuq. Rrëshqite tabelën anash për periudha ma të vjetra.",
+      "inlineNote": "Shifrat në USD · siç janë raportuar",
+      "inlineFootnote": "Shifrat negative shfaqen me kuq. Rrëshqite tabelën anash për periudha më të vjetra.",
       "statementLabel": "Pasqyra",
       "periodLabel": "Periudha",
       "tabs": {
@@ -394,7 +394,7 @@
         "sellingAndAdministrative": "Shitje dhe administrim",
         "operatingIncome": "Fitimi operativ",
         "pretaxIncome": "Fitimi para tatimit",
-        "taxExpense": "Taksat",
+        "taxExpense": "Tatimi",
         "netIncome": "Fitimi neto",
         "epsBasic": "EPS bazë",
         "epsDiluted": "EPS i diluar",
@@ -423,7 +423,7 @@
     },
     "valuation": {
       "metaTitle": "Vlerësimi për {name}",
-      "metaDescription": "Metrikat e vlerësimit për {name}: P/E, P/S, P/B, EV/EBITDA dhe historiku i tyre.",
+      "metaDescription": "Metrikat e vlerësimit për {name}: P/E, P/S, P/B, EV/EBITDA dhe fitueshmëria.",
       "heading": "Vlerësimi",
       "subheading": "Si po vlerësohen aksionet kundrejt të ardhurave dhe fitimeve të kompanisë.",
       "empty": {
@@ -538,13 +538,13 @@
     "loadMore": "Ngarko më shumë artikuj",
     "emptyCategory": "Asnjë artikull në këtë kategori për momentin.",
     "mostRead": "Më të lexuarat sot",
-    "newToThis": "I ri në këtë?",
+    "newToThis": "Po nis nga zeroja?",
     "glossaryHeading": "Termat e artikujve të sotëm, të shpjeguar",
     "glossaryBody": "Udhëzim, inflacion, fluks në ETF — përkufizime të shkurtra, me fjalë të thjeshta.",
     "openLearn": "Hap Qendrën e Mësimit →",
     "breadcrumbLabel": "Shtegu i navigimit",
     "notFoundTitle": "Artikulli nuk u gjet",
-    "photoCredit": "Kredite fotografie",
+    "photoCredit": "Burimi i fotografisë",
     "inNumbers": "Në shifra",
     "termsHeading": "Termat në këtë artikull",
     "jargonBuster": "Sqarues i termave →",
@@ -554,7 +554,7 @@
     "nextReleaseNote": "Shifra nga e cila varet ky artikull",
     "expectedShort": "Prit.",
     "previousShort": "Mëpar.",
-    "whatThisMeans": "Çfarë do të thotë kjo shifër →",
+    "whatThisMeans": "Çka do të thotë kjo shifër →",
     "readLesson": "Lexo mësimin →",
     "actions": {
       "save": "Ruaj",
@@ -660,7 +660,7 @@
     "failed": "Kërkimi nuk u ngarkua. Provo prapë.",
     "count": "{count, plural, one {# rezultat} other {# rezultate}} për “{query}”",
     "empty": "Asnjë rezultat për “{query}”.",
-    "emptyHint": "Provo një fjalë më të shkurtër ose një term tjetër — p.sh. “dividend” në vend të “dividendët e mia”.",
+    "emptyHint": "Provo një fjalë më të shkurtër ose një term tjetër — p.sh. “dividend” në vend të “dividendët e mi”.",
     "kinds": {
       "page": "Faqe",
       "lesson": "Mësime",
@@ -902,7 +902,7 @@
         "columns": {}
       },
       "explanation": [
-        "Kthimi total mat sa ke fituar mbi gjithçka që ke paguar. Dividendët i shtohen vlerës përfundimtare dhe tarifat i zbresim para se të nxjerrim çdo gjë tjetër — një titull që i lë jashtë e mbivlerëson kthimin.",
+        "Kthimi total mat sa ke fituar mbi gjithçka që ke paguar. Dividendët i shtohen vlerës përfundimtare dhe tarifat i zbresim para se të nxjerrim çdo gjë tjetër — një shifër që i lë jashtë e mbivlerëson kthimin.",
         "CAGR-ja është norma e njëtrajtshme vjetore që do të kishte prodhuar të njëjtin rezultat. Nuk është mesatarja e kthimeve vjetore, që del gjithmonë më e lartë dhe prandaj përdoret shpesh gabimisht.",
         "Kthimi real e heq inflacionin. Nëse një investim është rritur 40% për gjashtë vjet ndërsa çmimet janë rritur 20%, fuqia blerëse nuk është rritur 40%."
       ],

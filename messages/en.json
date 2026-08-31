@@ -999,7 +999,7 @@
         "The amortization table shows that split month by month. The principal column adds up to exactly the loan amount — we do the math in cents rather than rounded decimals so the column matches the figure at the top.",
         "Property tax, insurance, and other expenses aren't part of the loan itself, but they are part of what you pay every month. That's why the headline figure here is the total household cost, not just the bank's payment — the gap between the two is where budgets break."
       ],
-      "example": "For a $150,000 home with a $30,000 down payment at 4.5% for 25 years: the bank's payment comes to about $667 per month, but with tax and insurance the monthly total runs closer to $708. Total interest paid over 25 years exceeds $80,000.",
+      "example": "For a €150,000 home with a €30,000 down payment at 4.5% for 25 years: the bank's payment comes to about €667 per month, but with tax and insurance the monthly total runs closer to €708. Total interest paid over 25 years exceeds €80,000.",
       "faq": [
         {
           "question": "Why does total interest change so much when I adjust the term?",
@@ -1051,7 +1051,7 @@
         "There are two different questions here, and they often get mixed up. First: what will today's purchases cost later. Second: how much will today's money buy later. One is a multiplication, the other a division, and the results are not the same.",
         "The rate you set is an assumption, not a measurement. Once we plug in real price-index series, this page will be able to compute between two specific years instead of relying on a single average rate."
       ],
-      "example": "$10,000 today, at 3% inflation per year, will have the purchasing power of about $7,441 after ten years. The same basket of goods that costs $10,000 today will cost roughly $13,439 by then.",
+      "example": "€10,000 today, at 3% inflation per year, will have the purchasing power of about €7,441 after ten years. The same basket of goods that costs €10,000 today will cost roughly €13,439 by then.",
       "faq": [
         {
           "question": "What's a realistic inflation rate?",
@@ -1127,7 +1127,7 @@
         "One-time fees aren't added to the balance here, so no interest is charged on them. Some banks roll them into the loan; if yours does, add them to the loan amount rather than the fees field.",
         "Cost of borrowing adds interest and fees together and expresses the total as a percentage of the amount borrowed. That's the figure that makes two offers comparable when one has a lower rate but higher fees."
       ],
-      "example": "For a $15,000 loan at 8.5% over five years with a $150 origination fee: the payment comes to about $308 per month, total interest around $3,470, and the full cost of borrowing about 24% of the amount borrowed.",
+      "example": "For a €15,000 loan at 8.5% over five years with a €150 origination fee: the payment comes to about €308 per month, total interest around €3,470, and the full cost of borrowing about 24% of the amount borrowed.",
       "faq": [
         {
           "question": "What's the difference between the rate and the APR?",
