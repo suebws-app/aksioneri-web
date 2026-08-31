@@ -11,11 +11,9 @@ export async function initSentry(): Promise<void> {
   const Sentry = await import('@sentry/browser');
   Sentry.init({
     dsn,
-    release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || undefined,
+    release: clientEnv.NEXT_PUBLIC_SENTRY_RELEASE,
     environment: process.env.NODE_ENV,
-    tracesSampleRate: Number(
-      process.env.NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE ?? '0.1',
-    ),
+    tracesSampleRate: clientEnv.NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE,
     sendDefaultPii: false,
     replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0,

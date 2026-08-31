@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
-  formatCompactMoney,
   formatMoney,
   formatNumber,
   formatPercent,
@@ -60,21 +59,6 @@ describe('formatPercent', () => {
   });
 });
 
-describe('formatCompactMoney', () => {
-  it('abbreviates with Albanian units', () => {
-    expect(formatCompactMoney(1_200_000, 'EUR')).toBe(`1,2${NBSP}mln${NBSP}€`);
-    expect(formatCompactMoney(12_000_000, 'EUR')).toBe(`12${NBSP}mln${NBSP}€`);
-    expect(formatCompactMoney(2_500_000_000, 'EUR')).toBe(
-      `2,5${NBSP}mld${NBSP}€`,
-    );
-    expect(formatCompactMoney(45_000, 'EUR')).toBe(`45${NBSP}mijë${NBSP}€`);
-  });
-
-  it('leaves small figures whole', () => {
-    expect(formatCompactMoney(9_500, 'EUR')).toBe(`9.500${NBSP}€`);
-  });
-});
-
 describe('rate precision', () => {
   it('keeps four decimals, so a sub-1 rate is not rounded to 1', () => {
     expect(formatNumber(0.733579, 4)).toBe('0,7336');
@@ -102,7 +86,6 @@ describe('hydration safety', () => {
     formatMoney(-98765.43, 'USD', { decimals: 0 });
     formatPercent(6.25);
     formatPercentChange(-1.5);
-    formatCompactMoney(1_200_000, 'EUR');
     formatNumber(1234567);
 
     expect(spy).not.toHaveBeenCalled();

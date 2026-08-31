@@ -38,6 +38,8 @@ interface SubscribeAck {
 const RATE_LIMIT_MAX_RETRIES = 3;
 const RATE_LIMIT_BASE_DELAY_MS = 2000;
 const RATE_LIMIT_JITTER_MS = 500;
+const CLIENT_STALE_AFTER_MS = 60_000;
+const CLIENT_STALE_CHECK_MS = 15_000;
 
 class MarketsSocketClient {
   private socket: Socket | null = null;
@@ -52,6 +54,12 @@ class MarketsSocketClient {
   private readonly latest = new Map<string, LiveQuote>();
 
   private readonly staleFlags = new Map<string, boolean>();
+
+  private readonly lastQuoteAt = new Map<string, number>();
+
+  private readonly clientStale = new Set<string>();
+
+  private staleTimer: ReturnType<typeof setInterval> | null = null;
 
   private readonly staleListeners = new Map<
     string,
@@ -134,7 +142,7 @@ class MarketsSocketClient {
       this.staleListeners.set(symbol, listeners);
     }
     listeners.add(listener);
-    listener(this.staleFlags.get(symbol) ?? false);
+    listener(this.effectiveStale(symbol));
     return () => {
       const set = this.staleListeners.get(symbol);
       set?.delete(listener);
@@ -201,11 +209,21 @@ class MarketsSocketClient {
         return;
       }
 
-      if (!allowMissingRetry) return;
-
       const subscribed = new Set(ack.subscribed ?? []);
       const missing = stillWanted.filter((s) => !subscribed.has(s));
-      if (missing.length > 0) this.requestSubscribe(missing, retry, false);
+      if (missing.length === 0) return;
+
+      if (allowMissingRetry) {
+        this.requestSubscribe(missing, retry, false);
+        return;
+      }
+
+      for (const symbol of missing) {
+        if (!this.clientStale.has(symbol)) {
+          this.clientStale.add(symbol);
+          this.notifyStale(symbol);
+        }
+      }
     });
   }
 
@@ -232,6 +250,10 @@ class MarketsSocketClient {
 
     this.socket.on('quote', (quote: LiveQuote) => {
       this.latest.set(quote.symbol, quote);
+      this.lastQuoteAt.set(quote.symbol, Date.now());
+      if (this.clientStale.delete(quote.symbol)) {
+        this.notifyStale(quote.symbol);
+      }
       const listeners = this.listeners.get(quote.symbol);
       if (!listeners) return;
       for (const listener of listeners) listener(quote);
@@ -241,10 +263,13 @@ class MarketsSocketClient {
       'stale',
       (event: { symbol: string; providerSymbol: string; stale: boolean }) => {
         this.staleFlags.set(event.symbol, event.stale);
-        const listeners = this.staleListeners.get(event.symbol);
-        if (!listeners) return;
-        for (const listener of listeners) listener(event.stale);
+        this.notifyStale(event.symbol);
       },
+    );
+
+    this.staleTimer = setInterval(
+      () => this.checkClientStale(),
+      CLIENT_STALE_CHECK_MS,
     );
 
     this.socket.on('connection-state', (event: ProviderConnectionEvent) => {
@@ -255,9 +280,49 @@ class MarketsSocketClient {
   }
 
   private disconnect(): void {
+    if (this.staleTimer) {
+      clearInterval(this.staleTimer);
+      this.staleTimer = null;
+    }
+    this.lastQuoteAt.clear();
+    this.clientStale.clear();
     this.socket?.disconnect();
     this.socket = null;
     this.setState('idle');
+  }
+
+  private effectiveStale(symbol: string): boolean {
+    return (
+      (this.staleFlags.get(symbol) ?? false) || this.clientStale.has(symbol)
+    );
+  }
+
+  private notifyStale(symbol: string): void {
+    const listeners = this.staleListeners.get(symbol);
+    if (!listeners) return;
+    const value = this.effectiveStale(symbol);
+    for (const listener of listeners) listener(value);
+  }
+
+  private checkClientStale(): void {
+    if (this.state !== 'connected') return;
+    const now = Date.now();
+    for (const symbol of this.refcounts.keys()) {
+      const latest = this.latest.get(symbol);
+      const receivedAt = this.lastQuoteAt.get(symbol);
+      if (!latest || receivedAt === undefined) continue;
+      const shouldFlag =
+        latest.marketStatus === 'open' &&
+        now - receivedAt > CLIENT_STALE_AFTER_MS;
+
+      if (shouldFlag && !this.clientStale.has(symbol)) {
+        this.clientStale.add(symbol);
+        this.notifyStale(symbol);
+      } else if (!shouldFlag && this.clientStale.has(symbol)) {
+        this.clientStale.delete(symbol);
+        this.notifyStale(symbol);
+      }
+    }
   }
 
   private setState(state: ConnectionState): void {

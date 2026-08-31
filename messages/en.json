@@ -128,6 +128,11 @@
       "relatedNews": "Related news",
       "notFoundTitle": "Event not found",
       "fallbackDescription": "Release time, expectations, and the prior print for {title}."
+    },
+    "eventNotFound": {
+      "heading": "Event not found",
+      "body": "This economic release doesn't exist or is no longer on the calendar. Check the week view for what's coming up.",
+      "backToCalendar": "Back to the calendar"
     }
   },
   "markets": {
@@ -563,7 +568,12 @@
       "readOriginal": "Read the story",
       "machineTranslated": "This text was machine-translated. The original is in English."
     },
-    "loadingMore": "Loading…"
+    "loadingMore": "Loading…",
+    "articleNotFound": {
+      "heading": "Story not found",
+      "body": "This story doesn't exist or is no longer available. It may have been removed, or the link may be wrong.",
+      "backToNews": "Back to the news"
+    }
   },
   "learn": {
     "metaTitle": "Learn Center",

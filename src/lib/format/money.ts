@@ -71,30 +71,6 @@ export function formatPercentChange(value: number, decimals = 2): string {
   return `${sign}${digits}${NBSP}%`;
 }
 
-const THOUSAND = 1_000;
-const MILLION = 1_000_000;
-const BILLION = 1_000_000_000;
-
-export function formatCompactMoney(value: number, currency: string): string {
-  if (!Number.isFinite(value)) return PLACEHOLDER;
-
-  const magnitude = Math.abs(value);
-  const sign = value < 0 ? MINUS : '';
-  const symbol = symbolFor(currency);
-
-  const compact = (divisor: number, suffix: string): string => {
-    const scaled = magnitude / divisor;
-    const digits = formatDigits(scaled, scaled < 10 ? 1 : 0) ?? PLACEHOLDER;
-    return `${sign}${digits}${NBSP}${suffix}${NBSP}${symbol}`;
-  };
-
-  if (magnitude >= BILLION) return compact(BILLION, 'mld');
-  if (magnitude >= MILLION) return compact(MILLION, 'mln');
-  if (magnitude >= 10 * THOUSAND) return compact(THOUSAND, 'mijë');
-
-  return formatMoney(value, currency, { decimals: 0 });
-}
-
 export function formatNumber(value: number, decimals = 0): string {
   const digits = formatDigits(value, decimals);
   if (digits === null) return PLACEHOLDER;

@@ -128,6 +128,11 @@
       "relatedNews": "Lajme të lidhura",
       "notFoundTitle": "Ngjarja nuk u gjet",
       "fallbackDescription": "Ora e publikimit, pritshmëritë dhe leximi i mëparshëm për {title}."
+    },
+    "eventNotFound": {
+      "heading": "Ngjarja nuk u gjet",
+      "body": "Ky publikim ekonomik nuk ekziston ose nuk është më në kalendar. Shiko pamjen javore për çka vjen më pas.",
+      "backToCalendar": "Kthehu te kalendari"
     }
   },
   "markets": {
@@ -563,7 +568,12 @@
       "readOriginal": "Lexo lajmin",
       "machineTranslated": "Ky tekst është përkthyer automatikisht. Origjinali është në anglisht."
     },
-    "loadingMore": "Duke ngarkuar…"
+    "loadingMore": "Duke ngarkuar…",
+    "articleNotFound": {
+      "heading": "Lajmi nuk u gjet",
+      "body": "Ky lajm nuk ekziston ose nuk është më i qasshëm. Mund të jetë hequr, ose lidhja mund të jetë e gabuar.",
+      "backToNews": "Kthehu te lajmet"
+    }
   },
   "learn": {
     "metaTitle": "Qendra e Mësimit",

@@ -16,6 +16,12 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_DISPLAY_TZ: z.string().min(1).default('Europe/Belgrade'),
   NEXT_PUBLIC_SITE_NAME: z.string().min(1).default('Aksioneri'),
   NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
+  NEXT_PUBLIC_SENTRY_RELEASE: z.string().optional(),
+  NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE: z.coerce
+    .number()
+    .min(0)
+    .max(1)
+    .default(0.1),
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   NEXT_PUBLIC_POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
   NEXT_PUBLIC_MIN_PASSWORD_LENGTH: z.coerce
@@ -32,6 +38,9 @@ const parsed = clientEnvSchema.safeParse({
   NEXT_PUBLIC_DISPLAY_TZ: process.env.NEXT_PUBLIC_DISPLAY_TZ,
   NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
   NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  NEXT_PUBLIC_SENTRY_RELEASE: process.env.NEXT_PUBLIC_SENTRY_RELEASE,
+  NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE:
+    process.env.NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE,
   NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   NEXT_PUBLIC_MIN_PASSWORD_LENGTH: process.env.NEXT_PUBLIC_MIN_PASSWORD_LENGTH,
