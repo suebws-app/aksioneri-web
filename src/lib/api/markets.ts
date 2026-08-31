@@ -43,7 +43,7 @@ export const FEATURED_SYMBOLS = [
 
 export type AssetType = 'index' | 'crypto' | 'commodity' | 'currency' | 'stock';
 
-export type DataSource = 'biquote' | 'yahoo';
+export type DataSource = 'biquote' | 'yahoo' | 'binance' | 'cache';
 
 export type MarketStatus = 'open' | 'closed' | 'unknown';
 
@@ -231,6 +231,7 @@ export interface ProviderHealth {
 
 export interface MarketsHealth {
   socket: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
+  binanceSocket: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
   providers: ProviderHealth[];
 }
 
