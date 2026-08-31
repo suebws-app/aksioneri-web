@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils/cn';
 
 export interface OutlineEntry {
@@ -30,11 +30,11 @@ export function LessonOutline({ entries }: { entries: OutlineEntry[] }) {
     entries[0]?.id ?? null,
   );
 
-  const ids = useMemo(() => entries.map((entry) => entry.id), [entries]);
-  const idKey = ids.join('|');
+  const idKey = entries.map((entry) => entry.id).join('|');
 
   useEffect(() => {
-    if (ids.length === 0) return;
+    if (idKey === '') return;
+    const ids = idKey.split('|');
 
     let frame = 0;
 

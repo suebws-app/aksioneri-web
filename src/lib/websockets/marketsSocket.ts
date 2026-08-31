@@ -18,10 +18,26 @@ export interface LiveQuote {
 export type ConnectionState =
   'idle' | 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
 
-interface ConnectionEvent {
+export type ProviderConnectionState =
+  'connecting' | 'connected' | 'reconnecting' | 'disconnected';
+
+export interface ProviderConnectionEvent {
   provider: DataSource;
-  state: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
+  state: ProviderConnectionState;
 }
+
+export type ProviderConnectionSnapshot = Readonly<
+  Record<DataSource, ProviderConnectionState>
+>;
+
+interface SubscribeAck {
+  subscribed?: string[];
+  error?: 'rate_limited';
+}
+
+const RATE_LIMIT_MAX_RETRIES = 3;
+const RATE_LIMIT_BASE_DELAY_MS = 2000;
+const RATE_LIMIT_JITTER_MS = 500;
 
 class MarketsSocketClient {
   private socket: Socket | null = null;
@@ -45,6 +61,14 @@ class MarketsSocketClient {
   private state: ConnectionState = 'idle';
   private readonly stateListeners = new Set<(state: ConnectionState) => void>();
 
+  private readonly providerStates = new Map<
+    DataSource,
+    ProviderConnectionState
+  >();
+  private readonly providerStateListeners = new Set<
+    (snapshot: ProviderConnectionSnapshot) => void
+  >();
+
   subscribe(symbols: string[], onTick: (quote: LiveQuote) => void): () => void {
     const cleaned = symbols.filter(
       (s) => typeof s === 'string' && s.length > 0,
@@ -55,6 +79,7 @@ class MarketsSocketClient {
     const socket = this.socket;
     if (!socket) return () => undefined;
 
+    const toRequest: string[] = [];
     for (const symbol of cleaned) {
       const listeners = this.listeners.get(symbol) ?? new Set();
       listeners.add(onTick);
@@ -62,13 +87,13 @@ class MarketsSocketClient {
 
       const next = (this.refcounts.get(symbol) ?? 0) + 1;
       this.refcounts.set(symbol, next);
-      if (next === 1) {
-        socket.emit('subscribe', { symbols: [symbol] });
-      }
+      if (next === 1) toRequest.push(symbol);
 
       const cached = this.latest.get(symbol);
       if (cached) onTick(cached);
     }
+
+    if (toRequest.length > 0) this.requestSubscribe(toRequest, 0);
 
     return () => this.releaseSubscription(cleaned, onTick);
   }
@@ -79,6 +104,24 @@ class MarketsSocketClient {
     return () => {
       this.stateListeners.delete(listener);
     };
+  }
+
+  subscribeConnectionState(
+    listener: (snapshot: ProviderConnectionSnapshot) => void,
+  ): () => void {
+    this.providerStateListeners.add(listener);
+    listener(this.getConnectionState());
+    return () => {
+      this.providerStateListeners.delete(listener);
+    };
+  }
+
+  getConnectionState(): ProviderConnectionSnapshot {
+    const snapshot: Partial<Record<DataSource, ProviderConnectionState>> = {};
+    for (const [provider, state] of this.providerStates) {
+      snapshot[provider] = state;
+    }
+    return snapshot as ProviderConnectionSnapshot;
   }
 
   onStaleChange(
@@ -125,6 +168,47 @@ class MarketsSocketClient {
     }
   }
 
+  private requestSubscribe(
+    symbols: string[],
+    retry: number,
+    allowMissingRetry = true,
+  ): void {
+    const socket = this.socket;
+    if (!socket) return;
+
+    const stillWanted = symbols.filter((s) => (this.refcounts.get(s) ?? 0) > 0);
+    if (stillWanted.length === 0) return;
+
+    socket.emit('subscribe', { symbols: stillWanted }, (ack?: SubscribeAck) => {
+      if (!ack) return;
+
+      if (ack.error === 'rate_limited') {
+        if (retry >= RATE_LIMIT_MAX_RETRIES) {
+          console.warn(
+            '[markets-socket] subscribe rate-limited; giving up',
+            stillWanted,
+          );
+          return;
+        }
+        const delay =
+          RATE_LIMIT_BASE_DELAY_MS + Math.random() * RATE_LIMIT_JITTER_MS;
+        console.warn(
+          `[markets-socket] subscribe rate-limited; retry ${retry + 1} in ${Math.round(delay)}ms`,
+        );
+        setTimeout(() => {
+          this.requestSubscribe(stillWanted, retry + 1, allowMissingRetry);
+        }, delay);
+        return;
+      }
+
+      if (!allowMissingRetry) return;
+
+      const subscribed = new Set(ack.subscribed ?? []);
+      const missing = stillWanted.filter((s) => !subscribed.has(s));
+      if (missing.length > 0) this.requestSubscribe(missing, retry, false);
+    });
+  }
+
   private ensureConnected(): void {
     if (this.socket) return;
 
@@ -143,9 +227,7 @@ class MarketsSocketClient {
     this.socket.io.on('reconnect', () => {
       this.setState('connected');
       const symbols = Array.from(this.refcounts.keys());
-      if (symbols.length > 0) {
-        this.socket?.emit('subscribe', { symbols });
-      }
+      if (symbols.length > 0) this.requestSubscribe(symbols, 0);
     });
 
     this.socket.on('quote', (quote: LiveQuote) => {
@@ -165,8 +247,10 @@ class MarketsSocketClient {
       },
     );
 
-    this.socket.on('connection-state', (event: ConnectionEvent) => {
-      void event;
+    this.socket.on('connection-state', (event: ProviderConnectionEvent) => {
+      this.providerStates.set(event.provider, event.state);
+      const snapshot = this.getConnectionState();
+      for (const listener of this.providerStateListeners) listener(snapshot);
     });
   }
 

@@ -59,4 +59,8 @@ export interface LearnStats {
   glossarySize: number;
 }
 
-export type Localized<T> = Record<Locale, T>;
+export type Localized<T> = { sq: T } & Partial<Record<Locale, T>>;
+
+export function pickLocalized<T>(value: Localized<T>, locale: Locale): T {
+  return value[locale] ?? value.sq;
+}

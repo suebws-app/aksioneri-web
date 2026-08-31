@@ -13,6 +13,7 @@ import {
 import { formatQuotePrice, quotePrecisionOf } from '@/lib/format/quotePrice';
 import { assetQuery } from '@/lib/query/marketsQueries';
 import { cn } from '@/lib/utils/cn';
+import { toMarketPath } from '@/lib/utils/marketPath';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
 import { usePriceFlash } from '../usePriceFlash';
 import { InteractiveSparkline } from './InteractiveSparkline';
@@ -92,7 +93,7 @@ export function MarketMiniChartLive({
   return (
     <section className={cn('flex flex-col gap-2.5', className)}>
       <Link
-        href={`/markets/${asset.symbol}`}
+        href={toMarketPath(asset.symbol)}
         className="hover:text-accent flex items-baseline justify-between"
       >
         <span className="text-ink text-[15px] font-medium">{asset.name}</span>

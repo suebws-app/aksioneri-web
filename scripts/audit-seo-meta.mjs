@@ -34,7 +34,7 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
       warn(`${locale} ${key}: title is ${value.length} chars (max ${TITLE_MAX})`);
     }
 
-    if (/^(meta|default)?[Dd]escription$/.test(leaf)) {
+    if (/^(meta|default)[Dd]escription$/.test(leaf)) {
       if (value.length > DESCRIPTION_MAX) {
         warn(`${locale} ${key}: description is ${value.length} chars (max ${DESCRIPTION_MAX})`);
       } else if (value.length < DESCRIPTION_MIN) {

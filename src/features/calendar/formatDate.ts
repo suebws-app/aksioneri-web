@@ -35,6 +35,7 @@ export const formatLongDate = (locale: Locale, isoDate: string): string => {
 
 export const formatTimestamp = (locale: Locale, iso: string): string => {
   const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
   if (locale === 'sq') {
     const hh = String(d.getUTCHours()).padStart(2, '0');
     const mm = String(d.getUTCMinutes()).padStart(2, '0');

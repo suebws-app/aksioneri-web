@@ -177,8 +177,10 @@
       "previousClose": "Mbyllja e mëparshme",
       "dayRange": "Diapazoni i ditës",
       "fiftyTwoWeekRange": "Diapazoni 52-javor",
-      "marketCap": "Kapitalizimi i tregut",
-      "peRatio": "Raporti P/E",
+      "marketCap": "Kapitalizimi",
+      "peRatio": "P/E",
+      "eps": "EPS",
+      "dividendYield": "Yield dividendi",
       "level": "Niveli"
     },
     "session": {
@@ -199,27 +201,308 @@
     },
     "breadcrumbRoot": "Tregjet",
     "statistics": "Statistikat",
+    "priceHeading": "Çmimi",
+    "keyStatistics": "Të dhëna kryesore",
+    "keyStatisticsNote": "12 muajt e fundit, përveç kur shënohet",
+    "latestOn": "Të fundit për {name}",
+    "allCoverage": "I gjithë mbulimi →",
     "biggestHoldings": "Zotërimet më të mëdha",
     "shareOfIndex": "Pjesa e indeksit",
-    "newsAbout": "Lajme për këtë indeks",
-    "allNews": "Të gjitha lajmet →",
-    "otherMarkets": "Tregje të tjera",
-    "sectorsToday": "Sektorët sot",
-    "whatCouldMoveIt": "Çfarë mund ta lëvizë",
-    "beforeYouInvest": "Para se të investoni",
     "assetNotFoundTitle": "Aktivi nuk u gjet",
+    "assetLoading": {
+      "label": "Duke ngarkuar tickerin…"
+    },
+    "assetError": {
+      "heading": "Nuk arritëm me e ngarku ket ticker",
+      "body": "Diçka shkoi keq tu marrë çmimin dhe detajet. Provo prapë pas pak, ose kthehu te tregjet.",
+      "retry": "Provo prapë",
+      "backToMarkets": "Kthehu te tregjet",
+      "digest": "Referenca: {digest}"
+    },
+    "assetNotFound": {
+      "heading": "Tickeri nuk u gjet",
+      "body": "Nuk e gjetëm ket ticker. Kontrollo shkrimin, ose kërko për ndonjë kompani apo asset ma poshtë.",
+      "featuredHeading": "Ticker popullorë",
+      "backToMarkets": "Kthehu te tregjet"
+    },
     "assetDescription": "Çmimi i drejtpërdrejtë, lëvizja e ditës dhe lajmet për {name}, të shpjeguara në gjuhë të thjeshtë.",
+    "sourceEdgar": "Burimi: SEC EDGAR",
+    "sourceLive": "Burimi: tregjet publike",
+    "asOf": "Përditësuar më {date}",
     "quoteStatusFallback": "Çmimet janë tregues dhe mund të jenë me vonesë.",
     "indexHeading": "Tregjet",
-    "indexSubheading": "Çdo indeks, mall dhe monedhë që ndjekim, me lëvizjen e sotme.",
+    "indexSubheading": "Ndiq tregjet globale, aksionet, kripton, monedhat dhe më shumë.",
+    "pageSearch": {
+      "placeholder": "Kërko aksione, ETF, kripto ose kompani…",
+      "try": "Provo"
+    },
+    "tabs": {
+      "overview": "Përmbledhje",
+      "stocks": "Aksione",
+      "etfs": "ETF",
+      "crypto": "Kripto",
+      "indices": "Indekse",
+      "commodities": "Mallra",
+      "currencies": "Monedha"
+    },
+    "tabTitles": {
+      "overview": "Titujt në trend",
+      "stocks": "Aksionet më të tregtuara",
+      "etfs": "ETF të popullarizuara",
+      "crypto": "Kripto sipas kapitalizimit",
+      "indices": "Indekset kryesore",
+      "commodities": "Mallrat",
+      "currencies": "Çiftet e monedhave",
+      "searchResults": "Rezultatet për \"{query}\""
+    },
+    "tableNote": "Kliko një rresht për detajet e plota të kompanisë · me vonesë 15 min",
+    "table": {
+      "symbol": "Simboli",
+      "company": "Kompania",
+      "price": "Çmimi",
+      "change": "Ndryshimi",
+      "percentChange": "% ndryshimi",
+      "volume": "Vëllimi",
+      "marketCap": "Kapitalizimi"
+    },
+    "trendingCrypto": {
+      "heading": "Kripto në trend",
+      "note": "24 orë · tregtohet gjatë gjithë kohës"
+    },
+    "popularEtfs": {
+      "heading": "ETF të popullarizuara",
+      "note": "më të mbajturat në Aksioneri"
+    },
     "indexMetaTitle": "Tregjet",
     "indexMetaDescription": "Nivelet e drejtpërdrejta për indekset, mallrat dhe monedhat që përcaktojnë tonin e ditës, të shpjeguara thjesht.",
-    "groups": {
-      "indices": "Indekset",
-      "commodities": "Mallrat",
-      "crypto": "Kripto",
-      "currencies": "Monedhat",
-      "other": "Tregje të tjera"
+    "sectors": {
+      "technology": "Teknologji",
+      "semiconductors": "Gjysmëpërçues",
+      "consumerDiscretionary": "Konsum diskrecional",
+      "consumerStaples": "Mallra bazë",
+      "automotive": "Automobilistike",
+      "financials": "Financiare",
+      "healthcare": "Shëndetësi",
+      "energy": "Energji",
+      "industrials": "Industri",
+      "materials": "Materiale",
+      "utilities": "Shërbime publike",
+      "realEstate": "Pasuri të paluajtshme",
+      "communicationServices": "Komunikime"
+    },
+    "bondYields": {
+      "heading": "Yield-et e obligacioneve",
+      "subtitle": "Thesari amerikan · sot"
+    },
+    "bonds": {
+      "year13w": "13 javë",
+      "year5": "5 vjeçar",
+      "year10": "10 vjeçar",
+      "year30": "30 vjeçar"
+    }
+  },
+  "company": {
+    "nav": {
+      "label": "Seksionet e kompanisë",
+      "overview": "Përmbledhje",
+      "financials": "Financat",
+      "valuation": "Vlerësimi",
+      "dividends": "Dividendët",
+      "news": "Lajmet",
+      "filings": "Raportet"
+    },
+    "header": {
+      "share": "Shpërnda",
+      "shareCopied": "Linku u kopjua",
+      "marketStatus": {
+        "open": "Tregu i hapur",
+        "closed": "Tregu i mbyllur",
+        "unknown": "Statusi i tregut",
+        "delayNote": "me vonesë 15 min"
+      }
+    },
+    "snapshot": {
+      "title": "Përmbledhje AI për investimin",
+      "generating": "Po gjenerohet analiza…",
+      "outlook": {
+        "label": "Perspektiva",
+        "positive": "Pozitive",
+        "neutral": "Neutrale",
+        "cautious": "Kujdes"
+      },
+      "confidence": {
+        "label": "Besueshmëria",
+        "low": "E ulët",
+        "moderate": "Mesatare",
+        "high": "E lartë"
+      },
+      "columns": {
+        "whyPositive": "Pse duket pozitive",
+        "keyRisks": "Rreziqet kryesore",
+        "watchNext": "Për të ndjekur më pas"
+      },
+      "detail": {
+        "whatHappened": "Çfarë ndodhi",
+        "whyMoving": "Pse po lëviz aksioni",
+        "howToRead": "Si të lexohet ky vlerësim",
+        "changingView": "Çfarë do ta ndryshonte këtë pamje",
+        "showMore": "Lexo analizën e plotë",
+        "showLess": "Trego më pak"
+      },
+      "footer": {
+        "disclaimer": "Analizë e krijuar nga AI · Nuk përbën këshillë investimi · Krijuar më {date} nga raportet, telefonatat e fitimeve dhe të dhënat e çmimeve"
+      }
+    },
+    "financials": {
+      "metaTitle": "Financat për {name}",
+      "metaDescription": "Të ardhurat, bilanci dhe fluksi i parasë për {name}, të normalizuara nga SEC EDGAR.",
+      "heading": "Financat",
+      "subheading": "Të dhëna të normalizuara nga raportet zyrtare 10-K dhe 10-Q në SEC EDGAR.",
+      "inlineNote": "Shifrat në USD · si janë raportu",
+      "inlineFootnote": "Shifrat negative shfaqen me kuq. Rrëshqite tabelën anash për periudha ma të vjetra.",
+      "statementLabel": "Pasqyra",
+      "periodLabel": "Periudha",
+      "tabs": {
+        "income": "Pasqyra e të ardhurave",
+        "balance": "Bilanci",
+        "cashFlow": "Fluksi i parasë"
+      },
+      "period": {
+        "annual": "Vjetore",
+        "quarterly": "Tremujore"
+      },
+      "empty": {
+        "title": "Të dhënat financiare nuk janë ende të disponueshme",
+        "description": "Kjo kompani nuk ka të dhëna XBRL të publikuara në SEC për këtë periudhë, ose nuk raporton në SEC."
+      },
+      "notApplicable": {
+        "title": "Kjo faqe nuk zbatohet",
+        "description": "Financat vjetore raportohen vetëm për kompanitë e listuara. Kthehu te përmbledhja për të dhëna live për këtë aktiv."
+      },
+      "row": {
+        "breakdown": "Zbërthimi",
+        "revenue": "Të ardhurat",
+        "costOfRevenue": "Kostoja e të ardhurave",
+        "grossProfit": "Fitimi bruto",
+        "operatingExpenses": "Shpenzimet operative",
+        "researchAndDevelopment": "Kërkim dhe zhvillim",
+        "sellingAndAdministrative": "Shitje dhe administrim",
+        "operatingIncome": "Fitimi operativ",
+        "pretaxIncome": "Fitimi para tatimit",
+        "taxExpense": "Taksat",
+        "netIncome": "Fitimi neto",
+        "epsBasic": "EPS bazë",
+        "epsDiluted": "EPS i diluar",
+        "totalAssets": "Totali i aktiveve",
+        "currentAssets": "Aktivet rrjedhëse",
+        "cashAndEquivalents": "Paraja dhe ekuivalentët",
+        "shortTermInvestments": "Investime afatshkurtra",
+        "receivables": "Të arkëtueshme",
+        "inventory": "Inventari",
+        "nonCurrentAssets": "Aktivet afatgjata",
+        "propertyPlantEquipment": "Prona, impiante dhe pajisje",
+        "goodwill": "Emri i mirë",
+        "totalLiabilities": "Totali i detyrimeve",
+        "currentLiabilities": "Detyrimet rrjedhëse",
+        "longTermDebt": "Borxhi afatgjatë",
+        "shortTermDebt": "Borxhi afatshkurtër",
+        "shareholdersEquity": "Kapitali i aksionarëve",
+        "operatingCashFlow": "Fluksi nga operacionet",
+        "investingCashFlow": "Fluksi nga investimet",
+        "financingCashFlow": "Fluksi nga financimi",
+        "capitalExpenditures": "Shpenzime kapitale",
+        "freeCashFlow": "Fluksi i lirë i parasë",
+        "dividendsPaid": "Dividendët e paguar",
+        "stockRepurchases": "Riblerja e aksioneve"
+      }
+    },
+    "valuation": {
+      "metaTitle": "Vlerësimi për {name}",
+      "metaDescription": "Metrikat e vlerësimit për {name}: P/E, P/S, P/B, EV/EBITDA dhe historiku i tyre.",
+      "heading": "Vlerësimi",
+      "subheading": "Si po vlerësohen aksionet kundrejt të ardhurave dhe fitimeve të kompanisë.",
+      "empty": {
+        "title": "Të dhënat e vlerësimit nuk janë të disponueshme",
+        "description": "Nuk gjetëm metrika të vlerësimit për këtë kompani nga Yahoo Finance."
+      },
+      "groups": {
+        "valuationRatios": "Raportet e vlerësimit",
+        "profitabilityGrowth": "Fitueshmëria dhe rritja",
+        "priceRange": "Diapazoni i çmimit"
+      },
+      "metrics": {
+        "marketCap": "Kapitalizimi",
+        "enterpriseValue": "Vlera e ndërmarrjes",
+        "peRatio": "P/E (aktual)",
+        "forwardPeRatio": "P/E (i pritur)",
+        "pegRatio": "PEG",
+        "priceToSales": "P/S",
+        "priceToBook": "P/B",
+        "evToRevenue": "EV / Të ardhurat",
+        "evToEbitda": "EV / EBITDA",
+        "beta": "Beta",
+        "profitMargin": "Marzhi neto",
+        "operatingMargin": "Marzhi operativ",
+        "returnOnEquity": "ROE",
+        "returnOnAssets": "ROA",
+        "revenueGrowth": "Rritja e të ardhurave",
+        "earningsGrowth": "Rritja e fitimit",
+        "debtToEquity": "Borxh / Kapital",
+        "fiftyTwoWeekLow": "Minimumi 52-javor",
+        "fiftyTwoWeekHigh": "Maksimumi 52-javor"
+      }
+    },
+    "dividends": {
+      "metaTitle": "Dividendët për {name}",
+      "metaDescription": "Historiku i dividendëve, yield-i dhe raporti i pagesës për {name}, me të dhëna nga Yahoo Finance.",
+      "heading": "Dividendët",
+      "subheading": "Yield-i, pagesat historike dhe raporti i pagesës.",
+      "empty": {
+        "title": "Kjo kompani nuk paguan dividendë",
+        "description": "Ne nuk gjetëm pagesa dividendi nga Yahoo Finance për këtë kompani."
+      },
+      "metrics": {
+        "dividendYield": "Yield-i i dividendit",
+        "trailingAnnualRate": "Dividendi vjetor",
+        "payoutRatio": "Raporti i pagesës",
+        "fiveYearAvgYield": "Mesatarja 5-vjeçare",
+        "exDividendDate": "Data ex-dividend",
+        "nextPaymentDate": "Pagesa e ardhshme"
+      },
+      "history": {
+        "heading": "Historiku i pagesave",
+        "empty": "Nuk ka pagesa të mëparshme.",
+        "columns": {
+          "date": "Data",
+          "amount": "Shuma për aksion"
+        }
+      }
+    },
+    "news": {
+      "metaTitle": "Lajme për {name}",
+      "metaDescription": "Të gjitha lajmet e fundit që përmendin {name}, të përkthyera dhe të përmbledhura në shqip.",
+      "heading": "Lajme për {name}",
+      "empty": {
+        "title": "Nuk ka lajme të fundit",
+        "description": "Kur të publikohen artikuj që përmendin këtë kompani, do të shfaqen këtu."
+      }
+    },
+    "filings": {
+      "metaTitle": "Raportet për {name}",
+      "metaDescription": "Raportet zyrtare 10-K, 10-Q dhe 8-K për {name}, të marra drejtpërdrejt nga SEC EDGAR.",
+      "heading": "Raportet",
+      "subheading": "Dosjet zyrtare tek SEC, të lidhura drejtpërdrejt me dokumentin origjinal.",
+      "columns": {
+        "form": "Lloji",
+        "filed": "Dorëzuar",
+        "period": "Periudha",
+        "description": "Përshkrimi",
+        "open": "Hap"
+      },
+      "empty": {
+        "title": "Nuk ka raporte të disponueshme",
+        "description": "Nuk gjetëm asnjë raport të fundit për këtë kompani."
+      }
     }
   },
   "news": {
@@ -363,6 +646,7 @@
     "submit": "Kërko",
     "prompt": "Shkruaj diçka më lart për të filluar kërkimin.",
     "loading": "Po ngarkohet…",
+    "searching": "Duke kërkuar…",
     "failed": "Kërkimi nuk u ngarkua. Provo prapë.",
     "count": "{count, plural, one {# rezultat} other {# rezultate}} për “{query}”",
     "empty": "Asnjë rezultat për “{query}”.",

@@ -1,27 +1,18 @@
 import { useTranslations } from 'next-intl';
-import { Breadcrumb } from '@/components/Breadcrumb';
 import { ChangeValue } from '@/components/ChangeValue';
-import { SectionHeading } from '@/components/SectionHeading';
-import { SiteFooter } from '@/components/SiteFooter';
-import { SiteHeader } from '@/components/SiteHeader';
-import { NavSearch } from '@/features/search';
-import type { CalendarEvent } from '@/features/calendar';
-import type { Lesson } from '@/features/learn/learnTypes';
-import { ArticleMeta } from '@/features/news/components/ArticleMeta';
 import type { NewsArticle } from '@/features/news/newsTypes';
+import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
+import { formatMinutesAgo } from '@/lib/format/relativeTime';
 import { cn } from '@/lib/utils/cn';
-import type { AssetDetail, Quote } from '@/lib/api/markets';
+import type { AssetDetail } from '@/lib/api/markets';
 import { AssetChartLive } from './components/AssetChartLive';
-import { AssetPriceLive } from './components/AssetPriceLive';
+import { AssetSnapshot } from './components/AssetSnapshot';
 
 export interface AssetPageProps {
   asset: AssetDetail;
-  otherQuotes: Quote[];
-  events: CalendarEvent[];
-  lessons: Lesson[];
   articles: NewsArticle[];
-  showExplainer?: boolean;
+  locale: Locale;
   showComposition?: boolean;
 }
 
@@ -32,351 +23,215 @@ function decimalsIn(formatted: string): number {
 
 export function AssetPage({
   asset,
-  otherQuotes,
-  events,
-  lessons,
   articles,
-  showExplainer = true,
+  locale,
   showComposition = true,
 }: AssetPageProps) {
   const t = useTranslations('markets');
-  const tNews = useTranslations('news');
-  const tLearn = useTranslations('learn');
-  const tCal = useTranslations('calendar');
-  const tCategories = useTranslations('markets.categories');
   const tStats = useTranslations('markets.stats');
+  const tNews = useTranslations('news');
+  const tNewsCategories = useTranslations('news.categories');
 
   const heaviest = Math.max(...(asset.holdings?.map((h) => h.weight) ?? [1]));
 
   return (
-    <div className="bg-paper flex min-h-screen flex-col">
-      <SiteHeader
-        active="home"
-        searchSlot={<NavSearch />}
-        mobileSearchSlot={<NavSearch variant="mobile" />}
-      />
+    <div className="page-container flex flex-col gap-10 pt-8 pb-12">
+      <AssetSnapshot ticker={asset.ticker} locale={locale} />
 
-      <main id="main-content" className="flex-1">
-        <Breadcrumb
-          label={tNews('breadcrumbLabel')}
-          items={[
-            { label: t('breadcrumbRoot'), href: '/' },
-            { label: tCategories(asset.category) },
-            { label: asset.name },
-          ]}
-        />
-
-        <header className="page-container pt-6.5">
-          <div className="border-ink flex flex-col gap-8 border-b-2 pb-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <div className="mb-3 flex flex-wrap items-center gap-3">
-                <span className="text-accent rounded-[2px] border border-[#c7d3e2] px-1.5 py-0.5 font-mono text-[11px] tracking-[0.06em]">
-                  {asset.ticker}
-                </span>
-                {asset.descriptor ? (
-                  <span className="text-ink-faint text-[13px]">
-                    {asset.descriptor}
-                  </span>
-                ) : null}
-              </div>
-
-              <h1 className="text-ink mb-3.5 font-serif text-[40px] leading-[1.1] font-medium tracking-[-0.022em]">
-                {asset.name}
-              </h1>
-
-              <AssetPriceLive
-                symbol={asset.symbol}
-                initialPrice={asset.price}
-                initialChangePercent={asset.changePercent}
-                initialChangeAbsolute={asset.changeAbsolute}
-              />
-            </div>
-          </div>
-        </header>
-
-        <div className="page-container flex flex-col gap-12 pt-8 lg:flex-row">
-          <div className="min-w-0 flex-1">
-            <AssetChartLive
-              symbol={asset.symbol}
-              initialSeries={asset.series}
-              sessionTimes={asset.sessionTimes}
-              digits={decimalsIn(asset.price)}
-            />
-
-            {asset.statistics.length > 0 ? (
-              <section className="border-line bg-surface mb-9 rounded-sm border">
-                <h2 className="sr-only">{t('statistics')}</h2>
-                <dl className="grid sm:grid-cols-2 lg:grid-cols-3">
-                  {asset.statistics.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="border-line-soft border-b px-6 py-5 last:border-b-0 lg:not-[:nth-child(3n)]:border-r sm:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:nth-last-child(-n+3)]:border-b-0"
-                    >
-                      <dt className="text-ink-faint mb-1.5 text-xs tracking-[0.06em] uppercase">
-                        {tStats(stat.label)}
-                      </dt>
-                      <dd
-                        className={cn(
-                          'font-mono text-lg',
-                          stat.tone === 'positive'
-                            ? 'text-positive'
-                            : stat.tone === 'negative'
-                              ? 'text-negative'
-                              : 'text-ink',
-                        )}
-                      >
-                        {stat.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-            ) : null}
-
-            {showExplainer && asset.explainer ? (
-              <section className="mb-9">
-                <h2 className="text-ink mb-3.5 font-serif text-[27px] font-medium">
-                  {asset.explainer.heading}
-                </h2>
-                {asset.explainer.paragraphs.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className="mb-4.5 max-w-[72ch] text-[17.5px] leading-[1.7] text-[color:var(--ink-secondary)]"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-
-                <aside className="border-accent bg-surface-tint rounded-r-sm border-l-2 py-4.5 pr-5.5 pl-5.5">
-                  <h3 className="text-accent mb-2 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                    {asset.explainer.callout.heading}
-                  </h3>
-                  <p className="text-ink-secondary max-w-[62ch] text-base leading-relaxed">
-                    {asset.explainer.callout.body}{' '}
-                    <Link
-                      href={`/learn/${asset.explainer.callout.lessonSlug}`}
-                      className="text-accent hover:underline"
-                    >
-                      {asset.explainer.callout.linkLabel}
-                    </Link>
-                  </p>
-                </aside>
-              </section>
-            ) : null}
-
-            {showComposition && asset.holdings ? (
-              <section className="mb-9">
-                <SectionHeading
-                  title={t('biggestHoldings')}
-                  action={{ label: t('shareOfIndex') }}
-                />
-                <div className="relative overflow-x-auto">
-                  <table className="w-full min-w-[520px] border-collapse text-[15.5px]">
-                    <caption className="sr-only">
-                      {t('biggestHoldings')}
-                    </caption>
-                    <thead className="sr-only">
-                      <tr>
-                        <th scope="col">{t('columns.asset')}</th>
-                        <th scope="col">{t('shareOfIndex')}</th>
-                        <th scope="col">{t('columns.change')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {asset.holdings.map((holding, index) => (
-                        <tr
-                          key={index}
-                          className="border-line border-t last:border-b"
-                        >
-                          <td className="text-ink py-3.5">{holding.name}</td>
-                          <td className="w-24 py-3.5">
-                            <span
-                              aria-hidden
-                              className="bg-line block h-1.5 overflow-hidden rounded-full"
-                            >
-                              <span
-                                className="bg-accent block h-full rounded-full"
-                                style={{
-                                  width: `${(holding.weight / heaviest) * 100}%`,
-                                }}
-                              />
-                            </span>
-                          </td>
-                          <td className="text-ink-secondary min-w-14 py-3.5 text-right font-mono">
-                            {holding.weight.toFixed(1)}%
-                          </td>
-                          <td className="min-w-16 py-3.5 text-right">
-                            <ChangeValue percent={holding.changePercent} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            ) : null}
-
-            {articles.length > 0 ? (
-              <section>
-                <SectionHeading
-                  title={t('newsAbout')}
-                  action={{ label: t('allNews'), href: '/news' }}
-                />
-                {articles.map((article) => (
-                  <article
-                    key={article.id}
-                    className="border-line border-t py-5 last:border-b"
-                  >
-                    <h3 className="text-ink mb-2 font-serif text-[21px] leading-[1.24] font-medium">
-                      <Link
-                        href={`/news/${article.slug}`}
-                        className="hover:text-accent"
-                      >
-                        {article.title}
-                      </Link>
-                    </h3>
-                    <p className="text-ink-muted mb-2.5 max-w-[74ch] text-[15px] leading-relaxed">
-                      {article.summary}
-                    </p>
-                    <ArticleMeta
-                      article={article}
-                      variant="full"
-                      className="text-[12.5px]"
-                    />
-                  </article>
-                ))}
-              </section>
-            ) : null}
-          </div>
-
-          <aside className="flex flex-col gap-6 lg:w-79 lg:shrink-0">
-            {otherQuotes.length > 0 ? (
-              <section className="border-line bg-surface rounded-sm border p-5.5 sm:px-6">
-                <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                  {t('otherMarkets')}
-                </h2>
-                <ul>
-                  {otherQuotes.map((quote) => (
-                    <li
-                      key={quote.symbol}
-                      className="border-line-soft border-b last:border-b-0"
-                    >
-                      <Link
-                        href={`/markets/${quote.symbol}`}
-                        className="hover:text-accent flex items-center justify-between gap-2.5 py-3 first:pt-0"
-                      >
-                        <span className="text-ink text-[15px]">
-                          {quote.name}
-                        </span>
-                        <ChangeValue
-                          percent={quote.changePercent}
-                          className="text-[13px]"
-                        />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
-
-            {asset.sectors ? (
-              <section className="border-line rounded-sm border p-5.5 sm:px-6">
-                <h2 className="text-ink-faint mb-4 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                  {t('sectorsToday')}
-                </h2>
-                <dl>
-                  {asset.sectors.map((sector, index) => (
-                    <div
-                      key={index}
-                      className="border-line-soft flex justify-between gap-3 border-b py-2.5 text-[14.5px] first:pt-0 last:border-b-0 last:pb-0"
-                    >
-                      <dt className="text-ink">{sector.name}</dt>
-                      <dd>
-                        <ChangeValue
-                          percent={sector.changePercent}
-                          className="text-[13px]"
-                        />
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-            ) : null}
-
-            {events.length > 0 ? (
-              <section className="border-line rounded-sm border p-5.5 sm:px-6">
-                <h2 className="text-ink font-serif text-[19px]">
-                  {t('whatCouldMoveIt')}
-                </h2>
-                <p className="text-ink-faint mt-1 mb-4 text-[13px]">
-                  {t('comingUp.window')}
-                </p>
-                <ul>
-                  {events.map((event) => (
-                    <li
-                      key={event.id}
-                      className="border-line-soft border-b last:border-b-0"
-                    >
-                      <Link
-                        href={`/calendar/${event.slug}`}
-                        className="hover:text-accent block py-3.5 first:pt-0"
-                      >
-                        <span className="mb-1.5 flex items-center justify-between gap-2.5">
-                          <span className="text-ink text-[14.5px] font-medium">
-                            {event.title}
-                          </span>
-                          <time className="text-ink-muted font-mono text-[12.5px]">
-                            {event.time}
-                          </time>
-                        </span>
-                        <span className="text-ink-faint text-[12.5px]">
-                          {tCal(`impact.${event.impact}`)}
-                          {event.expected
-                            ? ` · ${tNews('expectedShort')} ${event.expected}`
-                            : ''}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
-
-            {lessons.length > 0 ? (
-              <section className="border-line bg-surface-muted rounded-sm border p-5.5 sm:px-6">
-                <h2 className="text-accent mb-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase">
-                  {t('beforeYouInvest')}
-                </h2>
-                <ul>
-                  {lessons.map((lesson) => (
-                    <li
-                      key={lesson.id}
-                      className="border-line-strong border-b last:border-b-0"
-                    >
-                      <Link
-                        href={`/learn/${lesson.slug}`}
-                        className="text-ink hover:text-accent block py-3 text-[15.5px] first:pt-0"
-                      >
-                        {lesson.title}{' '}
-                        <span className="text-ink-faint">
-                          ·{' '}
-                          {tLearn('stats.minutesValue', {
-                            minutes: lesson.readingMinutes,
-                          })}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
-          </aside>
+      <SectionShell
+        heading={t('priceHeading')}
+        headingSize="lg"
+        headingRule="strong"
+      >
+        <div className="p-6.5 sm:px-7">
+          <AssetChartLive
+            symbol={asset.symbol}
+            initialSeries={asset.series}
+            sessionTimes={asset.sessionTimes}
+            digits={decimalsIn(asset.price)}
+          />
         </div>
-      </main>
+      </SectionShell>
 
-      <div className="mt-13">
-        <SiteFooter />
-      </div>
+      {asset.statistics.length > 0 ? (
+        <SectionShell
+          heading={t('keyStatistics')}
+          headingSize="lg"
+          headingRule="strong"
+          headingAction={t('keyStatisticsNote')}
+        >
+          <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+            {asset.statistics.map((stat, index, all) => {
+              const isLastInRow = (index + 1) % 4 === 0;
+              const isBottomRow = index >= all.length - (all.length % 4 || 4);
+              return (
+                <div
+                  key={stat.label}
+                  className={cn(
+                    'px-6 py-5',
+                    !isLastInRow && 'border-line-soft lg:border-r',
+                    !isBottomRow && 'border-line-soft border-b',
+                  )}
+                >
+                  <dt className="text-ink-faint mb-1.5 text-[11.5px] tracking-[0.07em] uppercase">
+                    {tStats(stat.label)}
+                  </dt>
+                  <dd
+                    className={cn(
+                      'font-mono text-[19px]',
+                      stat.tone === 'positive'
+                        ? 'text-positive'
+                        : stat.tone === 'negative'
+                          ? 'text-negative'
+                          : 'text-ink',
+                    )}
+                  >
+                    {stat.value}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </SectionShell>
+      ) : null}
+
+      {showComposition && asset.holdings ? (
+        <SectionShell
+          heading={t('biggestHoldings')}
+          headingSize="lg"
+          headingRule="strong"
+          headingAction={t('shareOfIndex')}
+        >
+          <div className="relative overflow-x-auto p-6.5 sm:px-7">
+            <table className="w-full min-w-[520px] border-collapse text-[15.5px]">
+              <caption className="sr-only">{t('biggestHoldings')}</caption>
+              <thead className="sr-only">
+                <tr>
+                  <th scope="col">{t('columns.asset')}</th>
+                  <th scope="col">{t('shareOfIndex')}</th>
+                  <th scope="col">{t('columns.change')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {asset.holdings.map((holding, index) => (
+                  <tr
+                    key={index}
+                    className="border-line-soft border-t last:border-b"
+                  >
+                    <td className="text-ink py-3.5">{holding.name}</td>
+                    <td className="w-24 py-3.5">
+                      <span
+                        aria-hidden
+                        className="bg-line block h-1.5 overflow-hidden rounded-full"
+                      >
+                        <span
+                          className="bg-accent block h-full rounded-full"
+                          style={{
+                            width: `${(holding.weight / heaviest) * 100}%`,
+                          }}
+                        />
+                      </span>
+                    </td>
+                    <td className="text-ink-secondary min-w-14 py-3.5 text-right font-mono">
+                      {Number.isFinite(holding.weight)
+                        ? `${holding.weight.toFixed(1)}%`
+                        : '—'}
+                    </td>
+                    <td className="min-w-16 py-3.5 text-right">
+                      <ChangeValue percent={holding.changePercent} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </SectionShell>
+      ) : null}
+
+      {articles.length > 0 ? (
+        <section>
+          <div className="border-ink flex flex-wrap items-baseline justify-between gap-3 border-b pb-3.5">
+            <h2 className="text-ink font-serif text-[23px] font-medium">
+              {t('latestOn', { name: asset.name })}
+            </h2>
+            <Link
+              href="/news"
+              className="text-accent text-[13px] hover:underline"
+            >
+              {t('allCoverage')}
+            </Link>
+          </div>
+          <div className="border-line bg-surface grid grid-cols-1 rounded-b-md border border-t-0 md:grid-cols-3">
+            {articles.slice(0, 3).map((article, index) => (
+              <Link
+                key={article.id}
+                href={`/news/${article.slug}`}
+                className={cn(
+                  'hover:bg-surface-tint block p-5 transition-colors',
+                  index !== 0 && 'border-t md:border-t-0 md:border-l',
+                  'border-line-soft',
+                )}
+              >
+                <div className="text-ink-faint mb-2 text-[12px]">
+                  {formatMinutesAgo(article.minutesAgo, tNews)}
+                  {article.category
+                    ? ` · ${tNewsCategories(article.category)}`
+                    : ''}
+                </div>
+                <div className="text-ink font-serif text-[19px] leading-[1.3]">
+                  {article.title}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
+  );
+}
+
+interface SectionShellProps {
+  heading: string;
+  headingSize?: 'sm' | 'lg';
+  headingRule?: 'normal' | 'strong';
+  headingAction?: string;
+  children: React.ReactNode;
+}
+
+function SectionShell({
+  heading,
+  headingSize = 'lg',
+  headingRule = 'strong',
+  headingAction,
+  children,
+}: SectionShellProps) {
+  return (
+    <section>
+      <div
+        className={cn(
+          'flex flex-wrap items-baseline justify-between gap-3 pb-3.5',
+          headingRule === 'strong'
+            ? 'border-ink border-b-2'
+            : 'border-ink border-b',
+        )}
+      >
+        <h2
+          className={cn(
+            'text-ink font-serif font-medium',
+            headingSize === 'lg'
+              ? 'text-[27px] tracking-[-0.015em]'
+              : 'text-[23px]',
+          )}
+        >
+          {heading}
+        </h2>
+        {headingAction ? (
+          <span className="text-ink-faint text-[13px]">{headingAction}</span>
+        ) : null}
+      </div>
+      <div className="border-line bg-surface overflow-hidden rounded-b-md border border-t-0">
+        {children}
+      </div>
+    </section>
   );
 }

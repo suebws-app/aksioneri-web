@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
 import { Link } from '@/i18n/navigation';
 import type { Quote } from '@/lib/api/markets';
+import { toMarketPath } from '@/lib/utils/marketPath';
 
 export function QuoteTable({ quotes }: { quotes: Quote[] }) {
   const t = useTranslations('markets');
@@ -27,7 +28,7 @@ export function QuoteTable({ quotes }: { quotes: Quote[] }) {
           <tr key={quote.symbol} className="border-line border-t last:border-b">
             <td className="py-3.5 font-medium">
               <Link
-                href={`/markets/${quote.symbol}`}
+                href={toMarketPath(quote.symbol)}
                 className="text-ink hover:text-accent"
               >
                 {quote.name}

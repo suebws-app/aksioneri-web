@@ -74,7 +74,9 @@ export default async function Page({ params }: PageProps) {
         row,
         t(`regionNames.${REGION_KEY[row.region]}`),
         t(`impact.${row.impact}`),
-        `${week.todayDate || new Date().toISOString().slice(0, 10)}T${row.time}:00Z`,
+        /^\d{2}:\d{2}$/.test(row.time)
+          ? `${week.todayDate || new Date().toISOString().slice(0, 10)}T${row.time}:00Z`
+          : '',
         {
           whyItMatters: t('event.whyItMatters'),
           howToRead: t('event.howToRead'),

@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
-import { openGraphLocales, type Locale } from '@/i18n/config';
+import {
+  defaultLocale,
+  locales,
+  openGraphLocales,
+  type Locale,
+} from '@/i18n/config';
 import { clientEnv } from '@/lib/utils/env.client';
 import { serverEnv } from '@/lib/utils/env.server';
 import { absoluteUrl, localizedAbsoluteUrl } from './urls';
@@ -31,6 +36,14 @@ export function buildMetadata({
   article,
 }: BuildMetadataInput): Metadata {
   const canonical = localizedAbsoluteUrl(locale, path);
+  const languages = noIndex
+    ? undefined
+    : {
+        ...Object.fromEntries(
+          locales.map((l) => [l, localizedAbsoluteUrl(l, path)]),
+        ),
+        'x-default': localizedAbsoluteUrl(defaultLocale, path),
+      };
   const ogImage = image
     ? /^https?:\/\//.test(image)
       ? image
@@ -75,7 +88,14 @@ export function buildMetadata({
   return {
     title,
     description,
-    ...(noCanonical ? {} : { alternates: { canonical } }),
+    ...(noCanonical && !languages
+      ? {}
+      : {
+          alternates: {
+            ...(noCanonical ? {} : { canonical }),
+            ...(languages ? { languages } : {}),
+          },
+        }),
     openGraph: article
       ? {
           ...openGraphBase,

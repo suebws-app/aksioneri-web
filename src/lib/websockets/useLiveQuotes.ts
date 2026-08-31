@@ -1,7 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Quote, SupportedSymbol } from '@/lib/api/markets';
 import { formatQuotePrice, quotePrecisionOf } from '@/lib/format/quotePrice';
 import { marketsKeys } from '@/lib/query/marketsQueries';
@@ -20,9 +20,14 @@ export function useLiveQuotes(symbols: readonly SupportedSymbol[]): {
 
   const key = symbols.slice().sort().join(',');
 
+  const stableSymbols = useMemo(
+    () => (key.length === 0 ? [] : key.split(',')),
+    [key],
+  );
+
   useEffect(() => {
     const dispose = marketsSocket.subscribe(
-      Array.from(symbols),
+      stableSymbols,
       (tick: LiveQuote) => {
         queryClient.setQueryData<Quote[]>(marketsKeys.quotes(), (prev) => {
           if (!prev) return prev;
@@ -38,7 +43,7 @@ export function useLiveQuotes(symbols: readonly SupportedSymbol[]): {
       dispose();
       unsub();
     };
-  }, [key, queryClient]);
+  }, [stableSymbols, queryClient]);
 
   return { connectionState };
 }

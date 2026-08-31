@@ -1,5 +1,6 @@
 import { cache } from 'react';
-import { ApiError, apiFetch, type RequestOptions } from './client';
+import { apiFetch, type RequestOptions } from './client';
+import { safely } from './safely';
 
 export const SUPPORTED_SYMBOLS = [
   'sp-500',
@@ -41,6 +42,24 @@ export const FEATURED_SYMBOLS = [
   'eur-usd',
 ] as const satisfies readonly SupportedSymbol[];
 
+export interface FeaturedStockMeta {
+  ticker: string;
+  name: string;
+  sector: string;
+}
+
+export const FEATURED_STOCK_META: readonly FeaturedStockMeta[] = [
+  { ticker: 'AAPL', name: 'Apple Inc.', sector: 'technology' },
+  { ticker: 'MSFT', name: 'Microsoft Corp.', sector: 'technology' },
+  { ticker: 'NVDA', name: 'NVIDIA Corp.', sector: 'semiconductors' },
+  { ticker: 'GOOGL', name: 'Alphabet Inc.', sector: 'technology' },
+  { ticker: 'AMZN', name: 'Amazon.com Inc.', sector: 'consumerDiscretionary' },
+  { ticker: 'TSLA', name: 'Tesla Inc.', sector: 'automotive' },
+  { ticker: 'META', name: 'Meta Platforms Inc.', sector: 'technology' },
+];
+
+export const FEATURED_STOCKS = FEATURED_STOCK_META.map((stock) => stock.ticker);
+
 export type AssetType = 'index' | 'crypto' | 'commodity' | 'currency' | 'stock';
 
 export type DataSource = 'biquote' | 'yahoo' | 'binance' | 'cache';
@@ -48,7 +67,7 @@ export type DataSource = 'biquote' | 'yahoo' | 'binance' | 'cache';
 export type MarketStatus = 'open' | 'closed' | 'unknown';
 
 export interface Quote {
-  symbol: SupportedSymbol;
+  symbol: string;
   name: string;
   price: string;
   changePercent: number;
@@ -90,7 +109,7 @@ export interface SectorMove {
 }
 
 export interface AssetDetail {
-  symbol: SupportedSymbol;
+  symbol: string;
   ticker: string;
   name: string;
   descriptor: string;
@@ -109,20 +128,6 @@ export interface AssetDetail {
   dataSource?: DataSource;
   marketStatus?: MarketStatus;
   quotedAt?: string | null;
-
-  explainer?: {
-    heading: string;
-    paragraphs: string[];
-    callout: {
-      heading: string;
-      body: string;
-      lessonSlug: string;
-      linkLabel: string;
-    };
-  };
-  sectors?: SectorMove[];
-  eventSlugs?: string[];
-  lessonSlugs?: string[];
 }
 
 const REVALIDATE_SECONDS = 30;
@@ -131,18 +136,25 @@ const cacheOptions: RequestOptions = {
   next: { revalidate: REVALIDATE_SECONDS, tags: ['markets'] },
 };
 
-async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
-  try {
-    return await work();
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return fallback;
-    console.error('[markets] request failed:', error);
-    return fallback;
-  }
-}
+const SCOPE = 'markets';
 
 export const getQuotes = cache(async (): Promise<Quote[]> =>
-  safely(() => apiFetch<Quote[]>('markets/quotes', cacheOptions), []),
+  safely(() => apiFetch<Quote[]>('markets/quotes', cacheOptions), [], SCOPE),
+);
+
+export const getQuotesFor = cache(
+  async (symbols: readonly string[]): Promise<Quote[]> => {
+    if (symbols.length === 0) return [];
+    return safely(
+      () =>
+        apiFetch<Quote[]>('markets/quotes', {
+          searchParams: { symbols: symbols.join(',') },
+          ...cacheOptions,
+        }),
+      [],
+      SCOPE,
+    );
+  },
 );
 
 export const getAssetDetail = cache(
@@ -154,6 +166,7 @@ export const getAssetDetail = cache(
           cacheOptions,
         ),
       null,
+      SCOPE,
     ),
 );
 
@@ -165,6 +178,7 @@ export const getMovers = cache(async (index: IndexSymbol): Promise<Movers> =>
         cacheOptions,
       ),
     { gainers: [], losers: [], mostWatched: [] },
+    SCOPE,
   ),
 );
 
@@ -212,6 +226,7 @@ export const getCandles = cache(
           },
         ),
       null,
+      SCOPE,
     ),
 );
 
@@ -224,16 +239,24 @@ export const fetchCandles = (
     searchParams: { interval, limit },
   });
 
-export interface ProviderHealth {
-  name: DataSource;
-  healthy: boolean;
-}
-
 export interface MarketsHealth {
-  socket: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
-  binanceSocket: 'connecting' | 'connected' | 'reconnecting' | 'disconnected';
-  providers: ProviderHealth[];
+  healthy: boolean;
 }
 
 export const fetchMarketsHealth = (): Promise<MarketsHealth> =>
   apiFetch<MarketsHealth>('markets/health');
+
+export interface InstrumentSearchHit {
+  symbol: string;
+  name: string;
+  exchange: string | null;
+  type: string | null;
+}
+
+export const searchInstruments = (
+  query: string,
+  limit = 8,
+): Promise<InstrumentSearchHit[]> =>
+  apiFetch<InstrumentSearchHit[]>('markets/search', {
+    searchParams: { q: query, limit },
+  });

@@ -7,14 +7,12 @@ import {
   type IndexSymbol,
   type Movers,
   type Quote,
-  type SupportedSymbol,
 } from '@/lib/api/markets';
 
 export const marketsKeys = {
   all: ['markets'] as const,
   quotes: () => [...marketsKeys.all, 'quotes'] as const,
-  asset: (symbol: SupportedSymbol) =>
-    [...marketsKeys.all, 'asset', symbol] as const,
+  asset: (symbol: string) => [...marketsKeys.all, 'asset', symbol] as const,
   movers: (index: IndexSymbol) =>
     [...marketsKeys.all, 'movers', index] as const,
 };
@@ -32,10 +30,7 @@ export const quotesQuery = (initialData?: Quote[]) =>
     ...(initialData ? { initialData } : {}),
   });
 
-export const assetQuery = (
-  symbol: SupportedSymbol,
-  initialData?: AssetDetail,
-) =>
+export const assetQuery = (symbol: string, initialData?: AssetDetail) =>
   queryOptions({
     queryKey: marketsKeys.asset(symbol),
     queryFn: () => fetchAssetDetail(symbol),

@@ -1,6 +1,10 @@
 import { cache } from 'react';
 import { decodeHtmlEntities } from '@/lib/utils/htmlEntities';
-import { ApiError, apiFetch, type RequestOptions } from './client';
+import { safely } from './safely';
+import { apiFetch, type RequestOptions } from './client';
+
+const safelyCalendar = <T>(work: () => Promise<T>, fallback: T): Promise<T> =>
+  safely(work, fallback, 'calendar');
 
 export type EventRegion = 'US' | 'EU' | 'DE' | 'UK' | 'JP';
 
@@ -104,22 +108,12 @@ const EMPTY_WEEK: CalendarWeek = {
   nextUp: null,
 };
 
-async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
-  try {
-    return await work();
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return fallback;
-    console.error('[calendar] request failed:', error);
-    return fallback;
-  }
-}
-
 export const getCalendarWeek = cache(
   async (
     _locale: string,
     options: { date?: string } = {},
   ): Promise<CalendarWeek> =>
-    safely(async () => {
+    safelyCalendar(async () => {
       const response = await apiFetch<ApiCalendarWeek>('calendar/week', {
         searchParams: {
           ...(options.date ? { date: options.date } : {}),
@@ -132,7 +126,7 @@ export const getCalendarWeek = cache(
 
 export const getEventDetail = cache(
   async (_locale: string, slug: string): Promise<CalendarEvent | null> =>
-    safely(
+    safelyCalendar(
       () =>
         apiFetch<ApiCalendarEvent>(`calendar/${encodeURIComponent(slug)}`, {
           ...cacheOptions,
@@ -147,7 +141,10 @@ interface SlugEntry {
 }
 
 export const getCalendarSlugs = cache(async (): Promise<SlugEntry[]> =>
-  safely(() => apiFetch<SlugEntry[]>('calendar/slugs', cacheOptions), []),
+  safelyCalendar(
+    () => apiFetch<SlugEntry[]>('calendar/slugs', cacheOptions),
+    [],
+  ),
 );
 
 function toRegion(value: string): EventRegion {

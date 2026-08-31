@@ -6,6 +6,10 @@ interface ChangeValueProps {
 }
 
 export function ChangeValue({ percent, className }: ChangeValueProps) {
+  if (!Number.isFinite(percent)) {
+    return <span className={cn('font-mono', className)}>—</span>;
+  }
+
   const isNegative = percent < 0;
   const sign = isNegative ? '−' : '+';
 

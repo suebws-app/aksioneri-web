@@ -5,7 +5,7 @@ import {
 } from './markets-economy';
 import { RISK_COSTS_LESSONS, RISK_COSTS_TOPIC } from './risk-and-costs';
 import { STOCKS_ETFS_LESSONS, STOCKS_ETFS_TOPIC } from './stocks-etfs';
-import type { Locale } from '@/i18n/config';
+import type { Localized } from '../learnTypes';
 import type { SeedLesson, SeedTopic } from './types';
 
 export const TOPICS: SeedTopic[] = [
@@ -22,7 +22,7 @@ export const LESSONS: SeedLesson[] = [
   ...RISK_COSTS_LESSONS,
 ];
 
-export const START_HERE: Record<Locale, string[]> = {
+export const START_HERE: Localized<string[]> = {
   sq: ['cka-eshte-aksioni', 'cka-eshte-etf', 'inflacioni'],
 };
 

@@ -154,9 +154,11 @@ export function EventPage({
               <p className="text-ink mb-1.5 font-mono text-[32px]">
                 {event.time}
               </p>
-              <p className="text-ink-faint text-[13px]">
-                {formatTimestamp(locale, event.releasesAt)}
-              </p>
+              {formatTimestamp(locale, event.releasesAt) && (
+                <p className="text-ink-faint text-[13px]">
+                  {formatTimestamp(locale, event.releasesAt)}
+                </p>
+              )}
             </div>
           </div>
         </header>

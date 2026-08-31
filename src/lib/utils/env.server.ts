@@ -22,6 +22,8 @@ const serverEnvSchema = z.object({
       'AUTH_COOKIE_SECRET still holds a placeholder value; generate a real secret before deploying',
     ),
 
+  INTERNAL_API_SECRET: z.string().min(32).optional(),
+
   NOINDEX: z.stringbool().default(false),
 
   REQUIRE_EMAIL_VERIFICATION: z

@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { Link } from '@/i18n/navigation';
 import type { IndexSymbol, Mover, Movers } from '@/lib/api/markets';
 import { moversQuery } from '@/lib/query/marketsQueries';
+import { toMarketPath } from '@/lib/utils/marketPath';
 
 export function MarketMoversLive({
   index,
@@ -67,7 +68,7 @@ function MoverColumn({
         {movers.map((mover) => (
           <li key={mover.symbol}>
             <Link
-              href={`/markets/${mover.symbol}`}
+              href={toMarketPath(mover.symbol)}
               className="hover:text-accent flex justify-between gap-2.5"
             >
               <span className="text-ink">{mover.name}</span>

@@ -9,6 +9,7 @@ import {
 import { cn } from '@/lib/utils/cn';
 import { marketsSocket, type LiveQuote } from '@/lib/websockets/marketsSocket';
 import { usePriceFlash } from '../usePriceFlash';
+import { formatSignedPercent } from '@/lib/format/percent';
 
 export interface AssetPriceLiveProps {
   symbol: string;
@@ -68,8 +69,8 @@ export function AssetPriceLive({
         )}
       >
         {changeAbsolute
-          ? `${changeAbsolute} (${isNegative ? '−' : '+'}${Math.abs(changePercent).toFixed(2)}%)`
-          : `${isNegative ? '−' : '+'}${Math.abs(changePercent).toFixed(2)}%`}
+          ? `${changeAbsolute} (${formatSignedPercent(changePercent)})`
+          : formatSignedPercent(changePercent)}
       </span>
     </p>
   );

@@ -76,7 +76,7 @@ export function AssetChartLive({
   });
 
   return (
-    <section className="border-line bg-surface mb-8 rounded-sm border p-6.5 sm:px-7">
+    <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div
           className="flex flex-wrap gap-1.5 text-[13px]"
@@ -124,7 +124,7 @@ export function AssetChartLive({
           {query.isPending ? t('loading') : t('empty')}
         </div>
       )}
-    </section>
+    </div>
   );
 }
 

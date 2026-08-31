@@ -1,15 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { getCalendarWeek } from '@/features/calendar';
-import { getTopics } from '@/features/learn';
 import { AssetPage } from '@/features/markets';
 import { findArticlesMentioning } from '@/features/learn/matchNews';
+import { resolveTickerSlug } from '@/features/markets/marketsUniverse';
 import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
 import {
+  FEATURED_STOCKS,
   getAssetDetail,
-  getQuotes,
   SUPPORTED_SYMBOLS,
 } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -19,9 +18,12 @@ interface PageProps {
   params: Promise<{ locale: Locale; symbol: string }>;
 }
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
+  const symbols = [...SUPPORTED_SYMBOLS, ...FEATURED_STOCKS];
   return locales.flatMap((locale) =>
-    SUPPORTED_SYMBOLS.map((symbol) => ({ locale, symbol })),
+    symbols.map((symbol) => ({ locale, symbol })),
   );
 }
 
@@ -31,7 +33,7 @@ export async function generateMetadata({
   const { locale, symbol } = await params;
   const t = await getTranslations({ locale, namespace: 'markets' });
 
-  const asset = await getAssetDetail(symbol);
+  const asset = await getAssetDetail(resolveTickerSlug(symbol));
 
   if (!asset) notFound();
 
@@ -46,16 +48,8 @@ export async function generateMetadata({
 export default async function Page({ params }: PageProps) {
   const { locale, symbol } = await params;
 
-  const [asset, quotes] = await Promise.all([
-    getAssetDetail(symbol),
-    getQuotes(),
-  ]);
+  const asset = await getAssetDetail(resolveTickerSlug(symbol));
   if (!asset) notFound();
-
-  const everyEvent = (await getCalendarWeek(locale)).days.flatMap(
-    (day) => day.events,
-  );
-  const everyLesson = getTopics(locale).flatMap((topic) => topic.lessons);
 
   const relatedArticles = findArticlesMentioning(
     [asset.name, asset.ticker],
@@ -75,15 +69,7 @@ export default async function Page({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }}
       />
-      <AssetPage
-        asset={asset}
-        otherQuotes={quotes
-          .filter((q) => q.symbol !== asset.symbol)
-          .slice(0, 5)}
-        events={everyEvent.slice(0, 3)}
-        lessons={everyLesson.slice(0, 3)}
-        articles={relatedArticles}
-      />
+      <AssetPage asset={asset} locale={locale} articles={relatedArticles} />
     </>
   );
 }

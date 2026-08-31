@@ -39,6 +39,7 @@ export function NavSearch({
   const [failed, setFailed] = useState(false);
   const [highlight, setHighlight] = useState(0);
   const [wire, setWire] = useState<SearchEntry[]>([]);
+  const [wireForQuery, setWireForQuery] = useState<string>('');
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +66,7 @@ export function NavSearch({
     setOpen(false);
     setQuery('');
     setWire([]);
+    setWireForQuery('');
   };
 
   useEffect(() => {
@@ -86,10 +88,14 @@ export function NavSearch({
     if (!open || !searching) return;
 
     let stale = false;
+    const trimmedQuery = query.trim();
     const timer = setTimeout(() => {
-      void searchWire(locale, query)
+      void searchWire(locale, trimmedQuery)
         .then((found) => {
-          if (!stale) setWire(found);
+          if (!stale) {
+            setWire(found);
+            setWireForQuery(trimmedQuery);
+          }
         })
         .catch(() => {});
     }, WIRE_DEBOUNCE_MS);
@@ -171,6 +177,9 @@ export function NavSearch({
     </form>
   );
 
+  const wireLoading = searching && wireForQuery !== query.trim();
+  const busy = loading || wireLoading;
+
   const resultList = searching ? (
     <div
       className={cn(
@@ -179,16 +188,16 @@ export function NavSearch({
           ? 'mt-3'
           : 'absolute right-0 z-20 mt-2 w-[calc(100vw-3rem)] max-w-96 shadow-lg sm:w-96',
       )}
+      aria-busy={busy}
     >
-      {results.length === 0 ? (
-        <p className="text-ink-faint px-4 py-3 text-[14px]">
-          {loading
-            ? t('loading')
-            : failed
-              ? t('failed')
-              : t('empty', { query: query.trim() })}
-        </p>
-      ) : (
+      {busy ? (
+        <div className="border-line-soft text-ink-faint flex items-center gap-2 border-b px-4 py-2 text-[11.5px]">
+          <Spinner />
+          <span>{t('searching')}</span>
+        </div>
+      ) : null}
+
+      {results.length > 0 ? (
         <ul id={listboxId} role="listbox" className="divide-line-soft divide-y">
           {results.map((entry, entryIndex) => (
             <li key={`${entry.kind}-${entry.href}`} role="presentation">
@@ -209,11 +218,20 @@ export function NavSearch({
                 <span className="text-ink mt-0.5 block text-[14.5px]">
                   {entry.title}
                 </span>
+                {entry.subtitle ? (
+                  <span className="text-ink-faint mt-0.5 block truncate text-[12px]">
+                    {entry.subtitle}
+                  </span>
+                ) : null}
               </button>
             </li>
           ))}
         </ul>
-      )}
+      ) : !busy ? (
+        <p className="text-ink-faint px-4 py-3 text-[14px]">
+          {failed ? t('failed') : t('empty', { query: query.trim() })}
+        </p>
+      ) : null}
     </div>
   ) : null;
 
@@ -295,6 +313,30 @@ function CloseIcon() {
     >
       <path d="M5 5l12 12" />
       <path d="M17 5L5 17" />
+    </svg>
+  );
+}
+
+function Spinner({ size = 12 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      className="animate-spin"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeDasharray="42 15"
+        opacity="0.65"
+      />
     </svg>
   );
 }

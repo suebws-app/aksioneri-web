@@ -1,12 +1,15 @@
+import { safely } from './safely';
 import { cache } from 'react';
 import type { Locale } from '@/i18n/config';
 import { decodeHtmlEntities } from '@/lib/utils/htmlEntities';
 import {
-  ApiError,
   apiFetch,
   type PaginatedResponse,
   type RequestOptions,
 } from './client';
+
+const safelyNews = <T>(work: () => Promise<T>, fallback: T): Promise<T> =>
+  safely(work, fallback, 'news');
 
 export type NewsCategory =
   'macro' | 'stocks' | 'europe' | 'crypto' | 'commodities' | 'economy';
@@ -59,16 +62,6 @@ const NEWS_TAG = 'news';
 const cacheOptions: RequestOptions = {
   next: { revalidate: REVALIDATE_SECONDS, tags: [NEWS_TAG] },
 };
-
-async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
-  try {
-    return await work();
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return fallback;
-    console.error('[news] request failed:', error);
-    return fallback;
-  }
-}
 
 function sanitizeArticle(article: NewsArticle): NewsArticle {
   return {
@@ -152,7 +145,7 @@ export const getArticlePage = cache(
     locale: Locale,
     options: ArticlePageQuery = {},
   ): Promise<ArticleFeed> =>
-    safely(
+    safelyNews(
       async () => {
         const response = await apiFetch<PaginatedResponse<NewsArticle>>(
           'news',
@@ -186,7 +179,7 @@ export const SEARCH_LIMIT = 12;
 
 export const searchArticles = cache(
   async (locale: Locale, query: string): Promise<NewsArticle[]> =>
-    safely(async () => {
+    safelyNews(async () => {
       const response = await apiFetch<PaginatedResponse<NewsArticle>>(
         'news/search',
         {
@@ -203,7 +196,7 @@ export const getFeaturedArticle = cache(
     locale: Locale,
     category?: NewsCategory,
   ): Promise<NewsArticle | null> =>
-    safely(async () => {
+    safelyNews(async () => {
       const article = await apiFetch<NewsArticle | null>('news/featured', {
         searchParams: { locale, category },
         ...cacheOptions,
@@ -214,7 +207,7 @@ export const getFeaturedArticle = cache(
 
 export const getMostRead = cache(
   async (locale: Locale): Promise<MostReadEntry[]> =>
-    safely(async () => {
+    safelyNews(async () => {
       const rows = await apiFetch<MostReadEntry[]>('news/most-read', {
         searchParams: { locale },
         ...cacheOptions,
@@ -225,7 +218,7 @@ export const getMostRead = cache(
 
 export const getArticleBySlug = cache(
   async (locale: Locale, slug: string): Promise<NewsArticle | null> =>
-    safely(async () => {
+    safelyNews(async () => {
       const article = await apiFetch<NewsArticle>(
         `news/${encodeURIComponent(slug)}`,
         {
@@ -239,7 +232,7 @@ export const getArticleBySlug = cache(
 
 export const getArticleIndex = cache(
   async (locale: Locale): Promise<SlugEntry[]> =>
-    safely(
+    safelyNews(
       () =>
         apiFetch<SlugEntry[]>('news/slugs', {
           searchParams: { locale },

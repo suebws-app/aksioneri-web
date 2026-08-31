@@ -1,0 +1,1645 @@
+{
+  "meta": {
+    "defaultTitle": "Aksioneri — markets, news, and the economic calendar",
+    "defaultDescription": "Follow the financial markets, read the news that matters, and understand the numbers that move prices — explained simply."
+  },
+  "nav": {
+    "brand": "Aksioneri",
+    "primaryLabel": "Primary navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "home": "Home",
+    "markets": "Markets",
+    "news": "News",
+    "learn": "Learn",
+    "calendar": "Calendar",
+    "search": "Search",
+    "calculators": "Calculators",
+    "skipToMain": "Skip to content"
+  },
+  "cookies": {
+    "title": "Cookies",
+    "body": "We use cookies to measure how the site performs and to catch errors. Data is never sold or used for advertising.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "learnMore": "Learn more",
+    "manage": "Manage cookies"
+  },
+  "footer": {
+    "label": "Footer navigation",
+    "groups": {
+      "data": "Data",
+      "learn": "Learn",
+      "about": "About",
+      "legal": "Legal"
+    },
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "glossary": "Glossary",
+    "copyright": "© {year} {brand}. All rights reserved.",
+    "disclaimer": "The information is provided for educational and informational purposes only and does not constitute investment advice. Forecasts are consensus estimates and are subject to revision.",
+    "calculators": "Calculators"
+  },
+  "calendar": {
+    "metaTitle": "Economic calendar",
+    "metaDescription": "The numbers that move markets — with release times, expectations, and a plain-English explanation of what each one really means.",
+    "heading": "Economic calendar",
+    "subheading": "The numbers that move markets — and what each one actually tells you.",
+    "daysLabel": "Choose a day",
+    "todayTab": "{day} · Today",
+    "tableCaption": "Economic events for {date}",
+    "eventCount": "{count, plural, =0 {No events} one {# event} other {# events}}",
+    "empty": "No events for this day and region.",
+    "notReleased": "Not yet released",
+    "columns": {
+      "time": "Time",
+      "region": "Region",
+      "event": "Event",
+      "impact": "Impact",
+      "actual": "Actual",
+      "expected": "Expected",
+      "previous": "Previous"
+    },
+    "impact": {
+      "high": "High impact",
+      "medium": "Medium impact",
+      "low": "Low impact",
+      "highLegend": "High impact",
+      "mediumLegend": "Medium",
+      "lowLegend": "Low"
+    },
+    "regions": {
+      "ALL": "All regions",
+      "US": "US",
+      "EU": "Eurozone",
+      "UK": "UK",
+      "ASIA": "Asia"
+    },
+    "nextUp": {
+      "label": "Coming up",
+      "countdown": "in {hours}h {minutes}m",
+      "time": "Time",
+      "expected": "Expected",
+      "previous": "Previous",
+      "impact": "Impact",
+      "whyItMatters": "Why it matters",
+      "openExplainer": "Open the full explainer →"
+    },
+    "primer": {
+      "heading": "How to read this page",
+      "subheading": "Three ideas, and the calendar stops looking like a wall of numbers.",
+      "learnMore": "Open the Learn Center →",
+      "surprise": {
+        "title": "The surprise matters, not the number",
+        "body": "Markets have already priced in what was expected. Prices move on the gap between what was expected and what actually printed."
+      },
+      "impact": {
+        "title": "The impact bars are your filter",
+        "body": "If you have five minutes a day, read the three-bar events and set the rest aside."
+      },
+      "rates": {
+        "title": "Rates sit behind everything",
+        "body": "Inflation and jobs data mostly matter because they change what central banks are likely to do next."
+      }
+    },
+    "regionNames": {
+      "unitedStates": "United States",
+      "euroArea": "Eurozone",
+      "germany": "Germany",
+      "unitedKingdom": "United Kingdom",
+      "japan": "Japan"
+    },
+    "event": {
+      "releasesAt": "Releases at",
+      "nextAfter": "After this",
+      "goodOrBad": "Is a high number good or bad?",
+      "goodOrBadNote": "There's no universally good level — what matters is the number versus expectations and versus the 2% target. Here's how each direction typically plays out.",
+      "release": "Release",
+      "surprise": "Surprise",
+      "inLine": "in line",
+      "atAGlance": "At a glance",
+      "reactingAssets": "Assets that react",
+      "whyItMatters": "Why it matters",
+      "howToRead": "How to read it",
+      "alsoThisWeek": "Also this week",
+      "learnBackground": "Learn the background",
+      "relatedNews": "Related news",
+      "notFoundTitle": "Event not found",
+      "fallbackDescription": "Release time, expectations, and the prior print for {title}."
+    }
+  },
+  "markets": {
+    "metaTitle": "Markets and financial news",
+    "metaDescription": "Live prices, the news that moves markets, and the economic calendar — all explained in plain English.",
+    "tickerAriaLabel": "Markets ticker",
+    "todayHeading": "What matters today",
+    "quotesHeading": "Markets today",
+    "quotesCaption": "Today's market prices",
+    "viewAllMarkets": "See all markets →",
+    "latestNewsHeading": "Latest news",
+    "viewAllNews": "See all news →",
+    "learnHeading": "Learn to invest",
+    "learnSubheading": "Understand investing, simply.",
+    "exploreLearn": "Explore the Learn Center →",
+    "columns": {
+      "asset": "Asset",
+      "price": "Price",
+      "change": "Change"
+    },
+    "movers": {
+      "heading": "Market movers",
+      "session": "US session",
+      "gainers": "Top gainers",
+      "losers": "Top losers",
+      "mostWatched": "Most watched"
+    },
+    "status": {
+      "connecting": "Connecting…",
+      "reconnecting": "Reconnecting…",
+      "offline": "Offline",
+      "delayed": "Delayed"
+    },
+    "chart": {
+      "loading": "Loading…",
+      "empty": "No data for this range.",
+      "rangeLabel": "Chart range"
+    },
+    "categories": {
+      "indices": "Indices",
+      "crypto": "Crypto",
+      "commodities": "Commodities",
+      "currencies": "Currencies",
+      "stock": "Stocks"
+    },
+    "stats": {
+      "previousClose": "Previous close",
+      "dayRange": "Day range",
+      "fiftyTwoWeekRange": "52-week range",
+      "marketCap": "Market Cap",
+      "peRatio": "P/E Ratio",
+      "eps": "EPS",
+      "dividendYield": "Dividend Yield",
+      "level": "Level"
+    },
+    "session": {
+      "open": "Open",
+      "closed": "Closed",
+      "unknown": "Unknown",
+      "stale": "Stale",
+      "live": "Live",
+      "delayed": "Delayed"
+    },
+    "comingUp": {
+      "heading": "Coming up",
+      "window": "Next 24 hours",
+      "expected": "Expected",
+      "previous": "Previous",
+      "note": "Inflation prints set the Fed's next move — and that moves nearly every market on this page.",
+      "viewCalendar": "See the full calendar →"
+    },
+    "breadcrumbRoot": "Markets",
+    "priceHeading": "Price",
+    "keyStatistics": "Key statistics",
+    "keyStatisticsNote": "Trailing twelve months unless noted",
+    "latestOn": "Latest on {name}",
+    "allCoverage": "All coverage →",
+    "statistics": "Statistics",
+    "biggestHoldings": "Largest holdings",
+    "shareOfIndex": "Share of index",
+    "assetNotFoundTitle": "Asset not found",
+    "assetLoading": {
+      "label": "Loading ticker…"
+    },
+    "assetError": {
+      "heading": "We couldn't load this ticker",
+      "body": "Something went wrong fetching the price and details. Try again in a moment, or head back to the markets.",
+      "retry": "Try again",
+      "backToMarkets": "Back to markets",
+      "digest": "Reference: {digest}"
+    },
+    "assetNotFound": {
+      "heading": "Ticker not found",
+      "body": "We couldn't find this ticker. Check the spelling, or search for a company or asset below.",
+      "featuredHeading": "Popular tickers",
+      "backToMarkets": "Back to markets"
+    },
+    "assetDescription": "Live price, the day's move, and news for {name}, explained in plain English.",
+    "sourceEdgar": "Source: SEC EDGAR",
+    "sourceLive": "Source: public markets",
+    "asOf": "Updated {date}",
+    "quoteStatusFallback": "Prices are indicative and may be delayed.",
+    "indexHeading": "Markets",
+    "indexSubheading": "Track global markets, stocks, crypto, currencies, and more.",
+    "pageSearch": {
+      "placeholder": "Search stocks, ETFs, crypto, or companies…",
+      "try": "Try"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "stocks": "Stocks",
+      "etfs": "ETFs",
+      "crypto": "Crypto",
+      "indices": "Indices",
+      "commodities": "Commodities",
+      "currencies": "Currencies"
+    },
+    "tabTitles": {
+      "overview": "Trending tickers",
+      "stocks": "Most traded stocks",
+      "etfs": "Popular ETFs",
+      "crypto": "Crypto by market cap",
+      "indices": "Major indices",
+      "commodities": "Commodities",
+      "currencies": "Currency pairs",
+      "searchResults": "Results for \"{query}\""
+    },
+    "tableNote": "Click any row for the full company breakdown · delayed 15 min",
+    "table": {
+      "symbol": "Symbol",
+      "company": "Company",
+      "price": "Price",
+      "change": "Change",
+      "percentChange": "% Change",
+      "volume": "Volume",
+      "marketCap": "Market cap"
+    },
+    "trendingCrypto": {
+      "heading": "Trending crypto",
+      "note": "24h · trades around the clock"
+    },
+    "popularEtfs": {
+      "heading": "Popular ETFs",
+      "note": "most held on Aksioneri"
+    },
+    "indexMetaTitle": "Markets",
+    "indexMetaDescription": "Live levels for the indices, commodities, and currencies that set the tone of the day — explained simply.",
+    "sectors": {
+      "technology": "Technology",
+      "semiconductors": "Semiconductors",
+      "consumerDiscretionary": "Consumer Discretionary",
+      "consumerStaples": "Consumer Staples",
+      "automotive": "Automotive",
+      "financials": "Financials",
+      "healthcare": "Healthcare",
+      "energy": "Energy",
+      "industrials": "Industrials",
+      "materials": "Materials",
+      "utilities": "Utilities",
+      "realEstate": "Real Estate",
+      "communicationServices": "Communication Services"
+    },
+    "bondYields": {
+      "heading": "Treasury yields",
+      "subtitle": "US Treasury · today"
+    },
+    "bonds": {
+      "year13w": "13-Week",
+      "year5": "5-Year",
+      "year10": "10-Year",
+      "year30": "30-Year"
+    }
+  },
+  "company": {
+    "nav": {
+      "label": "Company sections",
+      "overview": "Overview",
+      "financials": "Financials",
+      "valuation": "Valuation",
+      "dividends": "Dividends",
+      "news": "News",
+      "filings": "Filings"
+    },
+    "header": {
+      "share": "Share",
+      "shareCopied": "Link copied",
+      "marketStatus": {
+        "open": "Market open",
+        "closed": "Market closed",
+        "unknown": "Market status",
+        "delayNote": "delayed 15 min"
+      }
+    },
+    "snapshot": {
+      "title": "AI Investment Summary",
+      "generating": "Generating analysis…",
+      "outlook": {
+        "label": "Outlook",
+        "positive": "Positive",
+        "neutral": "Neutral",
+        "cautious": "Cautious"
+      },
+      "confidence": {
+        "label": "Confidence",
+        "low": "Low",
+        "moderate": "Moderate",
+        "high": "High"
+      },
+      "columns": {
+        "whyPositive": "Why it looks positive",
+        "keyRisks": "Key risks",
+        "watchNext": "Watch next"
+      },
+      "detail": {
+        "whatHappened": "What happened",
+        "whyMoving": "Why the stock is moving",
+        "howToRead": "How to read the assessment",
+        "changingView": "What would change this view",
+        "showMore": "Read the full analysis",
+        "showLess": "Show less"
+      },
+      "footer": {
+        "disclaimer": "AI-generated analysis · Not financial advice · Generated {date} from filings, earnings calls and price data"
+      }
+    },
+    "financials": {
+      "metaTitle": "Financials for {name}",
+      "metaDescription": "Income statement, balance sheet, and cash flow for {name}, normalized from SEC EDGAR.",
+      "heading": "Financials",
+      "subheading": "Data normalized from official 10-K and 10-Q filings on SEC EDGAR.",
+      "inlineNote": "Figures in USD · as reported",
+      "inlineFootnote": "Negative figures shown in red. Scroll the table sideways for older periods.",
+      "statementLabel": "Statement",
+      "periodLabel": "Period",
+      "tabs": {
+        "income": "Income Statement",
+        "balance": "Balance Sheet",
+        "cashFlow": "Cash Flow"
+      },
+      "period": {
+        "annual": "Annual",
+        "quarterly": "Quarterly"
+      },
+      "empty": {
+        "title": "Financial data isn't available yet",
+        "description": "This company has no XBRL data published to the SEC for this period, or doesn't file with the SEC."
+      },
+      "notApplicable": {
+        "title": "This page doesn't apply",
+        "description": "Annual financials are only reported for listed companies. Return to the overview for live data on this asset."
+      },
+      "row": {
+        "breakdown": "Breakdown",
+        "revenue": "Revenue",
+        "costOfRevenue": "Cost of Revenue",
+        "grossProfit": "Gross Profit",
+        "operatingExpenses": "Operating Expenses",
+        "researchAndDevelopment": "R&D",
+        "sellingAndAdministrative": "Selling, General & Administrative",
+        "operatingIncome": "Operating Income",
+        "pretaxIncome": "Pretax Income",
+        "taxExpense": "Income Tax",
+        "netIncome": "Net Income",
+        "epsBasic": "EPS (Basic)",
+        "epsDiluted": "EPS (Diluted)",
+        "totalAssets": "Total Assets",
+        "currentAssets": "Current Assets",
+        "cashAndEquivalents": "Cash & Equivalents",
+        "shortTermInvestments": "Short-Term Investments",
+        "receivables": "Receivables",
+        "inventory": "Inventory",
+        "nonCurrentAssets": "Non-Current Assets",
+        "propertyPlantEquipment": "Property, Plant & Equipment",
+        "goodwill": "Goodwill",
+        "totalLiabilities": "Total Liabilities",
+        "currentLiabilities": "Current Liabilities",
+        "longTermDebt": "Long-Term Debt",
+        "shortTermDebt": "Short-Term Debt",
+        "shareholdersEquity": "Shareholders' Equity",
+        "operatingCashFlow": "Operating Cash Flow",
+        "investingCashFlow": "Investing Cash Flow",
+        "financingCashFlow": "Financing Cash Flow",
+        "capitalExpenditures": "Capital Expenditures",
+        "freeCashFlow": "Free Cash Flow",
+        "dividendsPaid": "Dividends Paid",
+        "stockRepurchases": "Stock Repurchases"
+      }
+    },
+    "valuation": {
+      "metaTitle": "Valuation for {name}",
+      "metaDescription": "Valuation metrics for {name}: P/E, P/S, P/B, EV/EBITDA and profitability.",
+      "heading": "Valuation",
+      "subheading": "How the stock is priced against the company's revenue and earnings.",
+      "empty": {
+        "title": "Valuation data isn't available",
+        "description": "We couldn't find valuation metrics for this company from Yahoo Finance."
+      },
+      "groups": {
+        "valuationRatios": "Valuation ratios",
+        "profitabilityGrowth": "Profitability & growth",
+        "priceRange": "Price range"
+      },
+      "metrics": {
+        "marketCap": "Market Cap",
+        "enterpriseValue": "Enterprise Value",
+        "peRatio": "P/E (trailing)",
+        "forwardPeRatio": "P/E (forward)",
+        "pegRatio": "PEG",
+        "priceToSales": "P/S",
+        "priceToBook": "P/B",
+        "evToRevenue": "EV / Revenue",
+        "evToEbitda": "EV / EBITDA",
+        "beta": "Beta",
+        "profitMargin": "Net margin",
+        "operatingMargin": "Operating margin",
+        "returnOnEquity": "ROE",
+        "returnOnAssets": "ROA",
+        "revenueGrowth": "Revenue growth",
+        "earningsGrowth": "Earnings growth",
+        "debtToEquity": "Debt / Equity",
+        "fiftyTwoWeekLow": "52-Week Low",
+        "fiftyTwoWeekHigh": "52-Week High"
+      }
+    },
+    "dividends": {
+      "metaTitle": "Dividends for {name}",
+      "metaDescription": "Dividend yield, payment history, and payout ratio for {name}, with data from Yahoo Finance.",
+      "heading": "Dividends",
+      "subheading": "Yield, payment history, and payout ratio.",
+      "empty": {
+        "title": "This company doesn't pay a dividend",
+        "description": "We didn't find any dividend payments from Yahoo Finance for this company."
+      },
+      "metrics": {
+        "dividendYield": "Dividend Yield",
+        "trailingAnnualRate": "Annual Dividend",
+        "payoutRatio": "Payout Ratio",
+        "fiveYearAvgYield": "5-Year Avg Yield",
+        "exDividendDate": "Ex-Dividend Date",
+        "nextPaymentDate": "Next Payment"
+      },
+      "history": {
+        "heading": "Payment history",
+        "empty": "No prior payments.",
+        "columns": {
+          "date": "Date",
+          "amount": "Amount per share"
+        }
+      }
+    },
+    "news": {
+      "metaTitle": "News about {name}",
+      "metaDescription": "All the latest news mentioning {name}, translated and summarised for easy reading.",
+      "heading": "News about {name}",
+      "empty": {
+        "title": "No recent news",
+        "description": "When articles mentioning this company are published, they'll appear here."
+      }
+    },
+    "filings": {
+      "metaTitle": "Filings for {name}",
+      "metaDescription": "Official 10-K, 10-Q, and 8-K filings for {name}, sourced directly from SEC EDGAR.",
+      "heading": "Filings",
+      "subheading": "Official SEC filings, linked directly to the source document.",
+      "columns": {
+        "form": "Form",
+        "filed": "Filed",
+        "period": "Period",
+        "description": "Description",
+        "open": "Open"
+      },
+      "empty": {
+        "title": "No filings available",
+        "description": "We didn't find any recent filings for this company."
+      }
+    }
+  },
+  "news": {
+    "metaTitle": "Financial news",
+    "metaDescription": "The news that moves markets, written to be understood without any background in finance.",
+    "heading": "News",
+    "subheading": "Markets, the economy, and companies — explained simply.",
+    "whyItMatters": "Why it matters",
+    "readingTime": "{minutes} min read",
+    "minutesAgo": "{minutes} min ago",
+    "hoursAgo": "{hours} hours ago",
+    "daysAgo": "{days} days ago",
+    "weeksAgo": "{weeks} weeks ago",
+    "monthsAgo": "{months} months ago",
+    "yearsAgo": "{years, plural, one {# year} other {# years}} ago",
+    "relatedHeading": "Read next",
+    "backToNews": "← Back to news",
+    "categories": {
+      "macro": "Macro",
+      "stocks": "Stocks",
+      "europe": "Europe",
+      "crypto": "Crypto",
+      "commodities": "Commodities",
+      "economy": "Economy"
+    },
+    "filterAll": "All",
+    "filterLabel": "Filter by category",
+    "loadMore": "Load more articles",
+    "emptyCategory": "No articles in this category right now.",
+    "mostRead": "Most read today",
+    "newToThis": "New to this?",
+    "glossaryHeading": "Today's article terms, explained",
+    "glossaryBody": "Guidance, inflation, ETF flows — quick definitions in plain English.",
+    "openLearn": "Open the Learn Center →",
+    "breadcrumbLabel": "Breadcrumb",
+    "notFoundTitle": "Article not found",
+    "photoCredit": "Photo credit",
+    "inNumbers": "By the numbers",
+    "termsHeading": "Terms in this article",
+    "jargonBuster": "Jargon buster →",
+    "moreOnThis": "More on this topic",
+    "mentioned": "Mentioned in this article",
+    "nextRelease": "Next release",
+    "nextReleaseNote": "The print this article hinges on",
+    "expectedShort": "Exp.",
+    "previousShort": "Prev.",
+    "whatThisMeans": "What this print means →",
+    "readLesson": "Read the lesson →",
+    "actions": {
+      "save": "Save",
+      "share": "Share",
+      "listen": "Listen"
+    },
+    "photoVia": "Photo: {source}",
+    "source": {
+      "credit": "This story was published by {source}.",
+      "fallbackName": "the original publisher",
+      "readOriginal": "Read the story",
+      "machineTranslated": "This text was machine-translated. The original is in English."
+    },
+    "loadingMore": "Loading…"
+  },
+  "learn": {
+    "metaTitle": "Learn Center",
+    "metaDescription": "Short lessons that explain investing, markets, and economic prints simply — with no assumed knowledge.",
+    "heading": "Learn Center",
+    "meta": "{minutes} min · {level}",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "heroHeading": "Learn to invest",
+    "heroBody": "Understand investing, simply. Short lessons written for people starting from zero.",
+    "stats": {
+      "lessons": "lessons",
+      "averageRead": "average read",
+      "jargon": "tricky terms",
+      "minutesValue": "{minutes} min"
+    },
+    "startHere": "Start here",
+    "startHereMeta": "{count} lessons · about {minutes} minutes",
+    "lessonCount": "{count} lessons",
+    "lessonNumber": "Lesson {number}",
+    "notFoundTitle": "Lesson not found",
+    "onThisPage": "On this page",
+    "trackPosition": "Lesson {position} of {total} · {topic}",
+    "noMaths": "No math",
+    "inOneSentence": "In one sentence",
+    "workedExample": "A worked example",
+    "keyTerms": "Key terms in this lesson",
+    "quickCheck": "Quick check",
+    "backTo": "← Back to",
+    "nextLesson": "Next lesson →",
+    "seeInMarkets": "See it in the markets",
+    "upNext": "Up next in this track",
+    "inTodaysNews": "In today's news",
+    "vocabularyNote": "An article where this lesson's vocabulary shows up in the very first paragraph.",
+    "jargon": {
+      "heading": "Jargon buster",
+      "subheading": "Words you'll run into in today's news — one line each.",
+      "seeAll": "{count} terms in total"
+    },
+    "quizCorrect": "Correct",
+    "quizIncorrect": "Not quite",
+    "markAsRead": "Mark as read",
+    "markedAsRead": "Read",
+    "progressStoredLocally": "Progress is saved on this device only.",
+    "continueReading": "Pick up where you left off",
+    "lastRead": "Last read",
+    "topicProgress": "{done} of {total} completed",
+    "clearProgress": "Clear progress",
+    "clearProgressConfirm": "Progress cleared.",
+    "glossary": {
+      "metaTitle": "Financial glossary",
+      "metaDescription": "Every term you'll run into in market news, explained in one line, with the lesson that covers it.",
+      "heading": "Glossary",
+      "body": "{count} terms you'll meet in today's news, one line each.",
+      "searchLabel": "Search the glossary",
+      "searchPlaceholder": "Search for a term…",
+      "letterFilter": "Filter by letter",
+      "allLetters": "All",
+      "noResults": "No term matches your search.",
+      "readLesson": "Read the lesson →"
+    },
+    "search": {
+      "label": "Search lessons",
+      "placeholder": "Search a lesson or term…",
+      "noResults": "No lesson matches."
+    }
+  },
+  "search": {
+    "metaTitle": "Search",
+    "metaDescription": "Search across Aksioneri's lessons, glossary, news, markets, and economic calendar — all in one place.",
+    "heading": "Search",
+    "intro": "Type a word and search lessons, the glossary, news, markets, and the calendar at once.",
+    "label": "Search the site",
+    "close": "Close search",
+    "placeholder": "e.g. inflation, ETF, bonds",
+    "placeholderShort": "Search…",
+    "submit": "Search",
+    "prompt": "Type something above to start searching.",
+    "loading": "Loading…",
+    "searching": "Searching…",
+    "failed": "Search didn't load. Try again.",
+    "count": "{count, plural, one {# result} other {# results}} for “{query}”",
+    "empty": "No results for “{query}”.",
+    "emptyHint": "Try a shorter word or a different term — e.g. “dividend” instead of “my dividends”.",
+    "kinds": {
+      "page": "Pages",
+      "lesson": "Lessons",
+      "term": "Glossary",
+      "market": "Markets",
+      "article": "News",
+      "event": "Calendar"
+    }
+  },
+  "pages": {
+    "updated": "Updated {date}",
+    "emailLabel": "Write to",
+    "about": {
+      "metaTitle": "About",
+      "metaDescription": "Who builds Aksioneri and why: markets, news, and financial lessons in Albanian — no investment advice and no commercial ties."
+    },
+    "contact": {
+      "metaTitle": "Contact",
+      "metaDescription": "Write to us about content mistakes, questions about your data, or collaborations. One address and a reply within a few business days."
+    },
+    "privacy": {
+      "metaTitle": "Privacy",
+      "metaDescription": "The site has no accounts and asks for no personal data. Here we explain what is stored when you read it, where it lives, and how to delete it whenever you want."
+    },
+    "terms": {
+      "metaTitle": "Terms of use",
+      "metaDescription": "The content is educational, not investment advice. Market data comes from third parties, and news remains the property of its publishers."
+    }
+  },
+  "calculators": {
+    "metaTitle": "Financial Calculators",
+    "metaDescription": "Interactive tools for saving, investing, borrowing, and inflation — quickly see what a number really means for your money.",
+    "heading": "Financial Calculators",
+    "heroBody": "Understand money, investments, and markets with interactive tools.",
+    "breadcrumbLabel": "Page path",
+    "breadcrumbRoot": "Calculators",
+    "units": {
+      "years": "years",
+      "months": "months",
+      "perMonth": "per month",
+      "shares": "shares"
+    },
+    "ui": {
+      "advancedOptions": "Advanced options",
+      "howCalculated": "How it's calculated",
+      "resultsHeading": "Result",
+      "reset": "Reset to defaults",
+      "showAllRows": "Show all years",
+      "assumption": "Assumption",
+      "assumptionNote": "Figures marked as an assumption depend on the rates you set, not on measured data.",
+      "faqHeading": "Frequently asked questions",
+      "exampleHeading": "Example",
+      "relatedCalculators": "Related calculators",
+      "relatedArticles": "From the news",
+      "currencyLabel": "Currency",
+      "allCategories": "All",
+      "allCalculators": "All calculators",
+      "filterLabel": "Filter by category",
+      "calculate": "Calculate",
+      "chartEnd": "At the end",
+      "dataAsOf": "Data as of {date}",
+      "sources": {
+        "ecb": "Source: European Central Bank — reference rate, not a trading rate",
+        "eurostat": "Source: Eurostat",
+        "nyfed": "Source: Federal Reserve Bank of New York"
+      },
+      "embedKicker": "Try it yourself",
+      "embedCta": "Open calculator",
+      "chartTotal": "Total",
+      "pickDate": "Pick a date"
+    },
+    "errors": {
+      "number": "Enter a number.",
+      "notNegative": "This value can't be negative.",
+      "tooLarge": "This value is too large.",
+      "rateRange": "The rate is outside the range we can calculate.",
+      "yearsRange": "The term must be between 1 and {max} years.",
+      "ageRange": "The age must be realistic.",
+      "retireAfterNow": "Retirement age must be after your current age.",
+      "date": "Pick a valid date.",
+      "saleBeforePurchase": "The sale date can't be before the purchase date."
+    },
+    "refusals": {
+      "heading": "No result",
+      "nonFinite": "One of the values isn't a valid number. Check the fields and try again.",
+      "negativeAmount": "Invested amounts can't be negative.",
+      "rateOutOfRange": "The rate you entered is outside the range this calculator can handle.",
+      "termOutOfRange": "The term must be between 1 and 100 years.",
+      "divideByZero": "With a starting value of zero, this calculation doesn't produce a meaningful result.",
+      "overflow": "The result falls outside the range where numbers stay accurate, so it isn't shown.",
+      "noData": "The data required isn't available right now."
+    },
+    "disclaimers": {
+      "general": "The result is an estimate based on the values you enter and is for informational purposes only.",
+      "investment": "This is a projection based on your assumptions, not a guarantee or investment advice. Actual returns vary from year to year and can be negative.",
+      "loan": "Rough estimate. Your actual payment depends on the bank, contract terms, and fees not included here.",
+      "tax": "Tax rules vary by country and personal circumstances. Consult an accountant before making a decision.",
+      "fx": "The rate used is a daily reference rate, not a trading rate. Your bank or exchange office will quote a different rate."
+    },
+    "compoundInterest": {
+      "metaTitle": "Compound Interest Calculator",
+      "metaDescription": "Calculate how your savings grow with compound interest: enter a starting amount, monthly contribution, rate, and inflation to see the result.",
+      "heading": "Compound Interest Calculator",
+      "intro": "See how much an amount can grow when interest is added to itself year after year, and how much of the total comes from what you've contributed.",
+      "cardBlurb": "How savings grow when interest earns interest.",
+      "fields": {
+        "initial": {
+          "label": "Initial Investment",
+          "hint": "The amount you start with."
+        },
+        "monthly": {
+          "label": "Monthly Contribution",
+          "hint": "How much you add each month. Treated as a deposit at the end of the month."
+        },
+        "ratePercent": {
+          "label": "Annual Rate of Return",
+          "hint": "Nominal return, before inflation."
+        },
+        "years": {
+          "label": "Investment Horizon",
+          "hint": "How many years you let the money grow."
+        },
+        "compounding": {
+          "label": "Compounding Frequency",
+          "hint": "How often interest is added to the balance."
+        },
+        "inflationPercent": {
+          "label": "Annual Inflation",
+          "hint": "Used only to convert the result into today's money."
+        }
+      },
+      "options": {
+        "compounding": {
+          "annually": "Annually",
+          "semiannually": "Semiannually",
+          "quarterly": "Quarterly",
+          "monthly": "Monthly",
+          "daily": "Daily"
+        }
+      },
+      "results": {
+        "finalBalance": "Projected Balance",
+        "totalContributions": "Total Contributions",
+        "totalInterest": "Growth from Interest",
+        "inflationAdjusted": "Value in Today's Money",
+        "effectiveGain": "Real Gain",
+        "columns": {
+          "year": "Year",
+          "contributed": "Contributions",
+          "growth": "Growth",
+          "balance": "Balance",
+          "realBalance": "In Today's Money"
+        }
+      },
+      "chart": {
+        "heading": "Contributions vs. Growth",
+        "xAxis": "Year",
+        "contributions": "Contributions",
+        "growth": "Growth"
+      },
+      "explanation": [
+        "Compound interest means the interest you earn isn't withdrawn — it stays in and starts earning interest of its own. That's why growth looks slow at first and then accelerates.",
+        "The calculation here runs month by month. Each month the balance is multiplied by that month's growth factor, then the contribution is added. The annual rate you enter is nominal, so how often interest compounds within the year matters: the same rate produces slightly more when compounded monthly than once a year.",
+        "The value in today's money separates nominal growth from real growth. If the balance triples over twenty years but prices also rise, your purchasing power hasn't tripled. That's why the final figure is what really tells you what you can buy."
+      ],
+      "example": "Starting with €10,000, adding €500 every month, and averaging a 7% return over twenty years, contributions reach €130,000 — but the balance ends up around €300,000. The difference doesn't come from added contributions, but from interest earning interest.",
+      "faq": [
+        {
+          "question": "Is 7% a realistic rate?",
+          "answer": "It's the long-run historical average for a broad stock index, before inflation. It's not a promise: some years are negative and others are far better. Try 4% and 10% too to see how much the result changes."
+        },
+        {
+          "question": "Why does the result change when I switch compounding?",
+          "answer": "Because the rate you enter is a nominal annual rate. If interest is added to the balance every month, later months earn interest on top of the interest from earlier months. The more frequently it compounds, the higher the balance at the same rate."
+        },
+        {
+          "question": "Are taxes and fees included?",
+          "answer": "No. The result is before capital gains tax and doesn't include fund or platform fees. If you want a picture closer to reality, reduce the return rate by roughly what your annual fees cost."
+        },
+        {
+          "question": "When is the monthly contribution deposited?",
+          "answer": "At the end of each month. If you invest at the beginning of the month, each contribution earns one more month of interest, so the actual result will be slightly higher than shown."
+        }
+      ]
+    },
+    "categories": {
+      "investing": "Investing",
+      "markets": "Markets",
+      "personal-finance": "Personal Finance",
+      "borrowing": "Borrowing",
+      "retirement": "Retirement",
+      "economy": "Economy",
+      "currency": "Currency"
+    },
+    "investmentReturn": {
+      "metaTitle": "Investment Return (CAGR) Calculator",
+      "metaDescription": "Calculate the profit, total return, and CAGR of an investment — including dividends, fees, and the effect of inflation on your real return.",
+      "heading": "Investment Return (CAGR) Calculator",
+      "intro": "See what you really earned from an investment — after dividends, fees, and inflation are factored in.",
+      "cardBlurb": "Profit, annual return, and CAGR of an investment.",
+      "fields": {
+        "invested": {
+          "label": "Amount Invested",
+          "hint": "Total amount paid in, including later purchases."
+        },
+        "currentValue": {
+          "label": "Current Value",
+          "hint": "What it's worth now, or what you sold it for."
+        },
+        "purchaseDate": {
+          "label": "Purchase Date",
+          "hint": "When you bought it. Dates don't change the profit — only the annual return."
+        },
+        "saleDate": {
+          "label": "Sale Date",
+          "hint": "When you sold it, or today's date. Determines how many years you held it."
+        },
+        "dividends": {
+          "label": "Dividends Received",
+          "hint": "All cash payments during the holding period."
+        },
+        "fees": {
+          "label": "Fees and Commissions",
+          "hint": "Commissions, spreads, and platform fees."
+        },
+        "inflationPercent": {
+          "label": "Annual Inflation",
+          "hint": "Used to calculate the real return."
+        }
+      },
+      "results": {
+        "profit": "Net Profit",
+        "returnPercent": "Total Return",
+        "cagr": "CAGR (Annual Return)",
+        "realCagr": "Real CAGR",
+        "totalDividends": "Dividends",
+        "totalFees": "Fees",
+        "years": "Years Held",
+        "columns": {}
+      },
+      "explanation": [
+        "Total return measures what you earned over everything you paid. Dividends are added to the ending value and fees are subtracted before anything else — a figure that leaves them out overstates the return.",
+        "CAGR is the constant annual rate that would have produced the same result. It isn't the average of yearly returns, which always comes out higher and is often used incorrectly.",
+        "The real return strips out inflation. If an investment has grown 40% over six years while prices have risen 20%, purchasing power hasn't grown by 40%."
+      ],
+      "example": "€10,000 invested in January 2020, worth €18,500 today, with €900 in dividends and €120 in fees: net profit is €9,280, total return 92.8%, and CAGR around 11.4% per year.",
+      "faq": [
+        {
+          "question": "Why is CAGR lower than the average of yearly returns?",
+          "answer": "Because losses hurt more than equal-percentage gains help. A 50% drop requires a 100% gain just to get back to where you were. CAGR reflects that; a simple average doesn't."
+        },
+        {
+          "question": "Should I include dividends?",
+          "answer": "Yes, if you received them. Total return is what shows the real result; price-only return understates an investment that pays dividends."
+        },
+        {
+          "question": "Are taxes included?",
+          "answer": "No. The result is before capital gains tax and before dividend tax. Rules vary by country and by personal circumstances."
+        }
+      ]
+    },
+    "mortgage": {
+      "metaTitle": "Mortgage Calculator",
+      "metaDescription": "Calculate your monthly mortgage payment, total interest, and loan-to-value ratio, including property tax, insurance, and other monthly expenses.",
+      "heading": "Mortgage Calculator",
+      "intro": "See what a home really costs each month — not just the bank's payment, but property tax, insurance, and everything else on top.",
+      "cardBlurb": "Monthly payment, total interest, and LTV for a mortgage.",
+      "fields": {
+        "propertyPrice": {
+          "label": "Property price",
+          "hint": "The full purchase price."
+        },
+        "downPayment": {
+          "label": "Down payment",
+          "hint": "How much you pay upfront."
+        },
+        "ratePercent": {
+          "label": "Annual interest rate",
+          "hint": "The nominal rate the bank offers."
+        },
+        "years": {
+          "label": "Loan term",
+          "hint": "How many years until the loan is paid off."
+        },
+        "propertyTax": {
+          "label": "Annual property tax",
+          "hint": "Spread across twelve months."
+        },
+        "insurance": {
+          "label": "Annual insurance",
+          "hint": "Homeowner's insurance, spread monthly."
+        },
+        "otherMonthly": {
+          "label": "Other monthly expenses",
+          "hint": "Maintenance, HOA fees, utilities."
+        },
+        "fees": {
+          "label": "One-time fees",
+          "hint": "Origination, appraisal, and closing fees."
+        },
+        "frequency": {
+          "label": "Payment frequency",
+          "hint": "Usually monthly."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Monthly",
+          "quarterly": "Quarterly",
+          "annually": "Annually"
+        }
+      },
+      "results": {
+        "monthlyTotal": "What you pay each month",
+        "principalInterest": "Loan only (principal + interest)",
+        "loanAmount": "Loan amount",
+        "totalInterest": "Total interest",
+        "totalRepaid": "Total amount paid",
+        "loanToValue": "Loan-to-value (LTV)",
+        "columns": {
+          "period": "Payment #",
+          "payment": "Payment",
+          "interest": "Interest",
+          "principal": "Principal",
+          "balance": "Balance"
+        }
+      },
+      "chart": {
+        "heading": "Principal vs. interest",
+        "xAxis": "Payment #",
+        "principal": "Principal",
+        "interest": "Interest"
+      },
+      "explanation": [
+        "The payment comes from the standard annuity formula: the same amount every month, but the makeup of that payment shifts over time. Early on, most of it goes to interest; as the years pass, more and more goes to principal.",
+        "The amortization table shows that split month by month. The principal column adds up to exactly the loan amount — we do the math in cents rather than rounded decimals so the column matches the figure at the top.",
+        "Property tax, insurance, and other expenses aren't part of the loan itself, but they are part of what you pay every month. That's why the headline figure here is the total household cost, not just the bank's payment — the gap between the two is where budgets break."
+      ],
+      "example": "For a $150,000 home with a $30,000 down payment at 4.5% for 25 years: the bank's payment comes to about $667 per month, but with tax and insurance the monthly total runs closer to $708. Total interest paid over 25 years exceeds $80,000.",
+      "faq": [
+        {
+          "question": "Why does total interest change so much when I adjust the term?",
+          "answer": "Because interest is charged on the outstanding balance. A longer term means a smaller monthly payment, but also a balance that shrinks more slowly — and that you pay interest on for more years."
+        },
+        {
+          "question": "What is LTV and why does it matter?",
+          "answer": "Loan-to-value shows what percentage of the price the loan covers. The lower the ratio, the less risk for the bank, and usually the better the rate you're offered. Under 80% is generally considered favorable."
+        },
+        {
+          "question": "Does the payment change if the rate is variable?",
+          "answer": "Yes. This calculation assumes a fixed rate for the full term. If your loan has a variable rate, try recalculating at several rates to see how much a one-percentage-point increase would move your payment."
+        },
+        {
+          "question": "Are closing and recording fees included?",
+          "answer": "Only if you add them to the one-time fees field. Those don't get rolled into the loan balance and don't accrue interest, so we count them separately in the total cost."
+        }
+      ]
+    },
+    "inflationAdjustment": {
+      "metaTitle": "Inflation Adjustment Calculator",
+      "metaDescription": "See how much purchasing power an amount loses over time and how much the same basket of goods will cost after a given period of inflation.",
+      "heading": "Inflation Adjustment Calculator",
+      "intro": "What your money will be worth in a few years, and what today's purchases will cost by then.",
+      "cardBlurb": "The purchasing power of an amount over time.",
+      "fields": {
+        "amount": {
+          "label": "Amount",
+          "hint": "How much money we're talking about, in today's terms."
+        },
+        "ratePercent": {
+          "label": "Annual inflation",
+          "hint": "The average rate you're assuming."
+        },
+        "years": {
+          "label": "Time horizon",
+          "hint": "How many years ahead."
+        }
+      },
+      "results": {
+        "purchasingPower": "Purchasing power after the period",
+        "futureCost": "What the same basket will cost",
+        "cumulative": "Cumulative inflation",
+        "lostValue": "Value lost",
+        "columns": {}
+      },
+      "explanation": [
+        "Inflation doesn't add up, it compounds. Three percent per year for ten years isn't thirty percent total but closer to thirty-four — because each year's increase lands on already higher prices.",
+        "There are two different questions here, and they often get mixed up. First: what will today's purchases cost later. Second: how much will today's money buy later. One is a multiplication, the other a division, and the results are not the same.",
+        "The rate you set is an assumption, not a measurement. Once we plug in real price-index series, this page will be able to compute between two specific years instead of relying on a single average rate."
+      ],
+      "example": "$10,000 today, at 3% inflation per year, will have the purchasing power of about $7,441 after ten years. The same basket of goods that costs $10,000 today will cost roughly $13,439 by then.",
+      "faq": [
+        {
+          "question": "What's a realistic inflation rate?",
+          "answer": "The European Central Bank targets 2% per year over the medium term. 2022 and 2023 ran well above that. For a long-term projection, 2–3% is a reasonable assumption, but try higher rates too."
+        },
+        {
+          "question": "Why two different figures for the same period?",
+          "answer": "Because they answer two different questions. Purchasing power shows what today's money buys later; future cost shows what the same thing will cost. One divides by the inflation factor, the other multiplies."
+        },
+        {
+          "question": "Does this account for rising wages?",
+          "answer": "No. This measures prices only. If your salary rises at the same pace as inflation, its purchasing power stays the same even though the number goes up."
+        }
+      ]
+    },
+    "loan": {
+      "metaTitle": "Loan and APR Calculator",
+      "metaDescription": "Calculate the monthly payment, total interest, and true cost of a consumer loan, including one-time fees that usually don't factor into the rate.",
+      "heading": "Loan Amortization Calculator",
+      "intro": "What a loan really costs in total — not just the payment, but interest and fees together.",
+      "cardBlurb": "Payment, total interest, and the true cost of a loan.",
+      "fields": {
+        "principal": {
+          "label": "Loan amount",
+          "hint": "How much you're borrowing."
+        },
+        "ratePercent": {
+          "label": "Annual interest rate",
+          "hint": "The nominal rate, not APR."
+        },
+        "years": {
+          "label": "Term",
+          "hint": "How many years until the loan is paid off."
+        },
+        "fees": {
+          "label": "One-time fees",
+          "hint": "Origination or processing fees."
+        },
+        "frequency": {
+          "label": "Payment frequency",
+          "hint": "Usually monthly."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Monthly",
+          "quarterly": "Quarterly",
+          "annually": "Annually"
+        }
+      },
+      "results": {
+        "payment": "Payment",
+        "totalInterest": "Total interest",
+        "totalFees": "Fees",
+        "totalRepaid": "Total amount paid",
+        "costOfBorrowing": "Cost of borrowing",
+        "columns": {
+          "period": "Payment #",
+          "payment": "Payment",
+          "interest": "Interest",
+          "principal": "Principal",
+          "balance": "Balance"
+        }
+      },
+      "chart": {
+        "heading": "Principal vs. interest",
+        "xAxis": "Payment #",
+        "principal": "Principal",
+        "interest": "Interest"
+      },
+      "explanation": [
+        "The payment is the same every month, but its makeup isn't. Interest is charged on the remaining balance, so early on it takes up most of the payment and shrinks as time passes.",
+        "One-time fees aren't added to the balance here, so no interest is charged on them. Some banks roll them into the loan; if yours does, add them to the loan amount rather than the fees field.",
+        "Cost of borrowing adds interest and fees together and expresses the total as a percentage of the amount borrowed. That's the figure that makes two offers comparable when one has a lower rate but higher fees."
+      ],
+      "example": "For a $15,000 loan at 8.5% over five years with a $150 origination fee: the payment comes to about $308 per month, total interest around $3,470, and the full cost of borrowing about 24% of the amount borrowed.",
+      "faq": [
+        {
+          "question": "What's the difference between the rate and the APR?",
+          "answer": "The rate measures interest only. APR is supposed to include mandatory fees as well, so it comes out higher. When comparing offers, compare APR to APR — or use the cost of borrowing that this page calculates."
+        },
+        {
+          "question": "Is it worth paying the loan off early?",
+          "answer": "Usually yes, because interest is charged on the balance and a smaller balance produces less interest. But some contracts carry a prepayment penalty — check before you decide."
+        },
+        {
+          "question": "Why is the final payment slightly different?",
+          "answer": "Because every payment is rounded to cents. The final payment closes out exactly what remains, the way a bank does, rather than leaving a few unpaid cents behind."
+        }
+      ]
+    },
+    "dividend": {
+      "metaTitle": "Dividend Reinvestment Calculator",
+      "metaDescription": "Calculate annual and monthly dividend income, yield on your original cost, and the effect of reinvesting payouts over the years.",
+      "heading": "Dividend Reinvestment Calculator",
+      "intro": "How much income a dividend portfolio produces — and how much that changes when the payouts are reinvested.",
+      "cardBlurb": "Dividend income and the effect of reinvestment.",
+      "fields": {
+        "investment": {
+          "label": "Amount invested",
+          "hint": "How much money you're putting in."
+        },
+        "sharePrice": {
+          "label": "Share price",
+          "hint": "Current price of one share."
+        },
+        "dividendPerShare": {
+          "label": "Dividend per share",
+          "hint": "How much a single share pays out per year."
+        },
+        "reinvest": {
+          "label": "Reinvest dividends (DRIP)",
+          "hint": "Whether payouts buy new shares."
+        },
+        "growthPercent": {
+          "label": "Annual dividend growth",
+          "hint": "How much the dividend itself grows each year."
+        },
+        "priceGrowthPercent": {
+          "label": "Annual share price growth",
+          "hint": "Assumption for the share price."
+        },
+        "years": {
+          "label": "Time horizon",
+          "hint": "How many years out."
+        }
+      },
+      "options": {
+        "reinvest": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "results": {
+        "annualIncome": "Annual income",
+        "monthlyIncome": "Monthly average",
+        "currentYield": "Current yield",
+        "yieldOnCost": "Yield on original cost",
+        "futureIncome": "Income in the final year",
+        "totalDividends": "Total dividends",
+        "portfolioValue": "Portfolio value",
+        "columns": {
+          "year": "Year",
+          "shares": "Shares",
+          "income": "Income",
+          "cumulativeIncome": "Cumulative",
+          "portfolioValue": "Portfolio"
+        }
+      },
+      "chart": {
+        "heading": "Annual income and the running total",
+        "xAxis": "Year",
+        "income": "Annual income",
+        "cumulative": "Cumulative"
+      },
+      "explanation": [
+        "Two things grow at the same time, and usually we only see one of them: the dividend per share grows, and — if you reinvest the payouts — the number of shares grows too. Together they accelerate the growth of your income.",
+        "Yield on original cost is the figure that matters to an income investor. A stock bought today at a 4% yield can end up paying ten percent or more of your original purchase price after twenty years, even if its current yield stays at 4%.",
+        "The calculation assumes fractional shares and end-of-year purchases at that year's price. Buying at the start of the year would give each payout one extra year of growth it hasn't earned yet."
+      ],
+      "example": "€25,000 invested at a 4% yield produces €1,000 of income in the first year. With a dividend that grows 5% per year and payouts reinvested, after twenty years the annual income tops €4,000 — over 16% of the original amount.",
+      "faq": [
+        {
+          "question": "What is yield on original cost?",
+          "answer": "Today's income divided by what you originally paid, not by today's price. It grows over the years even when the stock's published yield stays the same."
+        },
+        {
+          "question": "Are dividends guaranteed?",
+          "answer": "No. Companies can cut or eliminate dividends at any time, and they usually do it precisely when the economy is struggling. The growth assumed here is your assumption, not a promise."
+        },
+        {
+          "question": "Does tax on dividends make a difference?",
+          "answer": "Yes, and it isn't included. In many countries dividends are taxed when paid, which reduces the amount left to reinvest. Rules vary by country."
+        },
+        {
+          "question": "Why does reinvestment change the result so much?",
+          "answer": "Because every payout buys new shares that pay dividends of their own. That's compound growth applied to income, and the effect only becomes visible after ten or more years."
+        }
+      ]
+    },
+    "dca": {
+      "metaTitle": "Dollar-Cost Averaging Calculator",
+      "metaDescription": "See how much a regular monthly investment can grow, how much comes from your contributions, and the real annual return on the money you've put in.",
+      "heading": "Dollar-Cost Averaging Calculator",
+      "intro": "How much a small amount invested regularly adds up to, and how much of the result comes from the market versus from your own pocket.",
+      "cardBlurb": "The growth of a regular monthly investment.",
+      "fields": {
+        "contribution": {
+          "label": "Monthly contribution",
+          "hint": "The regular amount you invest."
+        },
+        "ratePercent": {
+          "label": "Expected annual return",
+          "hint": "Assumption for the market, before inflation."
+        },
+        "years": {
+          "label": "Time horizon",
+          "hint": "How long you keep going."
+        },
+        "initial": {
+          "label": "Starting amount",
+          "hint": "If you're starting with something already saved."
+        },
+        "frequency": {
+          "label": "How often you invest",
+          "hint": "More often means getting into the market sooner."
+        },
+        "inflationPercent": {
+          "label": "Annual inflation",
+          "hint": "For the value in today's money."
+        }
+      },
+      "options": {
+        "frequency": {
+          "monthly": "Monthly",
+          "quarterly": "Quarterly",
+          "annually": "Annually"
+        }
+      },
+      "results": {
+        "finalValue": "Portfolio value",
+        "totalContributions": "What you contributed",
+        "gain": "Investment gain",
+        "realValue": "Value in today's money",
+        "annualisedReturn": "Real annual return on contributions",
+        "columns": {
+          "year": "Year",
+          "contributed": "Contributions",
+          "value": "Value",
+          "gain": "Gain"
+        }
+      },
+      "chart": {
+        "heading": "Contributions alongside gains",
+        "xAxis": "Year",
+        "contributions": "Contributions",
+        "gain": "Gain"
+      },
+      "explanation": [
+        "Dollar-cost averaging spreads your buying out over time. When prices are low, the same amount buys more shares; when prices are high, it buys fewer — so the average purchase price ends up steadier than a single large buy.",
+        "The figure most often misread here is the return. A plan that assumes 7% per year doesn't earn 7% on the money you've contributed, because most of it has been in the market for only part of the term. The return on contributions calculated here is always lower than the assumed rate — and it's the one that shows what you've actually made.",
+        "The more often you invest the same money over the year, the sooner it enters the market and the longer it has to grow. That's why twelve monthly payments produce slightly more than four quarterly ones with the same total."
+      ],
+      "example": "€200 every month for fifteen years at a 7% return is €36,000 of contributions that grows to about €63,000. But the return on the money you've put in works out to about 3.8% per year — not 7% — because half of it was invested only during the second half of the term.",
+      "faq": [
+        {
+          "question": "Why is the return on contributions lower than the rate I set?",
+          "answer": "Because the euro you contributed in the final month has been invested for one month, not fifteen years. The assumed rate describes the market; the return on contributions describes your plan."
+        },
+        {
+          "question": "Is it better to invest everything at once?",
+          "answer": "Historically a single lump-sum investment has done slightly better on average, because the money enters the market sooner. But dollar-cost averaging reduces the risk of getting in at the wrong moment, and for most people it's the only practical option."
+        },
+        {
+          "question": "Are fund fees included?",
+          "answer": "No. If your fund charges 0.3% per year, lower the return rate by that amount. Over fifteen years the difference is bigger than it looks."
+        }
+      ]
+    },
+    "retirement": {
+      "metaTitle": "Retirement Calculator",
+      "metaDescription": "See how much you can save by retirement, how much monthly income that amount sustains, and how much you need to save each month to close the gap.",
+      "heading": "Retirement Calculator",
+      "intro": "How much you'll have when you retire, how much income that amount sustains, and what's missing.",
+      "cardBlurb": "Retirement savings and the gap to your goal.",
+      "fields": {
+        "currentAge": {
+          "label": "Current age",
+          "hint": "How old you are now."
+        },
+        "retirementAge": {
+          "label": "Retirement age",
+          "hint": "When you plan to retire."
+        },
+        "monthlyContribution": {
+          "label": "Monthly contribution",
+          "hint": "How much you set aside each month right now."
+        },
+        "desiredMonthlyIncome": {
+          "label": "Desired monthly income",
+          "hint": "In today's money, during retirement."
+        },
+        "currentSavings": {
+          "label": "Current savings",
+          "hint": "How much you've accumulated so far."
+        },
+        "returnPercent": {
+          "label": "Expected annual return",
+          "hint": "Assumption, before inflation."
+        },
+        "inflationPercent": {
+          "label": "Annual inflation",
+          "hint": "For the calculation in today's money."
+        },
+        "retirementYears": {
+          "label": "How long it needs to last",
+          "hint": "Expected length of retirement."
+        },
+        "existingPensionMonthly": {
+          "label": "Expected state pension",
+          "hint": "In today's money, per month."
+        }
+      },
+      "results": {
+        "gap": "Surplus or shortfall",
+        "projectedPot": "Projected nest egg",
+        "realPot": "In today's money",
+        "requiredPot": "What you need",
+        "sustainableIncome": "Sustainable monthly income",
+        "requiredContribution": "How much to save per month",
+        "yearsToRetirement": "Years to retirement",
+        "columns": {
+          "rate": "Return",
+          "projectedPot": "Nest egg",
+          "realPot": "In today's money",
+          "sustainableIncome": "Income"
+        }
+      },
+      "chart": {
+        "heading": "Growth of savings until retirement",
+        "xAxis": "Age",
+        "balance": "Balance"
+      },
+      "explanation": [
+        "The calculation runs in two steps. First, accumulation: your current savings plus monthly contributions, grown until retirement age. Then, withdrawal: how much you can take out each month for the amount to last the whole period.",
+        "The comparison is made in today's money. The income you're asking for is in today's value, so the accumulated nest egg is also converted into today's money before we compare. Comparing a nominal amount to a real need is the most common way these calculations overstate the result.",
+        "The three scenarios aren't forecasts. They're the same plan with three different return assumptions, and the spread between them is the real information: it shows how much the result depends on something nobody controls."
+      ],
+      "example": "At age 35, with €10,000 in savings and €250 per month until age 65 at a 6% return: the nest egg tops €270,000, which in today's money is about €150,000. That sustains around €800 per month for twenty years.",
+      "faq": [
+        {
+          "question": "Why is the amount in today's money so much smaller?",
+          "answer": "Because inflation eats away at the value of money over thirty years. The nominal figure looks large, but what matters is how much that amount will actually buy when you retire."
+        },
+        {
+          "question": "Is the withdrawal rate here realistic?",
+          "answer": "The calculation spreads the amount so that it runs out exactly at the end of the period you've set, while still earning a real return. That's more conservative than the well-known 4% rule if the period is long, and more generous if it's short."
+        },
+        {
+          "question": "What if I live longer than I planned for?",
+          "answer": "Then the amount runs out before you do. That's why it's worth trying it with a longer period — say thirty years instead of twenty — and seeing how much the required monthly saving changes."
+        },
+        {
+          "question": "Does this include the state pension?",
+          "answer": "Yes, if you enter it. We subtract it from the income your own savings need to cover, so the required amount comes out smaller. If you're not sure how much you'll receive, leave it at zero."
+        }
+      ]
+    },
+    "percentageReturn": {
+      "metaTitle": "Percentage Return Calculator",
+      "metaDescription": "Calculate the percentage change and the change in percentage points between two figures — the distinction most often confused when rates are reported.",
+      "heading": "Percentage Return Calculator",
+      "intro": "How much a figure has changed — in percent and in percentage points, because they aren't the same thing.",
+      "cardBlurb": "Percentage change and percentage-point change.",
+      "fields": {
+        "from": {
+          "label": "Starting value",
+          "hint": "Where it started."
+        },
+        "to": {
+          "label": "Ending value",
+          "hint": "Where it ended up."
+        }
+      },
+      "results": {
+        "changePercent": "Percentage change",
+        "changePoints": "Change in points",
+        "multiple": "Multiple",
+        "columns": {}
+      },
+      "explanation": [
+        "If an interest rate moves from 2% to 3%, it has risen by one percentage point and by fifty percent. Both are correct and describe the same change, but they read very differently.",
+        "This confusion is the most common source of misleading headlines in economic news. When a change in an interest rate, inflation, or unemployment is reported, it's almost always in percentage points.",
+        "The change is measured against the absolute value of the starting figure, so the direction stays correct even when it starts from a negative number."
+      ],
+      "example": "From 100 to 125 is a 25% increase, or 25 points if both figures are percentages. From 2% to 3% is one percentage point — but also a 50% increase.",
+      "faq": [
+        {
+          "question": "When should you use 'percentage points'?",
+          "answer": "When both figures are themselves percentages: interest rates, inflation, unemployment, margins. Say 'rose by one percentage point,' not 'rose by one percent.'"
+        },
+        {
+          "question": "Why is there no result when starting from zero?",
+          "answer": "Because percentage change requires dividing by the starting value, and dividing by zero doesn't produce a number. In that case, only the absolute change makes sense."
+        },
+        {
+          "question": "What does the 'multiple' column mean?",
+          "answer": "How many times larger the new figure is compared to the old one. A 100% increase means twice as much; a 300% increase means four times as much. This avoids another common mistake."
+        }
+      ]
+    },
+    "currencyConverter": {
+      "metaTitle": "Currency Converter",
+      "metaDescription": "Convert between the euro, the US dollar, and other currencies using the European Central Bank's daily reference rates, with the publication date always shown.",
+      "heading": "Currency Converter",
+      "intro": "Convert between currencies at the European Central Bank's reference rates. The rate date is always shown — these are reference rates, not trading rates.",
+      "cardBlurb": "Conversion at ECB reference rates.",
+      "fields": {
+        "amount": {
+          "label": "Amount",
+          "hint": "How much money you want to convert."
+        },
+        "from": {
+          "label": "From",
+          "hint": "The currency you have."
+        },
+        "to": {
+          "label": "To",
+          "hint": "The currency you want."
+        }
+      },
+      "options": {
+        "from": {
+          "EUR": "Euro (EUR)",
+          "USD": "US dollar (USD)",
+          "GBP": "British pound (GBP)",
+          "CHF": "Swiss franc (CHF)",
+          "JPY": "Japanese yen (JPY)",
+          "SEK": "Swedish krona (SEK)",
+          "NOK": "Norwegian krone (NOK)",
+          "DKK": "Danish krone (DKK)",
+          "PLN": "Polish zloty (PLN)",
+          "CZK": "Czech koruna (CZK)",
+          "HUF": "Hungarian forint (HUF)",
+          "RON": "Romanian leu (RON)",
+          "BGN": "Bulgarian lev (BGN)",
+          "TRY": "Turkish lira (TRY)",
+          "CAD": "Canadian dollar (CAD)",
+          "AUD": "Australian dollar (AUD)",
+          "CNY": "Chinese yuan (CNY)"
+        },
+        "to": {
+          "EUR": "Euro (EUR)",
+          "USD": "US dollar (USD)",
+          "GBP": "British pound (GBP)",
+          "CHF": "Swiss franc (CHF)",
+          "JPY": "Japanese yen (JPY)",
+          "SEK": "Swedish krona (SEK)",
+          "NOK": "Norwegian krone (NOK)",
+          "DKK": "Danish krone (DKK)",
+          "PLN": "Polish zloty (PLN)",
+          "CZK": "Czech koruna (CZK)",
+          "HUF": "Hungarian forint (HUF)",
+          "RON": "Romanian leu (RON)",
+          "BGN": "Bulgarian lev (BGN)",
+          "TRY": "Turkish lira (TRY)",
+          "CAD": "Canadian dollar (CAD)",
+          "AUD": "Australian dollar (AUD)",
+          "CNY": "Chinese yuan (CNY)"
+        }
+      },
+      "results": {
+        "converted": "Converted amount",
+        "rate": "Exchange rate",
+        "inverseRate": "Inverse rate",
+        "amount": "Original amount",
+        "columns": {}
+      },
+      "explanation": [
+        "The rates come from the European Central Bank, which fixes them once every business day around 4:00 p.m. and publishes them shortly after. That's why weekends and holidays show the rate from the last business day — and the date of that day is always shown under the result.",
+        "All rates are quoted against the euro. For a pair that doesn't include the euro, like the dollar against the pound, we derive the rate by routing both through the euro. Banks do the same, which is why the result may differ slightly from a rate quoted directly for that pair.",
+        "These are reference rates, intended for statistics and accounting. Your bank, exchange office, or card will give you a different rate, usually worse, because it includes their margin."
+      ],
+      "example": "€1,000 at the ECB's reference rate of about $1.17 per euro comes to roughly $1,170. At an exchange office you'd get a few dollars less — that difference is their profit.",
+      "faq": [
+        {
+          "question": "Why does the rate here differ from my bank's?",
+          "answer": "Because this is the ECB's reference rate, not a trading quote. Your bank adds its own margin on top, and cards tack on transaction fees too. Use this as a benchmark to see how much you're paying above the official rate."
+        },
+        {
+          "question": "Why does the weekend show Friday's date?",
+          "answer": "Because the ECB only fixes rates on business days. There's no reference rate for Saturday. Rather than inventing one, we show the last real fix and its date."
+        },
+        {
+          "question": "How is a pair without the euro, like USD/GBP, calculated?",
+          "answer": "Through the euro: we divide the pound-to-euro rate by the dollar-to-euro rate. If either is missing for that day, we don't return a result rather than using a rate from another day."
+        }
+      ]
+    },
+    "stockProfit": {
+      "metaTitle": "Stock Profit / Loss Calculator",
+      "metaDescription": "Calculate stock profit: current value, price gain, dividend income, annualized return, and the break-even price after fees.",
+      "heading": "Stock Profit / Loss Calculator",
+      "intro": "How much you actually made on a stock position — from price, from dividends, and after fees.",
+      "cardBlurb": "Profit, annualized return, and break-even price.",
+      "fields": {
+        "shares": {
+          "label": "Shares",
+          "hint": "How many shares you bought."
+        },
+        "purchasePrice": {
+          "label": "Buy price",
+          "hint": "Per share, when you bought."
+        },
+        "currentPrice": {
+          "label": "Current or sell price",
+          "hint": "Per share, right now."
+        },
+        "purchaseDate": {
+          "label": "Purchase date",
+          "hint": "When you opened the position. Dates affect only the annualized return, not the profit."
+        },
+        "saleDate": {
+          "label": "Sale date",
+          "hint": "When you closed it, or today's date. Determines how long you held it."
+        },
+        "dividendPerShare": {
+          "label": "Dividends per share",
+          "hint": "Total received per share over the entire period."
+        },
+        "fees": {
+          "label": "Commissions",
+          "hint": "Buy and sell commissions combined."
+        },
+        "inflationPercent": {
+          "label": "Annual inflation",
+          "hint": "For the real return."
+        }
+      },
+      "results": {
+        "totalProfit": "Total profit",
+        "totalReturn": "Total return",
+        "annualised": "Annualized return",
+        "realAnnualised": "Real annualized return",
+        "currentValue": "Current value",
+        "priceProfit": "Price gain",
+        "dividendIncome": "Dividend income",
+        "breakEven": "Break-even price",
+        "cost": "Total cost",
+        "columns": {}
+      },
+      "explanation": [
+        "Total cost includes the commissions, not just the shares: if you paid €15,000 for the shares and a €20 commission, the position cost you €15,020. The return is calculated on that figure because that's what you actually put in.",
+        "Profit splits into two parts because the sources are different. The price gain comes from market movement and you only realize it when you sell. Dividend income you've already received in cash, regardless of where the price has gone.",
+        "The break-even price is where the position lands at zero once we account for commissions and subtract the dividends received. If today's price is above it, you're in profit; if not, you aren't — even when the price looks higher than what you paid."
+      ],
+      "example": "100 shares bought at €150 that are worth €210 today, with a €2.50 dividend per share and €20 in commissions: total profit comes to €6,230, or about 41% over three years — which works out to roughly 12% a year.",
+      "faq": [
+        {
+          "question": "Why isn't the break-even price the same as the buy price?",
+          "answer": "Because commissions raise the cost and dividends lower it. After €20 in commissions and €250 in dividends received, the position hits zero at a price lower than what you paid — the dividends have already covered part of it."
+        },
+        {
+          "question": "Should I use this for taxes?",
+          "answer": "Not as a document. Rules for capital-gains tax and dividend tax vary by country, and we haven't calculated any taxes here. Use it to understand the position, not for a tax return."
+        },
+        {
+          "question": "Why does the annualized return look low compared to the total return?",
+          "answer": "Because total return doesn't account for time. 41% over three years is about 12% a year, not 41%. The annualized return is the figure you can compare to a savings account or another investment."
+        }
+      ]
+    }
+  },
+  "auth": {
+    "fields": {
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "signIn": {
+      "metaTitle": "Sign in",
+      "metaDescription": "Sign in to your Aksioneri account to follow the markets, the economic calendar, and financial news.",
+      "heading": "Sign in",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "No account?",
+      "createAccount": "Create an account"
+    },
+    "signUp": {
+      "metaTitle": "Create an account",
+      "metaDescription": "Open a new Aksioneri account for the markets, the economic calendar, and up-to-date financial news.",
+      "heading": "Create an account",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "errors": {
+      "fullName": "Enter your full name.",
+      "email": "Enter a valid email address.",
+      "passwordRequired": "Enter a password.",
+      "passwordLength": "Password must be at least {min} characters.",
+      "invalidCredentials": "Email or password is incorrect.",
+      "signUpFailed": "Account couldn't be created. Try again."
+    }
+  },
+  "notFound": {
+    "metaTitle": "Page not found",
+    "metaDescription": "The page you're looking for doesn't exist or may have moved. Head back home for the latest news, markets, and financial calculators.",
+    "heading": "Page not found",
+    "body": "This page doesn't exist or has moved. Check the address or head back home.",
+    "backHome": "Back to home"
+  },
+  "errorBoundary": {
+    "heading": "Something went wrong",
+    "body": "We couldn't load this page right now. Try again in a moment, or head back home for news and markets.",
+    "retry": "Try again",
+    "backHome": "Back to home",
+    "digest": "Error code: {digest}"
+  }
+}

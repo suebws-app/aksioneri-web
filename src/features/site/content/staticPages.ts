@@ -1,5 +1,7 @@
 import { clientEnv } from '@/lib/utils/env.client';
+import type { Locale } from '@/i18n/config';
 import type { StaticPageContent } from '../siteTypes';
+import { STATIC_PAGES_EN } from './staticPages.en';
 
 export const CONTACT_EMAIL = clientEnv.NEXT_PUBLIC_CONTACT_EMAIL;
 
@@ -186,12 +188,15 @@ const TERMS: StaticPageContent = {
   ],
 };
 
-export const STATIC_PAGES: Record<
-  StaticPageContent['slug'],
-  StaticPageContent
-> = {
+const STATIC_PAGES_SQ: Record<StaticPageContent['slug'], StaticPageContent> = {
   about: ABOUT,
   contact: CONTACT,
   privacy: PRIVACY,
   terms: TERMS,
 };
+
+export const getStaticPage = (
+  locale: Locale,
+  slug: StaticPageContent['slug'],
+): StaticPageContent =>
+  (locale === 'sq' ? STATIC_PAGES_SQ : STATIC_PAGES_EN)[slug];

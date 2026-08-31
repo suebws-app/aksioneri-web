@@ -6,8 +6,10 @@ import { memo, useMemo } from 'react';
 import { Link } from '@/i18n/navigation';
 import { FEATURED_SYMBOLS, type Quote } from '@/lib/api/markets';
 import { quotesQuery } from '@/lib/query/marketsQueries';
+import { toMarketPath } from '@/lib/utils/marketPath';
 import { useLiveQuotes } from '@/lib/websockets/useLiveQuotes';
 import { usePriceFlash } from '../usePriceFlash';
+import { formatSignedPercent } from '@/lib/format/percent';
 
 export function MarketTickerLive({ initial }: { initial: Quote[] }) {
   const t = useTranslations('markets');
@@ -62,12 +64,11 @@ const TickerRail = memo(function TickerRail({
 const TickerCell = memo(
   function TickerCell({ quote }: { quote: Quote }) {
     const isNegative = quote.changePercent < 0;
-    const sign = isNegative ? '−' : '+';
     const flash = usePriceFlash(quote.price);
 
     return (
       <Link
-        href={`/markets/${quote.symbol}`}
+        href={toMarketPath(quote.symbol)}
         className="border-line-soft hover:bg-surface-tint/40 block w-53 border-r px-5.5 py-3.5 transition-colors"
       >
         <div className="text-ink-faint mb-1.5 text-[11px] font-semibold tracking-[0.11em] whitespace-nowrap uppercase">
@@ -92,8 +93,7 @@ const TickerCell = memo(
               (isNegative ? 'text-negative' : 'text-positive')
             }
           >
-            {sign}
-            {Math.abs(quote.changePercent).toFixed(2)}%
+            {formatSignedPercent(quote.changePercent)}
           </span>
         </div>
       </Link>

@@ -82,7 +82,7 @@ export function MobileNav({ items }: { items: MobileNavItem[] }) {
           <nav
             id="site-nav-mobile"
             aria-label={t('primaryLabel')}
-            className="bg-paper border-line animate-drawer-in fixed inset-y-0 right-0 z-40 flex w-[min(84vw,340px)] flex-col overflow-y-auto border-l pt-[72px] shadow-xl"
+            className="bg-paper border-line animate-drawer-in fixed inset-y-0 right-0 z-40 flex w-[min(84vw,340px)] flex-col overflow-y-auto border-l pt-18 shadow-xl"
           >
             <ul className="page-container flex flex-col">
               {items.map((item, index) => (

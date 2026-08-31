@@ -36,6 +36,10 @@ export interface RequestOptions extends Omit<RequestInit, 'body'> {
 
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
+const IS_SERVER = typeof window === 'undefined';
+
+const internalToken = IS_SERVER ? process.env.INTERNAL_API_SECRET : undefined;
+
 const buildUrl = (
   path: string,
   searchParams?: RequestOptions['searchParams'],
@@ -61,12 +65,13 @@ export async function apiFetch<T>(
   const response = await fetch(buildUrl(path, searchParams), {
     ...init,
     method,
-    credentials: 'include',
+    credentials: IS_SERVER ? 'omit' : 'include',
     headers: {
       ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
       ...(SAFE_METHODS.has(method)
         ? {}
         : { [CSRF_HEADER_NAME]: readCsrfToken() }),
+      ...(internalToken ? { 'X-Internal-Token': internalToken } : {}),
       ...headers,
     },
     body: body === undefined ? undefined : JSON.stringify(body),

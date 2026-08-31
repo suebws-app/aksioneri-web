@@ -1,5 +1,9 @@
 import { cache } from 'react';
-import { ApiError, apiFetch } from './client';
+import { safely } from './safely';
+import { apiFetch } from './client';
+
+const safelyRates = <T>(work: () => Promise<T>, fallback: T): Promise<T> =>
+  safely(work, fallback, 'rates');
 
 export const CONVERTIBLE_CURRENCIES = [
   'EUR',
@@ -62,19 +66,9 @@ export interface PolicyRate {
   source: string;
 }
 
-async function safely<T>(work: () => Promise<T>, fallback: T): Promise<T> {
-  try {
-    return await work();
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return fallback;
-    console.error('[rates] request failed:', error);
-    return fallback;
-  }
-}
-
 export const getFxLatest = cache(
   async (base: string = 'EUR'): Promise<FxLatest | null> =>
-    safely(
+    safelyRates(
       () =>
         apiFetch<FxLatest>('rates/fx/latest', {
           searchParams: { base },
@@ -86,7 +80,7 @@ export const getFxLatest = cache(
 
 export const getInflationSeries = cache(
   async (seriesId: string): Promise<InflationSeries | null> =>
-    safely(
+    safelyRates(
       () =>
         apiFetch<InflationSeries>(`rates/inflation/${seriesId}`, {
           next: { revalidate: 86_400, tags: ['rates'] },
@@ -97,7 +91,7 @@ export const getInflationSeries = cache(
 
 export const getPolicyRate = cache(
   async (seriesId: string): Promise<PolicyRate | null> =>
-    safely(
+    safelyRates(
       () =>
         apiFetch<PolicyRate>(`rates/policy/${seriesId}/latest`, {
           next: { revalidate: 3600, tags: ['rates'] },

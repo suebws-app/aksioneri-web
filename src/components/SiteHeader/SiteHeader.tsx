@@ -37,7 +37,7 @@ export function SiteHeader({
                   <li key={section}>
                     <span
                       aria-current="page"
-                      className="border-accent text-ink border-b-2 pb-[3px] font-medium"
+                      className="border-accent text-ink border-b-2 pb-0.75 font-medium"
                     >
                       {t(section)}
                     </span>
