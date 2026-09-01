@@ -54,7 +54,12 @@ export function SiteHeader({
               );
             })}
 
-            {searchSlot ? <li>{searchSlot}</li> : null}
+            {searchSlot ? (
+              <li className="hidden lg:block">{searchSlot}</li>
+            ) : null}
+            {mobileSearchSlot ? (
+              <li className="lg:hidden">{mobileSearchSlot}</li>
+            ) : null}
           </ul>
         </nav>
 

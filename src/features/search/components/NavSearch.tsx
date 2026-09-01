@@ -249,7 +249,7 @@ export function NavSearch({
             onClick={openSearch}
             aria-expanded={open}
             className={cn(
-              'text-ink-subtle hover:text-accent absolute inset-0 flex items-center justify-end gap-[7px]',
+              'text-ink-subtle hover:text-accent absolute inset-0 flex items-center justify-end gap-1.75',
               'transition-opacity duration-150 ease-out',
               open ? 'pointer-events-none opacity-0' : 'opacity-100',
             )}
