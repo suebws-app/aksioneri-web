@@ -125,10 +125,11 @@ export const getCalendarWeek = cache(
 );
 
 export const getEventDetail = cache(
-  async (_locale: string, slug: string): Promise<CalendarEvent | null> =>
+  async (locale: string, slug: string): Promise<CalendarEvent | null> =>
     safelyCalendar(
       () =>
         apiFetch<ApiCalendarEvent>(`calendar/${encodeURIComponent(slug)}`, {
+          searchParams: { locale: locale === 'sq' ? 'sq' : 'en' },
           ...cacheOptions,
         }).then((raw) => toEvent(raw)),
       null,

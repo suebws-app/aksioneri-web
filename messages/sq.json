@@ -40,7 +40,8 @@
     "glossary": "Fjalorthi",
     "copyright": "© {year} {brand}. Të gjitha të drejtat e rezervuara.",
     "disclaimer": "Informacioni ofrohet vetëm për qëllime edukative dhe informuese dhe nuk përbën këshillë investimi. Parashikimet janë vlerësime konsensusi dhe mund të rishikohen.",
-    "calculators": "Kalkulatorë"
+    "calculators": "Kalkulatorë",
+    "language": "Gjuha"
   },
   "calendar": {
     "metaTitle": "Kalendari ekonomik",

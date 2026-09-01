@@ -15,6 +15,7 @@ import {
 import { findArticleForLesson } from '@/features/learn/matchNews';
 import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
+import { redirect } from '@/i18n/navigation';
 import { getQuotes } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 import {
@@ -33,13 +34,29 @@ export function generateStaticParams() {
   );
 }
 
+function redirectIfOtherLocaleSlug(locale: Locale, slug: string): void {
+  for (const other of locales) {
+    if (other === locale) continue;
+    const target = getLessonSlugAlternates(other, slug)?.[locale];
+    if (target && target !== slug) {
+      redirect({
+        href: { pathname: '/learn/[slug]', params: { slug: target } },
+        locale,
+      });
+    }
+  }
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const lesson = getLessonBySlug(locale, slug);
 
-  if (!lesson) notFound();
+  if (!lesson) {
+    redirectIfOtherLocaleSlug(locale, slug);
+    notFound();
+  }
 
   const alternates = getLessonSlugAlternates(locale, slug);
 
@@ -65,7 +82,10 @@ export default async function Page({ params }: PageProps) {
   const { locale, slug } = await params;
 
   const lesson = getLessonBySlug(locale, slug);
-  if (!lesson) notFound();
+  if (!lesson) {
+    redirectIfOtherLocaleSlug(locale, slug);
+    notFound();
+  }
 
   const everyLesson = [
     ...getLessons(locale),

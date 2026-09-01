@@ -40,7 +40,8 @@
     "glossary": "Glossary",
     "copyright": "© {year} {brand}. All rights reserved.",
     "disclaimer": "The information is provided for educational and informational purposes only and does not constitute investment advice. Forecasts are consensus estimates and are subject to revision.",
-    "calculators": "Calculators"
+    "calculators": "Calculators",
+    "language": "Language"
   },
   "calendar": {
     "metaTitle": "Economic calendar",
