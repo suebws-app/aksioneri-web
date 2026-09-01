@@ -48,7 +48,7 @@ export default async function Page({
 
   return (
     <LearnPage
-      stats={getLearnStats()}
+      stats={getLearnStats(locale)}
       startHere={getFeaturedLessons(locale)}
       allLessons={getLessons(locale)}
       topics={topics}

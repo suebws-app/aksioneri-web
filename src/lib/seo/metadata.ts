@@ -19,6 +19,7 @@ interface BuildMetadataInput {
   description: string;
   path: string;
   locale: Locale;
+  localizedPaths?: Partial<Record<Locale, string>>;
   image?: string;
   noIndex?: boolean;
   noCanonical?: boolean;
@@ -30,19 +31,24 @@ export function buildMetadata({
   description,
   path,
   locale,
+  localizedPaths,
   image,
   noIndex = false,
   noCanonical = false,
   article,
 }: BuildMetadataInput): Metadata {
-  const canonical = localizedAbsoluteUrl(locale, path);
+  const pathFor = (l: Locale): string => localizedPaths?.[l] ?? path;
+  const canonical = localizedAbsoluteUrl(locale, pathFor(locale));
   const languages = noIndex
     ? undefined
     : {
         ...Object.fromEntries(
-          locales.map((l) => [l, localizedAbsoluteUrl(l, path)]),
+          locales.map((l) => [l, localizedAbsoluteUrl(l, pathFor(l))]),
         ),
-        'x-default': localizedAbsoluteUrl(defaultLocale, path),
+        'x-default': localizedAbsoluteUrl(
+          defaultLocale,
+          pathFor(defaultLocale),
+        ),
       };
   const ogImage = image
     ? /^https?:\/\//.test(image)

@@ -24,6 +24,7 @@ export const LESSONS: SeedLesson[] = [
 
 export const START_HERE: Localized<string[]> = {
   sq: ['cka-eshte-aksioni', 'cka-eshte-etf', 'inflacioni'],
+  en: ['what-is-a-share', 'what-is-an-etf', 'inflation'],
 };
 
 export { GLOSSARY } from './glossary';

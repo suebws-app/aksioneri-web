@@ -1,4 +1,4 @@
-import type { Locale } from '@/i18n/config';
+import { locales, type Locale } from '@/i18n/config';
 import { GLOSSARY, LESSONS, START_HERE, TOPICS } from './content';
 import { readingMinutesFor } from './content/readingMinutes';
 import type { SeedLesson } from './content/types';
@@ -77,6 +77,17 @@ export const getLessonBySlug = (
 export const getLessonSlugs = (locale: Locale): string[] =>
   LESSONS.map((lesson) => pickLocalized(lesson.slug, locale));
 
+export const getLessonSlugAlternates = (
+  locale: Locale,
+  slug: string,
+): Partial<Record<Locale, string>> | null => {
+  const seed = findSeed(locale, slug);
+  if (!seed) return null;
+  return Object.fromEntries(
+    locales.map((entry) => [entry, pickLocalized(seed.slug, entry)]),
+  );
+};
+
 export const getTopics = (locale: Locale): LessonTopic[] =>
   TOPICS.map((topic) => {
     const slugs = pickLocalized(topic.slugs, locale);
@@ -94,13 +105,13 @@ export const getTopics = (locale: Locale): LessonTopic[] =>
 export const getGlossary = (locale: Locale): GlossaryTerm[] =>
   pickLocalized(GLOSSARY, locale);
 
-export const getLearnStats = (): LearnStats => ({
+export const getLearnStats = (locale: Locale): LearnStats => ({
   lessonCount: LESSONS.length,
   averageMinutes: Math.round(
     LESSONS.reduce(
-      (total, lesson) => total + readingMinutesFor(lesson, 'sq'),
+      (total, lesson) => total + readingMinutesFor(lesson, locale),
       0,
     ) / LESSONS.length,
   ),
-  glossarySize: GLOSSARY.sq.length,
+  glossarySize: pickLocalized(GLOSSARY, locale).length,
 });

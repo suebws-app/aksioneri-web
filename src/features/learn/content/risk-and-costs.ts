@@ -2,7 +2,7 @@ import type { SeedLesson, SeedTopic } from './types';
 
 export const RISK_COSTS_TOPIC: SeedTopic = {
   id: 'risk-and-costs',
-  title: { sq: 'Rreziku dhe kostot' },
+  title: { sq: 'Rreziku dhe kostot', en: 'Risk and Costs' },
   slugs: {
     sq: [
       'cka-eshte-rreziku',
@@ -18,22 +18,41 @@ export const RISK_COSTS_TOPIC: SeedTopic = {
       'kur-duhet-shitur',
       'si-ndertohet-nje-portofol',
     ],
+    en: [
+      'what-is-risk',
+      'currency-risk',
+      'taxes-on-investments',
+      'what-leverage-does',
+      'liquidity-risk',
+      'inflation-as-a-risk',
+      'concentration-risk',
+      'behaviour-costs-more-than-fees',
+      'how-scams-work',
+      'how-to-read-a-fund-factsheet',
+      'when-to-sell',
+      'how-to-build-a-portfolio',
+    ],
   },
 };
 
 export const RISK_COSTS_LESSONS: SeedLesson[] = [
   {
     id: 'what-risk-actually-means',
-    slug: { sq: 'cka-eshte-rreziku' },
+    slug: { sq: 'cka-eshte-rreziku', en: 'what-is-risk' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
-    title: { sq: 'Çka do të thotë vërtet rrezik' },
+    title: {
+      sq: 'Çka do të thotë vërtet rrezik',
+      en: 'What risk actually means',
+    },
     summary: {
       sq: 'Jo luhatja e çmimit, por mundësia të mos i keni paratë kur ju duhen.',
+      en: 'Not price swings, but the chance of not having your money when you need it.',
     },
     inOneSentence: {
       sq: 'Rreziku i vërtetë nuk është që çmimi luan, por që të detyroheni të shitni pikërisht atëherë kur ka rënë.',
+      en: 'The real risk is not that prices move, but that you are forced to sell exactly when they have fallen.',
     },
     body: {
       sq: [
@@ -62,6 +81,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'Two definitions that get confused',
+          paragraphs: [
+            'Academic finance measures risk as volatility: how much a price swings around its average. That definition is easy to measure and convenient for models.',
+            'For a person, risk is something else: the chance of not reaching your goal. If you need €50,000 in ten years, the risk is ending up with €30,000.',
+            'These two definitions often collide. Money in a savings account has zero volatility and a very high risk of missing your long-term goal.',
+          ],
+        },
+        {
+          heading: 'Sequence risk',
+          paragraphs: [
+            'The order of returns matters, not just their average. Two portfolios with the same average return can end up in very different places if you withdraw money along the way.',
+            'A big fall in the first year of retirement, while you are withdrawing money, does far more damage than the same fall in the last year.',
+            'That is why the closer you get to the day you need the money, the less your outcome should depend on the market.',
+          ],
+        },
+        {
+          heading: 'The risks that cannot be measured',
+          paragraphs: [
+            'Models take it for granted that the future will resemble the past. Events that have never happened before show up in no statistic.',
+            'Not understanding what you have bought is a risk too. A product you cannot explain in your own words is a risk, whatever the numbers say.',
+            'The most useful test is still a simple one: what would have to happen for me to lose everything here, and how unlikely is that really?',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -84,6 +129,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Ngjarje shumë të rralla dhe shumë të dëmshme, që modelet i nënçmojnë rregullisht.',
         },
       ],
+      en: [
+        {
+          slug: 'sequence-risk',
+          term: 'Sequence risk',
+          definition:
+            'The risk that the order of returns, not their average, wrecks your plan while you are withdrawing money.',
+          aliases: ['sequence of returns risk', 'sequence risks'],
+        },
+        {
+          slug: 'shortfall-risk',
+          term: 'Shortfall risk',
+          definition:
+            'The chance of not having the amount you need on the day you need it.',
+          aliases: ['shortfall', 'shortfall risks'],
+        },
+        {
+          slug: 'tail-risk',
+          term: 'Tail risk',
+          definition:
+            'Very rare, very damaging events that models routinely underestimate.',
+          aliases: ['tail risks', 'extreme risk'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -98,21 +166,38 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Luhatja është zero, por rreziku për të mos e arritur qëllimin është i lartë. Siguria e shifrës nuk është siguri e rezultatit.',
       },
+      en: {
+        question:
+          'Your retirement money, needed in twenty years, sits in a savings account. Which risk is bigger?',
+        options: [
+          'Price volatility',
+          'That inflation eats your purchasing power and you fall short of the amount you need',
+          'That the bank changes its fees',
+        ],
+        answer: 1,
+        explanation:
+          'The volatility is zero, but the risk of missing your goal is high. A steady number is not a steady outcome.',
+      },
     },
-    upNextSlugs: { sq: ['inflacioni-si-rrezik', 'rreziku-i-perqendrimit'] },
+    upNextSlugs: {
+      sq: ['inflacioni-si-rrezik', 'rreziku-i-perqendrimit'],
+      en: ['inflation-as-a-risk', 'concentration-risk'],
+    },
   },
 
   {
     id: 'currency-risk',
-    slug: { sq: 'rreziku-i-monedhes' },
+    slug: { sq: 'rreziku-i-monedhes', en: 'currency-risk' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
-    title: { sq: 'Rreziku i monedhës' },
+    title: { sq: 'Rreziku i monedhës', en: 'Currency risk' },
     summary: {
       sq: 'Një investim i mirë në dollarë mund të dalë investim i keq në euro.',
+      en: 'A good investment in dollars can turn out to be a bad one in euros.',
     },
     inOneSentence: {
       sq: 'Kur blini diçka të çmuar në monedhë tjetër, i merrni dy investime: asetin dhe monedhën.',
+      en: 'When you buy something priced in another currency, you are taking on two investments: the asset and the currency.',
     },
     body: {
       sq: [
@@ -141,6 +226,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'Two moves, one result',
+          paragraphs: [
+            'You buy an American ETF that gains 10% over the year. At the same time, the dollar weakens 10% against the euro. Your return in euros comes out at roughly zero.',
+            'It works the other way too: an American market that goes nowhere, paired with a strengthening dollar, can hand you a decent profit in euros.',
+            'Neither has anything to do with the quality of the companies you bought. It is simply a second movement layered on top of the first.',
+          ],
+        },
+        {
+          heading: 'Should you hedge?',
+          paragraphs: [
+            'Currency hedging comes at a cost, which usually reflects the interest-rate gap between the two currencies. It is not free.',
+            'For long-term stock holdings, most of the arguments point against hedging: currency swings tend to even out over decades, while the cost of hedging keeps adding up.',
+            'For bonds it is the opposite. If you hold foreign bonds for stability, a 10% currency swing destroys that stability — so hedging makes sense there.',
+          ],
+        },
+        {
+          heading: 'Where the cost hides',
+          paragraphs: [
+            'For a small investor, the biggest currency cost is not the swings but the margin the platform takes on every exchange.',
+            'A margin of 0.5% when you buy and 0.5% when you sell is a full percent, paid every time you go in and out.',
+            'Always check the rate you are offered against the market rate. The difference is a fee that is rarely advertised as one.',
+          ],
+        },
+      ],
     },
     workedExample: {
       sq: [
@@ -155,6 +266,20 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         {
           title: 'Dollari dobësohet për 10% kundrejt euros',
           body: 'Ata 1.210 dollarë kthehen në rreth 1.000 €. Fitimi u zhduk krejt në këmbim.',
+        },
+      ],
+      en: [
+        {
+          title: 'You invest €1,000 in an American ETF',
+          body: "It is exchanged into about 1,100 dollars at the day's rate, minus the platform's margin.",
+        },
+        {
+          title: 'The ETF gains 10% over the year',
+          body: 'You now have about 1,210 dollars. In dollars, everything went well.',
+        },
+        {
+          title: 'The dollar weakens 10% against the euro',
+          body: 'Those 1,210 dollars convert back into roughly €1,000. The whole gain vanished in the exchange.',
         },
       ],
     },
@@ -175,6 +300,22 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           aliases: ['mbrojtje valutore', 'hedged'],
         },
       ],
+      en: [
+        {
+          slug: 'currency-risk',
+          term: 'Currency risk',
+          definition:
+            'The risk that exchange-rate moves change your return in your home currency.',
+          aliases: ['FX risk', 'exchange rate risk'],
+        },
+        {
+          slug: 'hedged',
+          term: 'Hedged',
+          definition:
+            'A fund that removes the exchange-rate effect, in return for an annual cost.',
+          aliases: ['currency hedging', 'currency-hedged'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -185,22 +326,35 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Të dyja lëvizjet mblidhen mbi njëra-tjetrën. Fitimin në dollarë e fshiu humbja në këmbim.',
       },
+      en: {
+        question:
+          'Your American ETF gained 8% and the dollar weakened 8%. What did you earn in euros?',
+        options: ['About 16%', 'Almost nothing', 'About 8%'],
+        answer: 1,
+        explanation:
+          'The two moves stack on top of each other. The exchange-rate loss wiped out the dollar gain.',
+      },
     },
     relatedSymbols: ['eur-usd'],
-    upNextSlugs: { sq: ['taksat-mbi-investimet', 'si-lexohet-fleta-e-fondit'] },
+    upNextSlugs: {
+      sq: ['taksat-mbi-investimet', 'si-lexohet-fleta-e-fondit'],
+      en: ['taxes-on-investments', 'how-to-read-a-fund-factsheet'],
+    },
   },
 
   {
     id: 'tax-on-investments',
-    slug: { sq: 'taksat-mbi-investimet' },
+    slug: { sq: 'taksat-mbi-investimet', en: 'taxes-on-investments' },
     topicId: 'risk-and-costs',
     level: 'beginner',
-    title: { sq: 'Taksat mbi investimet' },
+    title: { sq: 'Taksat mbi investimet', en: 'Taxes on investments' },
     summary: {
       sq: 'Kur lind detyrimi, pse shitja e shpeshtë kushton dhe pse kjo nuk është këshillë tatimore.',
+      en: 'When the bill arises, why frequent selling costs you, and why this is not tax advice.',
     },
     inOneSentence: {
       sq: 'Taksa zakonisht lind kur shitni ose kur merrni dividend, prandaj sa më rrallë të shitni, aq më gjatë punojnë paratë tuaja të plota.',
+      en: 'Tax usually arises when you sell or receive a dividend, so the less often you sell, the longer your money works for you in full.',
     },
     body: {
       sq: [
@@ -229,6 +383,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'Two moments of taxation',
+          paragraphs: [
+            'The first is the capital gain: the difference between your selling price and your buying price. It is usually not taxed until you sell.',
+            'The second is income: dividends and bond coupons, which are usually taxed in the year you receive them, whether or not you spend them.',
+            'The rules, rates, and exemptions differ from country to country and change over time. This page explains the mechanism, not your personal tax bill.',
+          ],
+        },
+        {
+          heading: 'Why frequent selling costs you twice',
+          paragraphs: [
+            'Every time you sell at a profit, part of that profit leaves as tax and never compounds again.',
+            'Two investors with the same gross return over twenty years can end up with noticeably different amounts if one kept buying and selling while the other simply held.',
+            'This is a powerful and underrated argument for holding long term: deferring tax is itself a kind of return.',
+          ],
+        },
+        {
+          heading: 'Structure matters',
+          paragraphs: [
+            'Accumulating funds reinvest dividends inside the fund. In some jurisdictions this defers the tax; in others it does not. It is worth checking for your country.',
+            'Tax-advantaged accounts, where they exist, should usually be used before an ordinary account.',
+            'And keep records: purchase prices, dates, and currency conversions. Digging them up five years later is far harder than saving them today.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -252,6 +432,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Taksa që ndalet vetvetiu mbi dividendët e huaj para se t’ju arrijnë.',
         },
       ],
+      en: [
+        {
+          slug: 'capital-gain',
+          term: 'Capital gain',
+          definition:
+            'The difference between the selling price and the purchase price of an asset.',
+          aliases: ['capital gains'],
+        },
+        {
+          slug: 'tax-deferral',
+          term: 'Tax deferral',
+          definition:
+            'Paying tax later, which leaves the full amount to keep compounding.',
+          aliases: ['deferred tax', 'tax deferred'],
+        },
+        {
+          slug: 'withholding-tax',
+          term: 'Withholding tax',
+          definition:
+            'Tax deducted automatically from foreign dividends before they reach you.',
+          aliases: ['withholding', 'withholding taxes'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -266,26 +469,41 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Çdo shitje me fitim i heq para kompozimit. Shtyrja e taksës e mban atë shumë duke punuar për ju.',
       },
+      en: {
+        question:
+          'Why can holding long term produce more than frequent buying and selling, even with the same gross return?',
+        options: [
+          'Because the commissions are the same',
+          'Because deferred tax leaves the full amount to keep compounding',
+          'Because the market rewards loyalty',
+        ],
+        answer: 1,
+        explanation:
+          'Every profitable sale takes money out of compounding. Deferring the tax keeps that amount working for you.',
+      },
     },
     upNextSlugs: {
       sq: [
         'sjellja-kushton-me-shume-se-tarifat',
         'tarifat-qe-ndryshojne-gjithcka',
       ],
+      en: ['behaviour-costs-more-than-fees', 'the-fees-that-change-everything'],
     },
   },
 
   {
     id: 'what-leverage-does',
-    slug: { sq: 'cka-ben-leva' },
+    slug: { sq: 'cka-ben-leva', en: 'what-leverage-does' },
     topicId: 'risk-and-costs',
     level: 'advanced',
-    title: { sq: 'Çka bën leva' },
+    title: { sq: 'Çka bën leva', en: 'What leverage does' },
     summary: {
       sq: 'I shumëzon fitimet dhe humbjet, por jo njësoj — dhe pikërisht kjo mospërputhje ju nxjerr jashtë loje.',
+      en: 'It multiplies gains and losses, but not equally — and that mismatch is exactly what knocks you out of the game.',
     },
     inOneSentence: {
       sq: 'Leva ju lejon të mbani më shumë se sa keni, kurse kostoja është që tash e tutje kohën e mbarimit e vendos dikush tjetër.',
+      en: 'Leverage lets you hold more than you own, and the price is that from then on, someone else decides when the game ends.',
     },
     body: {
       sq: [
@@ -314,6 +532,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The lopsided maths',
+          paragraphs: [
+            'If you lose 50%, you need a 100% gain just to get back to where you started. That mismatch exists even without leverage; leverage makes it worse.',
+            'With double leverage, a 25% market fall wipes out half your capital. To recover, you need what is left to grow by 100%.',
+            'That is why a leveraged portfolio can go to zero even in a market that eventually recovers in full. It was knocked out before the recovery arrived.',
+          ],
+        },
+        {
+          heading: 'The margin call',
+          paragraphs: [
+            'When you hold positions with borrowed money and their value falls below a threshold, the lender demands extra cash on the spot. If you do not have it, they sell your position for you.',
+            'This always happens at the worst possible moment, because the threshold is hit precisely when prices are at their lowest.',
+            'That is the essential difference between a paper loss and a real one: without leverage, you decide when to sell; with leverage, someone else does.',
+          ],
+        },
+        {
+          heading: 'Daily leveraged products',
+          paragraphs: [
+            '"2x" or "3x" ETFs reset every day. That means over longer periods they do not deliver double or triple the index\'s return.',
+            'In a market that bounces up and down without going anywhere, a product like this loses value continuously. The effect is called volatility decay.',
+            'These instruments are built for intraday trading. Holding them for months is a completely different use from the one they were designed for.',
+          ],
+        },
+      ],
     },
     comparison: {
       sq: {
@@ -321,6 +565,20 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         columns: ['Leva', 'Humbja juaj', 'Rritja e nevojshme për t’u kthyer'],
         rows: [
           { label: 'Pa levë', value: '−25%', cost: '+33%', tone: 'positive' },
+          { label: '2x', value: '−50%', cost: '+100%' },
+          { label: '3x', value: '−75%', cost: '+300%', tone: 'negative' },
+        ],
+      },
+      en: {
+        heading: 'A 25% market fall',
+        columns: ['Leverage', 'Your loss', 'Gain needed to recover'],
+        rows: [
+          {
+            label: 'No leverage',
+            value: '−25%',
+            cost: '+33%',
+            tone: 'positive',
+          },
           { label: '2x', value: '−50%', cost: '+100%' },
           { label: '3x', value: '−75%', cost: '+300%', tone: 'negative' },
         ],
@@ -347,6 +605,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Shitja e pozicionit tuaj nga huadhënësi kur nuk e mbuloni një thirrje për marzh.',
         },
       ],
+      en: [
+        {
+          slug: 'margin-call',
+          term: 'Margin call',
+          definition:
+            "A lender's demand for extra cash when your position falls below a threshold.",
+          aliases: ['margin calls'],
+        },
+        {
+          slug: 'volatility-decay',
+          term: 'Volatility decay',
+          definition:
+            'The slow loss of value in daily leveraged products when the market bounces up and down.',
+          aliases: ['volatility drag'],
+        },
+        {
+          slug: 'liquidation',
+          term: 'Forced liquidation',
+          definition:
+            'The sale of your position by the lender when you fail to meet a margin call.',
+          aliases: ['liquidation', 'liquidations'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -361,24 +642,39 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Me levë kohën e shitjes nuk e vendosni ju. Likuidimi i detyruar e kthen një humbje të përkohshme në humbje përfundimtare.',
       },
+      en: {
+        question:
+          'Why can a leveraged portfolio go to zero even if the market eventually recovers in full?',
+        options: [
+          'Because leverage carries very high fees',
+          'Because a margin call can knock you out before the recovery arrives',
+          'Because markets never fully recover',
+        ],
+        answer: 1,
+        explanation:
+          'With leverage, you no longer choose when to sell. Forced liquidation turns a temporary loss into a permanent one.',
+      },
     },
     upNextSlugs: {
       sq: ['rreziku-i-likuiditetit', 'si-funksionojne-mashtrimet'],
+      en: ['liquidity-risk', 'how-scams-work'],
     },
   },
 
   {
     id: 'liquidity-risk',
-    slug: { sq: 'rreziku-i-likuiditetit' },
+    slug: { sq: 'rreziku-i-likuiditetit', en: 'liquidity-risk' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     noMaths: true,
-    title: { sq: 'Rreziku i likuiditetit' },
+    title: { sq: 'Rreziku i likuiditetit', en: 'Liquidity risk' },
     summary: {
       sq: 'Një çmim në ekran nuk është premtim se dikush do ta paguajë atë çmim.',
+      en: 'A price on a screen is not a promise that anyone will pay it.',
     },
     inOneSentence: {
       sq: 'Likuiditeti është mundësia për të shitur shpejt me çmim të drejtë, dhe zhduket pikërisht atëherë kur ju duhet më së shumti.',
+      en: 'Liquidity is the ability to sell quickly at a fair price, and it disappears exactly when you need it most.',
     },
     body: {
       sq: [
@@ -407,6 +703,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The price versus what you actually get',
+          paragraphs: [
+            'The last price shows what someone paid for a small quantity. It says nothing about the price you would get if you sold ten times that amount.',
+            'For a large stock, the difference is negligible. For a small stock, a corporate bond, or a property, it can be several percent.',
+            'That is why a portfolio valuation always comes out slightly optimistic: it assumes every position could be sold at the last price, which is never true for all of them at once.',
+          ],
+        },
+        {
+          heading: 'When it disappears',
+          paragraphs: [
+            'Liquidity is most plentiful when you do not need it and scarcest when you do. In a panic, buyers vanish and spreads widen in an instant.',
+            'This hits hardest the assets that looked safe: corporate bonds, real estate funds, and anything that trades only a little each day.',
+            'Some funds have suspended withdrawals during crises for exactly this reason — they could not sell their assets fast enough to pay their investors.',
+          ],
+        },
+        {
+          heading: 'How to judge it',
+          paragraphs: [
+            'Look at the average daily volume. If your position makes up a large share of it, getting out will cost you.',
+            'Look at the spread between the buying and selling price. A wide spread means an immediate cost, and a warning that liquidity is thin.',
+            'And read the withdrawal terms of any fund that does not trade on an exchange. The words "in exceptional circumstances" deserve your attention before you need them.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -430,6 +752,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Kur një fond i ndal përkohësisht tërheqjet sepse nuk arrin t’i shesë asetet e veta.',
         },
       ],
+      en: [
+        {
+          slug: 'liquidity-risk',
+          term: 'Liquidity risk',
+          definition:
+            'The risk of not being able to sell quickly without accepting a noticeably worse price.',
+          aliases: ['illiquidity', 'liquidity risks'],
+        },
+        {
+          slug: 'volume',
+          term: 'Volume',
+          definition:
+            'How many units trade on an average day. A direct indicator of liquidity.',
+          aliases: ['trading volume'],
+        },
+        {
+          slug: 'gating',
+          term: 'Gating',
+          definition:
+            'When a fund temporarily halts withdrawals because it cannot sell its own assets.',
+          aliases: ['withdrawal suspension', 'gated fund'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -444,23 +789,41 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Likuiditeti varet nga të pasurit blerës. Kur duan të shesin të gjithë përnjëherë, ata blerës nuk janë aty.',
       },
+      en: {
+        question:
+          'Why is liquidity the risk that shows up exactly when you need it most?',
+        options: [
+          'Because stock exchanges close during crises',
+          'Because in a panic, buyers vanish and spreads widen',
+          'Because regulators ban selling',
+        ],
+        answer: 1,
+        explanation:
+          'Liquidity depends on having buyers. When everyone wants to sell at once, those buyers are not there.',
+      },
     },
     upNextSlugs: {
       sq: ['rreziku-i-perqendrimit', 'si-funksionojne-mashtrimet'],
+      en: ['concentration-risk', 'how-scams-work'],
     },
   },
 
   {
     id: 'inflation-as-a-risk',
-    slug: { sq: 'inflacioni-si-rrezik' },
+    slug: { sq: 'inflacioni-si-rrezik', en: 'inflation-as-a-risk' },
     topicId: 'risk-and-costs',
     level: 'beginner',
-    title: { sq: 'Inflacioni si rrezik për kursimtarin' },
+    title: {
+      sq: 'Inflacioni si rrezik për kursimtarin',
+      en: 'Inflation as a risk to savers',
+    },
     summary: {
       sq: 'Humbja e vetme e garantuar në financë dhe e vetmja që nuk del kurrë në pasqyrën e llogarisë.',
+      en: 'The only guaranteed loss in finance, and the only one that never shows up on your account statement.',
     },
     inOneSentence: {
       sq: 'Inflacioni jua merr fuqinë blerëse pa u lëvizur asnjë shifër, prandaj është humbja e vetme që askush nuk e vëren derisa të bëhet e madhe.',
+      en: 'Inflation takes your purchasing power without moving a single digit, which makes it the one loss nobody notices until it has grown large.',
     },
     body: {
       sq: [
@@ -489,6 +852,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The invisible loss',
+          paragraphs: [
+            'If stocks fall 20%, you see it instantly. If inflation eats 20% of your purchasing power over seven years, your statement shows the same number and you notice nothing.',
+            'That is why people treat cash as "risk-free". It is volatility-free, which is a very different thing.',
+            'At 3% inflation, the purchasing power of your money halves in twenty-three years. That happens with certainty, not as a possibility.',
+          ],
+        },
+        {
+          heading: 'What protects you and what does not',
+          paragraphs: [
+            'Historically, stocks have protected you over long periods, because companies raise their prices along with inflation. Over short periods they can suffer, especially when inflation rises suddenly.',
+            'Fixed-rate bonds are hit hardest: the coupon is fixed, and inflation eats away at its real value every year.',
+            'Real estate and commodities sometimes help, but not always, and they come with costs and complications of their own.',
+          ],
+        },
+        {
+          heading: 'The number to watch',
+          paragraphs: [
+            'The return that matters is the real one: your return minus inflation. A deposit paying 4% in a year with 6% inflation is a real loss of 2%.',
+            'When you compare options, convert them all to real terms. Otherwise a high nominal rate looks attractive precisely when it is at its worst.',
+            'This is also the test for any "risk-free" promise: if the nominal return is below inflation, the certainty on offer is the certainty of a loss.',
+          ],
+        },
+      ],
     },
     comparison: {
       sq: {
@@ -504,6 +893,25 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           { label: 'Depozitë', value: '3%', cost: '−2%' },
           {
             label: 'Indeks aksionesh (mesatarisht)',
+            value: '8%',
+            cost: '+3%',
+            tone: 'positive',
+          },
+        ],
+      },
+      en: {
+        heading: 'Nominal versus real return, at 5% inflation',
+        columns: ['Where you keep it', 'Nominal return', 'Real return'],
+        rows: [
+          {
+            label: 'Cash in hand',
+            value: '0%',
+            cost: '−5%',
+            tone: 'negative',
+          },
+          { label: 'Deposit', value: '3%', cost: '−2%' },
+          {
+            label: 'Stock index (on average)',
             value: '8%',
             cost: '+3%',
             tone: 'positive',
@@ -533,6 +941,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Obligacion të cilit i rriten kuponi dhe principali bashkë me inflacionin.',
         },
       ],
+      en: [
+        {
+          slug: 'nominal-return',
+          term: 'Nominal return',
+          definition:
+            'The return before inflation is subtracted. The number that gets advertised.',
+          aliases: ['nominal returns'],
+        },
+        {
+          slug: 'real-return',
+          term: 'Real return',
+          definition:
+            'The return after inflation — how much more you can actually buy.',
+          aliases: ['real returns'],
+        },
+        {
+          slug: 'inflation-linked-bond',
+          term: 'Inflation-linked bond',
+          definition:
+            'A bond whose coupon and principal rise along with inflation.',
+          aliases: ['inflation-linked bonds', 'index-linked bond'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -547,23 +978,40 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Shifra në llogari rritet, por blen më pak. Kthimi real është ai nominal minus inflacioni.',
       },
+      en: {
+        question:
+          'A deposit pays 4% while inflation is 6%. What happens to you in real terms?',
+        options: [
+          'You gain 4%',
+          'You lose about 2% of your purchasing power',
+          'Nothing changes',
+        ],
+        answer: 1,
+        explanation:
+          'The number in your account grows, but it buys less. The real return is the nominal one minus inflation.',
+      },
     },
     relatedSymbols: ['gold'],
-    upNextSlugs: { sq: ['cka-eshte-kompozimi', 'kursim-apo-investim'] },
+    upNextSlugs: {
+      sq: ['cka-eshte-kompozimi', 'kursim-apo-investim'],
+      en: ['what-is-compounding', 'saving-or-investing'],
+    },
   },
 
   {
     id: 'concentration-risk',
-    slug: { sq: 'rreziku-i-perqendrimit' },
+    slug: { sq: 'rreziku-i-perqendrimit', en: 'concentration-risk' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
-    title: { sq: 'Rreziku i përqendrimit' },
+    title: { sq: 'Rreziku i përqendrimit', en: 'Concentration risk' },
     summary: {
       sq: 'Rreziku më i madh që e marrin shumica e njerëzve nuk është aksioni që e zgjodhën, por sa nga gjithçka që kanë varet nga e njëjta gjë.',
+      en: 'The biggest risk most people take is not the stock they picked, but how much of everything they have depends on the same thing.',
     },
     inOneSentence: {
       sq: 'Përqendrimi nuk matet me numrin e investimeve, por me numrin e mënyrave të ndryshme si mund të humbni.',
+      en: 'Concentration is not measured by how many investments you hold, but by how many different ways you can lose.',
     },
     body: {
       sq: [
@@ -592,6 +1040,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The concentration you cannot see',
+          paragraphs: [
+            "If you work at a bank, hold that bank's shares through the employee scheme, and also own a financial-sector ETF, you have three versions of the same bet.",
+            'When the banking sector suffers, you lose your job security, your bonus, and your investments all at once. Those are not three separate risks.',
+            'This is the most dangerous kind of concentration because it does not show up in your portfolio view — that shows only your investments, not the rest of your financial life.',
+          ],
+        },
+        {
+          heading: "Your employer's shares",
+          paragraphs: [
+            'Employee share schemes are attractive and often discounted. They are also the most common way people end up over-concentrated.',
+            "A widely used rule of thumb: never let your employer's shares grow beyond a small slice of your wealth, however good the company looks to you.",
+            'You know the company well, but that knowledge does not protect you — the employees of Enron and Lehman knew their companies very well too.',
+          ],
+        },
+        {
+          heading: 'Concentration inside an index',
+          paragraphs: [
+            'Even a "broad" fund can be concentrated. In recent years, the ten largest companies have made up a large share of the American index\'s value.',
+            'That means an ETF holding five hundred companies can move mainly with the fortunes of a few technology names.',
+            'Holding it is not necessarily a mistake. The mistake is holding it while believing you own five hundred separate risks.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -614,6 +1088,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Si ndahet një indeks mes kompanive. Peshimi sipas madhësisë e përqendron te më të mëdhatë.',
         },
       ],
+      en: [
+        {
+          slug: 'concentration-risk',
+          term: 'Concentration risk',
+          definition:
+            'The risk that a large share of your wealth depends on a single factor.',
+          aliases: ['concentration', 'concentration risks'],
+        },
+        {
+          slug: 'human-capital',
+          term: 'Human capital',
+          definition:
+            'The value of your future earnings from work — for most people, the largest part of their wealth.',
+          aliases: ['earning power'],
+        },
+        {
+          slug: 'index-weighting',
+          term: 'Index weighting',
+          definition:
+            'How an index is divided among companies. Weighting by size concentrates it in the largest ones.',
+          aliases: ['market-cap weighting', 'index weights'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -628,23 +1125,44 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Këto nuk janë rreziqe të veçanta. Rënia e sektorit i godet të tria përnjëherë.',
       },
+      en: {
+        question:
+          'You work at a technology company, hold its shares, and own a technology ETF. What is the problem?',
+        options: [
+          'You have too few investments',
+          'Your job, your bonus, and your investments all depend on the same sector',
+          'Technology ETFs have high fees',
+        ],
+        answer: 1,
+        explanation:
+          'These are not separate risks. A downturn in the sector hits all three at once.',
+      },
     },
     upNextSlugs: {
       sq: ['pse-funksionon-diversifikimi', 'si-ndertohet-nje-portofol'],
+      en: ['why-diversification-works', 'how-to-build-a-portfolio'],
     },
   },
 
   {
     id: 'behaviour-costs-more-than-fees',
-    slug: { sq: 'sjellja-kushton-me-shume-se-tarifat' },
+    slug: {
+      sq: 'sjellja-kushton-me-shume-se-tarifat',
+      en: 'behaviour-costs-more-than-fees',
+    },
     topicId: 'risk-and-costs',
     level: 'beginner',
-    title: { sq: 'Sjellja kushton më shumë se tarifat' },
+    title: {
+      sq: 'Sjellja kushton më shumë se tarifat',
+      en: 'Behaviour costs more than fees',
+    },
     summary: {
       sq: 'Dallimi mes kthimit të një fondi dhe kthimit të investitorëve të tij është shifër që matet — dhe është e madhe.',
+      en: "The gap between a fund's return and its investors' return is a measurable number — and it is large.",
     },
     inOneSentence: {
       sq: 'Shumica e njerëzve fitojnë më pak se fondet që i mbajnë, sepse blejnë pas rritjes dhe shesin pas rënies.',
+      en: 'Most people earn less than the funds they hold, because they buy after the rise and sell after the fall.',
     },
     body: {
       sq: [
@@ -673,6 +1191,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The behaviour gap',
+          paragraphs: [
+            'A fund can report an 8% annual average while the average investor in it earned noticeably less. The difference does not come from fees — those are already deducted.',
+            'It comes from the timing of entries and exits. Money flows in after the good years and out after the bad ones, so most of the capital is there for the falls and missing for the recoveries.',
+            'This gap has been measured again and again, and it usually comes out larger than the entire annual fee of an index fund.',
+          ],
+        },
+        {
+          heading: 'Why it happens',
+          paragraphs: [
+            'A loss hurts roughly twice as much as an equal gain feels good. That is why selling during a fall feels like relief, not like a mistake.',
+            'Add to that the tendency to see patterns where there is only noise, and the confidence that grows precisely when prices are high.',
+            'None of this goes away just because you know about it. It is kept in check with structure: rules set in advance, while you are calm.',
+          ],
+        },
+        {
+          heading: 'What actually helps',
+          paragraphs: [
+            'Automatic contributions remove the monthly decision. Rebalancing once a year forces you to sell what rose and buy what fell, without thinking about it at all.',
+            'Looking less often helps noticeably. The more often you check your portfolio, the more falls you see, and the stronger the urge to act becomes.',
+            'And a written plan — how much risk, why, and what you will do in a 30% fall — is worth more than any market forecast.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -695,6 +1239,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Prirja për të menduar se ajo që ndodhi së fundi do të vazhdojë.',
         },
       ],
+      en: [
+        {
+          slug: 'behaviour-gap',
+          term: 'Behaviour gap',
+          definition:
+            "The difference between a fund's return and the return its investors actually earned.",
+          aliases: ['behavior gap'],
+        },
+        {
+          slug: 'loss-aversion',
+          term: 'Loss aversion',
+          definition:
+            'The tendency to feel a loss roughly twice as strongly as an equal gain.',
+          aliases: ['loss averse'],
+        },
+        {
+          slug: 'recency-bias',
+          term: 'Recency bias',
+          definition:
+            'The tendency to assume that whatever happened recently will continue.',
+          aliases: ['recency effect'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -708,22 +1275,42 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Kthimi i fondit e merr të mirëqenë se mbahet pandërprerë. Koha e hyrjes dhe e daljes ia shkurton atë kthim njeriut.',
       },
+      en: {
+        question:
+          'Why does the average investor earn less than the fund they hold?',
+        options: [
+          'Because fees are deducted twice',
+          'Because they buy after rises and sell after falls',
+          'Because funds report inaccurate numbers',
+        ],
+        answer: 1,
+        explanation:
+          "A fund's return assumes you held throughout. Timing your entries and exits cuts that return down.",
+      },
     },
-    upNextSlugs: { sq: ['kur-duhet-shitur', 'koha-ne-treg'] },
+    upNextSlugs: {
+      sq: ['kur-duhet-shitur', 'koha-ne-treg'],
+      en: ['when-to-sell', 'time-in-the-market'],
+    },
   },
 
   {
     id: 'how-scams-work',
-    slug: { sq: 'si-funksionojne-mashtrimet' },
+    slug: { sq: 'si-funksionojne-mashtrimet', en: 'how-scams-work' },
     topicId: 'risk-and-costs',
     level: 'beginner',
     noMaths: true,
-    title: { sq: 'Si funksionojnë mashtrimet financiare' },
+    title: {
+      sq: 'Si funksionojnë mashtrimet financiare',
+      en: 'How financial scams work',
+    },
     summary: {
       sq: 'Struktura është gjithmonë e njëjta, edhe kur ndërrohet teknologjia.',
+      en: 'The structure is always the same, even when the technology changes.',
     },
     inOneSentence: {
       sq: 'Çdo mashtrim premton kthim të lartë pa rrezik, ju nxit të nxitoni dhe e bën tërheqjen e parave më të vështirë se depozitimin.',
+      en: 'Every scam promises high returns without risk, pushes you to hurry, and makes withdrawing money harder than depositing it.',
     },
     body: {
       sq: [
@@ -752,6 +1339,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The signs that repeat',
+          paragraphs: [
+            'High, steady returns without a single bad month. Real markets fluctuate; a straight line going up means the numbers are invented, not that the strategy is brilliant.',
+            'Time pressure: "the offer closes today", "only ten spots left". The rush is there so you have no time to verify.',
+            'Trouble withdrawing. Depositing is always instant; withdrawing requires "taxes" or "verification", or is met with silence.',
+          ],
+        },
+        {
+          heading: 'Pyramid and Ponzi schemes',
+          paragraphs: [
+            'In a Ponzi scheme there is no investment at all. New investors\' money is paid out to earlier ones as "profit", until the new inflow stops.',
+            'In a pyramid scheme, the income comes from recruiting new people, not from selling any real product.',
+            'Both keep going as long as they grow, and collapse the moment they stop. That is why the pressure to bring in friends and family is part of the mechanism, not enthusiasm.',
+          ],
+        },
+        {
+          heading: 'Practical protection',
+          paragraphs: [
+            "Check the licence with your country's regulator, not on the firm's own website. Scammers copy the names and licence numbers of real firms.",
+            'Always insist on understanding where the return comes from. If the answer is "our algorithm" or "high-frequency trading" with no detail, that will remain the only answer you get.',
+            'And keep the rule that saves more people than any other: nobody contacts you out of the blue to hand you a good investment opportunity.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -775,6 +1388,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           aliases: ['rregullatori'],
         },
       ],
+      en: [
+        {
+          slug: 'ponzi-scheme',
+          term: 'Ponzi scheme',
+          definition:
+            'A fraud in which earlier investors\' "profits" are paid with the money of new ones.',
+          aliases: ['Ponzi', 'Ponzi schemes'],
+        },
+        {
+          slug: 'pump-and-dump',
+          term: 'Pump and dump',
+          definition:
+            "Artificially inflating an asset's price in order to sell it to those who come after.",
+          aliases: ['pump-and-dump'],
+        },
+        {
+          slug: 'regulator',
+          term: 'Regulator',
+          definition:
+            'The authority that licenses and supervises financial firms in a country.',
+          aliases: ['regulators', 'financial regulator'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -789,21 +1425,44 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Tregjet e vërteta luhaten. Mungesa e plotë e muajve të këqij është shenja klasike e rezultateve të trilluara.',
       },
+      en: {
+        question:
+          'A platform shows positive monthly returns for three straight years, without a single negative month. What does that mean?',
+        options: [
+          'An exceptionally good strategy',
+          'That the numbers are likely invented',
+          'That the market has been calm',
+        ],
+        answer: 1,
+        explanation:
+          'Real markets fluctuate. The complete absence of bad months is the classic sign of invented results.',
+      },
     },
-    upNextSlugs: { sq: ['si-lexohet-fleta-e-fondit', 'cka-eshte-rreziku'] },
+    upNextSlugs: {
+      sq: ['si-lexohet-fleta-e-fondit', 'cka-eshte-rreziku'],
+      en: ['how-to-read-a-fund-factsheet', 'what-is-risk'],
+    },
   },
 
   {
     id: 'reading-a-fund-factsheet',
-    slug: { sq: 'si-lexohet-fleta-e-fondit' },
+    slug: {
+      sq: 'si-lexohet-fleta-e-fondit',
+      en: 'how-to-read-a-fund-factsheet',
+    },
     topicId: 'risk-and-costs',
     level: 'intermediate',
-    title: { sq: 'Si të lexohet fleta informative e një fondi' },
+    title: {
+      sq: 'Si të lexohet fleta informative e një fondi',
+      en: 'How to read a fund factsheet',
+    },
     summary: {
       sq: 'Dy faqe që e kanë gjithçka që ju duhet, nëse i dini cilët pesë rreshta duhen lexuar.',
+      en: 'Two pages that contain everything you need, if you know which five lines to read.',
     },
     inOneSentence: {
       sq: 'Fleta informative ju tregon çka mban fondi, sa kushton, sa mirë e ndjek indeksin e vet dhe sa keq ka shkuar në të kaluarën.',
+      en: 'The factsheet tells you what the fund holds, what it costs, how well it tracks its index, and how badly it has done in the past.',
     },
     body: {
       sq: [
@@ -832,6 +1491,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The five lines that matter',
+          paragraphs: [
+            'The index it tracks: this determines everything. "MSCI World" and "MSCI World SRI" sound alike but hold very different things.',
+            "The full annual fee, not just the management fee. And the fund's size — a very small fund risks being closed down and forcing you to sell.",
+            'The top holdings and their weights. If the first ten names make up half the fund, you have not bought what the company count suggests.',
+          ],
+        },
+        {
+          heading: 'Tracking and replication',
+          paragraphs: [
+            'Tracking error shows how far the fund has strayed from its index. A cheap fund that tracks poorly can cost you more than a slightly pricier one that tracks precisely.',
+            "How it replicates matters too. Physical replication means the fund actually owns the shares. Synthetic replication means it holds a contract with a bank that promises it the index's return.",
+            'The synthetic kind is usually cheaper, but it adds a new risk: if the bank fails, the promise fails with it. That is a choice, not a mistake — but it should be made knowingly.',
+          ],
+        },
+        {
+          heading: 'The performance numbers',
+          paragraphs: [
+            'Past performance is always shown and predicts very little. What is useful is not the average, but the worst year and the maximum drawdown.',
+            'Those two numbers tell you what you need to be able to endure. If the historical maximum drawdown is 45% and you know you would sell at 25%, this fund is not for you, however good its average return.',
+            'Also check which currency the performance is reported in. The same numbers in a different currency tell a completely different story.',
+          ],
+        },
+      ],
     },
     comparison: {
       sq: {
@@ -853,6 +1538,28 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             label: 'Rënia maksimale',
             value: 'Sa keq ka shkuar?',
             cost: 'Histori shumë e shkurtër',
+          },
+        ],
+      },
+      en: {
+        heading: 'What to look for, in order',
+        columns: ['Line', 'The question it answers', 'Warning sign'],
+        rows: [
+          {
+            label: 'Index tracked',
+            value: 'What do I actually own?',
+            cost: 'Similar name, different contents',
+          },
+          {
+            label: 'Total fee',
+            value: 'What does it cost me?',
+            cost: 'Only the management fee is shown',
+            tone: 'negative',
+          },
+          {
+            label: 'Maximum drawdown',
+            value: 'How bad has it been?',
+            cost: 'A very short history',
           },
         ],
       },
@@ -884,6 +1591,36 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Rreziku që pala e cila ju ka premtuar diçka të mos jetë në gjendje ta mbajë premtimin.',
         },
       ],
+      en: [
+        {
+          slug: 'factsheet',
+          term: 'Factsheet',
+          definition:
+            "The two-page document summarising a fund's strategy, costs, and performance.",
+          aliases: ['fund factsheet', 'KID'],
+        },
+        {
+          slug: 'physical-replication',
+          term: 'Physical replication',
+          definition:
+            'When the fund actually owns the securities in the index.',
+          aliases: ['physical ETF'],
+        },
+        {
+          slug: 'synthetic-replication',
+          term: 'Synthetic replication',
+          definition:
+            "When the fund holds a contract with a bank that promises it the index's return.",
+          aliases: ['synthetic ETF'],
+        },
+        {
+          slug: 'counterparty-risk',
+          term: 'Counterparty risk',
+          definition:
+            'The risk that the party who made you a promise is unable to keep it.',
+          aliases: ['counterparty risks'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -898,22 +1635,39 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Kostoja e vërtetë është tarifa plus largimi nga indeksi. Ndjekja e dobët mund ta kalojë lehtë kursimin nga një tarifë e ulët.',
       },
+      en: {
+        question:
+          'Two funds track the same index. One charges 0.05% with a 0.40% tracking error; the other 0.15% and 0.03%. Which is likely to cost you less?',
+        options: [
+          'Always the first, because its fee is lower',
+          'The second, because poor tracking costs more than the fee difference',
+          'It does not matter, both track the same index',
+        ],
+        answer: 1,
+        explanation:
+          'The true cost is the fee plus the distance from the index. Poor tracking can easily outweigh the saving from a low fee.',
+      },
     },
-    upNextSlugs: { sq: ['cka-eshte-nje-fond', 'si-ndertohet-nje-portofol'] },
+    upNextSlugs: {
+      sq: ['cka-eshte-nje-fond', 'si-ndertohet-nje-portofol'],
+      en: ['what-is-a-fund', 'how-to-build-a-portfolio'],
+    },
   },
 
   {
     id: 'when-to-sell',
-    slug: { sq: 'kur-duhet-shitur' },
+    slug: { sq: 'kur-duhet-shitur', en: 'when-to-sell' },
     topicId: 'risk-and-costs',
     level: 'intermediate',
     noMaths: true,
-    title: { sq: 'Kur duhet shitur' },
+    title: { sq: 'Kur duhet shitur', en: 'When to sell' },
     summary: {
       sq: 'Tri arsye të mira dhe disa të këqija — dhe pse vendimi duhet marrë para se të luajë çmimi.',
+      en: 'Three good reasons and a few bad ones — and why the decision should be made before the price moves.',
     },
     inOneSentence: {
       sq: 'Shitni kur ndërrohet arsyeja pse e bletë, kur ju duhen paratë ose kur pesha është rritur shumë — jo sepse ka rënë çmimi.',
+      en: 'Sell when the reason you bought has changed, when you need the money, or when a position has grown too large — not because the price fell.',
     },
     body: {
       sq: [
@@ -942,6 +1696,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'Three good reasons',
+          paragraphs: [
+            'First: your thesis broke. You bought a company because you expected something; that thing is not happening and is not going to. The price plays no part in that judgement.',
+            'Second: you need the money. That is what investing is for. Selling to buy a home or pay for an education is not failure, it is the plan being completed.',
+            'Third: the position has grown out of control. If a holding has gone from 5% to 30% of your portfolio, you now have a concentration you never chose.',
+          ],
+        },
+        {
+          heading: 'Bad reasons that sound good',
+          paragraphs: [
+            '"It has gone up a lot, I am taking my profit." The price you paid has nothing to do with today\'s value. The market does not know what you paid, and it does not care.',
+            '"It has fallen a lot, I will wait for it to come back and then sell." That ties the decision to an arbitrary number — your purchase price — instead of today\'s value.',
+            '"Everyone is selling." That is the reason that triggers selling right at the bottom of a fall, where the damage is greatest.',
+          ],
+        },
+        {
+          heading: 'Decide in advance',
+          paragraphs: [
+            'Rules written down before you open a position are far better than judgement in a moment of stress.',
+            'A simple rebalancing rule — return to your target weights once a year, or whenever something drifts more than ten percentage points — makes most of these decisions for you.',
+            'That is the real reason rebalancing works: not because it times the market, but because it takes out of your hands the decision you are most likely to get wrong.',
+          ],
+        },
+      ],
     },
     keyTerms: {
       sq: [
@@ -964,6 +1744,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Arsyeja e shkruar pse e blini diçka — dhe prandaj mënyra e vetme për ta ditur kur duhet shitur.',
         },
       ],
+      en: [
+        {
+          slug: 'sunk-cost',
+          term: 'Sunk cost',
+          definition:
+            'Money already spent, which should not influence any future decision.',
+          aliases: ['sunk costs', 'sunk cost fallacy'],
+        },
+        {
+          slug: 'anchoring',
+          term: 'Anchoring',
+          definition:
+            'Tying a decision to an arbitrary number, usually the price you paid.',
+          aliases: ['anchoring bias'],
+        },
+        {
+          slug: 'investment-thesis',
+          term: 'Investment thesis',
+          definition:
+            'The written reason you bought something — and therefore the only way to know when to sell it.',
+          aliases: ['thesis', 'investment theses'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -978,23 +1781,41 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Tregu nuk e di sa keni paguar. Vendimi duhet të varet nga vlera dhe teza sot, jo nga një shifër e së kaluarës suaj.',
       },
+      en: {
+        question:
+          'A stock has fallen 30% and you decide to wait "until it gets back to my price" before selling. What is the mistake?',
+        options: [
+          'You should immediately sell anything that falls',
+          "Your purchase price is arbitrary and says nothing about today's value",
+          'You should always buy more',
+        ],
+        answer: 1,
+        explanation:
+          "The market does not know what you paid. The decision should rest on today's value and thesis, not on a number from your past.",
+      },
     },
     upNextSlugs: {
       sq: ['si-ndertohet-nje-portofol', 'sjellja-kushton-me-shume-se-tarifat'],
+      en: ['how-to-build-a-portfolio', 'behaviour-costs-more-than-fees'],
     },
   },
 
   {
     id: 'building-a-simple-portfolio',
-    slug: { sq: 'si-ndertohet-nje-portofol' },
+    slug: { sq: 'si-ndertohet-nje-portofol', en: 'how-to-build-a-portfolio' },
     topicId: 'risk-and-costs',
     level: 'beginner',
-    title: { sq: 'Si të ndërtohet një portofol i thjeshtë' },
+    title: {
+      sq: 'Si të ndërtohet një portofol i thjeshtë',
+      en: 'How to build a simple portfolio',
+    },
     summary: {
       sq: 'Vendimi që e shpjegon pjesën më të madhe të rezultatit tuaj nuk është cilat aksione, por sa nga secili lloj.',
+      en: 'The decision that explains most of your result is not which stocks, but how much of each kind.',
     },
     inOneSentence: {
       sq: 'Zgjidheni ndarjen mes aksioneve dhe obligacioneve sipas afatit tuaj, mbajeni të gjerë e të lirë dhe ribalancojeni një herë në vit.',
+      en: 'Choose your split between stocks and bonds based on your time horizon, keep it broad and cheap, and rebalance once a year.',
     },
     body: {
       sq: [
@@ -1023,6 +1844,32 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           ],
         },
       ],
+      en: [
+        {
+          heading: 'The first and most important decision',
+          paragraphs: [
+            "Different studies give different figures, but they all agree on the direction: the overwhelming share of a portfolio's movement is explained by the split between asset classes, not by the choices within them.",
+            'In other words, "what percentage in stocks" matters far more than "which stocks".',
+            'That is good news: the most important decision is also the simplest, and it requires no forecasting at all.',
+          ],
+        },
+        {
+          heading: 'A structure that is enough',
+          paragraphs: [
+            'One broad global stock fund covers thousands of companies across dozens of countries. One fund of quality bonds covers the stable part.',
+            'For most people, two funds are enough. Adding a third or a fourth should answer a concrete question, not the urge to own more.',
+            'The proportions depend on your horizon: the further away the day you need the money, the larger the stock portion can be.',
+          ],
+        },
+        {
+          heading: 'Maintenance',
+          paragraphs: [
+            'Contribute regularly and automatically. Rebalance once a year. Look at it rarely. That is the whole job.',
+            'Resist the temptation to make it more complicated. Every new layer adds cost, confusion, and one more decision you can get wrong.',
+            'The best portfolio is not the one with the highest expected return. It is the one you will actually hold for ten years, bad years included.',
+          ],
+        },
+      ],
     },
     comparison: {
       sq: {
@@ -1032,6 +1879,20 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
           { label: 'Nën 3 vjet', value: '0%', cost: '100%', tone: 'positive' },
           { label: '5 deri 10 vjet', value: '50-70%', cost: '30-50%' },
           { label: 'Mbi 15 vjet', value: '80-100%', cost: '0-20%' },
+        ],
+      },
+      en: {
+        heading: 'Splits by time horizon',
+        columns: ['When you need it', 'Stocks', 'Bonds and cash'],
+        rows: [
+          {
+            label: 'Under 3 years',
+            value: '0%',
+            cost: '100%',
+            tone: 'positive',
+          },
+          { label: '5 to 10 years', value: '50-70%', cost: '30-50%' },
+          { label: 'Over 15 years', value: '80-100%', cost: '0-20%' },
         ],
       },
     },
@@ -1048,6 +1909,20 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         {
           title: 'Ribalanconi një herë në vit',
           body: 'Nëse aksionet janë rritur në 88%, shitni pak dhe blini obligacione derisa të ktheheni te 80/20.',
+        },
+      ],
+      en: [
+        {
+          title: 'Choose your split',
+          body: 'A twenty-year horizon and a good tolerance for risk: 80% global stocks, 20% bonds.',
+        },
+        {
+          title: 'Contribute automatically',
+          body: 'The same amount every month, split in the same proportions. No decision to make each month.',
+        },
+        {
+          title: 'Rebalance once a year',
+          body: 'If stocks have grown to 88%, sell a little and buy bonds until you are back at 80/20.',
         },
       ],
     },
@@ -1073,6 +1948,29 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
             'Një bazë e gjerë e lirë, plus pozicione të vogla për gjithçka tjetër.',
         },
       ],
+      en: [
+        {
+          slug: 'asset-allocation',
+          term: 'Asset allocation',
+          definition:
+            'How a portfolio is divided across types of investments. The decision that explains most of the result.',
+          aliases: ['allocation', 'asset allocations'],
+        },
+        {
+          slug: 'target-weight',
+          term: 'Target weight',
+          definition:
+            'The percentage you have set for each part, and the one you return to when rebalancing.',
+          aliases: ['target weights'],
+        },
+        {
+          slug: 'core-satellite',
+          term: 'Core and satellite',
+          definition:
+            'A broad, cheap base, plus small positions for everything else.',
+          aliases: ['core-satellite'],
+        },
+      ],
     },
     quiz: {
       sq: {
@@ -1087,8 +1985,22 @@ export const RISK_COSTS_LESSONS: SeedLesson[] = [
         explanation:
           'Ndarja mes llojeve të aseteve e vendos rezultatin. Zgjedhja brenda secilit lloj ka shumë më pak peshë.',
       },
+      en: {
+        question: "Which decision explains most of a portfolio's movement?",
+        options: [
+          'Which individual stocks you pick',
+          'What percentage you hold in stocks versus bonds',
+          'Which day of the month you buy',
+        ],
+        answer: 1,
+        explanation:
+          'The split between asset classes drives the result. The choices within each class carry far less weight.',
+      },
     },
     relatedSymbols: ['sp-500', 'stoxx-600'],
-    upNextSlugs: { sq: ['kur-duhet-shitur', 'njeqind-eurot-e-para'] },
+    upNextSlugs: {
+      sq: ['kur-duhet-shitur', 'njeqind-eurot-e-para'],
+      en: ['when-to-sell', 'your-first-hundred-euros'],
+    },
   },
 ];

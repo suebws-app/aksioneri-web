@@ -8,7 +8,10 @@ import {
   getTopics,
   LessonPage,
 } from '@/features/learn';
-import { getGlossary } from '@/features/learn/learnData';
+import {
+  getGlossary,
+  getLessonSlugAlternates,
+} from '@/features/learn/learnData';
 import { findArticleForLesson } from '@/features/learn/matchNews';
 import { getArticles } from '@/features/news';
 import { locales, type Locale } from '@/i18n/config';
@@ -38,11 +41,23 @@ export async function generateMetadata({
 
   if (!lesson) notFound();
 
+  const alternates = getLessonSlugAlternates(locale, slug);
+
   return buildMetadata({
     title: lesson.title,
     description: lesson.summary,
     path: `/learn/${lesson.slug}`,
     locale,
+    ...(alternates
+      ? {
+          localizedPaths: Object.fromEntries(
+            Object.entries(alternates).map(([entry, localizedSlug]) => [
+              entry,
+              `/learn/${localizedSlug}`,
+            ]),
+          ),
+        }
+      : {}),
   });
 }
 
