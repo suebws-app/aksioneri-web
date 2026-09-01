@@ -42,7 +42,7 @@ export async function MarketsIndexPage({
   return (
     <div className="bg-paper flex min-h-screen flex-col">
       <SiteHeader
-        active="home"
+        active="markets"
         searchSlot={<NavSearch />}
         mobileSearchSlot={<NavSearch variant="mobile" />}
       />

@@ -5,7 +5,7 @@ const GROUP_ROW_COUNTS = [8, 5, 5, 4, 6];
 
 export default function Loading() {
   return (
-    <MarketingLoadingShell ticker>
+    <MarketingLoadingShell active="markets" ticker>
       <div className="page-container pt-10">
         <div className="mb-8">
           <Skeleton className="mb-2 h-10 w-64" />

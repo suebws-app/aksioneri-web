@@ -1,5 +1,6 @@
 export const PRIMARY_SECTIONS = [
   'home',
+  'markets',
   'news',
   'learn',
   'calendar',
@@ -10,6 +11,7 @@ export type SiteSection = (typeof PRIMARY_SECTIONS)[number];
 
 export const HREF: Record<SiteSection, string> = {
   home: '/',
+  markets: '/markets',
   news: '/news',
   learn: '/learn',
   calendar: '/calendar',
