@@ -42,24 +42,27 @@ export function buildCsp(
   const apiOrigin = originOf(apiUrl);
   const apiWsOrigin = wsOriginOf(apiOrigin);
 
-  const posthogOrigin = extras.posthogHost
-    ? originOf(extras.posthogHost)
-    : null;
+  const posthogHosts = extras.posthogHost
+    ? ['https://*.i.posthog.com', 'https://*.posthog.com']
+    : [];
 
   const scriptSources = new Set<string>([
     "'self'",
     "'unsafe-inline'",
     ...(isProduction ? [] : ["'unsafe-eval'"]),
+    ...posthogHosts,
   ]);
-  if (posthogOrigin) scriptSources.add(posthogOrigin);
   const scriptSrc = [...scriptSources].join(' ');
 
   const workerSources = new Set<string>(["'self'", 'blob:']);
-  if (posthogOrigin) workerSources.add(posthogOrigin);
   const workerSrc = [...workerSources].join(' ');
 
-  const connectSources = new Set<string>(["'self'", apiOrigin, apiWsOrigin]);
-  if (posthogOrigin) connectSources.add(posthogOrigin);
+  const connectSources = new Set<string>([
+    "'self'",
+    apiOrigin,
+    apiWsOrigin,
+    ...posthogHosts,
+  ]);
   if (extras.sentryDsn) {
     connectSources.add(originOf(extras.sentryDsn));
   }
