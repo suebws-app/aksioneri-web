@@ -42,14 +42,24 @@ export function buildCsp(
   const apiOrigin = originOf(apiUrl);
   const apiWsOrigin = wsOriginOf(apiOrigin);
 
-  const scriptSrc = isProduction
-    ? "'self' 'unsafe-inline'"
-    : "'self' 'unsafe-inline' 'unsafe-eval'";
+  const posthogOrigin = extras.posthogHost
+    ? originOf(extras.posthogHost)
+    : null;
+
+  const scriptSources = new Set<string>([
+    "'self'",
+    "'unsafe-inline'",
+    ...(isProduction ? [] : ["'unsafe-eval'"]),
+  ]);
+  if (posthogOrigin) scriptSources.add(posthogOrigin);
+  const scriptSrc = [...scriptSources].join(' ');
+
+  const workerSources = new Set<string>(["'self'", 'blob:']);
+  if (posthogOrigin) workerSources.add(posthogOrigin);
+  const workerSrc = [...workerSources].join(' ');
 
   const connectSources = new Set<string>(["'self'", apiOrigin, apiWsOrigin]);
-  if (extras.posthogHost) {
-    connectSources.add(originOf(extras.posthogHost));
-  }
+  if (posthogOrigin) connectSources.add(posthogOrigin);
   if (extras.sentryDsn) {
     connectSources.add(originOf(extras.sentryDsn));
   }
@@ -64,6 +74,7 @@ export function buildCsp(
     `img-src ${imgSrc}`,
     "font-src 'self' data:",
     `connect-src ${connectSrc}`,
+    `worker-src ${workerSrc}`,
     "object-src 'none'",
     "frame-src 'none'",
     "frame-ancestors 'none'",
