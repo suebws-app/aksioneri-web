@@ -42,7 +42,7 @@ export function AssetFinancials({
   ticker,
   locale,
   initialTab = 'income',
-  initialPeriod = 'annual',
+  initialPeriod = 'quarterly',
   initialStatement,
 }: AssetFinancialsProps) {
   const t = useTranslations('company.financials');

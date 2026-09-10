@@ -55,7 +55,11 @@ export default async function Page({ params }: PageProps) {
     );
   }
 
-  const initialStatement = await getIncomeStatement(asset.ticker, 'annual', 5);
+  const initialStatement = await getIncomeStatement(
+    asset.ticker,
+    'quarterly',
+    8,
+  );
 
   return (
     <div className="page-container flex flex-col gap-4 pt-8 pb-12">
@@ -63,6 +67,7 @@ export default async function Page({ params }: PageProps) {
         ticker={asset.ticker}
         locale={locale}
         initialStatement={initialStatement}
+        initialPeriod="quarterly"
       />
       <DataSource
         source={initialStatement.source}
