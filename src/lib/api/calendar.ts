@@ -148,6 +148,24 @@ export const getCalendarSlugs = cache(async (): Promise<SlugEntry[]> =>
   ),
 );
 
+export async function fetchExplanationFresh(
+  slug: string,
+  locale: string,
+): Promise<CalendarExplanation | null> {
+  try {
+    const raw = await apiFetch<ApiCalendarEvent>(
+      `calendar/${encodeURIComponent(slug)}`,
+      {
+        searchParams: { locale: locale === 'sq' ? 'sq' : 'en' },
+        cache: 'no-store',
+      },
+    );
+    return raw.explanation ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function toRegion(value: string): EventRegion {
   const known: EventRegion[] = ['US', 'EU', 'DE', 'UK', 'JP'];
   return (known as string[]).includes(value) ? (value as EventRegion) : 'US';

@@ -127,6 +127,8 @@ export default async function Page({ params }: PageProps) {
           )
           .filter((lesson) => lesson !== undefined)}
         articles={relatedArticles}
+        slug={slug}
+        initialExplanation={row?.explanation ?? null}
       />
     </>
   );
