@@ -137,6 +137,46 @@
     }
   },
   "markets": {
+    "macro": {
+      "metaTitle": "Paneli makro i SHBA-së",
+      "metaDescription": "Yield-et e Thesarit të SHBA-së, norma e Fed-it, IÇK-ja, papunësia, punësimi dhe prodhimi industrial — burimi FRED nga Federal Reserve Bank i St. Louis.",
+      "heading": "Paneli makro i SHBA-së",
+      "lede": "Treguesit makroekonomikë që lëvizin tregjet — yield-e, çmime, vende pune, prodhim. Përditësohet çdo ditë nga baza publike FRED e Fed-it të St. Louis-it.",
+      "attribution": "Seritë vijnë nga FRED (Federal Reserve Bank of St. Louis). Të dhënat janë publike dhe përdoren me atribucion.",
+      "lastRelease": "Publikimi i fundit: {date}",
+      "dgs10": {
+        "heading": "Yield-i i Thesarit 10-vjeçar",
+        "description": "Yield-i i notës së Thesarit të SHBA-së me maturitet 10-vjeçar."
+      },
+      "dgs2": {
+        "heading": "Yield-i i Thesarit 2-vjeçar",
+        "description": "Yield-i i notës së Thesarit të SHBA-së me maturitet 2-vjeçar."
+      },
+      "dff": {
+        "heading": "Norma efektive e Fed-it",
+        "description": "Norma me të cilën bankat amerikane huazojnë rezerva njëra-tjetrës brenda natës."
+      },
+      "cpiaucsl": {
+        "heading": "Indeksi i Çmimeve të Konsumit (IÇK-U)",
+        "description": "Indeksi i çmimeve të konsumit, konsumatorë urbanë, të gjithë artikujt. I sezonalizuar."
+      },
+      "unrate": {
+        "heading": "Norma e papunësisë",
+        "description": "Norma civile e papunësisë, e sezonalizuar."
+      },
+      "payems": {
+        "heading": "Punësimi jobujqësor",
+        "description": "Punësimi total jobujqësor, në mijëra."
+      },
+      "icsa": {
+        "heading": "Kërkesat fillestare për ndihmë",
+        "description": "Kërkesat javore fillestare për sigurim papunësie, të sezonalizuara."
+      },
+      "indpro": {
+        "heading": "Prodhimi industrial",
+        "description": "Indeksi i prodhimit industrial të SHBA-së, i sezonalizuar."
+      }
+    },
     "metaTitle": "Tregjet dhe lajmet financiare",
     "metaDescription": "Çmimet e drejtpërdrejta, lajmet që lëvizin tregjet dhe kalendari ekonomik — të gjitha të shpjeguara në gjuhë të thjeshtë.",
     "tickerAriaLabel": "Shirit i tregjeve",
@@ -488,6 +528,8 @@
       "metaTitle": "Lajme për {name}",
       "metaDescription": "Të gjitha lajmet e fundit që përmendin {name}, të përkthyera dhe të përmbledhura në shqip.",
       "heading": "Lajme për {name}",
+      "earningsHeading": "Rezultatet financiare më të fundit",
+      "earningsSubheading": "Publikimi më i ri i rezultateve financiare të kompanisë, i marrë dhe përkthyer nga dosja tek SEC.",
       "empty": {
         "title": "Nuk ka lajme të fundit",
         "description": "Kur të publikohen artikuj që përmendin këtë kompani, do të shfaqen këtu."
@@ -532,7 +574,8 @@
       "europe": "Evropë",
       "crypto": "Kripto",
       "commodities": "Mallra",
-      "economy": "Ekonomi"
+      "economy": "Ekonomi",
+      "earnings": "Fitimet"
     },
     "filterAll": "Të gjitha",
     "filterLabel": "Filtro sipas kategorisë",
@@ -563,6 +606,9 @@
       "listen": "Dëgjo"
     },
     "photoVia": "Fotografia: {source}",
+    "photoByOn": "Fotografia nga {name} në {source}",
+    "photoOn": "Fotografia në {source}",
+    "photoPexels": "Pexels",
     "source": {
       "credit": "Ky lajm u publikua nga {source}.",
       "fallbackName": "publikuesi origjinal",

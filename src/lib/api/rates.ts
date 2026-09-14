@@ -100,6 +100,42 @@ export const getPolicyRate = cache(
     ),
 );
 
+export interface MacroPoint {
+  period: string;
+  value: number;
+}
+
+export interface MacroSeries {
+  seriesId: string;
+  unit: string;
+  data: MacroPoint[];
+  source: string;
+}
+
+export const MACRO_SERIES_IDS = [
+  'DGS10',
+  'DGS2',
+  'DFF',
+  'CPIAUCSL',
+  'UNRATE',
+  'PAYEMS',
+  'ICSA',
+  'INDPRO',
+] as const;
+
+export type MacroSeriesId = (typeof MACRO_SERIES_IDS)[number];
+
+export const getMacroSeries = cache(
+  async (seriesId: MacroSeriesId): Promise<MacroSeries | null> =>
+    safelyRates(
+      () =>
+        apiFetch<MacroSeries>(`rates/macro/${seriesId}`, {
+          next: { revalidate: 3600, tags: ['rates'] },
+        }),
+      null,
+    ),
+);
+
 export const fetchFxLatest = (base: string): Promise<FxLatest> =>
   apiFetch<FxLatest>('rates/fx/latest', { searchParams: { base } });
 

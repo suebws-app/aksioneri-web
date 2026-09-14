@@ -12,7 +12,20 @@ const safelyNews = <T>(work: () => Promise<T>, fallback: T): Promise<T> =>
   safely(work, fallback, 'news');
 
 export type NewsCategory =
-  'macro' | 'stocks' | 'europe' | 'crypto' | 'commodities' | 'economy';
+  | 'macro'
+  | 'stocks'
+  | 'europe'
+  | 'crypto'
+  | 'commodities'
+  | 'economy'
+  | 'earnings';
+
+export interface NewsImageAttribution {
+  source: string;
+  name: string | null;
+  authorUrl: string | null;
+  pageUrl: string | null;
+}
 
 export interface NewsArticle {
   id: string;
@@ -25,6 +38,7 @@ export interface NewsArticle {
   publishedAt: string;
   author?: { name: string; desk: string | null; initials: string } | null;
   imageUrl?: string | null;
+  imageAttribution?: NewsImageAttribution | null;
   sourceUrl?: string;
   sourceName?: string;
   translated?: boolean;
@@ -247,4 +261,37 @@ export const getArticleSlugs = cache(
     const index = await getArticleIndex(locale);
     return index.map((entry) => entry.slug);
   },
+);
+
+export const getRelatedArticles = cache(
+  async (locale: Locale, slug: string, limit = 3): Promise<NewsArticle[]> =>
+    safelyNews(async () => {
+      const response = await apiFetch<NewsArticle[]>(
+        `news/${encodeURIComponent(slug)}/related`,
+        {
+          searchParams: { locale, limit },
+          ...cacheOptions,
+        },
+      );
+      return response.map(sanitizeArticle);
+    }, []),
+);
+
+const EARNINGS_PER_TICKER = 5;
+
+export const getEarningsArticles = cache(
+  async (locale: Locale, ticker: string): Promise<NewsArticle[]> =>
+    safelyNews(async () => {
+      const response = await apiFetch<PaginatedResponse<NewsArticle>>(
+        `news/earnings/${encodeURIComponent(ticker.toUpperCase())}`,
+        {
+          searchParams: { locale, limit: EARNINGS_PER_TICKER },
+          next: {
+            revalidate: REVALIDATE_SECONDS,
+            tags: [NEWS_TAG, `news:earnings:${ticker.toUpperCase()}`],
+          },
+        },
+      );
+      return response.data.map(sanitizeArticle);
+    }, []),
 );

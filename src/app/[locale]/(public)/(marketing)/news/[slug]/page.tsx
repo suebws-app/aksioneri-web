@@ -7,9 +7,9 @@ import { findLessonForArticle } from '@/features/learn/matchNews';
 import {
   ArticlePage,
   getArticleBySlug,
-  getArticles,
   getArticleSlugs,
   getMostRead,
+  getRelatedArticles,
 } from '@/features/news';
 import { matchCalculatorForArticle } from '@/features/calculators';
 import { locales, type Locale } from '@/i18n/config';
@@ -65,7 +65,7 @@ export default async function Page({ params }: PageProps) {
 
   const week = await getCalendarWeek(locale);
   const [related, mostRead, quotes] = await Promise.all([
-    getArticles(locale),
+    getRelatedArticles(locale, slug, 3),
     getMostRead(locale),
     getQuotes(),
   ]);
@@ -115,7 +115,7 @@ export default async function Page({ params }: PageProps) {
           body: article.body ?? null,
           category: article.category,
         })}
-        related={related.filter((entry) => entry.id !== article.id).slice(0, 3)}
+        related={related}
         mostRead={mostRead}
         glossary={getGlossary(locale)}
         mentioned={quotes.filter((quote) => mentionedSymbols.has(quote.symbol))}

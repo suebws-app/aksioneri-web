@@ -10,4 +10,5 @@ export const CATEGORY_TINTS: Record<
   crypto: { background: '#ebdee5', foreground: '#5b2b47' },
   commodities: { background: '#ede4d0', foreground: '#5a3a1a' },
   economy: { background: '#e5e5e0', foreground: '#2e343c' },
+  earnings: { background: '#e0e7de', foreground: '#1f4a2a' },
 };

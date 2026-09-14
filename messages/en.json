@@ -137,6 +137,46 @@
     }
   },
   "markets": {
+    "macro": {
+      "metaTitle": "US macro dashboard",
+      "metaDescription": "US Treasury yields, Fed funds rate, CPI, unemployment, payrolls and industrial production — sourced from the St. Louis Fed (FRED).",
+      "heading": "US macro dashboard",
+      "lede": "The macroeconomic indicators that move markets — yields, prices, jobs, output. Updated daily from the St. Louis Fed's public FRED database.",
+      "attribution": "Series sourced from FRED (Federal Reserve Bank of St. Louis). Data is public and used with credit.",
+      "lastRelease": "Last release: {date}",
+      "dgs10": {
+        "heading": "10-year Treasury yield",
+        "description": "Constant-maturity 10-year US Treasury note yield."
+      },
+      "dgs2": {
+        "heading": "2-year Treasury yield",
+        "description": "Constant-maturity 2-year US Treasury note yield."
+      },
+      "dff": {
+        "heading": "Effective federal funds rate",
+        "description": "The rate at which US banks lend reserves to each other overnight."
+      },
+      "cpiaucsl": {
+        "heading": "Consumer Price Index (CPI-U)",
+        "description": "US consumer price index, urban consumers, all items. Seasonally adjusted."
+      },
+      "unrate": {
+        "heading": "Unemployment rate",
+        "description": "Civilian unemployment rate, seasonally adjusted."
+      },
+      "payems": {
+        "heading": "Non-farm payrolls",
+        "description": "Total non-farm payroll employment, in thousands."
+      },
+      "icsa": {
+        "heading": "Initial jobless claims",
+        "description": "Weekly initial unemployment insurance claims, seasonally adjusted."
+      },
+      "indpro": {
+        "heading": "Industrial production",
+        "description": "US industrial production index, seasonally adjusted."
+      }
+    },
     "metaTitle": "Markets and financial news",
     "metaDescription": "Live prices, the news that moves markets, and the economic calendar — all explained in plain English.",
     "tickerAriaLabel": "Markets ticker",
@@ -488,6 +528,8 @@
       "metaTitle": "News about {name}",
       "metaDescription": "All the latest news mentioning {name}, translated and summarised for easy reading.",
       "heading": "News about {name}",
+      "earningsHeading": "Latest earnings",
+      "earningsSubheading": "The company's most recent earnings release, translated from the SEC filing.",
       "empty": {
         "title": "No recent news",
         "description": "When articles mentioning this company are published, they'll appear here."
@@ -532,7 +574,8 @@
       "europe": "Europe",
       "crypto": "Crypto",
       "commodities": "Commodities",
-      "economy": "Economy"
+      "economy": "Economy",
+      "earnings": "Earnings"
     },
     "filterAll": "All",
     "filterLabel": "Filter by category",
@@ -563,6 +606,9 @@
       "listen": "Listen"
     },
     "photoVia": "Photo: {source}",
+    "photoByOn": "Photo by {name} on {source}",
+    "photoOn": "Photo on {source}",
+    "photoPexels": "Pexels",
     "source": {
       "credit": "This story was published by {source}.",
       "fallbackName": "the original publisher",

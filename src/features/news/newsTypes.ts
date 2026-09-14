@@ -3,4 +3,5 @@ export type {
   MostReadEntry,
   NewsArticle,
   NewsCategory,
+  NewsImageAttribution,
 } from '@/lib/api/news';

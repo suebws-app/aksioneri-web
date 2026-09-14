@@ -17,8 +17,11 @@ import { cn } from '@/lib/utils/cn';
 import { ArticleMeta } from './components/ArticleMeta';
 import { NewsImage } from './components/NewsImage';
 import { WhyItMatters } from './components/WhyItMatters';
-import type { MostReadEntry } from './newsTypes';
-import type { NewsArticle } from './newsTypes';
+import type {
+  MostReadEntry,
+  NewsArticle,
+  NewsImageAttribution,
+} from './newsTypes';
 
 export interface ArticlePageProps {
   article: NewsArticle;
@@ -33,6 +36,60 @@ export interface ArticlePageProps {
   showTerms?: boolean;
   calculatorEmbed?: string | null;
   showCalculatorEmbed?: boolean;
+}
+
+function PexelsCredit({ attribution }: { attribution: NewsImageAttribution }) {
+  const t = useTranslations('news');
+  const pexelsLabel = t('photoPexels');
+  const pexelsHref = attribution.pageUrl ?? 'https://www.pexels.com';
+  const pexelsLink = (
+    <a
+      href={pexelsHref}
+      rel="noopener nofollow"
+      target="_blank"
+      className="hover:text-ink"
+    >
+      {pexelsLabel}
+    </a>
+  );
+
+  if (!attribution.name) {
+    return <>{t('photoOn', { source: pexelsLabel })}</>;
+  }
+
+  const nameNode = attribution.authorUrl ? (
+    <a
+      href={attribution.authorUrl}
+      rel="noopener nofollow"
+      target="_blank"
+      className="hover:text-ink"
+    >
+      {attribution.name}
+    </a>
+  ) : (
+    <span>{attribution.name}</span>
+  );
+
+  return (
+    <>
+      {t('photoByOn', {
+        name: `__NAME__`,
+        source: `__SRC__`,
+      })
+        .split('__NAME__')
+        .flatMap((part, i, arr) =>
+          i < arr.length - 1
+            ? [part, <span key={`n${i}`}>{nameNode}</span>]
+            : part
+                .split('__SRC__')
+                .flatMap((sub, j, subArr) =>
+                  j < subArr.length - 1
+                    ? [sub, <span key={`s${j}`}>{pexelsLink}</span>]
+                    : [sub],
+                ),
+        )}
+    </>
+  );
 }
 
 export function ArticlePage({
@@ -110,13 +167,19 @@ export function ArticlePage({
               priority
             />
 
-            {(article.heroCaption ?? article.sourceName) ? (
+            {(article.heroCaption ??
+            article.imageAttribution ??
+            article.sourceName) ? (
               <p className="text-ink-faint mb-8.5 text-[12.5px]">
                 {article.heroCaption ?? ''}{' '}
                 <span className="text-ink-ghost">
-                  {article.sourceName
-                    ? t('photoVia', { source: article.sourceName })
-                    : t('photoCredit')}
+                  {article.imageAttribution?.source === 'pexels' ? (
+                    <PexelsCredit attribution={article.imageAttribution} />
+                  ) : article.sourceName ? (
+                    t('photoVia', { source: article.sourceName })
+                  ) : (
+                    t('photoCredit')
+                  )}
                 </span>
               </p>
             ) : null}

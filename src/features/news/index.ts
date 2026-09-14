@@ -10,6 +10,7 @@ export {
   getArticleSlugs,
   getFeaturedArticle,
   getMostRead,
+  getRelatedArticles,
   searchArticles,
 } from '@/lib/api/news';
 export type { ArticleFeed } from '@/lib/api/news';
