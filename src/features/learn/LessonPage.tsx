@@ -4,6 +4,7 @@ import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
+import { ArticleLink } from '@/features/news/components/ArticleLink';
 import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import { Link } from '@/i18n/navigation';
@@ -393,12 +394,12 @@ export function LessonPage({
                 <h2 className="text-accent mb-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase">
                   {t('inTodaysNews')}
                 </h2>
-                <Link
-                  href={`/news/${relatedArticle.slug}`}
+                <ArticleLink
+                  article={relatedArticle}
                   className="text-ink hover:text-accent mb-2 block font-serif text-lg leading-tight"
                 >
                   {relatedArticle.title}
-                </Link>
+                </ArticleLink>
                 <p className="text-ink-muted text-sm leading-relaxed">
                   {t('vocabularyNote')}
                 </p>

@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { ChangeValue } from '@/components/ChangeValue';
+import { ArticleLink } from '@/features/news/components/ArticleLink';
 import type { NewsArticle } from '@/features/news/newsTypes';
 import type { Locale } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
@@ -163,9 +164,9 @@ export function AssetPage({
           </div>
           <div className="border-line bg-surface grid grid-cols-1 rounded-b-md border border-t-0 md:grid-cols-3">
             {articles.slice(0, 3).map((article, index) => (
-              <Link
+              <ArticleLink
                 key={article.id}
-                href={`/news/${article.slug}`}
+                article={article}
                 className={cn(
                   'hover:bg-surface-tint block p-5 transition-colors',
                   index !== 0 && 'border-t md:border-t-0 md:border-l',
@@ -181,7 +182,7 @@ export function AssetPage({
                 <div className="text-ink font-serif text-[19px] leading-[1.3]">
                   {article.title}
                 </div>
-              </Link>
+              </ArticleLink>
             ))}
           </div>
         </section>

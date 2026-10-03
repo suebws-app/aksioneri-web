@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { EmptyState } from '@/components/EmptyState';
+import { ArticleLink } from '@/features/news/components/ArticleLink';
 import { findArticlesMentioning } from '@/features/learn/matchNews';
 import { ArticleMeta } from '@/features/news/components/ArticleMeta';
 import { resolveTickerSlug } from '@/features/markets/marketsUniverse';
@@ -9,7 +10,6 @@ import { getArticles } from '@/features/news';
 import type { NewsArticle } from '@/lib/api/news';
 import { getEarningsArticles } from '@/lib/api/news';
 import type { Locale } from '@/i18n/config';
-import { Link } from '@/i18n/navigation';
 import { getAssetDetail } from '@/lib/api/markets';
 import { buildMetadata } from '@/lib/seo/metadata';
 
@@ -119,9 +119,9 @@ function ArticleRow({ article }: { article: NewsArticle }) {
   return (
     <>
       <h3 className="text-ink mb-2 font-serif text-[21px] leading-[1.24] font-medium">
-        <Link href={`/news/${article.slug}`} className="hover:text-accent">
+        <ArticleLink article={article} className="hover:text-accent">
           {article.title}
-        </Link>
+        </ArticleLink>
       </h3>
       <p className="text-ink-muted mb-2.5 max-w-[74ch] text-[15px] leading-relaxed">
         {article.summary}

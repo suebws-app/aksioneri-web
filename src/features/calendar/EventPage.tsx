@@ -4,6 +4,7 @@ import { ChangeValue } from '@/components/ChangeValue';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { NavSearch } from '@/features/search';
+import { ArticleLink } from '@/features/news/components/ArticleLink';
 import type { Lesson } from '@/features/learn/learnTypes';
 import type { Quote } from '@/features/markets/marketsTypes';
 import type { NewsArticle } from '@/features/news/newsTypes';
@@ -471,12 +472,12 @@ export function EventPage({
                         key={entry.id}
                         className="border-line-soft border-b py-3.5 first:pt-0 last:border-b-0 last:pb-0"
                       >
-                        <Link
-                          href={`/news/${entry.slug}`}
+                        <ArticleLink
+                          article={entry}
                           className="text-ink hover:text-accent mb-1.5 block font-serif text-[17px] leading-tight"
                         >
                           {entry.title}
-                        </Link>
+                        </ArticleLink>
                         <p className="text-ink-faint text-xs">
                           {formatMinutesAgo(entry.minutesAgo, tNews)}
                         </p>
