@@ -110,6 +110,8 @@ export function ArticlePage({
   const locale = useLocale() as Locale;
 
   const linker = new GlossaryLinker(glossary);
+  const hasBody =
+    (article.body?.length ?? 0) > 0 || (article.sections?.length ?? 0) > 0;
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -154,7 +156,9 @@ export function ArticlePage({
                     {article.publishedAt
                       ? `${formatTimestamp(locale, article.publishedAt)} · `
                       : ''}
-                    {t('readingTime', { minutes: article.readingMinutes })}
+                    {hasBody
+                      ? t('readingTime', { minutes: article.readingMinutes })
+                      : null}
                   </p>
                 </div>
               </div>
