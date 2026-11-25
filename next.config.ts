@@ -4,7 +4,12 @@ import { NEWS_IMAGE_HOSTS } from './src/config/news-image-hosts';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+// Coming-soon mode: only files named *.soon.ts(x) are built, so the real site
+// (all pages untouched) is skipped. Set COMING_SOON=false to bring it back.
+const COMING_SOON = process.env.COMING_SOON !== 'false';
+
 const nextConfig: NextConfig = {
+  ...(COMING_SOON && { pageExtensions: ['soon.tsx', 'soon.ts'] }),
   typescript: { ignoreBuildErrors: false },
   poweredByHeader: false,
   trailingSlash: false,
